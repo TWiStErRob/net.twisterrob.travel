@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="coordinates">
+		<xs:complexType mixed="true" />
+	</xs:element>
+
+	<xs:element name="description">
+		<xs:complexType mixed="true" />
+	</xs:element>
+
+	<xs:element name="Document">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="name" />
+				<xs:element ref="open" />
+				<xs:element ref="description" />
+				<xs:element ref="Style" />
+				<xs:element ref="Placemark" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="href">
+		<xs:complexType mixed="true" />
+	</xs:element>
+
+	<xs:element name="Icon">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="href" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="IconStyle">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Icon" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="kml">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Document" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="name">
+		<xs:complexType mixed="true" />
+	</xs:element>
+
+	<xs:element name="open">
+		<xs:complexType mixed="true" />
+	</xs:element>
+
+	<xs:element name="Placemark">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="name" />
+				<xs:element ref="Point" />
+				<xs:element ref="styleUrl" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Point">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="coordinates" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Style">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="IconStyle" />
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:NMTOKEN" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="styleUrl">
+		<xs:complexType mixed="true" />
+	</xs:element>
+
+</xs:schema>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.2">
+	<Document>
+		<name>Transport for London Piers</name>
+		<open>0</open>
+		<description>Transport for London Piers</description>
+		<Style id="riverStyle">
+			<IconStyle>
+				<Icon>
+					<href>http://www.tfl.gov.uk/tfl-global/images/syndication/roundel-river.png</href>
+				</Icon>
+			</IconStyle>
+		</Style>
+		<Placemark>
+			<name>London Eye</name>
+			<Point>
+				<coordinates>-0.1203811,51.50385,0</coordinates>
+			</Point>
+			<styleUrl>#riverStyle</styleUrl>
+		</Placemark>
+		<Placemark>
+			<name>Westminster</name>
+			<Point>
+				<coordinates>-0.123216,51.501877,0</coordinates>
+			</Point>
+			<styleUrl>#riverStyle</styleUrl>
+		</Placemark>
+	</Document>
+</kml>
