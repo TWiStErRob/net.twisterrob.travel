@@ -12,6 +12,6 @@ public final class LoggingCursorFactory implements CursorFactory {
 	public Cursor newCursor(final SQLiteDatabase db, final SQLiteCursorDriver masterQuery, final String editTable,
 			final SQLiteQuery query) {
 		LoggingCursorFactory.LOG.verbose(query.toString());
-		return new SQLiteCursor(db, masterQuery, editTable, query);
+		return new SQLiteCursor(masterQuery, editTable, query);
 	}
 }

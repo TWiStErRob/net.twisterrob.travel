@@ -35,7 +35,6 @@ public class FacilitiesFeedHandler extends DefaultHandler {
 		Element stationFacility = stationFacilities.getChild("facility");
 		Element stationPlacemarkElement = stationElement.getChild("Placemark");
 		Element stationPlacemarkName = stationPlacemarkElement.getChild("name");
-		Element stationPlacemarkDescription = stationPlacemarkElement.getChild("description");
 		Element stationPlacemarkStyleUrl = stationPlacemarkElement.getChild("styleUrl");
 		Element stationPlacemarkPoint = stationPlacemarkElement.getChild("Point");
 		Element stationCoordinates = stationPlacemarkPoint.getChild("coordinates");
@@ -67,11 +66,19 @@ public class FacilitiesFeedHandler extends DefaultHandler {
 			}
 		});
 
-		stationName.setEndTextElementListener(new EndTextElementListener() {
+		EndTextElementListener stationNameListener = new EndTextElementListener() {
 			public void end(String body) {
-				m_station.setName(body);
+				String existingName = m_station.getName();
+				String newName = body.trim().replaceAll("\\s+(?i:station)$", "");
+				if (existingName == null) {
+					m_station.setName(newName);
+				} else if (!existingName.equals(newName)) {
+					LOG.warn("Different station names received: %s VS %s", existingName, newName);
+				}
 			}
-		});
+		};
+		stationName.setEndTextElementListener(stationNameListener);
+		stationPlacemarkName.setEndTextElementListener(stationNameListener);
 		stationAddress.setEndTextElementListener(new EndTextElementListener() {
 			@Override public void end(String body) {
 				m_station.setAddress(body);
@@ -88,7 +95,7 @@ public class FacilitiesFeedHandler extends DefaultHandler {
 				if (parts.length == 3) {
 					double lat = Double.parseDouble(parts[0]);
 					double lon = Double.parseDouble(parts[1]);
-					double alt = Double.parseDouble(parts[2]);
+					// double alt = Double.parseDouble(parts[2]);
 					m_station.setLocation(new Location(lat, lon));
 				}
 			}

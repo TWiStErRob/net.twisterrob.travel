@@ -5,14 +5,11 @@ import java.util.*;
 import android.database.*;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.twister.android.utils.log.*;
 import com.twister.android.utils.model.Location;
 import com.twister.london.travel.model.Station;
 
 class DataBaseReader {
 	private static final String LAST_UPDATE = "strftime('%s', __last_update) * 1000";
-
-	private static final Log LOG = LogFactory.getLog(Tag.DB);
 
 	private static final String[] STATION_DETAILS = {LAST_UPDATE, "_id", "name", "address", "telephone", "latitude",
 			"longitude"};

@@ -8,10 +8,7 @@ import org.apache.http.*;
 
 import android.graphics.*;
 
-import com.twister.android.utils.log.*;
-
 public final class IOTools {
-	private static final Log LOG = LogFactory.getLog(Tag.IO);
 	// TODO check if UTF-8 is used by cineworld
 	public static final String ENCODING = Charset.defaultCharset().name();
 	private static final String DEFAULT_HTTP_ENCODING = ENCODING;

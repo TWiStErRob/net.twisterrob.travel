@@ -40,14 +40,15 @@ public class Facility {
 		;
 	}
 
-	private boolean getBoolValue() {
+	public boolean getBoolValue() {
 		return Boolean.parseBoolean(m_value) || "yes".equalsIgnoreCase(m_value);
 	}
 
-	private int getIntValue() {
+	public int getIntValue() {
 		return Integer.parseInt(m_value);
 	}
-	private String getStringValue() {
+
+	public String getStringValue() {
 		return m_value;
 	}
 }
