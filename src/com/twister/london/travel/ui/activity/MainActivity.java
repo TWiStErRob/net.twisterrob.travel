@@ -27,7 +27,7 @@ public class MainActivity extends ListActivity {
 	private void delayedGetRoot() {
 		new DownloadFilesTask() {
 			protected void onPostExecute(AsyncTaskResult<FacilitiesFeed> result) {
-				List<Station> stations = null;
+				List<Station> stations;
 				if (result.getError() != null) {
 					LOG.error("Cannot load facitilies", result.getError());
 					stations = App.getInstance().getDataBaseHelper().getStations();
@@ -37,6 +37,8 @@ public class MainActivity extends ListActivity {
 						stations = root.getStations();
 						App.getInstance().getDataBaseHelper().updateTypes(root.getStyles());
 						App.getInstance().getDataBaseHelper().updateStations(stations);
+					} else {
+						stations = App.getInstance().getDataBaseHelper().getStations();
 					}
 				}
 				setListAdapter(new StationAdapter(MainActivity.this, stations));

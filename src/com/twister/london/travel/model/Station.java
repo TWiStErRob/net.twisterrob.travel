@@ -13,7 +13,7 @@ public class Station {
 	private List<Zone> m_zones;
 	private List<Facility> m_facilities;
 	private List<Line> m_lines;
-	private Type m_type;
+	private Type m_type = Type.Unknown;
 
 	@Override public String toString() {
 		return String.format("%s", m_name);
@@ -88,6 +88,9 @@ public class Station {
 	}
 
 	public void setType(Type type) {
+		if (type == null) {
+			throw new IllegalArgumentException("Type must be set, use Type." + Type.Unknown + " if not sure");
+		}
 		m_type = type;
 	}
 }
