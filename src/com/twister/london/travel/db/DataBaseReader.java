@@ -13,6 +13,8 @@ class DataBaseReader {
 
 	private static final String[] STATION_DETAILS = {LAST_UPDATE, "_id", "name", "address", "telephone", "latitude",
 			"longitude"};
+	private static final String[] TYPE_DETAILS = {LAST_UPDATE, "_id", "name", "url"};
+
 	private final DataBaseHelper m_dataBaseHelper;
 
 	DataBaseReader(final DataBaseHelper dataBaseHelper) {
@@ -66,6 +68,20 @@ class DataBaseReader {
 		}
 		cursor.close();
 		return station;
+	}
+
+	public Map<String, String> getTypes() {
+		Map<String, String> types = new HashMap<String, String>();
+		SQLiteDatabase database = m_dataBaseHelper.getReadableDatabase();
+		Cursor cursor = database.query("StationType", TYPE_DETAILS, null, null, null, null, null);
+		while (cursor.moveToNext()) {
+			int id = cursor.getInt(cursor.getColumnIndex("_id"));
+			String name = cursor.getString(cursor.getColumnIndex("name"));
+			String url = cursor.getString(cursor.getColumnIndex("url"));
+			types.put(name, url);
+		}
+		cursor.close();
+		return types;
 	}
 
 	// #endregion

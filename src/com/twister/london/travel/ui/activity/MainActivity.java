@@ -12,6 +12,7 @@ import com.twister.android.utils.log.*;
 import com.twister.london.travel.App;
 import com.twister.london.travel.io.feeds.*;
 import com.twister.london.travel.model.Station;
+import com.twister.london.travel.ui.adapter.StationAdapter;
 
 public class MainActivity extends ListActivity {
 	private static final Log LOG = LogFactory.getLog(Tag.UI);
@@ -32,6 +33,7 @@ public class MainActivity extends ListActivity {
 					FacilitiesFeed root = result.getResult();
 					stations = root.getStations();
 					App.getInstance().getDataBaseHelper().updateStations(stations);
+					App.getInstance().getDataBaseHelper().updateTypes(root.getStyles());
 				}
 				setListAdapter(new StationAdapter(MainActivity.this, stations));
 			};

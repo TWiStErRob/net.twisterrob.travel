@@ -9,12 +9,21 @@ public class FacilitiesFeed {
 	private Map<Line, List<Station>> m_lines;
 	private Map<String, List<Station>> m_facilities;
 	private Map<Zone, List<Station>> m_zones;
+	private Map<String, String> m_styles;
+
+	public FacilitiesFeed() {
+		m_styles = new HashMap<String, String>();
+	}
 
 	public List<Station> getStations() {
 		return m_stations;
 	}
 	public void setStations(List<Station> stations) {
 		m_stations = stations;
+	}
+
+	public Map<String, String> getStyles() {
+		return m_styles;
 	}
 
 	public void postProcess() {

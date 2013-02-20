@@ -1,11 +1,13 @@
-package com.twister.london.travel.ui.activity;
+package com.twister.london.travel.ui.adapter;
 
 import java.util.Collection;
 
 import android.content.Context;
-import android.view.View;
-import android.widget.TextView;
+import android.view.*;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.*;
 
+import com.twister.android.utils.concurrent.*;
 import com.twister.london.travel.R;
 import com.twister.london.travel.model.Station;
 
@@ -18,6 +20,7 @@ public class StationAdapter extends BaseListAdapter<Station, StationAdapter.View
 	protected class ViewHolder {
 		TextView title;
 		TextView description;
+		ImageView icon;
 	}
 
 	@Override protected int getItemLayoutId() {
@@ -28,6 +31,7 @@ public class StationAdapter extends BaseListAdapter<Station, StationAdapter.View
 		ViewHolder holder = new ViewHolder();
 		holder.title = (TextView)convertView.findViewById(android.R.id.text1);
 		holder.description = (TextView)convertView.findViewById(android.R.id.text2);
+		holder.icon = (ImageView)convertView.findViewById(android.R.id.icon);
 		return holder;
 	}
 
@@ -37,5 +41,13 @@ public class StationAdapter extends BaseListAdapter<Station, StationAdapter.View
 
 		holder.title.setText(title);
 		holder.description.setText(description);
+		new ImageViewDownloader(holder.icon, new Callback<ImageView>() {
+			@Override public void call(ImageView param) {
+				// fix width to be square
+				LayoutParams params = param.getLayoutParams();
+				params.width = param.getHeight();
+				param.setLayoutParams(params);
+			}
+		}).execute(currentItem.getType().getUrl());
 	}
 }

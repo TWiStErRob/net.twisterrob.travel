@@ -195,7 +195,8 @@ public class ImageCache {
 						final DiskLruCache.Editor editor = mDiskLruCache.edit(key);
 						if (editor != null) {
 							out = editor.newOutputStream(DISK_CACHE_INDEX);
-							bitmap.compress(mCacheParams.compressFormat, mCacheParams.compressQuality, out);
+							bitmap.compress(getCompressFormat(data, bitmap, mCacheParams),
+									mCacheParams.compressQuality, out);
 							editor.commit();
 							out.close();
 						}
@@ -217,6 +218,20 @@ public class ImageCache {
 		}
 	}
 
+	private CompressFormat getCompressFormat(String data, Bitmap bitmap, ImageCacheParams params) {
+		if (params.forceCompressFormat) {
+			return params.compressFormat;
+		} else {
+			String extension = data.replaceFirst("^[^#]*/[^#]*(?:\\.([^#]*)(?:#.*)?)$", "$1");
+			if (extension.matches("(?i:jpe?g|jpe)")) {
+				return CompressFormat.JPEG;
+			} else if (extension.matches("(?i:png)")) {
+				return CompressFormat.PNG;
+			} else {
+				return params.compressFormat;
+			}
+		}
+	}
 	/**
 	 * Get from memory cache.
 	 * 
@@ -353,6 +368,7 @@ public class ImageCache {
 	 * A holder class that contains cache parameters.
 	 */
 	public static class ImageCacheParams {
+		public boolean forceCompressFormat = false;
 		public CompressFormat compressFormat = DEFAULT_COMPRESS_FORMAT;
 		public int compressQuality = DEFAULT_COMPRESS_QUALITY;
 		public boolean memoryCacheEnabled = DEFAULT_MEM_CACHE_ENABLED;

@@ -1,5 +1,8 @@
 package com.twister.london.travel.db;
 
+import java.util.Map;
+
+import android.content.ContentValues;
 import android.database.DatabaseUtils;
 import android.database.sqlite.*;
 
@@ -8,7 +11,7 @@ import com.twister.android.utils.model.Location;
 import com.twister.android.utils.tools.DBTools;
 import com.twister.london.travel.model.Station;
 
-@SuppressWarnings("unused") class DataBaseWriter {
+@SuppressWarnings("unused") class DataBaseWriter extends DataBaseAccess {
 	private static final Log LOG = LogFactory.getLog(Tag.DB);
 
 	/* Queries at the end */
@@ -22,6 +25,7 @@ import com.twister.london.travel.model.Station;
 
 	// #region Prepared statements
 	private SQLiteStatement m_insertStation;
+	private SQLiteStatement m_insertStationType;
 
 	private SQLiteDatabase prepareDB() {
 		SQLiteDatabase database = m_dataBaseHelper.getWritableDatabase();
@@ -37,7 +41,12 @@ import com.twister.london.travel.model.Station;
 			if (m_insertStation != null) {
 				m_insertStation.close();
 			}
-			m_insertStation = database.compileStatement(SQL_INSERT_CINEMA);
+			m_insertStation = database.compileStatement(SQL_INSERT_STATION);
+
+			if (m_insertStationType != null) {
+				m_insertStationType.close();
+			}
+			m_insertStationType = database.compileStatement(SQL_INSERT_STATION_TYPE);
 		}
 	}
 
@@ -61,14 +70,14 @@ import com.twister.london.travel.model.Station;
 		LOG.debug("Inserting station: %d, %s, %s", station.getId(), station.getName(), station.getLocation());
 		SQLiteDatabase database = prepareDB();
 		int column = 0;
-		DatabaseUtils.bindObjectToProgram(m_insertStation, ++column, station.getId());
-		DatabaseUtils.bindObjectToProgram(m_insertStation, ++column, station.getName());
-		DatabaseUtils.bindObjectToProgram(m_insertStation, ++column, station.getAddress());
-		DatabaseUtils.bindObjectToProgram(m_insertStation, ++column, station.getTelephone());
+		bindObjectToProgram(m_insertStation, ++column, station.getId());
+		bindObjectToProgram(m_insertStation, ++column, station.getName());
+		bindObjectToProgram(m_insertStation, ++column, station.getAddress());
+		bindObjectToProgram(m_insertStation, ++column, station.getTelephone());
 		Location location = station.getLocation();
 		if (location != null) {
-			DatabaseUtils.bindObjectToProgram(m_insertStation, ++column, location.getLatitude());
-			DatabaseUtils.bindObjectToProgram(m_insertStation, ++column, location.getLongitude());
+			bindObjectToProgram(m_insertStation, ++column, location.getLatitude());
+			bindObjectToProgram(m_insertStation, ++column, location.getLongitude());
 		} else {
 			m_insertStation.bindNull(++column);
 			m_insertStation.bindNull(++column);
@@ -103,14 +112,14 @@ import com.twister.london.travel.model.Station;
 			return;
 		}
 		int column = 0;
-		DatabaseUtils.bindObjectToProgram(m_insertStation, ++column, station.getId());
-		DatabaseUtils.bindObjectToProgram(m_insertStation, ++column, station.getName());
-		DatabaseUtils.bindObjectToProgram(m_insertStation, ++column, station.getAddress());
-		DatabaseUtils.bindObjectToProgram(m_insertStation, ++column, station.getTelephone());
+		bindObjectToProgram(m_insertStation, ++column, station.getId());
+		bindObjectToProgram(m_insertStation, ++column, station.getName());
+		bindObjectToProgram(m_insertStation, ++column, station.getAddress());
+		bindObjectToProgram(m_insertStation, ++column, station.getTelephone());
 		Location location = station.getLocation();
 		if (location != null) {
-			DatabaseUtils.bindObjectToProgram(m_insertStation, ++column, location.getLatitude());
-			DatabaseUtils.bindObjectToProgram(m_insertStation, ++column, location.getLongitude());
+			bindObjectToProgram(m_insertStation, ++column, location.getLatitude());
+			bindObjectToProgram(m_insertStation, ++column, location.getLongitude());
 		} else {
 			m_insertStation.bindNull(++column);
 			m_insertStation.bindNull(++column);
@@ -131,14 +140,81 @@ import com.twister.london.travel.model.Station;
 				.longForQuery(database, "SELECT _id FROM Station WHERE name = ?", new String[]{stationName});
 	}
 
+	public void insertTypes(Map<String, String> styles) {
+		SQLiteDatabase database = prepareDB();
+		try {
+			database.beginTransaction();
+			for (Map.Entry<String, String> entry: styles.entrySet()) {
+				String name = entry.getKey();
+				String url = entry.getValue();
+				insertType(name, url);
+			}
+			database.setTransactionSuccessful();
+		} finally {
+			database.endTransaction();
+		}
+	}
+	private void insertType(String name, String url) {
+		LOG.debug("Inserting type: %s: %s", name, url);
+
+		int column = 0;
+		bindObjectToProgram(m_insertStationType, ++column, name);
+		bindObjectToProgram(m_insertStationType, ++column, url);
+		long typeId;
+		try {
+			typeId = m_insertStationType.executeInsert();
+			LOG.debug("Inserted type: %s: %s", name, url);
+		} catch (SQLiteConstraintException ex) {
+			LOG.warn("Cannot insert station type, getting existing (%s)", ex, name);
+			// typeId = getStationTypeID(name);
+			updateType(name, url);
+		}
+	}
+	private long getStationTypeID(final String stationTypeName) {
+		SQLiteDatabase database = m_dataBaseHelper.getReadableDatabase();
+		return longForQuery(database, "SELECT _id FROM StationType WHERE name = ?", new String[]{stationTypeName});
+	}
+
+	public void updateTypes(Map<String, String> styles) {
+		SQLiteDatabase database = prepareDB();
+		try {
+			database.beginTransaction();
+			for (Map.Entry<String, String> entry: styles.entrySet()) {
+				String name = entry.getKey();
+				String url = entry.getValue();
+				updateType(name, url);
+			}
+			database.setTransactionSuccessful();
+		} finally {
+			database.endTransaction();
+		}
+	}
+	public void updateType(String name, String url) {
+		SQLiteDatabase database = prepareDB();
+		LOG.debug("Updating type: %s: %s", name, url);
+		try {
+			ContentValues values = new ContentValues(2);
+			values.put("url", url);
+			int rows = database.update("StationType", values, "name = ?", new String[]{name});
+			if (rows == 0) {
+				insertType(name, url);
+			}
+			LOG.debug("Updated type: %s: %s", name, url);
+		} catch (SQLiteConstraintException ex) {
+			LOG.warn("Cannot update location, ignoring", ex);
+		}
+	}
+
 	// #endregion
 
 	// #region Queries
 
 	// #noformat
-	private static final String SQL_INSERT_CINEMA = "INSERT INTO "
+	private static final String SQL_INSERT_STATION = "INSERT INTO "
 			+ "Station(_id, name, address, telephone, latitude, longitude) "
 			+ "VALUES(  ?,    ?,       ?,         ?,        ?,         ?);";
+	private static final String SQL_INSERT_STATION_TYPE = "INSERT INTO " + "StationType(name, url) "
+			+ "VALUES(        ?,   ?);";
 
 	// #endnoformat
 

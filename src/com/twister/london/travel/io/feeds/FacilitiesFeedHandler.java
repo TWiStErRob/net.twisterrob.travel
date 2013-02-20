@@ -21,6 +21,8 @@ public class FacilitiesFeedHandler extends DefaultHandler {
 
 	public FacilitiesFeed parse(InputStream is) {
 		RootElement root = new RootElement("Root");
+		Element styleElement = root.getChild("Style");
+		Element styleHref = styleElement.getChild("IconStyle").getChild("Icon").getChild("href");
 		Element stationsElement = root.getChild("stations");
 		Element stationElement = stationsElement.getChild("station");
 		Element stationName = stationElement.getChild("name");
@@ -46,6 +48,17 @@ public class FacilitiesFeedHandler extends DefaultHandler {
 			@Override public void end() {}
 
 		});
+		com.twister.android.utils.text.ElementListener styleListener = new ElementAdapter() {
+			private String m_id;
+			@Override public void start(Attributes attributes) {
+				m_id = attributes.getValue("id");
+			}
+			@Override public void end(String body) {
+				m_root.getStyles().put(m_id, body);
+			}
+		};
+		styleElement.setStartElementListener(styleListener);
+		styleHref.setEndTextElementListener(styleListener);
 		stationsElement.setElementListener(new ElementListener() {
 			@Override public void start(Attributes attributes) {
 				m_root.setStations(new ArrayList<Station>());
@@ -142,6 +155,13 @@ public class FacilitiesFeedHandler extends DefaultHandler {
 		};
 		stationFacility.setElementListener(facilitiesListener);
 		stationFacility.setEndTextElementListener(facilitiesListener);
+
+		stationPlacemarkStyleUrl.setEndTextElementListener(new EndTextElementListener() {
+			@Override public void end(String body) {
+				m_station.setType(Type.get(body));
+			}
+		});
+
 		try {
 			Xml.parse(is, Xml.Encoding.UTF_8, root.getContentHandler());
 			m_root.postProcess();

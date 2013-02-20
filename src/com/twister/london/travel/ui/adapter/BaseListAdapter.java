@@ -1,4 +1,4 @@
-package com.twister.london.travel.ui.activity;
+package com.twister.london.travel.ui.adapter;
 
 import java.util.*;
 

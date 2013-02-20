@@ -1,11 +1,11 @@
 package com.twister.london.travel.db;
 
-import java.util.List;
+import java.util.*;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.twister.london.travel.model.Station;
+import com.twister.london.travel.model.*;
 
 /**
  * See details in the docs under <SDK_DIR>/docs/guide/topics/data/data- storage.html and I think you'll find the answer
@@ -42,6 +42,7 @@ public class DataBaseHelper {
 
 	public void openDB() {
 		getWritableDatabase();
+		Type.reload();
 	}
 
 	public List<Station> getStations() {
@@ -50,5 +51,13 @@ public class DataBaseHelper {
 
 	public void updateStations(Iterable<Station> stations) {
 		m_writer.updateStations(stations);
+	}
+
+	public Map<String, String> getTypes() {
+		return m_reader.getTypes();
+	}
+
+	public void updateTypes(Map<String, String> styles) {
+		m_writer.updateTypes(styles);
 	}
 }

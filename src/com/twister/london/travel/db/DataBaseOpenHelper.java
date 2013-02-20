@@ -16,22 +16,24 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 	private static final String DB_SCHEMA_FILE = "LondonTravel.v1.schema.sql";
 	private static final String DB_DATA_FILE = "LondonTravel.v1.data.sql";
 	private static final String DB_CLEAN_FILE = "LondonTravel.v1.clean.sql";
+	private static final String DB_DEVELOPMENT_FILE = "LondonTravel.v1.development.sql";
 	private static final String DB_NAME = "LondonTravel";
 	private static final int DB_VERSION = 1;
 	private static final Log LOG = LogFactory.getLog(Tag.DB);
-	private static final CursorFactory s_factory = new LoggingCursorFactory();
+	private static final CursorFactory s_factory = new LoggingCursorFactory(BuildConfig.DEBUG);
 
 	public DataBaseOpenHelper(final Context context) {
 		super(context, DB_NAME, s_factory, DB_VERSION);
 	}
 
 	@Override public void onOpen(final SQLiteDatabase db) {
-		LOG.debug("Opening database: %s", DBTools.toString(db));
-		backupDB(db, DB_NAME + ".onOpen.sqlite");
-		// onCreate(db); // FIXME for DB development, always clear and initialize
 		super.onOpen(db);
+		LOG.debug("Opening database: %s", DBTools.toString(db));
+		backupDB(db, DB_NAME + ".onOpen_BeforeDev.sqlite");
+		DataBaseOpenHelper.execFile(db, DB_DEVELOPMENT_FILE);
+		backupDB(db, DB_NAME + ".onOpen_AfterDev.sqlite");
+		// onCreate(db); // FIXME for DB development, always clear and initialize
 		LOG.info("Opened database: %s", DBTools.toString(db));
-		// db.execSQL("DELETE FROM Station;");
 	}
 
 	private void backupDB(final SQLiteDatabase db, final String fileName) {
@@ -47,7 +49,7 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 	}
 
 	@Override public void onCreate(final SQLiteDatabase db) {
-		backupDB(db, "CineworldDB.onCreate.sqlite");
+		backupDB(db, DB_NAME + ".onCreate.sqlite");
 		LOG.debug("Creating database: %s", DBTools.toString(db));
 		DataBaseOpenHelper.execFile(db, DB_CLEAN_FILE);
 		DataBaseOpenHelper.execFile(db, DB_SCHEMA_FILE);

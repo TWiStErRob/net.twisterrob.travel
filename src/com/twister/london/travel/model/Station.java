@@ -13,6 +13,11 @@ public class Station {
 	private List<Zone> m_zones;
 	private List<Facility> m_facilities;
 	private List<Line> m_lines;
+	private Type m_type;
+
+	@Override public String toString() {
+		return String.format("%s", m_name);
+	}
 
 	public int getId() {
 		return m_id;
@@ -78,7 +83,11 @@ public class Station {
 		m_lines = lines;
 	}
 
-	@Override public String toString() {
-		return String.format("%s", m_name);
+	public Type getType() {
+		return m_type;
+	}
+
+	public void setType(Type type) {
+		m_type = type;
 	}
 }

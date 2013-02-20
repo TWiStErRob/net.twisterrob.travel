@@ -21,14 +21,27 @@ public class App extends android.app.Application {
 		return s_instance;
 	}
 
-	private DataBaseHelper m_dataBaseHelper = new DataBaseHelper(this);
+	@Override public void onCreate() {
+		super.onCreate();
+		getDataBaseHelper().openDB();
+	}
+
+	private volatile DataBaseHelper m_dataBaseHelper = null;
 
 	public static void exit() {
 		android.os.Process.killProcess(android.os.Process.myPid());
 	}
 
 	public DataBaseHelper getDataBaseHelper() {
-		return m_dataBaseHelper;
+		DataBaseHelper helper = m_dataBaseHelper;
+		if (helper == null) {
+			synchronized (this) {
+				if (helper == null) {
+					helper = m_dataBaseHelper = new DataBaseHelper(this);
+				}
+			}
+		}
+		return helper;
 	}
 
 	public Cache<URL, Bitmap> getPosterCache() {
