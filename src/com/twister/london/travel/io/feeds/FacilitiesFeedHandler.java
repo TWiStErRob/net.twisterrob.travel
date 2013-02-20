@@ -1,7 +1,8 @@
 package com.twister.london.travel.io.feeds;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.regex.*;
 
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
@@ -12,6 +13,7 @@ import android.util.Xml;
 import com.twister.android.utils.log.*;
 import com.twister.android.utils.model.Location;
 import com.twister.android.utils.text.ElementAdapter;
+import com.twister.android.utils.tools.PrimitiveTools;
 import com.twister.london.travel.model.*;
 
 public class FacilitiesFeedHandler extends DefaultHandler {
@@ -19,7 +21,7 @@ public class FacilitiesFeedHandler extends DefaultHandler {
 	private FacilitiesFeed m_root;
 	private Station m_station;
 
-	public FacilitiesFeed parse(InputStream is) {
+	public FacilitiesFeed parse(InputStream is) throws IOException, SAXException {
 		RootElement root = new RootElement("Root");
 		Element styleElement = root.getChild("Style");
 		Element styleHref = styleElement.getChild("IconStyle").getChild("Icon").getChild("href");
@@ -120,8 +122,11 @@ public class FacilitiesFeedHandler extends DefaultHandler {
 		});
 		stationZone.setEndTextElementListener(new EndTextElementListener() {
 			@Override public void end(String body) {
-				int zone = Integer.parseInt(body);
-				m_station.getZones().add(new Zone(zone));
+				String[] zones = body.split("[^\\d]+");
+				for (String zoneString: zones) {
+					int zone = Integer.parseInt(zoneString);
+					m_station.getZones().add(new Zone(zone));
+				}
 			}
 		});
 		stationServingLines.setStartElementListener(new StartElementListener() {
@@ -143,15 +148,46 @@ public class FacilitiesFeedHandler extends DefaultHandler {
 			private Facility m_facility;
 			@Override public void start(Attributes attributes) {
 				String name = attributes.getValue("name");
-				m_facility = new Facility(name);
+				m_facility = new Facility(name); // TODO make Facilities a factory and create subclasses
 			}
 			@Override public void end(String body) {
 				m_facility.setValue(body);
+				List<Facility> exceptions = handleExceptions();
+				if (exceptions != null) {
+					for (Facility facility: exceptions) {
+						m_station.getFacilities().add(facility);
+					}
+				} else {
+					m_station.getFacilities().add(m_facility);
+				}
 			}
 			@Override public void end() {
-				m_station.getFacilities().add(m_facility);
 				// m_facility = null; // Don't null, because end is called before end(text)
 			}
+			private List<Facility> handleExceptions() {
+				final String name = m_facility.getName();
+				final String value = m_facility.getValue();
+				List<Facility> result; // set at every branch, null to read m_facility
+				if ("Escalators".equals(name) && "yes (disabled only)".equals(value)) {
+					m_facility.setValue("1");
+					result = null;
+				} else if ("Payphones".equals(name) && PrimitiveTools.parseInteger(value) == null) {
+					Matcher m = Pattern.compile("(\\d+) in ticket halls, (\\d+) on platforms").matcher(value);
+					if (m.find()) {
+						result = Arrays.asList( //
+								new Facility("Payphones in ticket halls", m.group(1)), //
+								new Facility("Payphones on platforms", m.group(2)) //
+								);
+					} else {
+						result = null;
+					}
+				} else {
+					result = null;
+				}
+
+				return result;
+			}
+
 		};
 		stationFacility.setElementListener(facilitiesListener);
 		stationFacility.setEndTextElementListener(facilitiesListener);
@@ -162,16 +198,8 @@ public class FacilitiesFeedHandler extends DefaultHandler {
 			}
 		});
 
-		try {
-			Xml.parse(is, Xml.Encoding.UTF_8, root.getContentHandler());
-			m_root.postProcess();
-			return m_root;
-		} catch (SAXException ex) {
-			LOG.error("XML", ex);
-		} catch (IOException ex) {
-			LOG.error("XML", ex);
-		}
-
-		return null;
+		Xml.parse(is, Xml.Encoding.UTF_8, root.getContentHandler());
+		m_root.postProcess();
+		return m_root;
 	}
 }

@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.util.List;
 
+import org.xml.sax.SAXException;
+
 import android.app.ListActivity;
 import android.os.*;
 
@@ -25,19 +27,23 @@ public class MainActivity extends ListActivity {
 	private void delayedGetRoot() {
 		new DownloadFilesTask() {
 			protected void onPostExecute(AsyncTaskResult<FacilitiesFeed> result) {
-				List<Station> stations;
+				List<Station> stations = null;
 				if (result.getError() != null) {
 					LOG.error("Cannot load facitilies", result.getError());
 					stations = App.getInstance().getDataBaseHelper().getStations();
 				} else {
 					FacilitiesFeed root = result.getResult();
-					stations = root.getStations();
-					App.getInstance().getDataBaseHelper().updateStations(stations);
-					App.getInstance().getDataBaseHelper().updateTypes(root.getStyles());
+					if (root != null) {
+						stations = root.getStations();
+						App.getInstance().getDataBaseHelper().updateTypes(root.getStyles());
+						App.getInstance().getDataBaseHelper().updateStations(stations);
+					}
 				}
 				setListAdapter(new StationAdapter(MainActivity.this, stations));
 			};
-		}.execute("http://www.tfl.gov.uk/assets/downloads/businessandpartners/StationFacilitiessample.xml");
+		}.execute("http://tmp.twisterrob.net/feed16.xml");
+		// }.execute("http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=16");
+		// }.execute("http://www.tfl.gov.uk/assets/downloads/businessandpartners/StationFacilitiessample.xml");
 	}
 
 	private static class DownloadFilesTask extends AsyncTask<String, Integer, AsyncTaskResult<FacilitiesFeed>> {
@@ -58,6 +64,8 @@ public class MainActivity extends ListActivity {
 					connection.disconnect();
 				}
 			} catch (IOException ex) {
+				return new AsyncTaskResult<FacilitiesFeed>(ex);
+			} catch (SAXException ex) {
 				return new AsyncTaskResult<FacilitiesFeed>(ex);
 			}
 		}

@@ -1,11 +1,19 @@
 package com.twister.london.travel.model;
-public class Facility {
 
+import com.twister.android.utils.log.*;
+
+public class Facility {
+	private static final Log LOG = LogFactory.getLog(Tag.ACCESS);
 	private String m_name;
 	private String m_value;
 
 	public Facility(String name) {
 		m_name = name;
+	}
+
+	public Facility(String name, String value) {
+		m_name = name;
+		m_value = value;
 	}
 
 	public String getName() {
@@ -26,17 +34,22 @@ public class Facility {
 	}
 
 	public boolean hasValue() {
-		return "Ticket Halls".equals(m_name) && getIntValue() > 0 //
+		return m_name != null && //
+				"Ticket Halls".equals(m_name) && getIntValue() > 0 //
 				|| "Lifts".equals(m_name) && getIntValue() > 0 //
+				// \d+ => \0, yes (disabled only) => 1
 				|| "Escalators".equals(m_name) && getIntValue() > 0 //
 				|| "Gates".equals(m_name) && getIntValue() > 0 //
 				|| "Toilets".equals(m_name) && getBoolValue() == true //
 				|| "Photo Booths".equals(m_name) && getIntValue() > 0 //
 				|| "Cash Machines".equals(m_name) && getIntValue() > 0 //
-				|| "Payphones".equals(m_name) && getIntValue() > 0 //
 				|| "Car park".equals(m_name) && getBoolValue() == true //
 				|| "Bridge".equals(m_name) && getBoolValue() == true //
 				|| "Waiting Room".equals(m_name) && getBoolValue() == true //
+				// Payphones=14 in ticket halls, 4 on platforms =>
+				// Payphones in ticket halls = 14
+				// Payphones on platforms = 4
+				|| m_name.startsWith("Payphones") && getIntValue() > 0 //
 		;
 	}
 
@@ -45,7 +58,12 @@ public class Facility {
 	}
 
 	public int getIntValue() {
-		return Integer.parseInt(m_value);
+		try {
+			return Integer.parseInt(m_value);
+		} catch (NumberFormatException ex) {
+			LOG.warn("Invalid int value: %s=%s", m_name, m_value);
+			return -1;
+		}
 	}
 
 	public String getStringValue() {

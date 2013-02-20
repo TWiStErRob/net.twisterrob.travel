@@ -24,18 +24,17 @@ CREATE TABLE IF NOT EXISTS StationType (
 
 CREATE TRIGGER IF NOT EXISTS StationType_last_update
 	AFTER UPDATE OF name, url ON StationType
-	FOR EACH ROW BEGIN
-		UPDATE
-			StationType
-		SET
-			__last_update = CURRENT_TIMESTAMP
-		WHERE
-			_id = NEW._id
-			AND (
-				   OLD.name <> NEW.name
-				OR OLD.url <> NEW.url
-			)
-		; -- NEOS
-	END;
+	FOR EACH ROW
+	WHEN
+		    OLD.name <> NEW.name
+		 OR OLD.url <> NEW.urlBEGIN
+	UPDATE
+		StationType
+	SET
+		__last_update = CURRENT_TIMESTAMP
+	WHERE
+		_id = NEW._id
+	; -- NEOS
+END;
 
 END TRANSACTION;
