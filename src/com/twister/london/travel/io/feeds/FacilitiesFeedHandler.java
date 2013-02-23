@@ -108,8 +108,8 @@ public class FacilitiesFeedHandler extends DefaultHandler {
 			@Override public void end(String body) {
 				String[] parts = body.split(",");
 				if (parts.length == 3) {
-					double lat = Double.parseDouble(parts[0]);
-					double lon = Double.parseDouble(parts[1]);
+					double lon = Double.parseDouble(parts[0]);
+					double lat = Double.parseDouble(parts[1]);
 					// double alt = Double.parseDouble(parts[2]);
 					m_station.setLocation(new Location(lat, lon));
 				}

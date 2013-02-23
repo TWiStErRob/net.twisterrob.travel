@@ -212,7 +212,7 @@ import com.twister.london.travel.model.Station;
 	// #noformat
 	private static final String SQL_INSERT_STATION = "INSERT INTO "
 			+ "Station(_id, name, address, telephone, latitude, longitude) "
-			+ "VALUES(  ?,    ?,       ?,         ?,        ?,         ?);";
+			+ "VALUES(   ?,    ?,       ?,         ?,        ?,         ?);";
 	private static final String SQL_INSERT_STATION_TYPE = "INSERT INTO " + "StationType(name, url) "
 			+ "VALUES(        ?,   ?);";
 
