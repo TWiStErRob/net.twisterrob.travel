@@ -9,7 +9,7 @@ import com.twister.android.utils.tools.StringTools;
  * @author Róbert Papp
  */
 public class Log {
-	private final String	m_tag;
+	private final String m_tag;
 
 	/**
 	 * Constructs a logger class.

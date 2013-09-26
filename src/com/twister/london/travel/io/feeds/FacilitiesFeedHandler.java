@@ -44,38 +44,46 @@ public class FacilitiesFeedHandler extends DefaultHandler {
 		Element stationCoordinates = stationPlacemarkPoint.getChild("coordinates");
 
 		root.setElementListener(new ElementListener() {
-			@Override public void start(Attributes attributes) {
+			@Override
+			public void start(Attributes attributes) {
 				m_root = new FacilitiesFeed();
 			}
-			@Override public void end() {}
+			@Override
+			public void end() {}
 
 		});
 		com.twister.android.utils.text.ElementListener styleListener = new ElementAdapter() {
 			private String m_id;
-			@Override public void start(Attributes attributes) {
+			@Override
+			public void start(Attributes attributes) {
 				m_id = attributes.getValue("id");
 			}
-			@Override public void end(String body) {
+			@Override
+			public void end(String body) {
 				m_root.getStyles().put(m_id, body);
 			}
 		};
 		styleElement.setStartElementListener(styleListener);
 		styleHref.setEndTextElementListener(styleListener);
 		stationsElement.setElementListener(new ElementListener() {
-			@Override public void start(Attributes attributes) {
+			@Override
+			public void start(Attributes attributes) {
 				m_root.setStations(new ArrayList<Station>());
 			}
-			@Override public void end() {}
+			@Override
+			public void end() {}
 
 		});
 		stationElement.setElementListener(new ElementListener() {
-			@Override public void start(Attributes attributes) {
+			@Override
+			public void start(Attributes attributes) {
 				m_station = new Station();
 				String attrId = attributes.getValue("id");
 				int id = Integer.parseInt(attrId);
 				m_station.setId(id);
 			}
-			@Override public void end() {
+			@Override
+			public void end() {
 				m_root.getStations().add(m_station);
 				m_station = null;
 			}
@@ -95,17 +103,20 @@ public class FacilitiesFeedHandler extends DefaultHandler {
 		stationName.setEndTextElementListener(stationNameListener);
 		stationPlacemarkName.setEndTextElementListener(stationNameListener);
 		stationAddress.setEndTextElementListener(new EndTextElementListener() {
-			@Override public void end(String body) {
+			@Override
+			public void end(String body) {
 				m_station.setAddress(body);
 			}
 		});
 		stationPhone.setEndTextElementListener(new EndTextElementListener() {
-			@Override public void end(String body) {
+			@Override
+			public void end(String body) {
 				m_station.setTelephone(body);
 			}
 		});
 		stationCoordinates.setEndTextElementListener(new EndTextElementListener() {
-			@Override public void end(String body) {
+			@Override
+			public void end(String body) {
 				String[] parts = body.split(",");
 				if (parts.length == 3) {
 					double lon = Double.parseDouble(parts[0]);
@@ -116,12 +127,14 @@ public class FacilitiesFeedHandler extends DefaultHandler {
 			}
 		});
 		stationZones.setStartElementListener(new StartElementListener() {
-			@Override public void start(Attributes attributes) {
+			@Override
+			public void start(Attributes attributes) {
 				m_station.setZones(new ArrayList<Zone>());
 			}
 		});
 		stationZone.setEndTextElementListener(new EndTextElementListener() {
-			@Override public void end(String body) {
+			@Override
+			public void end(String body) {
 				String[] zones = body.split("[^\\d]+");
 				for (String zoneString: zones) {
 					int zone = Integer.parseInt(zoneString);
@@ -130,27 +143,32 @@ public class FacilitiesFeedHandler extends DefaultHandler {
 			}
 		});
 		stationServingLines.setStartElementListener(new StartElementListener() {
-			@Override public void start(Attributes attributes) {
+			@Override
+			public void start(Attributes attributes) {
 				m_station.setLines(new ArrayList<Line>());
 			}
 		});
 		stationServingLine.setEndTextElementListener(new EndTextElementListener() {
-			@Override public void end(String body) {
+			@Override
+			public void end(String body) {
 				m_station.getLines().add(new Line(body));
 			}
 		});
 		stationFacilities.setStartElementListener(new StartElementListener() {
-			@Override public void start(Attributes attributes) {
+			@Override
+			public void start(Attributes attributes) {
 				m_station.setFacilities(new ArrayList<Facility>());
 			}
 		});
 		ElementAdapter facilitiesListener = new ElementAdapter() {
 			private Facility m_facility;
-			@Override public void start(Attributes attributes) {
+			@Override
+			public void start(Attributes attributes) {
 				String name = attributes.getValue("name");
 				m_facility = new Facility(name); // TODO make Facilities a factory and create subclasses
 			}
-			@Override public void end(String body) {
+			@Override
+			public void end(String body) {
 				m_facility.setValue(body);
 				List<Facility> exceptions = handleExceptions();
 				if (exceptions != null) {
@@ -161,7 +179,8 @@ public class FacilitiesFeedHandler extends DefaultHandler {
 					m_station.getFacilities().add(m_facility);
 				}
 			}
-			@Override public void end() {
+			@Override
+			public void end() {
 				// m_facility = null; // Don't null, because end is called before end(text)
 			}
 			private List<Facility> handleExceptions() {
@@ -193,7 +212,8 @@ public class FacilitiesFeedHandler extends DefaultHandler {
 		stationFacility.setEndTextElementListener(facilitiesListener);
 
 		stationPlacemarkStyleUrl.setEndTextElementListener(new EndTextElementListener() {
-			@Override public void end(String body) {
+			@Override
+			public void end(String body) {
 				m_station.setType(Type.get(body));
 			}
 		});

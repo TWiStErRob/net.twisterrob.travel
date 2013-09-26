@@ -28,11 +28,13 @@ public class SelectionOverlay extends BaseItemizedOverlay<SelectionOverlay.Selec
 		s_defaultDrawableId = defaultIcon;
 	}
 
-	@Override protected SelectionOverlayItem createItem(int i) {
+	@Override
+	protected SelectionOverlayItem createItem(int i) {
 		return new SelectionOverlayItem(m_loc);
 	}
 
-	@Override public int size() {
+	@Override
+	public int size() {
 		return 1;
 	}
 

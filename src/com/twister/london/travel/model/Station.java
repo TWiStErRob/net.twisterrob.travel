@@ -15,7 +15,8 @@ public class Station {
 	private List<Line> m_lines;
 	private Type m_type = Type.Unknown;
 
-	@Override public String toString() {
+	@Override
+	public String toString() {
 		return String.format("%s", m_name);
 	}
 

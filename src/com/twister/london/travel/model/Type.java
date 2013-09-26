@@ -5,10 +5,18 @@ import java.util.Map;
 import com.twister.london.travel.App;
 
 public enum Type {
-	Unknown("unknown"), Tube("tubeStyle"), DLR("dlrStyle"), Underground("overgroundStyle"), Bus, Taxi, Water, Cycle;
+	Unknown("unknown"),
+	Tube("tubeStyle"),
+	DLR("dlrStyle"),
+	Underground("overgroundStyle"),
+	Bus,
+	Taxi,
+	Water,
+	Cycle;
 	private final String m_id;
 	private String m_url;
-	@Deprecated private Type() { // TODO find out other style names
+	@Deprecated
+	private Type() { // TODO find out other style names
 		m_id = null;
 	}
 	private Type(String id) {

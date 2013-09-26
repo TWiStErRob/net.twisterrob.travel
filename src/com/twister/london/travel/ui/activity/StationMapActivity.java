@@ -19,7 +19,8 @@ public class StationMapActivity extends MapActivity {
 
 	private MapView m_map;
 
-	@Override public void onCreate(final Bundle savedInstanceState) {
+	@Override
+	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stations_map);
 		m_map = (MapView)findViewById(R.id.mapview);
@@ -27,10 +28,12 @@ public class StationMapActivity extends MapActivity {
 		m_map.setBuiltInZoomControls(true);
 	}
 
-	@Override protected void onStart() {
+	@Override
+	protected void onStart() {
 		super.onStart();
 		new AsyncTask<Void, Void, Bitmap>() {
-			@Override protected Bitmap doInBackground(Void... params) {
+			@Override
+			protected Bitmap doInBackground(Void... params) {
 				try {
 					return IOTools.getImage(Type.Tube.getUrl(), true);
 				} catch (IOException ex) {
@@ -38,7 +41,8 @@ public class StationMapActivity extends MapActivity {
 					return null;
 				}
 			}
-			@Override protected void onPostExecute(Bitmap result) {
+			@Override
+			protected void onPostExecute(Bitmap result) {
 				super.onPostExecute(result);
 				List<Station> stations = App.getInstance().getDataBaseHelper().getStations();
 				Drawable drawable = new BitmapDrawable(getResources(), result);
@@ -52,12 +56,14 @@ public class StationMapActivity extends MapActivity {
 			}
 		}.execute((Void[])null);
 	}
-	@Override public boolean onCreateOptionsMenu(final Menu menu) {
+	@Override
+	public boolean onCreateOptionsMenu(final Menu menu) {
 		// getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
 
-	@Override public boolean onOptionsItemSelected(final MenuItem item) {
+	@Override
+	public boolean onOptionsItemSelected(final MenuItem item) {
 		switch (item.getItemId()) {
 			case 0:
 				return true;
@@ -66,7 +72,8 @@ public class StationMapActivity extends MapActivity {
 		}
 	}
 
-	@Override protected boolean isRouteDisplayed() {
+	@Override
+	protected boolean isRouteDisplayed() {
 		return false;
 	}
 
@@ -78,13 +85,16 @@ public class StationMapActivity extends MapActivity {
 			m_stations = stations;
 			populate();
 		}
-		@Override protected Item createItem(int arg0) {
+		@Override
+		protected Item createItem(int arg0) {
 			return new Item(getResources(), m_stations.get(arg0));
 		}
-		@Override public int size() {
+		@Override
+		public int size() {
 			return m_stations.size();
 		}
-		@Override public void draw(Canvas canvas, MapView mapView, boolean shadow) {
+		@Override
+		public void draw(Canvas canvas, MapView mapView, boolean shadow) {
 			if (!shadow) {
 				super.draw(canvas, mapView, shadow);
 			}
@@ -99,7 +109,8 @@ public class StationMapActivity extends MapActivity {
 			m_res = res;
 			m_station = station;
 		}
-		@Override public Drawable getMarker(int arg0) {
+		@Override
+		public Drawable getMarker(int arg0) {
 			Bitmap result;
 			try {
 				result = IOTools.getImage(m_station.getType().getUrl(), true);

@@ -29,7 +29,8 @@ public class Facility {
 		m_value = value;
 	}
 
-	@Override public String toString() {
+	@Override
+	public String toString() {
 		return String.format("%s=%s", m_name, m_value);
 	}
 

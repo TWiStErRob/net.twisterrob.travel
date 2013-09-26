@@ -122,7 +122,8 @@ public class ImageCache {
 				/**
 				 * Measure item size in bytes rather than units which is more practical for a bitmap cache
 				 */
-				@Override protected int sizeOf(final String key, final Bitmap bitmap) {
+				@Override
+				protected int sizeOf(final String key, final Bitmap bitmap) {
 					return ImageCache.getBitmapSize(bitmap);
 				}
 			};
@@ -462,7 +463,8 @@ public class ImageCache {
 	 * @param bitmap
 	 * @return size in bytes
 	 */
-	@TargetApi(12) public static int getBitmapSize(final Bitmap bitmap) {
+	@TargetApi(12)
+	public static int getBitmapSize(final Bitmap bitmap) {
 		// if (AndroidTools.hasHoneycombMR1()) {
 		// return bitmap.getByteCount();
 		// }
@@ -476,7 +478,8 @@ public class ImageCache {
 	 * 
 	 * @return True if external storage is removable (like an SD card), false otherwise.
 	 */
-	@TargetApi(9) public static boolean isExternalStorageRemovable() {
+	@TargetApi(9)
+	public static boolean isExternalStorageRemovable() {
 		// if (AndroidTools.hasGingerbread()) {
 		// return Environment.isExternalStorageRemovable();
 		// }
@@ -489,7 +492,8 @@ public class ImageCache {
 	 * @param context The context to use
 	 * @return The external cache dir
 	 */
-	@TargetApi(8) public static File getExternalCacheDir(final Context context) {
+	@TargetApi(8)
+	public static File getExternalCacheDir(final Context context) {
 		return context.getExternalCacheDir();
 		// Before Froyo we need to construct the external cache dir ourselves
 		// final String cacheDir = "/Android/data/" + context.getPackageName() + "/cache/";
@@ -502,7 +506,8 @@ public class ImageCache {
 	 * @param path The path to check
 	 * @return The space available in bytes
 	 */
-	@TargetApi(9) public static long getUsableSpace(final File path) {
+	@TargetApi(9)
+	public static long getUsableSpace(final File path) {
 		// if (AndroidTools.hasGingerbread()) {
 		// return path.getUsableSpace();
 		// }
@@ -541,7 +546,8 @@ public class ImageCache {
 		 */
 		public RetainFragment() {}
 
-		@Override public void onCreate(final Bundle savedInstanceState) {
+		@Override
+		public void onCreate(final Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 
 			// Make sure this Fragment is retained over a configuration change

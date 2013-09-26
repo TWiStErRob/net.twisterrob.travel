@@ -6,14 +6,16 @@ public class Line {
 		m_name = name;
 	}
 
-	@Override public int hashCode() {
+	@Override
+	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((m_name == null)? 0 : m_name.hashCode());
 		return result;
 	}
 
-	@Override public boolean equals(Object obj) {
+	@Override
+	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -34,7 +36,8 @@ public class Line {
 		return true;
 	}
 
-	@Override public String toString() {
+	@Override
+	public String toString() {
 		return String.format("%s", m_name);
 	}
 

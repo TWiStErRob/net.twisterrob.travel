@@ -6,14 +6,16 @@ public class Zone {
 		m_zone = zone;
 	}
 
-	@Override public int hashCode() {
+	@Override
+	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + m_zone;
 		return result;
 	}
 
-	@Override public boolean equals(Object obj) {
+	@Override
+	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -30,7 +32,8 @@ public class Zone {
 		return true;
 	}
 
-	@Override public String toString() {
+	@Override
+	public String toString() {
 		return String.format("Zone %d", m_zone);
 	}
 

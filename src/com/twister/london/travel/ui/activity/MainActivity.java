@@ -18,7 +18,8 @@ import com.twister.london.travel.ui.adapter.StationAdapter;
 
 public class MainActivity extends ListActivity {
 	private static final Log LOG = LogFactory.getLog(Tag.UI);
-	@Override protected void onCreate(Bundle savedInstanceState) {
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		try {

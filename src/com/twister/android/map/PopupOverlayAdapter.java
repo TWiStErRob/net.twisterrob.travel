@@ -2,8 +2,8 @@ package com.twister.android.map;
 
 import android.graphics.*;
 import android.graphics.Paint.Style;
-import android.graphics.drawable.*;
-import android.view.*;
+import android.graphics.drawable.Drawable;
+import android.view.MotionEvent;
 
 import com.google.android.maps.*;
 import com.google.android.maps.ItemizedOverlay.OnFocusChangeListener;

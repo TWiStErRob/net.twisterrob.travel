@@ -22,7 +22,8 @@ public class App extends android.app.Application {
 		return s_instance;
 	}
 
-	@Override public void onCreate() {
+	@Override
+	public void onCreate() {
 		super.onCreate();
 		getDataBaseHelper().openDB();
 	}
@@ -56,7 +57,8 @@ public class App extends android.app.Application {
 	}
 
 	private <K, V> Cache<K, V> getCache(final String cacheName) {
-		@SuppressWarnings("unchecked") Cache<K, V> cache = (Cache<K, V>)s_caches.get(cacheName);
+		@SuppressWarnings("unchecked")
+		Cache<K, V> cache = (Cache<K, V>)s_caches.get(cacheName);
 		if (cache == null) {
 			cache = createCache(cacheName);
 			s_caches.put(cacheName, cache);
@@ -64,7 +66,8 @@ public class App extends android.app.Application {
 		return cache;
 	}
 
-	@SuppressWarnings("unchecked") private <T> T createCache(final String cacheClass) {
+	@SuppressWarnings("unchecked")
+	private <T> T createCache(final String cacheClass) {
 		try {
 			return (T)Class.forName(cacheClass).newInstance();
 		} catch (IllegalAccessException ex) {

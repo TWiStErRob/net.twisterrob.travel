@@ -11,7 +11,8 @@ import com.twister.android.utils.model.Location;
 import com.twister.android.utils.tools.DBTools;
 import com.twister.london.travel.model.Station;
 
-@SuppressWarnings("unused") class DataBaseWriter extends DataBaseAccess {
+@SuppressWarnings("unused")
+class DataBaseWriter extends DataBaseAccess {
 	private static final Log LOG = LogFactory.getLog(Tag.DB);
 
 	/* Queries at the end */

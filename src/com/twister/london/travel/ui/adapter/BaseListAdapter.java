@@ -7,10 +7,10 @@ import android.view.*;
 import android.widget.BaseAdapter;
 
 public abstract class BaseListAdapter<T, VH> extends BaseAdapter {
-	protected List<T>				m_items;
-	protected final Context			m_context;
-	protected final LayoutInflater	m_inflater;
-	private boolean					m_hasDefaultItem;
+	protected List<T> m_items;
+	protected final Context m_context;
+	protected final LayoutInflater m_inflater;
+	private boolean m_hasDefaultItem;
 
 	public BaseListAdapter(final Context context, final Collection<T> items) {
 		this(context, items, false);
@@ -20,7 +20,7 @@ public abstract class BaseListAdapter<T, VH> extends BaseAdapter {
 		this.m_context = context;
 		m_hasDefaultItem = hasDefaultItem;
 		this.m_inflater = LayoutInflater.from(m_context);
-		setItems(items instanceof List? (List<T>) items : new ArrayList<T>(items));
+		setItems(items instanceof List? (List<T>)items : new ArrayList<T>(items));
 	}
 
 	public int getCount() {
@@ -64,7 +64,7 @@ public abstract class BaseListAdapter<T, VH> extends BaseAdapter {
 
 			convertView.setTag(holder);
 		} else {
-			holder = (VH) convertView.getTag();
+			holder = (VH)convertView.getTag();
 		}
 		if (currentItem == null) {
 			bindEmptyView(holder, convertView);
@@ -88,7 +88,7 @@ public abstract class BaseListAdapter<T, VH> extends BaseAdapter {
 
 			convertView.setTag(holder);
 		} else {
-			holder = (VH) convertView.getTag();
+			holder = (VH)convertView.getTag();
 		}
 
 		if (currentItem == null) {
@@ -104,8 +104,7 @@ public abstract class BaseListAdapter<T, VH> extends BaseAdapter {
 
 	protected abstract VH createHolder(View convertView);
 
-	protected void bindModel(final VH holder, final T currentItem) {
-	}
+	protected void bindModel(final VH holder, final T currentItem) {}
 
 	protected abstract void bindView(VH holder, T currentItem, View convertView);
 

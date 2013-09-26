@@ -1,6 +1,6 @@
 package com.twister.android.map;
 
-import android.graphics.*;
+import android.graphics.Rect;
 
 public enum HBind {
 	LEFT {

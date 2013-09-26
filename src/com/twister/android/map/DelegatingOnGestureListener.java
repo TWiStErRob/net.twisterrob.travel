@@ -16,8 +16,9 @@ public class DelegatingOnGestureListener implements OnGestureListener, OnDoubleT
 		this(onGestureListener, null);
 	}
 	public DelegatingOnGestureListener(OnGestureListener onGestureListener, boolean checkOther) {
-		this(onGestureListener, (OnDoubleTapListener)(checkOther
-				&& onGestureListener instanceof OnDoubleTapListener? onGestureListener : null));
+		this(onGestureListener, (OnDoubleTapListener)(checkOther && onGestureListener instanceof OnDoubleTapListener
+				? onGestureListener
+				: null));
 	}
 	public DelegatingOnGestureListener(OnDoubleTapListener onDoubleTapListener) {
 		this(null, onDoubleTapListener);
@@ -28,8 +29,7 @@ public class DelegatingOnGestureListener implements OnGestureListener, OnDoubleT
 				: null), onDoubleTapListener);
 	}
 
-	public DelegatingOnGestureListener(OnGestureListener onGestureListener,
-			OnDoubleTapListener onDoubleTapListener) {
+	public DelegatingOnGestureListener(OnGestureListener onGestureListener, OnDoubleTapListener onDoubleTapListener) {
 		setOnGesureListener(onGestureListener);
 		setOnDoubleTapListener(onDoubleTapListener);
 	}

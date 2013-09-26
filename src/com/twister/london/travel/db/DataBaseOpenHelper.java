@@ -26,7 +26,8 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 		super(context, DB_NAME, s_factory, DB_VERSION);
 	}
 
-	@Override public void onOpen(final SQLiteDatabase db) {
+	@Override
+	public void onOpen(final SQLiteDatabase db) {
 		super.onOpen(db);
 		LOG.debug("Opening database: %s", DBTools.toString(db));
 		backupDB(db, DB_NAME + ".onOpen_BeforeDev.sqlite");
@@ -48,7 +49,8 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 		}
 	}
 
-	@Override public void onCreate(final SQLiteDatabase db) {
+	@Override
+	public void onCreate(final SQLiteDatabase db) {
 		backupDB(db, DB_NAME + ".onCreate.sqlite");
 		LOG.debug("Creating database: %s", DBTools.toString(db));
 		DataBaseOpenHelper.execFile(db, DB_CLEAN_FILE);
@@ -100,7 +102,8 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 		return null;
 	}
 
-	@Override public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
+	@Override
+	public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
 		backupDB(db, DB_NAME + ".onUpgrade.sqlite");
 		onCreate(db);
 	}

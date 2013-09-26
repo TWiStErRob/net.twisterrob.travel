@@ -23,11 +23,13 @@ public class StationAdapter extends BaseListAdapter<Station, StationAdapter.View
 		ImageView icon;
 	}
 
-	@Override protected int getItemLayoutId() {
+	@Override
+	protected int getItemLayoutId() {
 		return R.layout.item_station;
 	}
 
-	@Override protected ViewHolder createHolder(final View convertView) {
+	@Override
+	protected ViewHolder createHolder(final View convertView) {
 		ViewHolder holder = new ViewHolder();
 		holder.title = (TextView)convertView.findViewById(android.R.id.text1);
 		holder.description = (TextView)convertView.findViewById(android.R.id.text2);
@@ -35,14 +37,16 @@ public class StationAdapter extends BaseListAdapter<Station, StationAdapter.View
 		return holder;
 	}
 
-	@Override protected void bindView(final ViewHolder holder, final Station currentItem, final View convertView) {
+	@Override
+	protected void bindView(final ViewHolder holder, final Station currentItem, final View convertView) {
 		String title = currentItem.getName();
 		String description = String.format("%d: %s", currentItem.getId(), currentItem.getLocation());
 
 		holder.title.setText(title);
 		holder.description.setText(description);
 		new ImageViewDownloader(holder.icon, new Callback<ImageView>() {
-			@Override public void call(ImageView param) {
+			@Override
+			public void call(ImageView param) {
 				// fix width to be square
 				LayoutParams params = param.getLayoutParams();
 				params.width = param.getHeight();
