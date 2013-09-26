@@ -21,10 +21,14 @@ public class MainActivity extends ListActivity {
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		delayedGetRoot();
+		try {
+			delayedGetRoot();
+		} catch (MalformedURLException ex) {
+			LOG.error("Cannot create URL.", ex);
+		}
 	}
 
-	private void delayedGetRoot() {
+	private void delayedGetRoot() throws MalformedURLException {
 		new DownloadFilesTask() {
 			protected void onPostExecute(AsyncTaskResult<FacilitiesFeed> result) {
 				List<Station> stations;
@@ -43,18 +47,16 @@ public class MainActivity extends ListActivity {
 				}
 				setListAdapter(new StationAdapter(MainActivity.this, stations));
 			};
-		}.execute("http://tmp.twisterrob.net/feed16.xml");
-		// }.execute("http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=16");
-		// }.execute("http://www.tfl.gov.uk/assets/downloads/businessandpartners/StationFacilitiessample.xml");
+		}.execute(App.getInstance().getUrls().getFeedUrl(Feed.StationFacilities));
 	}
 
-	private static class DownloadFilesTask extends AsyncTask<String, Integer, AsyncTaskResult<FacilitiesFeed>> {
-		protected AsyncTaskResult<FacilitiesFeed> doInBackground(String... urls) {
+	private static class DownloadFilesTask extends AsyncTask<URL, Integer, AsyncTaskResult<FacilitiesFeed>> {
+		protected AsyncTaskResult<FacilitiesFeed> doInBackground(URL... urls) {
 			if (urls.length != 1 || urls[0] == null) {
 				throw new IllegalArgumentException("Too many urls, only one is handled, and must be one!");
 			}
 			try {
-				URL url = new URL(urls[0]);
+				URL url = urls[0];
 				HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 				try {
 					connection.connect();

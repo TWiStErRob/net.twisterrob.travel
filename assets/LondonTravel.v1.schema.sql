@@ -27,14 +27,16 @@ CREATE TRIGGER IF NOT EXISTS StationType_last_update
 	FOR EACH ROW
 	WHEN
 		    OLD.name <> NEW.name
-		 OR OLD.url <> NEW.urlBEGIN
-	UPDATE
-		StationType
-	SET
-		__last_update = CURRENT_TIMESTAMP
-	WHERE
-		_id = NEW._id
-	; -- NEOS
-END;
+		 OR OLD.url <> NEW.url
+	BEGIN
+		UPDATE
+			StationType
+		SET
+			__last_update = CURRENT_TIMESTAMP
+		WHERE
+			_id = NEW._id
+		; -- NEOS
+	END
+;
 
 END TRANSACTION;

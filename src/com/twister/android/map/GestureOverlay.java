@@ -1,6 +1,6 @@
 package com.twister.android.map;
 
-import android.content.*;
+import android.content.Context;
 import android.view.*;
 import android.view.GestureDetector.OnDoubleTapListener;
 import android.view.GestureDetector.OnGestureListener;
@@ -59,11 +59,7 @@ public class GestureOverlay extends Overlay {
 			m_gestureDetector = null;
 			return;
 		}
-		if (m_context == null) {
-			m_gestureDetector = new GestureDetector(m_context, onGestureListener);
-		} else {
-			m_gestureDetector = new GestureDetector(onGestureListener);
-		}
+		m_gestureDetector = new GestureDetector(m_context, onGestureListener);
 		if (onGestureListener instanceof OnDoubleTapListener) {
 			m_onDoubleTapListener = (OnDoubleTapListener)onGestureListener;
 		}

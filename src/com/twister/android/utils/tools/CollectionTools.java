@@ -119,8 +119,7 @@ public final class CollectionTools {
 			return m.size();
 		}
 
-		@SuppressWarnings("unchecked") private void readObject(ObjectInputStream stream) throws IOException,
-				ClassNotFoundException {
+		private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 			stream.defaultReadObject();
 			backingSet = m.keySet();
 		}

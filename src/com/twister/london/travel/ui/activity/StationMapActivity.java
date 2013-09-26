@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import android.content.res.Resources;
-import android.graphics.Bitmap;
+import android.graphics.*;
 import android.graphics.drawable.*;
 import android.os.*;
 import android.view.*;
@@ -83,6 +83,11 @@ public class StationMapActivity extends MapActivity {
 		}
 		@Override public int size() {
 			return m_stations.size();
+		}
+		@Override public void draw(Canvas canvas, MapView mapView, boolean shadow) {
+			if (!shadow) {
+				super.draw(canvas, mapView, shadow);
+			}
 		}
 	}
 

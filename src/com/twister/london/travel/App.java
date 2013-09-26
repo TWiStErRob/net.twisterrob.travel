@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 
 import com.twister.android.utils.cache.*;
 import com.twister.london.travel.db.DataBaseHelper;
+import com.twister.london.travel.io.feeds.*;
 
 public class App extends android.app.Application {
 	private static/* final */App s_instance;
@@ -27,9 +28,15 @@ public class App extends android.app.Application {
 	}
 
 	private volatile DataBaseHelper m_dataBaseHelper = null;
+	private URLBuilder m_urlBuilder = BuildConfig.DEBUG? new LocalhostUrlBuilder() : new TFLUrlBuilder(
+			"papp.robert.s@gmail.com");
 
 	public static void exit() {
 		android.os.Process.killProcess(android.os.Process.myPid());
+	}
+
+	public URLBuilder getUrls() {
+		return m_urlBuilder;
 	}
 
 	public DataBaseHelper getDataBaseHelper() {
