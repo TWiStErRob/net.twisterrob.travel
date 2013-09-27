@@ -1,7 +1,9 @@
-Stations.kml http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/stationlocations/Stations.kml
-StationLocations_v1.xsd http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/stationlocations/StationLocations_v1.xsd
+StationFacilitiessample.xml http://www.tfl.gov.uk/assets/downloads/businessandpartners/StationFacilitiessample.xml
+feed.aspx_email=papp.robert.s@gmail.com&feedId=16.xml http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=16
+LineStatus.IncidentsOnly.xml http://cloud.tfl.gov.uk/TrackerNet/LineStatus/IncidentsOnly
+LineStatus.IncidentsOnly_empty.xml http://cloud.tfl.gov.uk/TrackerNet/LineStatus/IncidentsOnly
+LineStatus.xml http://cloud.tfl.gov.uk/TrackerNet/LineStatus
 PierLocations_v1.kml http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/pierlocations/PierLocations_v1.kml
 PierLocations_v1.xsd http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/pierlocations/PierLocations_v1.xsd
-StationFacilitiessample.xml http://www.tfl.gov.uk/assets/downloads/businessandpartners/StationFacilitiessample.xml
-journey-planner-timetables.zip http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/journeyplannertimetables/journey-planner-timetables.zip
-feed.aspx_email=papp.robert.s@gmail.com&feedId=16.xml http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=16
+StationLocations_v1.xsd http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/stationlocations/StationLocations_v1.xsd
+Stations.kml http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/stationlocations/Stations.kml

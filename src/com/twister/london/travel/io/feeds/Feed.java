@@ -3,254 +3,314 @@ import static com.twister.london.travel.io.feeds.Feed.Const.*;
 import static com.twister.london.travel.io.feeds.Feed.Type.*;
 
 import java.net.*;
+/**
+ * Feeds provided by Transport for London<br>
+ * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx">link</a><br>
+ * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/syndication-developer-guidelines.pdf">link</a><br>
+ * @author TWiStEr
+ *
+ */
 public enum Feed {
-
 	/**
-	 * Step-Free Tube Guide Data <br>
-	 * Spec: http://www.tfl.gov.uk/assets/downloads/businessandpartners/SFTG_Specification.pdf <br>
-	 * Schema: http://www.tfl.gov.uk/assets/downloads/businessandpartners/SFTG_Schema.xsd <br>
+	 * <h3>Step-Free Tube Guide Data</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#28393">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/SFTG_Specification.pdf">link</a><br>
+	 * <b>Schema</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/SFTG_Schema.xsd">link</a><br>
 	 */
 	StepFreeTubeGuide(YEAR / 4, N_A, N_A, MISSING_HANDLER,
 			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/SFTG_Data.xml",
 			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/SFTG_Data.xml"),
 
 	/**
-	 * Journey Planner API <br>
-	 * Example: http://jpapi.tfl.gov.uk<br>
+	 * <h3>Journey Planner API</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#20699">link</a><br>
+	 * <b>Example</b>: <a href="http://jpapi.tfl.gov.uk<br>">link</a><br>
 	 * The JP API is IP locked. When we’ve reviewed your registration information we’ll send you an email to let you
 	 * know if access is granted to the IP address you have provided.
-	 * Spec: http://www.tfl.gov.uk/assets/downloads/businessandpartners/journey-planner-api-documentation.pdf.pdf
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/journey-planner-api-documentation.pdf.pdf">link</a><br>
 	 */
 	JourneyPlanner(N_A, N_A, N_A, MISSING_HANDLER, MISSING_SAMPLE, "http://jpapi.tfl.gov.uk"),
 
 	/**
-	 * Live Traffic Disruptions (TIMS) <br>
-	 * Spec: http://www.tfl.gov.uk/assets/downloads/businessandpartners/TIMS_Feed_Technical_Specification_-_010313.PDF
-	 * Sample: http://www.tfl.gov.uk/assets/downloads/businessandpartners/tims_feed_sample.xml
-	 * Sample: http://www.tfl.gov.uk/assets/downloads/businessandpartners/tims_feed_error.xml
-	 * Schema: http://www.tfl.gov.uk/assets/downloads/businessandpartners/s.xsd
-	 * Example: http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=13
+	 * <h3>Live Traffic Disruptions (TIMS)</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#27334">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/TIMS_Feed_Technical_Specification_-_010313.PDF">link</a><br>
+	 * <b>Sample</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/tims_feed_sample.xml">link</a><br>
+	 * <b>Sample</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/tims_feed_error.xml">link</a><br>
+	 * <b>Schema</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/s.xsd">link</a><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=13">link</a><br>
 	 */
 	LiveTrafficDisruptions(13, 5 * MINUTE, 5 * MINUTE, 30 * MINUTE, MISSING_HANDLER, MISSING_SAMPLE),
 
 	/**
-	 * Live bus and river bus arrivals API (instant) <br>
-	 * Example: http://countdown.api.tfl.gov.uk/interfaces/ura/instant_V1
-	 * Spec: http://www.tfl.gov.uk/assets/downloads/businessandpartners/tfl-live-bus-and-river-bus-arrivals-api-documentation.pdf
+	 * <h3>Live bus and river bus arrivals API (instant)</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#21642">link</a><br>
+	 * <b>Example</b>: <a href="http://countdown.api.tfl.gov.uk/interfaces/ura/instant_V1">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/tfl-live-bus-and-river-bus-arrivals-api-documentation.pdf">link</a><br>
 	 */
 	LiveBusArrivals(30 * SECOND, 5 * SECOND, 30 * SECOND, MISSING_HANDLER,
 			"http://countdown.api.tfl.gov.uk/interfaces/ura/instant",
 			"http://countdown.api.tfl.gov.uk/interfaces/ura/instant"),
-
 	/**
-	 * Live bus and river bus arrivals API (stream)
-	 * Spec: http://www.tfl.gov.uk/assets/downloads/businessandpartners/tfl-live-bus-and-river-bus-arrivals-api-documentation.pdf
+	 * <h3>Live bus and river bus arrivals API (stream)</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#23665">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/tfl-live-bus-and-river-bus-arrivals-api-documentation.pdf">link</a><br>
 	 */
 	StreamBusArrivals(30 * SECOND, 5 * SECOND, 30 * SECOND, MISSING_HANDLER,
 			"http://countdown.api.tfl.gov.uk/interfaces/ura/stream",
 			"http://countdown.api.tfl.gov.uk/interfaces/ura/stream"),
 
 	/**
-	 * Source London charge points and data dictionary feed
+	 * <h3>Source London charge points feed</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#20396">link</a><br>
+	 * @see Feed#SourceLondonChargePointsDictionary
 	 */
 	SourceLondonChargePoints(1 * WEEK, 1 * DAY, 1 * WEEK, MISSING_HANDLER,
 			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/charge-point-locations.js", MISSING_URL),
 	/**
-	 * Source London charge points and data dictionary feed
+	 * <h3>Source London data dictionary feed</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#20396">link</a><br>
+	 * @see Feed#SourceLondonChargePoints
 	 */
 	SourceLondonChargePointsDictionary(1 * WEEK, 1 * DAY, 1 * WEEK, MISSING_HANDLER,
 			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/charge-point-data-dictionary-sample.js",
 			MISSING_URL),
 
 	/**
-	 * Tube departure boards, line and station status <br>
-	 * Example: http://cloud.tfl.gov.uk/TrackerNet/LineStatus
+	 * <h3>Tube departure boards, line and station status</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17615">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf">link</a><br>
 	 */
-	TubeDepartureBoardsLineStatus(MISSING_TIME, MISSING_TIME, MISSING_TIME, LineStatusFeedHandler.class,
+	TubeDepartureBoardsLineStatus(30 * SECOND, 30 * SECOND, 30 * SECOND, LineStatusFeedHandler.class,
 			"http://cloud.tfl.gov.uk/TrackerNet/LineStatus", "http://cloud.tfl.gov.uk/TrackerNet/LineStatus"),
-	TubeDepartureBoardsLineStatusIncidents(MISSING_TIME, MISSING_TIME, MISSING_TIME, LineStatusFeedHandler.class,
+	/**
+	 * <h3>Tube departure boards, line and station status</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17615">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf">link</a><br>
+	 */
+	TubeDepartureBoardsLineStatusIncidents(30 * SECOND, 30 * SECOND, 30 * SECOND, LineStatusFeedHandler.class,
 			"http://cloud.tfl.gov.uk/TrackerNet/LineStatus/IncidentsOnly",
 			"http://cloud.tfl.gov.uk/TrackerNet/LineStatus/IncidentsOnly"),
 
 	/**
-	 * Barclays Cycle Hire statistics <br>
-	 * Example:
-	 * http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=21
+	 * <h3>Barclays Cycle Hire statistics</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17855">link</a><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=21">link</a><br>
 	 */
-	BarclayCycleHireStatistics(21, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE),
+	BarclayCycleHireStatistics(21, N_A, N_A, N_A, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/BarclaysCycleHireUsageStats.csv"),
 
 	/**
-	 * Barclays Cycle Hire availability <br>
-	 * Example: http://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml
+	 * <h3>Barclays Cycle Hire availability</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17292">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/BCH_feed_data_dictionary_-_may_2011.pdf">link</a><br>
 	 */
-	BarclaysCycleHireAvailablility(MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER,
-			"http://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml",
+	BarclaysCycleHireAvailablility(3 * MINUTE, 30 * MINUTE, 30 * MINUTE, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/BarclaysCycleHireAvailabilityexample.xml",
 			"http://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml"),
 
 	/**
-	 * Oyster card journey information <br>
-	 * Example:
-	 * http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=19
+	 * <h3>Oyster card journey information</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17685">link</a><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=19">link</a><br>
 	 */
-	OysterCardJourneyInfo(19, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE),
+	OysterCardJourneyInfo(19, N_A, N_A, N_A, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/OysterCardJourneyInformationexample.csv"),
 
 	/**
-	 * Journey Planner Timetables <br>
-	 * Example:
-	 * http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=15
+	 * <h3>Journey Planner Timetables</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17289">link</a><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=15">link</a><br>
 	 */
-	JourneyPlannerTimetables(15, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE),
+	JourneyPlannerTimetables(15, 1 * DAY/* 1440 mins */, 10 * MINUTE, 1 * DAY/* 1440 mins */, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds"
+					+ "/journeyplannertimetables/journey-planner-timetables.zip"),
 
 	/**
-	 * Live Roadside Message Signs v2 <br>
-	 * Example: http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=33
+	 * <h3>Live Roadside Message Signs v2</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17290">link</a><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=33">link</a><br>
+	 * <b>Schema</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/liveroadsidemessagesigns-v2.xsd.xsd">link</a><br>
 	 */
-	LiveRoadSideMessageSignsV2(33, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE),
+	LiveRoadSideMessageSignsV2(33, 5 * MINUTE, 5 * MINUTE, 30 * MINUTE, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/vms-feed-sample.xml"),
 
 	/**
-	 * 
+	 * <h3>Coach parking locations</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17286">link</a><br>
 	 */
-	CoachParkingLocations(MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE, MISSING_URL),
+	CoachParkingLocations(1 * DAY/* 1440 mins */, 10 * MINUTE, 3 * DAY/* 4320 mins */, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/icm-coach-parking.csv", MISSING_URL),
+	/**
+	 * <h3>Coach parking locations</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17286">link</a><br>
+	 */
+	CoachParkingLocationsTheatre(1 * DAY/* 1440 mins */, 10 * MINUTE, 3 * DAY/* 4320 mins */, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/icm-coach-parking-theatres.csv", MISSING_URL),
 
 	/**
-	 * 
+	 * <h3>Dial a Ride usage statistics</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17287">link</a><br>
 	 */
-	DialARideStatistics(MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE, MISSING_URL),
+	DialARideStatistics(YEAR / 4, N_A, N_A, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/DialaRideUsageStatsexample.csv", MISSING_URL),
 
 	/**
-	 * 
+	 * <h3>Live traffic camera images (CCTV)</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17294">link</a><br>
+	 * <b>Schema</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/New_Jam_Cam_schema.txt">link</a><br>
 	 */
-	LiveTrafficCameras(MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE, MISSING_URL),
+	LiveTrafficCameras(2 * MINUTE, 2 * MINUTE, 15 * MINUTE, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/cameraList.xml", MISSING_URL),
 
 	/**
-	 * 
+	 * <h3>Findaride</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17295">link</a><br>
+	 * <b>Schema</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/findaride/FindARide_v2.xsd">link</a><br>
+	 * <b>Viewer</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/findaride/FindARide_v1.xslt">link</a><br>
 	 */
-	FindARide(MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE, MISSING_URL),
+	FindARide(1 * DAY/* 1440 mins */, 10 * MINUTE, 3 * DAY/* 4320 mins */, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/findaride/FindARide_v1.xml",
+			MISSING_URL),
 
 	/**
-	 * Station locations <br>
-	 * Example:
-	 * http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=4
+	 * <h3>Station locations</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17297">link</a><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=4">link</a><br>
+	 * <b>Schema</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/stationlocations/StationLocations_v1.xsd">link</a><br>
 	 */
-	StationLocations(4, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE),
+	StationLocations(4, 1 * DAY/* 1440 mins */, 10 * MINUTE, 3 * DAY/* 4320 mins */, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/stationlocations/Stations.kml"),
 
 	/**
-	 * Pier locations <br>
-	 * Example:
-	 * http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=8
+	 * <h3>Pier locations</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17296">link</a><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=8">link</a><br>
+	 * <b>Schema</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/pierlocations/PierLocations_v1.xsd">link</a><br>
 	 */
-	PierLocations(8, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE),
+	PierLocations(8, 1 * DAY/* 1440 mins */, 10 * MINUTE, 3 * DAY/* 4320 mins */, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/pierlocations/PierLocations_v1.kml"),
 
 	/**
-	 * Oyster Ticket Stop locations <br>
-	 * Example:
-	 * http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=9
+	 * <h3>Oyster Ticket Stop locations</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17293">link</a><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=9">link</a><br>
+	 * <b>Schema</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/oysterticketstoplocations/oyster-stop-locations-v1.xsd">link</a><br>
 	 */
-	OysterLocations(9, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE),
+	OysterLocations(9, 1 * DAY/* 1440 mins */, 10 * MINUTE, 3 * DAY/* 4320 mins */, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds"
+					+ "/oysterticketstoplocations/oyster-stop-locations-v1-example.kml"),
 
 	/**
-	 * Bus stop locations <br>
-	 * Example:
-	 * http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=10
+	 * <h3><h3>Bus stop locations</h3><br></h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17463">link</a><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=10">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/syndication-developer-guidelines-bus-stop-locations-routes.pdf">link</a><br>
+	 * @see Feed#BusRoutes
 	 */
-	BusStopLocations(10, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE),
+	BusStopLocations(10, 1 * WEEK, 1 * DAY, 2 * WEEK, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/bus_stops_example.csv"),
+	/**
+	 * <h3>Bus routes</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17463">link</a><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=11">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/syndication-developer-guidelines-bus-stop-locations-routes.pdf">link</a><br>
+	 * @see Feed#BusStopLocations
+	 */
+	BusRoutes(11, 1 * WEEK, 1 * DAY, 2 * WEEK, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/stop_sequences_example.csv"),
 
 	/**
-	 * Bus routes <br>
-	 * Example:
-	 * http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=11
+	 * <h3>Tube - this weekend</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17298">link</a><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=1">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/tubethisweekend/TubeThisWeekend_v1.xsd">link</a><br>
+	 * <b>Viewer</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/tubethisweekend/TubeThisWeekend_v1.xslt">link</a><br>
 	 */
-	BusRoutes(11, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE),
+	TubeThisWeekend(1, 12 * HOUR/* 720 mins */, 2 * MINUTE, 10 * MINUTE, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds/tubethisweekend/TubeThisWeekend_v1.xml"),
+	/**
+	 * <h3>Tube - this weekend v2</h3><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=7">link</a><br>
+	 */
+	TubeThisWeekendV2(7, 12 * HOUR/* 720 mins */, 2 * MINUTE, 10 * MINUTE, MISSING_HANDLER, MISSING_SAMPLE),
 
 	/**
-	 * Tube - this weekend <br>
-	 * Example:
-	 * http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=1
+	 * <h3>Public transport accessibility levels</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17621">link</a><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=23">link</a><br>
 	 */
-	TubeThisWeekend(1, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE),
-	/**
-	 * Tube - this weekend v2 <br>
-	 * Example:
-	 * http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=7
-	 */
-	TubeThisWeekendV2(7, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE),
+	AccessibilityLevels(23, 1 * YEAR, N_A, N_A, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/gl-ptals-2012-data-grid-points.zip"),
 
 	/**
-	 * Public transport accessibility levels <br>
-	 * Example:
-	 * http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=23
+	 * <h3>Rolling Origin & Destination Survey (RODS)</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17618">link</a><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=24">link</a><br>
 	 */
-	AccessibilityLevels(23, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE),
+	RollingOnDSurvey(24, 1 * YEAR, 9 * MONTH, 1 * YEAR, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/RODS_Access_Mode_2010_sample.csv"),
 
 	/**
-	 * Rolling origin and destination survey <br>
-	 * Example:
-	 * http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=24
+	 * <h3>Station facilities</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17699">link</a><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=16">link</a><br>
 	 */
-	RollingOnDSurvey(24, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE),
+	StationFacilities(16, 1 * DAY/* 1440 mins */, 10 * MINUTE, 3 * DAY/* 4320 mins */, FacilitiesFeedHandler.class,
+			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/StationFacilitiessample.xml"),
 
 	/**
-	 * Station facilities <br>
-	 * Example:
-	 * http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=16
+	 * <h3>London Underground passenger counts data</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#18112">link</a><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=25">link</a><br>
 	 */
-	StationFacilities(16, MISSING_TIME, MISSING_TIME, MISSING_TIME, FacilitiesFeedHandler.class, MISSING_SAMPLE),
+	PassengerCounts(25, 1 * YEAR, N_A, N_A, MISSING_HANDLER,
+			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/Counts_Entries_10_Weekday_sample.csv"),
 
 	/**
-	 * London Underground passenger counts <br>
-	 * Example:
-	 * http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=25
-	 */
-	PassengerCounts(25, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE),
-
-	/**
-	 * Tube station accessibility data <br>
-	 * Example:
-	 * http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=26
+	 * <h3>Tube station accessibility data</h3><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=26">link</a><br>
 	 */
 	TubeStationAccessibility(26, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE),
 
 	/**
-	 * Games Postcodes <br>
-	 * Example:
-	 * http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=29
+	 * <h3>Games Postcodes</h3><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=29">link</a><br>
 	 */
 	GamesPostcodes(29, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE),
 
 	/**
-	 * River services timetables <br>
-	 * Example:
-	 * http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=22
+	 * <h3>River services timetables</h3><br>
+	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=22">link</a><br>
 	 */
 	RiverTimetables(22, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE)
 
 	;
 
 	/**
-	 * @see Feed.Type
+	 * @see Feed#Type
 	 */
 	private final Type m_type;
 
 	/**
 	 * How often we publish a fresh copy of the feed
-	 * From http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx
 	 */
 	private int m_freshTime;
 
 	/**
 	 * Maximum time allowed between capturing and displaying the feed
-	 * From http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx
 	 */
 	private int m_maxDelay;
 
 	/**
 	 * Maximum time information can be displayed before being updated
-	 * From http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx
 	 */
 	private int m_maxDisplay;
 	private URL m_url = null;
 	private Class<? extends BaseFeedHandler<? extends BaseFeed>> m_handler;
-	private final URL m_exampleUrl;
+	private final URL m_sampleUrl;
 
 	/**
 	 * Only for {@link Type#Syndication} urls.
@@ -258,23 +318,23 @@ public enum Feed {
 	private int m_feedId = -1;
 
 	private Feed(Type type, int freshTime, int maxDelay, int maxDisplay,
-			Class<? extends BaseFeedHandler<? extends BaseFeed>> handler, String exampleUrl) {
+			Class<? extends BaseFeedHandler<? extends BaseFeed>> handler, String sampleUrl) {
 		this.m_type = type;
 		this.m_freshTime = freshTime;
 		this.m_maxDelay = maxDelay;
 		this.m_maxDisplay = maxDisplay;
 		this.m_handler = handler;
-		this.m_exampleUrl = exampleUrl == null? null : createURL(exampleUrl);
+		this.m_sampleUrl = sampleUrl == null? null : createURL(sampleUrl);
 	}
 
 	private Feed(int freshTime, int maxDelay, int maxDisplay,
-			Class<? extends BaseFeedHandler<? extends BaseFeed>> handler, String exampleUrl, String url) {
-		this(Other, freshTime, maxDelay, maxDisplay, handler, exampleUrl);
+			Class<? extends BaseFeedHandler<? extends BaseFeed>> handler, String sampleUrl, String url) {
+		this(Other, freshTime, maxDelay, maxDisplay, handler, sampleUrl);
 		m_url = url != null? createURL(url) : null;
 	}
 	private Feed(int feedId, int freshTime, int maxDelay, int maxDisplay,
-			Class<? extends BaseFeedHandler<? extends BaseFeed>> handler, String exampleUrl) {
-		this(Syndication, freshTime, maxDelay, maxDisplay, handler, exampleUrl);
+			Class<? extends BaseFeedHandler<? extends BaseFeed>> handler, String sampleUrl) {
+		this(Syndication, freshTime, maxDelay, maxDisplay, handler, sampleUrl);
 		m_feedId = feedId;
 	}
 
@@ -298,10 +358,10 @@ public enum Feed {
 	}
 
 	/**
-	 * Useless in production.
+	 * Useless in production
 	 */
-	public URL getExampleUrl() {
-		return m_exampleUrl;
+	public URL getSampleUrl() {
+		return m_sampleUrl;
 	}
 
 	private static URL createURL(String spec) {
@@ -338,6 +398,7 @@ public enum Feed {
 		int HOUR = 60 * MINUTE;
 		int DAY = 24 * HOUR;
 		int WEEK = 7 * DAY;
+		int MONTH = 30 * DAY;
 		int YEAR = 365 * DAY;
 		int MISSING_TIME = 0;
 		int N_A = 0;

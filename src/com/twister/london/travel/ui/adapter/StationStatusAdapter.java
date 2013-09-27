@@ -10,6 +10,7 @@ import com.twister.london.travel.R;
 import com.twister.london.travel.model.*;
 
 public class StationStatusAdapter extends BaseListAdapter<Map.Entry<Line, LineStatus>, StationStatusAdapter.ViewHolder> {
+	private static final LineColors colors = new TFLColourStandard3ScreenLineColors();
 
 	public StationStatusAdapter(final Context context, final Collection<Map.Entry<Line, LineStatus>> items) {
 		super(context, items, false);
@@ -39,7 +40,8 @@ public class StationStatusAdapter extends BaseListAdapter<Map.Entry<Line, LineSt
 	protected void bindView(final ViewHolder holder, final Map.Entry<Line, LineStatus> currentItem,
 			final View convertView) {
 		String title = currentItem.getKey().getName();
-		holder.title.setBackgroundColor(currentItem.getKey().getLine().getColor());
+		holder.title.setTextColor(currentItem.getKey().getLine().getForeground(colors));
+		holder.title.setBackgroundColor(currentItem.getKey().getLine().getBackground(colors));
 		LineStatus lineStatus = currentItem.getValue();
 		String description = String.format("[%s] %s", lineStatus.getId(), lineStatus.getDescription());
 
