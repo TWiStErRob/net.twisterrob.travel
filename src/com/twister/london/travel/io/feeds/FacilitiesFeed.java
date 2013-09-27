@@ -4,7 +4,7 @@ import java.util.*;
 
 import com.twister.london.travel.model.*;
 
-public class FacilitiesFeed {
+public class FacilitiesFeed extends BaseFeed {
 	private List<Station> m_stations;
 	private Map<Line, List<Station>> m_lines;
 	private Map<String, List<Station>> m_facilities;

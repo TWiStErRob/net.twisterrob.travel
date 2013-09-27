@@ -1,9 +1,22 @@
 package com.twister.london.travel.model;
 public class Line {
-
+	private LineEnum m_line;
 	private String m_name;
+
+	public Line(LineEnum line) {
+		m_line = line;
+		m_name = line.getTitle();
+	}
 	public Line(String name) {
 		m_name = name;
+	}
+
+	public String getName() {
+		return m_name;
+	}
+
+	public LineEnum getLine() {
+		return m_line;
 	}
 
 	@Override
@@ -40,5 +53,4 @@ public class Line {
 	public String toString() {
 		return String.format("%s", m_name);
 	}
-
 }

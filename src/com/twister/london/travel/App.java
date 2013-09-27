@@ -11,6 +11,7 @@ import com.twister.london.travel.io.feeds.*;
 
 public class App extends android.app.Application {
 	private static/* final */App s_instance;
+	private static final boolean DEBUG = true;
 	private static final String CACHE_IMAGE = ImageSDNetCache.class.getName();
 	private static final Map<String, Cache<?, ?>> s_caches = new HashMap<String, Cache<?, ?>>();
 
@@ -29,8 +30,12 @@ public class App extends android.app.Application {
 	}
 
 	private volatile DataBaseHelper m_dataBaseHelper = null;
-	private URLBuilder m_urlBuilder = BuildConfig.DEBUG? new LocalhostUrlBuilder() : new TFLUrlBuilder(
+	private URLBuilder m_urlBuilder = isDebug()? new LocalhostUrlBuilder() : new TFLUrlBuilder(
 			"papp.robert.s@gmail.com");
+
+	protected static boolean isDebug() {
+		return BuildConfig.DEBUG && DEBUG;
+	}
 
 	public static void exit() {
 		android.os.Process.killProcess(android.os.Process.myPid());

@@ -5,19 +5,16 @@ import java.util.*;
 import java.util.regex.*;
 
 import org.xml.sax.*;
-import org.xml.sax.helpers.DefaultHandler;
 
 import android.sax.*;
 import android.util.Xml;
 
-import com.twister.android.utils.log.*;
 import com.twister.android.utils.model.Location;
 import com.twister.android.utils.text.ElementAdapter;
 import com.twister.android.utils.tools.PrimitiveTools;
 import com.twister.london.travel.model.*;
 
-public class FacilitiesFeedHandler extends DefaultHandler {
-	private static final Log LOG = LogFactory.getLog(Tag.IO);
+public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
 	private FacilitiesFeed m_root;
 	private Station m_station;
 
