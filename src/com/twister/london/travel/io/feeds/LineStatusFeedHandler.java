@@ -54,7 +54,11 @@ public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 		});
 		lineStatusElement.setElementListener(new ElementListener() {
 			@Override
-			public void start(Attributes attributes) {}
+			public void start(Attributes attributes) {
+				String attrStatusDetails = attributes.getValue("StatusDetails");
+				m_lineStatus = new LineStatus();
+				m_lineStatus.setDescription(attrStatusDetails);
+			}
 			@Override
 			public void end() {
 				m_root.getLineStatuses().put(m_line, m_lineStatus);
@@ -77,13 +81,10 @@ public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 			@Override
 			public void start(Attributes attributes) {
 				String attrId = attributes.getValue("ID");
-				String attrCssClass = attributes.getValue("CssClass");
-				String attrDescription = attributes.getValue("Description");
+				LineStatusType statusType = LineStatusType.fromID(attrId);
 				String attrIsActive = attributes.getValue("IsActive");
 				boolean isActive = Boolean.parseBoolean(attrIsActive);
-				m_lineStatus = new LineStatus();
-				m_lineStatus.setId(attrId);
-				m_lineStatus.setDescription(attrDescription);
+				m_lineStatus.setType(statusType);
 				m_lineStatus.setActive(isActive);
 			}
 			@Override

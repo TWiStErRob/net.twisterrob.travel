@@ -4,10 +4,6 @@ import java.util.*;
 
 import android.graphics.Color;
 
-/**
- * http://www.tfl.gov.uk/assets/downloads/corporate/tfl-colour-standard-issue03.pdf
- * @author TWiStEr
- */
 public class TFLColourStandard3ScreenLineColors implements LineColors {
 	public String getLineColorsSource() {
 		return "http://www.tfl.gov.uk/assets/downloads/corporate/tfl-colour-standard-issue03.pdf";

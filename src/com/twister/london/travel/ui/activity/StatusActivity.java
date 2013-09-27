@@ -14,6 +14,10 @@ import com.twister.london.travel.io.feeds.android.DownloadFeedTask;
 import com.twister.london.travel.model.*;
 import com.twister.london.travel.ui.adapter.StationStatusAdapter;
 
+/**
+ * http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf
+ * @author TWiStEr
+ */
 public class StatusActivity extends ListActivity {
 	private static final Log LOG = LogFactory.getLog(Tag.UI);
 	@Override

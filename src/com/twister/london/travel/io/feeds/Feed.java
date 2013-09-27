@@ -89,6 +89,8 @@ public enum Feed {
 	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17615">link</a><br>
 	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">link</a><br>
 	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf">link</a><br>
+	 * For example reasons see:
+	 * <a href="http://web.archive.org/web/20110615000000&#42;/http://www.tfl.gov.uk/tfl/livetravelnews/realtime/tube/default.html">The Wayback Machine</a><br>
 	 */
 	TubeDepartureBoardsLineStatusIncidents(30 * SECOND, 30 * SECOND, 30 * SECOND, LineStatusFeedHandler.class,
 			"http://cloud.tfl.gov.uk/TrackerNet/LineStatus/IncidentsOnly",
