@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.twisterrob.london</groupId>
+	<artifactId>twister-travel-data-server</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Better London Travel Data Server</name>
+	<description>Serves on a http endpoint to test feeds without using the Internet</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<!-- mvn jetty:run -e -Dorg.eclipse.jetty.util.log.stderr.LONG=true %c% -->
+				<!-- mvn jetty:run -e -Dorg.eclipse.jetty.LEVEL=DEBUG -Dorg.eclipse.jetty.util.log.stderr.SOURCE=true -Dorg.eclipse.jetty.util.log.stderr.LONG=true %c% -->
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.0.5.v20130815</version>
+				<configuration>
+					<webAppSourceDirectory>data</webAppSourceDirectory>
+					<reload>manual</reload>
+					<webAppConfig>
+						<defaultsDescriptor>data/jetty-webdefault.xml</defaultsDescriptor>
+					</webAppConfig>
+					<systemProperties>
+						<systemProperty>
+							<key>jetty.host</key>
+							<value>0.0.0.0</value>
+						</systemProperty>
+						<systemProperty>
+							<key>jetty.port</key>
+							<value>8081</value>
+						</systemProperty>
+					</systemProperties>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

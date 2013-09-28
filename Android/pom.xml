@@ -21,30 +21,6 @@
 					</sdk>
 				</configuration>
 			</plugin>
-			<plugin>
-				<!-- mvn jetty:run -e -Dorg.eclipse.jetty.util.log.stderr.LONG=true %c% -->
-				<!-- mvn jetty:run -e -Dorg.eclipse.jetty.LEVEL=DEBUG -Dorg.eclipse.jetty.util.log.stderr.SOURCE=true -Dorg.eclipse.jetty.util.log.stderr.LONG=true %c% -->
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>9.0.5.v20130815</version>
-				<configuration>
-					<webAppSourceDirectory>data</webAppSourceDirectory>
-					<reload>manual</reload>
-					<webAppConfig>
-						<defaultsDescriptor>data/jetty-webdefault.xml</defaultsDescriptor>
-					</webAppConfig>
-					<systemProperties>
-						<systemProperty>
-							<key>jetty.host</key>
-							<value>0.0.0.0</value>
-						</systemProperty>
-						<systemProperty>
-							<key>jetty.port</key>
-							<value>8081</value>
-						</systemProperty>
-					</systemProperties>
-				</configuration>
-			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -67,4 +43,3 @@
 		</dependency>
 	</dependencies>
 </project>
-
