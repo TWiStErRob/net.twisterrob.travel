@@ -2,6 +2,5 @@
     <wb-module deploy-name="twister-travel-shared">
         <wb-resource deploy-path="/" source-path="/src/main/java"/>
         <wb-resource deploy-path="/" source-path="/src/main/android"/>
-        <wb-resource deploy-path="/" source-path="/src/main/harmony-xml"/>
     </wb-module>
 </project-modules>

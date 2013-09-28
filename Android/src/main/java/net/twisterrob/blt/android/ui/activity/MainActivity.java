@@ -27,7 +27,7 @@ public class MainActivity extends ListActivity {
 				if (result.getError() != null) {
 					LOG.error("Cannot load facitilies", result.getError());
 					Toast.makeText(getApplicationContext(), "Cannot load facitilies" + result.getError().getMessage(),
-							Toast.LENGTH_LONG);
+							Toast.LENGTH_LONG).show();
 					stations = App.getInstance().getDataBaseHelper().getStations();
 				} else {
 					FacilitiesFeed root = result.getResult();

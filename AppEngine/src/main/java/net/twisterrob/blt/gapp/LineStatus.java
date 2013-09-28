@@ -17,7 +17,8 @@ public class LineStatus extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		LOG.info(LineStatus.class + " called");
 		try {
-			downloadFeed(Feed.TubeDepartureBoardsLineStatus);
+			LineStatusFeed feed = downloadFeed(Feed.TubeDepartureBoardsLineStatus);
+			req.setAttribute("feed", feed);
 		} catch (IOException ex) {
 			throw new ServletException("Cannot load feed", ex);
 		} catch (SAXException ex) {

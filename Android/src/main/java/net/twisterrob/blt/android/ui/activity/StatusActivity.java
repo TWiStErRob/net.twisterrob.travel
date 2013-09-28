@@ -34,6 +34,7 @@ public class StatusActivity extends ListActivity implements OnRefreshListener<Li
 		m_listView = (PullToRefreshListView)findViewById(R.id.asdf_list);
 		m_listView.setOnRefreshListener(this);
 
+		m_listView.setRefreshing();
 		this.onRefresh(m_listView);
 	}
 
@@ -48,10 +49,10 @@ public class StatusActivity extends ListActivity implements OnRefreshListener<Li
 				if (result.getError() != null) {
 					LOG.error("Cannot load line statuses", result.getError());
 					Toast.makeText(getApplicationContext(), "Cannot load line statuses" + result.getError(),
-							Toast.LENGTH_LONG);
+							Toast.LENGTH_LONG).show();
 				} else if (result.getResult() == null) {
 					LOG.error("No line statuses returned", result.getError());
-					Toast.makeText(getApplicationContext(), "No line statuses returned", Toast.LENGTH_LONG);
+					Toast.makeText(getApplicationContext(), "No line statuses returned", Toast.LENGTH_LONG).show();
 				} else {
 					LineStatusFeed root = result.getResult();
 					dataReceived(root);

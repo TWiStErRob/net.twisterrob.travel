@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.*;
 
 import net.twisterrob.android.mail.MailSenderAsyncTask;
+import net.twisterrob.android.utils.LibContextProvider;
 import net.twisterrob.android.utils.cache.*;
 import net.twisterrob.blt.android.db.DataBaseHelper;
 import net.twisterrob.blt.io.feeds.*;
@@ -12,7 +13,7 @@ import android.widget.Toast;
 
 public class App extends android.app.Application {
 	private static/* final */App s_instance;
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 	private static final String CACHE_IMAGE = ImageSDNetCache.class.getName();
 	private static final Map<String, Cache<?, ?>> s_caches = new HashMap<String, Cache<?, ?>>();
 
@@ -27,6 +28,7 @@ public class App extends android.app.Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		LibContextProvider.setApplicationContext(this);
 		getDataBaseHelper().openDB();
 	}
 
@@ -95,9 +97,9 @@ public class App extends android.app.Application {
 			protected void onPostExecute(Boolean result) {
 				super.onPostExecute(result);
 				if (Boolean.TRUE.equals(result)) {
-					Toast.makeText(getInstance(), "Mail sent", Toast.LENGTH_SHORT);
+					Toast.makeText(getInstance(), "Mail sent", Toast.LENGTH_SHORT).show();
 				} else {
-					Toast.makeText(getInstance(), "Mail failed", Toast.LENGTH_SHORT);
+					Toast.makeText(getInstance(), "Mail failed", Toast.LENGTH_SHORT).show();
 				}
 			}
 		};

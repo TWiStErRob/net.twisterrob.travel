@@ -18,9 +18,9 @@ package android.util;
 
 import java.io.*;
 
-import org.apache.harmony.xml.ExpatReader;
 import org.kxml2.io.KXmlParser;
 import org.xml.sax.*;
+import org.xml.sax.helpers.XMLReaderFactory;
 import org.xmlpull.v1.*;
 
 /**
@@ -43,7 +43,7 @@ public class Xml {
     public static void parse(String xml, ContentHandler contentHandler)
             throws SAXException {
         try {
-            XMLReader reader = new ExpatReader();
+            XMLReader reader = XMLReaderFactory.createXMLReader();
             reader.setContentHandler(contentHandler);
             reader.parse(new InputSource(new StringReader(xml)));
         } catch (IOException e) {
@@ -57,7 +57,7 @@ public class Xml {
      */
     public static void parse(Reader in, ContentHandler contentHandler)
             throws IOException, SAXException {
-        XMLReader reader = new ExpatReader();
+        XMLReader reader = XMLReaderFactory.createXMLReader();
         reader.setContentHandler(contentHandler);
         reader.parse(new InputSource(in));
     }
@@ -68,7 +68,7 @@ public class Xml {
      */
     public static void parse(InputStream in, Encoding encoding,
             ContentHandler contentHandler) throws IOException, SAXException {
-        XMLReader reader = new ExpatReader();
+        XMLReader reader = XMLReaderFactory.createXMLReader();
         reader.setContentHandler(contentHandler);
         InputSource source = new InputSource(in);
         source.setEncoding(encoding.expatName);
