@@ -9,7 +9,6 @@ import android.widget.Toast;
 import com.twister.android.utils.concurrent.AsyncTaskResult;
 import com.twister.london.travel.App;
 import com.twister.london.travel.io.feeds.*;
-import com.twister.london.travel.io.feeds.android.DownloadFeedTask;
 import com.twister.london.travel.model.Station;
 import com.twister.london.travel.ui.adapter.StationAdapter;
 

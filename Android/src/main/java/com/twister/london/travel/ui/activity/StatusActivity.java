@@ -12,7 +12,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.twister.android.utils.concurrent.AsyncTaskResult;
 import com.twister.london.travel.R;
 import com.twister.london.travel.io.feeds.*;
-import com.twister.london.travel.io.feeds.android.DownloadFeedTask;
 import com.twister.london.travel.model.LineStatus;
 import com.twister.london.travel.ui.adapter.StationStatusAdapter;
 

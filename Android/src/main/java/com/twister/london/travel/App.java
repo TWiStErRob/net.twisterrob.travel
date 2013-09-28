@@ -6,8 +6,8 @@ import java.util.*;
 import android.graphics.Bitmap;
 import android.widget.Toast;
 
+import com.twister.android.mail.MailSenderAsyncTask;
 import com.twister.android.utils.cache.*;
-import com.twister.android.utils.concurrent.MailSenderAsyncTask;
 import com.twister.london.travel.db.DataBaseHelper;
 import com.twister.london.travel.io.feeds.*;
 

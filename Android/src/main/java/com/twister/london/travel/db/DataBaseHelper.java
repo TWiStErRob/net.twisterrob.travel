@@ -42,7 +42,7 @@ public class DataBaseHelper {
 
 	public void openDB() {
 		getWritableDatabase();
-		Type.reload();
+		Type.reset(getTypes());
 	}
 
 	public List<Station> getStations() {
