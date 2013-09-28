@@ -1,4 +1,4 @@
 package com.twister.london.travel.io.feeds;
-public class BaseFeed {
-
+public abstract class BaseFeed {
+	void postProcess() {}
 }

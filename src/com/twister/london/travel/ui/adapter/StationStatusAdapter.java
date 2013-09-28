@@ -1,25 +1,26 @@
 package com.twister.london.travel.ui.adapter;
 
-import java.util.*;
+import java.util.Collection;
 
 import android.content.Context;
+import android.graphics.*;
 import android.view.View;
-import android.widget.*;
+import android.widget.TextView;
 
 import com.twister.london.travel.R;
 import com.twister.london.travel.model.*;
 
-public class StationStatusAdapter extends BaseListAdapter<Map.Entry<Line, LineStatus>, StationStatusAdapter.ViewHolder> {
+public class StationStatusAdapter extends BaseListAdapter<LineStatus, StationStatusAdapter.ViewHolder> {
 	private static final LineColors colors = new TubeStatusPresentationLineColors();
 
-	public StationStatusAdapter(final Context context, final Collection<Map.Entry<Line, LineStatus>> items) {
-		super(context, items, false);
+	public StationStatusAdapter(final Context context, final Collection<LineStatus> lines) {
+		super(context, lines, false);
 	}
 
 	protected class ViewHolder {
-		TextView title;
+		TextView line;
 		TextView description;
-		ImageView icon;
+		TextView delay;
 	}
 
 	@Override
@@ -30,35 +31,39 @@ public class StationStatusAdapter extends BaseListAdapter<Map.Entry<Line, LineSt
 	@Override
 	protected ViewHolder createHolder(final View convertView) {
 		ViewHolder holder = new ViewHolder();
-		holder.title = (TextView)convertView.findViewById(android.R.id.text1);
-		holder.description = (TextView)convertView.findViewById(android.R.id.text2);
-		holder.icon = (ImageView)convertView.findViewById(android.R.id.icon);
+		holder.line = (TextView)convertView.findViewById(R.id.linestatus_line);
+		holder.delay = (TextView)convertView.findViewById(R.id.linestatus_delay);
+		holder.description = (TextView)convertView.findViewById(R.id.linestatus_desc);
 		return holder;
 	}
 
 	@Override
-	protected void bindView(final ViewHolder holder, final Map.Entry<Line, LineStatus> currentItem,
-			final View convertView) {
-		String title = currentItem.getKey().getName();
-		holder.title.setTextColor(currentItem.getKey().getLine().getForeground(colors));
-		holder.title.setBackgroundColor(currentItem.getKey().getLine().getBackground(colors));
-		LineStatus lineStatus = currentItem.getValue();
-		String desc = lineStatus.getDescription();
-		if (desc == null || desc.length() == 0) {
-			desc = "N/A";
-		}
-		String description = String.format("%s: %s", lineStatus.getType().getTitle(), desc);
+	protected void bindView(final ViewHolder holder, final LineStatus currentItem, final View convertView) {
+		String title = currentItem.getLine().getTitle();
+		String description = currentItem.getDescription();
+		String delay = currentItem.getType().getTitle();
 
-		holder.title.setText(title);
-		holder.description.setText(description);
-		//		new ImageViewDownloader(holder.icon, new Callback<ImageView>() {
-		//			@Override
-		//			public void call(ImageView param) {
-		//				// fix width to be square
-		//				LayoutParams params = param.getLayoutParams();
-		//				params.width = param.getHeight();
-		//				param.setLayoutParams(params);
-		//			}
-		//		}).execute(currentItem.getType().getUrl());
+		holder.line.setText(title);
+		holder.delay.setText(delay);
+		if (description != null) {
+			holder.description.setVisibility(View.VISIBLE);
+			holder.description.setText(description);
+		} else {
+			holder.description.setVisibility(View.GONE);
+		}
+
+		holder.line.setTextColor(currentItem.getLine().getForeground(colors));
+		holder.line.setBackgroundColor(currentItem.getLine().getBackground(colors));
+
+		if (DelayType.ORDER_SEVERITY.compare(currentItem.getType(), DelayType.MinorDelays) >= 0) {
+			holder.delay.setTextColor(Color.rgb(0, 25, 168));
+		} else {
+			holder.delay.setTextColor(Color.rgb(0, 0, 0));
+		}
+		if (DelayType.ORDER_SEVERITY.compare(currentItem.getType(), DelayType.MinorDelays) > 0) {
+			holder.delay.setTypeface(null, Typeface.BOLD);
+		} else {
+			holder.delay.setTypeface(null, Typeface.NORMAL);
+		}
 	}
 }

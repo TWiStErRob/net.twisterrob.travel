@@ -19,6 +19,9 @@
 				<configuration>
 					<webAppSourceDirectory>data</webAppSourceDirectory>
 					<reload>manual</reload>
+					<webAppConfig>
+						<defaultsDescriptor>data/jetty-webdefault.xml</defaultsDescriptor>
+					</webAppConfig>
 					<systemProperties>
 						<systemProperty>
 							<key>jetty.host</key>

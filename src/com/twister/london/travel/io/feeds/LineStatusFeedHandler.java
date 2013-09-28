@@ -7,6 +7,7 @@ import org.xml.sax.*;
 import android.sax.*;
 import android.util.Xml;
 
+import com.twister.london.travel.App;
 import com.twister.london.travel.model.*;
 
 /**
@@ -35,7 +36,6 @@ import com.twister.london.travel.model.*;
 public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 	private static final String NS = "http://webservices.lul.co.uk/";
 	private LineStatusFeed m_root;
-	private Line m_line;
 	private LineStatus m_lineStatus;
 
 	public LineStatusFeed parse(InputStream is) throws IOException, SAXException {
@@ -61,8 +61,7 @@ public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 			}
 			@Override
 			public void end() {
-				m_root.getLineStatuses().put(m_line, m_lineStatus);
-				m_line = null;
+				m_root.addLineStatus(m_lineStatus);
 				m_lineStatus = null;
 			}
 		});
@@ -71,8 +70,8 @@ public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 			public void start(Attributes attributes) {
 				String attrName = attributes.getValue("Name");
 
-				LineEnum line = LineEnum.fromAlias(attrName);
-				m_line = new Line(line);
+				Line line = Line.fromAlias(attrName);
+				m_lineStatus.setLine(line);
 			}
 			@Override
 			public void end() {}
@@ -81,7 +80,11 @@ public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 			@Override
 			public void start(Attributes attributes) {
 				String attrId = attributes.getValue("ID");
-				LineStatusType statusType = LineStatusType.fromID(attrId);
+				DelayType statusType = DelayType.fromID(attrId);
+				if (statusType == DelayType.Unknown && attrId != null) {
+					String attrDescription = attributes.getValue("Description");
+					App.sendMail(DelayType.class + " new code: " + attrDescription + " as " + attrId);
+				}
 				String attrIsActive = attributes.getValue("IsActive");
 				boolean isActive = Boolean.parseBoolean(attrIsActive);
 				m_lineStatus.setType(statusType);

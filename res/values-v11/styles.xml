@@ -1,5 +1,5 @@
-<resources>
-
-    <style name="AppTheme" parent="android:Theme.Holo.Light" />
-
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+	<style name="Theme.Default" parent="@android:style/Theme.Light"></style>
+	<style name="Theme.NoTitle" parent="@android:style/Theme.Light.NoTitleBar"></style>
+	<style name="Theme.FullScreen" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen"></style>
 </resources>

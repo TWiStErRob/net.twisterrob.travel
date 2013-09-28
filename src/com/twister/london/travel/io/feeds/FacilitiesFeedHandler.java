@@ -148,7 +148,8 @@ public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
 		stationServingLine.setEndTextElementListener(new EndTextElementListener() {
 			@Override
 			public void end(String body) {
-				m_station.getLines().add(new Line(body));
+				Line line = Line.fromAlias(body);
+				m_station.getLines().add(line);
 			}
 		});
 		stationFacilities.setStartElementListener(new StartElementListener() {

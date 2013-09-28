@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfLineStatus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://webservices.lul.co.uk/">
   <LineStatus ID="0" StatusDetails="">
     <BranchDisruptions />
@@ -21,10 +21,10 @@
       <StatusType ID="1" Description="Line" />
     </Status>
   </LineStatus>
-  <LineStatus ID="2" StatusDetails="">
+  <LineStatus ID="2" StatusDetails="Between Turnham Green and Richmond only, due to a signal failure at Richmond. GOOD SERVICE on the rest of the line">
     <BranchDisruptions />
     <Line ID="9" Name="District" />
-    <Status ID="GS" CssClass="GoodService" Description="Good Service" IsActive="true">
+    <Status ID="SD" CssClass="DisruptedService" Description="Severe Delays" IsActive="true">
       <StatusType ID="1" Description="Line" />
     </Status>
   </LineStatus>
@@ -35,10 +35,10 @@
       <StatusType ID="1" Description="Line" />
     </Status>
   </LineStatus>
-  <LineStatus ID="4" StatusDetails="">
+  <LineStatus ID="4" StatusDetails="Due to an obstruction on the track in the Westminster area. Valid tickets will be accepted on London Buses via any reasonable route. Customers should avoid the line where possible.">
     <BranchDisruptions />
     <Line ID="4" Name="Jubilee" />
-    <Status ID="GS" CssClass="GoodService" Description="Good Service" IsActive="true">
+    <Status ID="SD" CssClass="DisruptedService" Description="Severe Delays" IsActive="true">
       <StatusType ID="1" Description="Line" />
     </Status>
   </LineStatus>
@@ -49,10 +49,10 @@
       <StatusType ID="1" Description="Line" />
     </Status>
   </LineStatus>
-  <LineStatus ID="5" StatusDetails="">
+ <LineStatus ID="5" StatusDetails="Between Kennington and Camden Town via Bank only, due to a person ill on a train earlier at Angel. GOOD SERVICE on the rest of the line.">
     <BranchDisruptions />
     <Line ID="5" Name="Northern" />
-    <Status ID="GS" CssClass="GoodService" Description="Good Service" IsActive="true">
+    <Status ID="MD" CssClass="GoodService" Description="Minor Delays" IsActive="true">
       <StatusType ID="1" Description="Line" />
     </Status>
   </LineStatus>

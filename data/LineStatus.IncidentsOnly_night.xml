@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfLineStatus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://webservices.lul.co.uk/">
+  <LineStatus ID="0" StatusDetails="Train service resumes later this morning.">
+    <BranchDisruptions />
+    <Line ID="1" Name="Bakerloo" />
+    <Status ID="CS" CssClass="DisruptedService" Description="Planned Closure" IsActive="true">
+      <StatusType ID="1" Description="Line" />
+    </Status>
+  </LineStatus>
+  <LineStatus ID="1" StatusDetails="Train service resumes later this morning. However there is no service Bethnal Green to Loughton and Hainault via Newbury Park due to planned engineering work. A Rail Replacement bus service is in operation. &#xA;Greater Anglia will accept valid London Underground tickets via any reasonable route.">
+    <BranchDisruptions />
+    <Line ID="2" Name="Central" />
+    <Status ID="CS" CssClass="DisruptedService" Description="Planned Closure" IsActive="true">
+      <StatusType ID="1" Description="Line" />
+    </Status>
+  </LineStatus>
+  <LineStatus ID="10" StatusDetails="Train service resumes later this morning.">
+    <BranchDisruptions />
+    <Line ID="7" Name="Circle" />
+    <Status ID="CS" CssClass="DisruptedService" Description="Planned Closure" IsActive="true">
+      <StatusType ID="1" Description="Line" />
+    </Status>
+  </LineStatus>
+  <LineStatus ID="2" StatusDetails="Train service resumes later this morning.">
+    <BranchDisruptions />
+    <Line ID="9" Name="District" />
+    <Status ID="CS" CssClass="DisruptedService" Description="Planned Closure" IsActive="true">
+      <StatusType ID="1" Description="Line" />
+    </Status>
+  </LineStatus>
+  <LineStatus ID="8" StatusDetails="Train service resumes later this morning.">
+    <BranchDisruptions />
+    <Line ID="8" Name="Hammersmith and City" />
+    <Status ID="CS" CssClass="DisruptedService" Description="Planned Closure" IsActive="true">
+      <StatusType ID="1" Description="Line" />
+    </Status>
+  </LineStatus>
+  <LineStatus ID="4" StatusDetails="Train service resumes later this morning.">
+    <BranchDisruptions />
+    <Line ID="4" Name="Jubilee" />
+    <Status ID="CS" CssClass="DisruptedService" Description="Planned Closure" IsActive="true">
+      <StatusType ID="1" Description="Line" />
+    </Status>
+  </LineStatus>
+  <LineStatus ID="9" StatusDetails="Train service resumes later this morning.">
+    <BranchDisruptions />
+    <Line ID="11" Name="Metropolitan" />
+    <Status ID="CS" CssClass="DisruptedService" Description="Planned Closure" IsActive="true">
+      <StatusType ID="1" Description="Line" />
+    </Status>
+  </LineStatus>
+  <LineStatus ID="5" StatusDetails="Train service resumes later this morning.">
+    <BranchDisruptions />
+    <Line ID="5" Name="Northern" />
+    <Status ID="CS" CssClass="DisruptedService" Description="Planned Closure" IsActive="true">
+      <StatusType ID="1" Description="Line" />
+    </Status>
+  </LineStatus>
+  <LineStatus ID="6" StatusDetails="Train service resumes later this morning.">
+    <BranchDisruptions />
+    <Line ID="6" Name="Piccadilly" />
+    <Status ID="CS" CssClass="DisruptedService" Description="Planned Closure" IsActive="true">
+      <StatusType ID="1" Description="Line" />
+    </Status>
+  </LineStatus>
+  <LineStatus ID="7" StatusDetails="Train service resumes later this morning.">
+    <BranchDisruptions />
+    <Line ID="3" Name="Victoria" />
+    <Status ID="CS" CssClass="DisruptedService" Description="Planned Closure" IsActive="true">
+      <StatusType ID="1" Description="Line" />
+    </Status>
+  </LineStatus>
+  <LineStatus ID="11" StatusDetails="Train service resumes at 08.00hrs">
+    <BranchDisruptions />
+    <Line ID="12" Name="Waterloo and City" />
+    <Status ID="CS" CssClass="DisruptedService" Description="Planned Closure" IsActive="true">
+      <StatusType ID="1" Description="Line" />
+    </Status>
+  </LineStatus>
+  <LineStatus ID="82" StatusDetails="Train service resumes later this morning.">
+    <BranchDisruptions />
+    <Line ID="82" Name="Overground" />
+    <Status ID="CS" CssClass="DisruptedService" Description="Planned Closure" IsActive="true">
+      <StatusType ID="1" Description="Line" />
+    </Status>
+  </LineStatus>
+  <LineStatus ID="81" StatusDetails="Train service resumes later this morning.">
+    <BranchDisruptions />
+    <Line ID="81" Name="DLR" />
+    <Status ID="CS" CssClass="DisruptedService" Description="Planned Closure" IsActive="true">
+      <StatusType ID="1" Description="Line" />
+    </Status>
+  </LineStatus>
+</ArrayOfLineStatus>

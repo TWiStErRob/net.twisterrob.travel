@@ -1,56 +1,151 @@
 package com.twister.london.travel.model;
-public class Line {
-	private LineEnum m_line;
-	private String m_name;
 
-	public Line(LineEnum line) {
-		m_line = line;
-		m_name = line.getTitle();
-	}
-	public Line(String name) {
-		m_name = name;
-	}
+import java.util.Arrays;
 
-	public String getName() {
-		return m_name;
-	}
+import com.twister.london.travel.App;
 
-	public LineEnum getLine() {
-		return m_line;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((m_name == null)? 0 : m_name.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
+public enum Line {
+	Bakerloo('B', "Bakerloo") {
+		public int getBackground(LineColors colors) {
+			return colors.getBakerlooBackground();
 		}
-		if (obj == null) {
-			return false;
+		public int getForeground(LineColors colors) {
+			return colors.getBakerlooForeground();
 		}
-		if (!(obj instanceof Line)) {
-			return false;
+	},
+	Central('C', "Central") {
+		public int getBackground(LineColors colors) {
+			return colors.getCentralBackground();
 		}
-		Line other = (Line)obj;
-		if (m_name == null) {
-			if (other.m_name != null) {
-				return false;
+		public int getForeground(LineColors colors) {
+			return colors.getCentralForeground();
+		}
+	},
+	Circle('?', "Circle") {
+		public int getBackground(LineColors colors) {
+			return colors.getCircleBackground();
+		}
+		public int getForeground(LineColors colors) {
+			return colors.getCircleForeground();
+		}
+	},
+	District('D', "District") {
+		public int getBackground(LineColors colors) {
+			return colors.getDistrictBackground();
+		}
+		public int getForeground(LineColors colors) {
+			return colors.getDistrictForeground();
+		}
+	},
+	DLR('-', "DLR", "Docklands Light Railway") {
+		public int getBackground(LineColors colors) {
+			return colors.getDLRBackground();
+		}
+		public int getForeground(LineColors colors) {
+			return colors.getDLRForeground();
+		}
+	},
+	HammersmithAndCity('H', "H'smith & City", "Hammersmith & City", "Hammersmith and City") {
+		public int getBackground(LineColors colors) {
+			return colors.getHammersmithAndCityBackground();
+		}
+		public int getForeground(LineColors colors) {
+			return colors.getHammersmithAndCityForeground();
+		}
+	},
+	Jubilee('J', "Jubilee") {
+		public int getBackground(LineColors colors) {
+			return colors.getJubileeBackground();
+		}
+		public int getForeground(LineColors colors) {
+			return colors.getJubileeForeground();
+		}
+	},
+	Metropolitan('M', "Metropolitan") {
+		public int getBackground(LineColors colors) {
+			return colors.getMetropolitanBackground();
+		}
+		public int getForeground(LineColors colors) {
+			return colors.getMetropolitanForeground();
+		}
+	},
+	Northern('N', "Northern") {
+		public int getBackground(LineColors colors) {
+			return colors.getNorthernBackground();
+		}
+		public int getForeground(LineColors colors) {
+			return colors.getNorthernForeground();
+		}
+	},
+	Overground('-', "Overground") {
+		public int getBackground(LineColors colors) {
+			return colors.getOvergroundBackground();
+		}
+		public int getForeground(LineColors colors) {
+			return colors.getOvergroundForeground();
+		}
+	},
+	Piccadilly('P', "Piccadilly") {
+		public int getBackground(LineColors colors) {
+			return colors.getPiccadillyBackground();
+		}
+		public int getForeground(LineColors colors) {
+			return colors.getPiccadillyForeground();
+		}
+	},
+	Victoria('V', "Victoria") {
+		public int getBackground(LineColors colors) {
+			return colors.getVictoriaBackground();
+		}
+		public int getForeground(LineColors colors) {
+			return colors.getVictoriaForeground();
+		}
+	},
+	WaterlooAndCity('W', "Waterloo & City", "Waterloo and City") {
+		public int getBackground(LineColors colors) {
+			return colors.getWaterlooAndCityBackground();
+		}
+		public int getForeground(LineColors colors) {
+			return colors.getWaterlooAndCityForeground();
+		}
+	},
+	unknown('-', "Unknown", "") {
+		public int getBackground(LineColors colors) {
+			return colors.getUnknownBackground();
+		}
+		public int getForeground(LineColors colors) {
+			return colors.getUnknownForeground();
+		}
+	};
+	private char m_code;
+	private String[] m_aliases;
+
+	private Line(char code, String... aliases) {
+		m_code = code;
+		m_aliases = aliases;
+	}
+
+	public char getCode() {
+		return m_code;
+	}
+
+	public String getTitle() {
+		return m_aliases[0];
+	}
+
+	public abstract int getBackground(LineColors colors);
+	public abstract int getForeground(LineColors colors);
+
+	public static Line fromAlias(String alias) {
+		for (Line line: values()) {
+			if (Arrays.asList(line.m_aliases).contains(alias)) {
+				return line;
 			}
-		} else if (!m_name.equals(other.m_name)) {
-			return false;
 		}
-		return true;
-	}
 
-	@Override
-	public String toString() {
-		return String.format("%s", m_name);
+		if (alias != null) {
+			App.sendMail(Line.class + " new alias: " + alias);
+		}
+		return Line.unknown;
 	}
 }
