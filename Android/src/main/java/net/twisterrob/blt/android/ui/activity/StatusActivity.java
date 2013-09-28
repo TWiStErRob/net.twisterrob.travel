@@ -50,9 +50,11 @@ public class StatusActivity extends ListActivity implements OnRefreshListener<Li
 					LOG.error("Cannot load line statuses", result.getError());
 					Toast.makeText(getApplicationContext(), "Cannot load line statuses" + result.getError(),
 							Toast.LENGTH_LONG).show();
+					dataReceived(null);
 				} else if (result.getResult() == null) {
 					LOG.error("No line statuses returned", result.getError());
 					Toast.makeText(getApplicationContext(), "No line statuses returned", Toast.LENGTH_LONG).show();
+					dataReceived(null);
 				} else {
 					LineStatusFeed root = result.getResult();
 					dataReceived(root);
@@ -62,11 +64,13 @@ public class StatusActivity extends ListActivity implements OnRefreshListener<Li
 	}
 
 	protected void dataReceived(LineStatusFeed root) {
-		List<LineStatus> lines = root.getLineStatuses();
-		setListAdapter(new StationStatusAdapter(StatusActivity.this, lines));
-		m_lastUpdated = Calendar.getInstance();
-		m_listView.getLoadingLayoutProxy()
-				.setLastUpdatedLabel("Last updated at " + fmt.format(m_lastUpdated.getTime()));
+		if (root != null) {
+			List<LineStatus> lines = root.getLineStatuses();
+			setListAdapter(new StationStatusAdapter(StatusActivity.this, lines));
+			m_lastUpdated = Calendar.getInstance();
+			m_listView.getLoadingLayoutProxy().setLastUpdatedLabel(
+					"Last updated at " + fmt.format(m_lastUpdated.getTime()));
+		}
 		m_listView.onRefreshComplete();
 	};
 }
