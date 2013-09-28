@@ -75,6 +75,7 @@ class DataBaseReader {
 		SQLiteDatabase database = m_dataBaseHelper.getReadableDatabase();
 		Cursor cursor = database.query("StationType", TYPE_DETAILS, null, null, null, null, null);
 		while (cursor.moveToNext()) {
+			@SuppressWarnings("unused")
 			int id = cursor.getInt(cursor.getColumnIndex("_id"));
 			String name = cursor.getString(cursor.getColumnIndex("name"));
 			String url = cursor.getString(cursor.getColumnIndex("url"));

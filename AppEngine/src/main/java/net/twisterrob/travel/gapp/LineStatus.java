@@ -11,7 +11,7 @@ public class LineStatus extends HttpServlet {
 	private static final Logger LOG = LoggerFactory.getLogger(LineStatus.class);
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+		LOG.info(LineStatus.class + " called");
 		RequestDispatcher view = req.getRequestDispatcher("/LineStatus.jsp");
 		view.forward(req, resp);
 	}
