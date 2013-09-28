@@ -15,6 +15,13 @@
 		<log4j.qualifier>debug</log4j.qualifier>
 	</properties>
 	<dependencies>
+		<!-- My dependencies -->
+		<dependency>
+			<groupId>net.twisterrob.travel</groupId>
+			<artifactId>twister-travel-shared</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>

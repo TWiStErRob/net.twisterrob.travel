@@ -25,6 +25,12 @@
 	</build>
 	<dependencies>
 		<dependency>
+			<groupId>net.twisterrob</groupId>
+			<artifactId>twister-lib-android</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
 			<groupId>kxml2</groupId>
 			<artifactId>kxml2</artifactId>
 			<version>2.3.0</version>

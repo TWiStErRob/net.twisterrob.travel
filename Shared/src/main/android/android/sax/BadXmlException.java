@@ -16,8 +16,7 @@
 
 package android.sax;
 
-import org.xml.sax.SAXParseException;
-import org.xml.sax.Locator;
+import org.xml.sax.*;
 
 /**
  * An XML parse exception which includes the line number in the message.

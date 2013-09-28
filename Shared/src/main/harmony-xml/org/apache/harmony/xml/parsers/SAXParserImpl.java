@@ -16,17 +16,12 @@
 
 package org.apache.harmony.xml.parsers;
 
-import org.apache.harmony.xml.ExpatReader;
-
 import java.util.Map;
 
 import javax.xml.parsers.SAXParser;
 
-import org.xml.sax.Parser;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
-import org.xml.sax.XMLReader;
+import org.apache.harmony.xml.ExpatReader;
+import org.xml.sax.*;
 import org.xml.sax.helpers.XMLReaderAdapter;
 
 /**

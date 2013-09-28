@@ -16,23 +16,13 @@
 
 package org.apache.harmony.xml;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
-import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.ext.LexicalHandler;
+import java.io.*;
+import java.net.*;
+import java.util.logging.*;
 
-import java.io.Reader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URLConnection;
-import java.net.URL;
-import java.util.logging.Logger;
-import java.util.logging.Level;
+import org.xml.sax.*;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.ext.LexicalHandler;
 
 /**
  * Adapts SAX API to the Expat native XML parser. Not intended for reuse

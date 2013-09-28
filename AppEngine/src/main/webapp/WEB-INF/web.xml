@@ -11,7 +11,7 @@
 	<!-- Servlets -->
 	<servlet>
 		<servlet-name>LineStatus</servlet-name>
-		<servlet-class>net.twisterrob.travel.gapp.LineStatus</servlet-class>
+		<servlet-class>net.twisterrob.blt.gapp.LineStatus</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>LineStatus</servlet-name>
