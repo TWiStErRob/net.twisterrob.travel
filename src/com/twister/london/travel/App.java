@@ -4,14 +4,16 @@ import java.net.URL;
 import java.util.*;
 
 import android.graphics.Bitmap;
+import android.widget.Toast;
 
 import com.twister.android.utils.cache.*;
+import com.twister.android.utils.concurrent.MailSenderAsyncTask;
 import com.twister.london.travel.db.DataBaseHelper;
 import com.twister.london.travel.io.feeds.*;
 
 public class App extends android.app.Application {
 	private static/* final */App s_instance;
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 	private static final String CACHE_IMAGE = ImageSDNetCache.class.getName();
 	private static final Map<String, Cache<?, ?>> s_caches = new HashMap<String, Cache<?, ?>>();
 
@@ -83,5 +85,24 @@ public class App extends android.app.Application {
 			ex.printStackTrace();
 		}
 		return null;
+	}
+
+	public static void sendMail(String body) {
+		MailSenderAsyncTask.setUsername("*********@********.****");
+		MailSenderAsyncTask.setPassword("*********");
+		MailSenderAsyncTask task = new MailSenderAsyncTask("Better London Travel",
+				"better-london-travel@twisterrob.net", "papp.robert.s@gmail.com") {
+			@Override
+			protected void onPostExecute(Boolean result) {
+				super.onPostExecute(result);
+				if (Boolean.TRUE.equals(result)) {
+					Toast.makeText(getInstance(), "Mail sent", Toast.LENGTH_SHORT);
+				} else {
+					Toast.makeText(getInstance(), "Mail failed", Toast.LENGTH_SHORT);
+				}
+			}
+		};
+		task.setBody(body);
+		task.execute();
 	}
 }
