@@ -17,7 +17,7 @@ var htmltooltip={
 		var tipx=anchor.dimensions.offsetx
 		var tipy=anchor.dimensions.offsety+anchor.dimensions.h
 		tipx=(tipx+tooltip.dimensions.w-scrollLeft>docwidth)? tipx-tooltip.dimensions.w : tipx //account for right edge
-		tipy=(tipy+tooltip.dimensions.h-scrollTop>docheight)? tipy-tooltip.dimensions.h-anchor.dimensions.h : tipy //account for bottom edge
+		tipy=(tipy+tooltip.dimensions.h-scrollTop>docheight)? tipy/*-tooltip.dimensions.h-anchor.dimensions.h*/ : tipy //account for bottom edge
 		$(tooltip).css({left: tipx, top: tipy})
 	},
 
@@ -38,7 +38,7 @@ var htmltooltip={
 	},
 
 	updateanchordimensions:function($){
-		var $anchors=$('*[@rel="'+htmltooltip.tipclass+'"]')
+		var $anchors=$('*[rel="'+htmltooltip.tipclass+'"]')
 		$anchors.each(function(index){
 			this.dimensions={w:this.offsetWidth, h:this.offsetHeight, offsetx:$(this).offset().left, offsety:$(this).offset().top}
 		})
@@ -47,8 +47,8 @@ var htmltooltip={
 	render:function(){
 		jQuery(document).ready(function($){
 			htmltooltip.iebody=(document.compatMode && document.compatMode!="BackCompat")? document.documentElement : document.body
-			var $anchors=$('*[@rel="'+htmltooltip.tipclass+'"]')
-			var $tooltips=$('div[@class="'+htmltooltip.tipclass+'"]')
+			var $anchors=$('*[rel="'+htmltooltip.tipclass+'"]')
+			var $tooltips=$('div[class="'+htmltooltip.tipclass+'"]')
 			$anchors.each(function(index){ //find all links with "title=htmltooltip" declaration
 				this.dimensions={w:this.offsetWidth, h:this.offsetHeight, offsetx:$(this).offset().left, offsety:$(this).offset().top} //store anchor dimensions
 				this.tippos=index+' pos' //store index of corresponding tooltip
