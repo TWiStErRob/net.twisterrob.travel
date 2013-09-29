@@ -215,6 +215,10 @@ public class LineStatusServlet extends HttpServlet {
 			for (Line line: allLines) {
 				LineStatus oldStatus = oldMap.get(line);
 				LineStatus newStatus = newMap.get(line);
+				if (oldStatus == null || newStatus == null) {
+					statusChanges.put(line, "N/A");
+					continue;
+				}
 				int statusDiff = oldStatus.getType().compareTo(newStatus.getType());
 				if (statusDiff < 0) {
 					statusChanges.put(line, "better");
@@ -222,22 +226,24 @@ public class LineStatusServlet extends HttpServlet {
 					statusChanges.put(line, "worse");
 				} else {
 					statusChanges.put(line, "same");
+					diffDesc(line, oldStatus, newStatus);
+				}
+			}
+		}
 
-					String oldDesc = oldStatus.getDescription();
-					String newDesc = newStatus.getDescription();
-					if (oldDesc == null && newDesc != null) {
-						statusChanges.put(line, "new desc");
-					} else if (oldDesc != null && newDesc == null) {
-						statusChanges.put(line, "desc removed");
-					} else if (oldDesc != null && newDesc != null) {
-						if (oldDesc.equals(newDesc)) {
-							statusChanges.put(line, "same");
-							descChanges.put(line, newDesc);
-						} else {
-							statusChanges.put(line, "desc changed");
-							descChanges.put(line, diffDesc(oldDesc, newDesc));
-						}
-					}
+		protected void diffDesc(Line line, LineStatus oldStatus, LineStatus newStatus) {
+			String oldDesc = oldStatus.getDescription();
+			String newDesc = newStatus.getDescription();
+			if (oldDesc == null && newDesc != null) {
+				statusChanges.put(line, "desc added");
+			} else if (oldDesc != null && newDesc == null) {
+				statusChanges.put(line, "desc removed");
+			} else if (oldDesc != null && newDesc != null) {
+				if (oldDesc.equals(newDesc)) {
+					statusChanges.put(line, "same");
+				} else {
+					statusChanges.put(line, "changed");
+					descChanges.put(line, diffDesc(oldDesc, newDesc));
 				}
 			}
 		}

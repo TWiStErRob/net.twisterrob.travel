@@ -27,7 +27,7 @@
 <body>
 	<c:forEach var="feedChange" items="${feedChanges}" varStatus="status">
 	<c:set var="feed" value="${feedChange.new}" />
-	<table style="float: left; width: 300px; border: 1px solid black;">
+	<table style="float: left; width: 320px; border: 1px solid black;">
 		<thead>
 			<tr>
 				<th colspan="3" style="font-style: italic">
@@ -64,7 +64,7 @@
 					<c:set var="delayStyle" value="${delayStyle};color: red;font-weight:bold" />
 				</c:if>
 				<c:if test="${feedChange.statuses[lineStatus.line] == 'same'}">
-					<c:set var="changeStyle" value="${changeStyle};color: lightgray" />
+					<c:set var="changeStyle" value="${changeStyle};color: white" />
 				</c:if>
 				<tr>
 					<td style="background-color: #${lineColor}; color: #${lineTextColor}">${lineStatus.line.title}</td>
