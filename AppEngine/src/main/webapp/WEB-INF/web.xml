@@ -19,6 +19,15 @@
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>LineStatusCron</servlet-name>
+		<servlet-class>net.twisterrob.blt.gapp.LineStatusCronServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LineStatusCron</servlet-name>
+		<url-pattern>/LineStatusCron</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>SystemServiceServlet</servlet-name>
 		<servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
 		<init-param>

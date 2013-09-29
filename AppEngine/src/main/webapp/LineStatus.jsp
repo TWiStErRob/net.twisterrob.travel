@@ -5,11 +5,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Line Status</title>
+	<title>Line Status</title>
+	<style>
+		th {
+			background-color: lightgray;
+		}
+	</style>
 </head>
 <body>
-	<table id="filmList" class="tablesorter">
+	<c:forEach var="feed" items="${feeds}" varStatus="status">
+	<table style="float: left; width: 300px; border: 1px solid black;">
 		<thead>
+			<tr>
+				<th colspan="3" style="font-style: italic">
+					${status.index+1}/${fn:length(feeds)}:
+					<fmt:formatDate value="${feed.when}" pattern="yyyy-MM-dd HH:mm:ss"/>
+				</th>
+			</tr>
 			<tr>
 				<th>Line</th>
 				<th>Disruption Type</th>
@@ -17,7 +29,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="lineStatus" items="${feed.lineStatuses}">
+			<c:forEach var="lineStatus" items="${feed.content.lineStatuses}">
 				<c:set var="lineColor" value="${call.init[lineStatus.line].arg[colors].invoke['getBackground']}" />
 				<c:set var="lineTextColor" value="${call.init[lineStatus.line].arg[colors].invoke['getForeground']}" />
 				<c:set var="lineColor" value="${call.static['java.lang.Integer'].intArg[lineColor].invoke['toHexString']}" />
@@ -35,6 +47,12 @@
 				</tr>
 			</c:forEach>
 		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="3" title="${feed.fullError}">${feed.errorHeader}</td>
+			</tr>
+		</tfoot>
 	</table>
+	</c:forEach>
 </body>
 </html>
