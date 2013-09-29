@@ -36,6 +36,7 @@ public class LineStatusServlet extends HttpServlet {
 		Feed feed = Feed.TubeDepartureBoardsLineStatus;
 		List<Result> results = new LinkedList<Result>();
 
+		// Params
 		int max;
 		try {
 			max = Integer.parseInt(req.getParameter(QUERY_DISPLAY_MAX));
@@ -46,33 +47,43 @@ public class LineStatusServlet extends HttpServlet {
 			results.add(getCurrent(feed));
 		}
 
-		Query q = new Query(feed.name()).addSort(DSPROP_RETRIEVED_DATE, SortDirection.DESCENDING);
-		for (Entity result: datastore.prepare(q).asIterable()) {
+		// process them
+		Iterable<Entity> entries = fetchEntries(feed);
+		for (Entity entry: entries) {
 			if (--max < 0) {
 				break; // we've had enough
 			}
-			Text content = (Text)result.getProperty(DSPROP_CONTENT);
-			Text error = (Text)result.getProperty(DSPROP_ERROR);
-			Date date = (Date)result.getProperty(DSPROP_RETRIEVED_DATE);
+			Text content = (Text)entry.getProperty(DSPROP_CONTENT);
+			Text error = (Text)entry.getProperty(DSPROP_ERROR);
+			Date date = (Date)entry.getProperty(DSPROP_RETRIEVED_DATE);
+			Result result;
 			if (content != null) {
 				try {
-					BaseFeed feedContents = feed.getHandler()
-							.parse(new StringInputStream(content.getValue(), ENCODING));
-					results.add(new Result(date, feedContents));
+					LineStatusFeed feedContents = (LineStatusFeed)feed.getHandler().parse(
+							new StringInputStream(content.getValue(), ENCODING));
+					result = new Result(date, feedContents);
 				} catch (Exception ex) {
-					results.add(new Result(date, "Error while displaying loaded XML: "
-							+ ObjectTools.getFullStackTrace(ex)));
+					result = new Result(date, "Error while displaying loaded XML: " + ObjectTools.getFullStackTrace(ex));
 				}
 			} else if (error != null) {
-				results.add(new Result(date, error.getValue()));
+				result = new Result(date, error.getValue());
+			} else {
+				result = new Result(date, "Empty entity");
 			}
+			results.add(result);
 		}
 
+		// display them
 		req.setAttribute("feeds", results);
 		req.setAttribute("colors", new TubeStatusPresentationLineColors());
 		req.setAttribute("call", new InvokerMap());
 		RequestDispatcher view = req.getRequestDispatcher("/LineStatus.jsp");
 		view.forward(req, resp);
+	}
+	protected Iterable<Entity> fetchEntries(Feed feed) {
+		Query q = new Query(feed.name()).addSort(DSPROP_RETRIEVED_DATE, SortDirection.DESCENDING);
+		Iterable<Entity> results = datastore.prepare(q).asIterable();
+		return results;
 	}
 	protected Result getCurrent(Feed feed) throws ServletException, IOException {
 		try {
@@ -102,14 +113,14 @@ public class LineStatusServlet extends HttpServlet {
 	public static class Result {
 		private String errorHeader;
 		private String fullError;
-		private BaseFeed content;
+		private LineStatusFeed content;
 		private Date when;
 		public Result(Date when, String error) {
 			this.when = when;
 			this.errorHeader = error.indexOf('\n') != -1? error.substring(0, error.indexOf('\n')) : error;
 			this.fullError = error;
 		}
-		public Result(Date when, BaseFeed content) {
+		public Result(Date when, LineStatusFeed content) {
 			this.when = when;
 			this.content = content;
 		}
@@ -124,6 +135,20 @@ public class LineStatusServlet extends HttpServlet {
 		}
 		public Date getWhen() {
 			return when;
+		}
+	}
+	public static class ResultChange {
+		private Result oldResult;
+		private Result newResult;
+		public ResultChange(Result oldResult, Result newResult) {
+			this.oldResult = oldResult;
+			this.newResult = newResult;
+		}
+		public Result getOld() {
+			return oldResult;
+		}
+		public Result getNew() {
+			return newResult;
 		}
 	}
 }
