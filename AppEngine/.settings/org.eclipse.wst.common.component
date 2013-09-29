@@ -6,6 +6,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/webapp"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/android"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/diff"/>
         <dependent-module archiveName="twister-travel-shared-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/twister-travel-shared/twister-travel-shared">
             <dependency-type>uses</dependency-type>
         </dependent-module>

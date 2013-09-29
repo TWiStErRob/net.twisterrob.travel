@@ -4,6 +4,7 @@ import java.net.*;
 
 public class LocalhostUrlBuilder implements URLBuilder {
 	private static final String LOCALHOST = "http://192.168.0.5:8081/";
+	//	private static final String LOCALHOST = "http://192.168.43.165:8081/";
 	@Override
 	public URL getFeedUrl(Feed feed) throws MalformedURLException {
 		String spec;

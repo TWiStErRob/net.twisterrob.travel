@@ -8,8 +8,10 @@ import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import name.fraser.neil.plaintext.*;
+import name.fraser.neil.plaintext.diff_match_patch.Diff;
 import net.twisterrob.blt.io.feeds.*;
-import net.twisterrob.blt.model.TubeStatusPresentationLineColors;
+import net.twisterrob.blt.model.*;
 import net.twisterrob.java.io.IOTools;
 import net.twisterrob.java.utils.ObjectTools;
 import net.twisterrob.java.web.InvokerMap;
@@ -27,6 +29,7 @@ public class LineStatusServlet extends HttpServlet {
 	private static final Logger LOG = LoggerFactory.getLogger(LineStatusServlet.class);
 
 	private static final String QUERY_DISPLAY_CURRENT = "current";
+	private static final String QUERY_DISPLAY_ERRORS = "errors";
 	private static final String QUERY_DISPLAY_MAX = "max";
 	private static final int DISPLAY_MAX_DEFAULT = 100;
 
@@ -45,6 +48,10 @@ public class LineStatusServlet extends HttpServlet {
 		}
 		if (Boolean.parseBoolean(req.getParameter(QUERY_DISPLAY_CURRENT))) {
 			results.add(getCurrent(feed));
+		}
+		boolean skipErrors = true;
+		if (Boolean.parseBoolean(req.getParameter(QUERY_DISPLAY_ERRORS))) {
+			skipErrors = false;
 		}
 
 		// process them
@@ -73,18 +80,16 @@ public class LineStatusServlet extends HttpServlet {
 			results.add(result);
 		}
 
+		List<ResultChange> differences = getDifferences(results, skipErrors);
+
 		// display them
-		req.setAttribute("feeds", results);
+		req.setAttribute("feedChanges", differences);
 		req.setAttribute("colors", new TubeStatusPresentationLineColors());
 		req.setAttribute("call", new InvokerMap());
 		RequestDispatcher view = req.getRequestDispatcher("/LineStatus.jsp");
 		view.forward(req, resp);
 	}
-	protected Iterable<Entity> fetchEntries(Feed feed) {
-		Query q = new Query(feed.name()).addSort(DSPROP_RETRIEVED_DATE, SortDirection.DESCENDING);
-		Iterable<Entity> results = datastore.prepare(q).asIterable();
-		return results;
-	}
+
 	protected Result getCurrent(Feed feed) throws ServletException, IOException {
 		try {
 			LineStatusFeed feedContents = downloadFeed(feed);
@@ -92,6 +97,11 @@ public class LineStatusServlet extends HttpServlet {
 		} catch (Exception ex) {
 			return new Result(new Date(), ObjectTools.getFullStackTrace(ex));
 		}
+	}
+	protected Iterable<Entity> fetchEntries(Feed feed) {
+		Query q = new Query(feed.name()).addSort(DSPROP_RETRIEVED_DATE, SortDirection.DESCENDING);
+		Iterable<Entity> results = datastore.prepare(q).asIterable();
+		return results;
 	}
 
 	private <T extends BaseFeed> T downloadFeed(Feed feed) throws IOException, SAXException {
@@ -124,7 +134,7 @@ public class LineStatusServlet extends HttpServlet {
 			this.when = when;
 			this.content = content;
 		}
-		public BaseFeed getContent() {
+		public LineStatusFeed getContent() {
 			return content;
 		}
 		public String getErrorHeader() {
@@ -137,18 +147,118 @@ public class LineStatusServlet extends HttpServlet {
 			return when;
 		}
 	}
+
+	private List<ResultChange> getDifferences(List<Result> results, boolean skipErrors) {
+		List<ResultChange> resultChanges = new ArrayList<LineStatusServlet.ResultChange>(results.size());
+		Result newResult = null;
+		for (Result oldResult: results) { // we're going forward, but the list is backwards
+			if (skipErrors && oldResult.getFullError() != null) {
+				continue;
+			}
+			resultChanges.add(new ResultChange(oldResult, newResult));
+			newResult = oldResult;
+		}
+		resultChanges.add(new ResultChange(null, newResult));
+		resultChanges.remove(0);
+		return resultChanges;
+
+	}
 	public static class ResultChange {
 		private Result oldResult;
 		private Result newResult;
+		private String errorChange;
+		private Map<Line, String> statusChanges;
+		private Map<Line, String> descChanges;
 		public ResultChange(Result oldResult, Result newResult) {
 			this.oldResult = oldResult;
 			this.newResult = newResult;
+			statusChanges = new EnumMap<Line, String>(Line.class);
+			descChanges = new EnumMap<Line, String>(Line.class);
+			diff();
 		}
 		public Result getOld() {
 			return oldResult;
 		}
 		public Result getNew() {
 			return newResult;
+		}
+		public String getError() {
+			return errorChange;
+		}
+		public Map<Line, String> getStatuses() {
+			return statusChanges;
+		}
+		public Map<Line, String> getDescriptions() {
+			return descChanges;
+		}
+
+		private void diff() {
+			if (oldResult == null && newResult != null) {
+				errorChange = "new status";
+			} else if (oldResult != null && newResult == null) {
+				errorChange = "last status";
+			} else if (oldResult != null && newResult != null) {
+				diffError();
+				diffContent();
+			} // else errorChange = null
+
+		}
+		protected void diffContent() {
+			if (oldResult.getContent() == null || newResult.getContent() == null) {
+				return;
+			}
+			Map<Line, LineStatus> oldMap = oldResult.getContent().getStatusMap();
+			Map<Line, LineStatus> newMap = newResult.getContent().getStatusMap();
+			Set<Line> allLines = new HashSet<Line>();
+			allLines.addAll(oldMap.keySet());
+			allLines.addAll(newMap.keySet());
+			for (Line line: allLines) {
+				LineStatus oldStatus = oldMap.get(line);
+				LineStatus newStatus = newMap.get(line);
+				int statusDiff = oldStatus.getType().compareTo(newStatus.getType());
+				if (statusDiff < 0) {
+					statusChanges.put(line, "better");
+				} else if (statusDiff > 0) {
+					statusChanges.put(line, "worse");
+				} else {
+					statusChanges.put(line, "same");
+
+					String oldDesc = oldStatus.getDescription();
+					String newDesc = newStatus.getDescription();
+					if (oldDesc == null && newDesc != null) {
+						statusChanges.put(line, "new desc");
+					} else if (oldDesc != null && newDesc == null) {
+						statusChanges.put(line, "desc removed");
+					} else if (oldDesc != null && newDesc != null) {
+						if (oldDesc.equals(newDesc)) {
+							statusChanges.put(line, "same");
+							descChanges.put(line, newDesc);
+						} else {
+							statusChanges.put(line, "desc changed");
+							descChanges.put(line, diffDesc(oldDesc, newDesc));
+						}
+					}
+				}
+			}
+		}
+		private String diffDesc(String oldDesc, String newDesc) {
+			diff_match_patch differ = new diff_match_patch();
+			LinkedList<Diff> diff = differ.diff_main(oldDesc, newDesc);
+			differ.diff_cleanupSemantic(diff);
+			return differ.diff_prettyHtml(diff);
+		}
+		protected void diffError() {
+			String oldErrorHeader = oldResult.getErrorHeader();
+			String newErrorHeader = newResult.getErrorHeader();
+			if (oldErrorHeader == null && newErrorHeader != null) {
+				errorChange = "errored";
+			} else if (oldErrorHeader != null && newErrorHeader == null) {
+				errorChange = "fixed";
+			} else if (oldErrorHeader != null && newErrorHeader != null) {
+				errorChange = oldErrorHeader.equals(newErrorHeader)? "same" : "changed";
+			} else {
+				errorChange = null;
+			}
 		}
 	}
 }
