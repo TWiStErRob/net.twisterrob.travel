@@ -1,6 +1,9 @@
 package net.twisterrob.blt.io.feeds;
 
 import java.net.*;
+import java.util.Map;
+
+import net.twisterrob.blt.model.Line;
 
 /**
  * From email: Thank you for registering for Transport for London (TfL) syndicated feeds.
@@ -24,11 +27,16 @@ public class TFLUrlBuilder implements URLBuilder {
 		return getSyncdicationFeed(feed.getFeedId());
 	}
 
-	public URL getFeedUrl(Feed feed) throws MalformedURLException {
+	public URL getFeedUrl(Feed feed, Map<String, ?> args) throws MalformedURLException {
 		if (feed.getType() == Feed.Type.Syndication) {
 			return getSyncdicationFeed(feed);
 		} else {
-			return feed.getUrl();
+			switch (feed) {
+				default:
+					return feed.getUrl();
+				case TubeDepartureBoardsPredictionSummary:
+					return new URL(feed.getUrl(), ((Line)args.get("line")).getTrackerNetCode());
+			}
 		}
 	}
 }

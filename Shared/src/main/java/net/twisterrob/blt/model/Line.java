@@ -123,8 +123,8 @@ public enum Line {
 		m_aliases = aliases;
 	}
 
-	public char getCode() {
-		return m_code;
+	public String getTrackerNetCode() {
+		return "" + m_code;
 	}
 
 	public String getTitle() {

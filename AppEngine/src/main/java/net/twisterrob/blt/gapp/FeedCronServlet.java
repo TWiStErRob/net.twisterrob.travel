@@ -86,7 +86,7 @@ public class FeedCronServlet extends HttpServlet {
 	public static String downloadFeed(Feed feed) throws IOException {
 		InputStream input = null;
 		try {
-			URL url = URL_BUILDER.getFeedUrl(feed);
+			URL url = URL_BUILDER.getFeedUrl(feed, Collections.<String, Object> emptyMap());
 			LOG.debug(url.toString());
 			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 			connection.connect();

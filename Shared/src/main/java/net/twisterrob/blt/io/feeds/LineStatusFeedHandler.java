@@ -24,11 +24,11 @@ import android.util.Xml;
 	 * <tr><td>Status/@Description</td><td>A description of the status of the line e.g. Part Suspended, Severe Delays</td></tr>
 	 * <tr><td>Status/@IsActive</td><td>A Boolean indicating if the status shown is active</td></tr>
 	 * <tr><td>Children</td><td><table>
-		 * <tr><th>Status/@Attribute</th><th>Description</th></tr>
+		 * <tr><th>Attribute</th><th>Description</th></tr>
 		 * <tr><td>StatusType/@ID</td><td>A code representing the status type the service is checking. For this call it will always return the value “1”</td></tr>
 		 * <tr><td>StatusType/@Description</td><td>A description of the status type the service is checking. For this call it will always return the value “Line”</td></tr>
-	 * </table></td></tr>d
- * </table></td></tr>d
+	 * </table></td></tr>
+ * </table></td></tr>
  * </table>
  * @author TWiStEr
  */

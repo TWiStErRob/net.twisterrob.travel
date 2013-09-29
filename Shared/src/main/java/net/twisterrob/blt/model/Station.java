@@ -14,6 +14,7 @@ public class Station {
 	private List<Facility> m_facilities;
 	private List<Line> m_lines;
 	private Type m_type = Type.Unknown;
+	private String m_trackerNetCode;
 
 	@Override
 	public String toString() {
@@ -93,5 +94,42 @@ public class Station {
 			throw new IllegalArgumentException("Type must be set, use Type." + Type.Unknown + " if not sure");
 		}
 		m_type = type;
+	}
+
+	public String getTrackerNetCode() {
+		return m_trackerNetCode;
+	}
+	public void setTrackerNetCode(String code) {
+		this.m_trackerNetCode = code;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((m_trackerNetCode == null)? 0 : m_trackerNetCode.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Station)) {
+			return false;
+		}
+		Station other = (Station)obj;
+		if (m_trackerNetCode == null) {
+			if (other.m_trackerNetCode != null) {
+				return false;
+			}
+		} else if (!m_trackerNetCode.equals(other.m_trackerNetCode)) {
+			return false;
+		}
+		return true;
 	}
 }

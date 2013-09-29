@@ -28,6 +28,12 @@
 			</intent-filter>
 		</activity>
 		<activity
+				android:name=".ui.activity.PredictionStationSelectorActivity"
+				android:label="@string/launcher_linestatus"
+			>
+			<!-- empty contents -->
+		</activity>
+		<activity
 				android:name=".ui.activity.MainActivity"
 				android:label="@string/app_name"
 			>
