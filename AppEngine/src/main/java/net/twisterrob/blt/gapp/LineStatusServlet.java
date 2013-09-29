@@ -91,13 +91,12 @@ public class LineStatusServlet extends HttpServlet {
 		InputStream input = null;
 		try {
 			input = connection.getInputStream();
+			@SuppressWarnings("unchecked")
+			T root = (T)feed.getHandler().parse(input);
+			return root;
 		} finally {
 			IOTools.ignorantClose(input);
 		}
-
-		@SuppressWarnings("unchecked")
-		T root = (T)feed.getHandler().parse(input);
-		return root;
 	}
 
 	public static class Result {
