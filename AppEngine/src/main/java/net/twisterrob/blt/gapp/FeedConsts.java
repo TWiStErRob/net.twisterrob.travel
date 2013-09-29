@@ -2,7 +2,7 @@ package net.twisterrob.blt.gapp;
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.blt.model.*;
 
-public interface LineStatusConsts {
+public interface FeedConsts {
 	String EMAIL = "papp.robert.s@gmail.com";
 
 	//URLBuilder URL_BUILDER = new LocalhostUrlBuilder(); // debug

@@ -4,8 +4,14 @@
 		xsi:noNamespaceSchemaLocation="https://googleappengine.googlecode.com/svn-history/r376/trunk/java/src/main/com/google/appengine/tools/development/cron.xsd"
 	>
 	<cron>
-		<url>/LineStatusCron?feed=TubeDepartureBoardsLineStatus</url>
+		<url>/FeedCron?feed=TubeDepartureBoardsLineStatus</url>
 		<description>Get Line Status</description>
+		<schedule>every 1 minutes</schedule>
+		<timezone>Europe/London</timezone>
+	</cron>
+	<cron>
+		<url>/FeedCron?feed=TubeDepartureBoardsStationStatusIncidents</url>
+		<description>Get Station Incidents</description>
 		<schedule>every 1 minutes</schedule>
 		<timezone>Europe/London</timezone>
 	</cron>

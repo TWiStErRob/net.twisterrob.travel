@@ -1,5 +1,5 @@
 package net.twisterrob.blt.gapp;
-import static net.twisterrob.blt.gapp.LineStatusConsts.*;
+import static net.twisterrob.blt.gapp.FeedConsts.*;
 
 import java.io.*;
 import java.net.*;
@@ -18,8 +18,8 @@ import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.datastore.Query.SortDirection;
 
 @SuppressWarnings("serial")
-public class LineStatusCronServlet extends HttpServlet {
-	private static final Logger LOG = LoggerFactory.getLogger(LineStatusCronServlet.class);
+public class FeedCronServlet extends HttpServlet {
+	private static final Logger LOG = LoggerFactory.getLogger(FeedCronServlet.class);
 
 	private static final String QUERY_FEED = "feed";
 
@@ -58,19 +58,6 @@ public class LineStatusCronServlet extends HttpServlet {
 		}
 	}
 
-	protected Entity downloadNewEntry(Feed feed) {
-		Entity newEntry = new Entity(feed.name());
-		try {
-			String feedResult = downloadFeed(feed);
-			newEntry.setProperty(DSPROP_CONTENT, new Text(feedResult));
-		} catch (Exception ex) {
-			LOG.error("Cannot load " + feed, ex);
-			newEntry.setProperty(DSPROP_ERROR, new Text(ObjectTools.getFullStackTrace(ex)));
-		}
-		newEntry.setProperty(DSPROP_RETRIEVED_DATE, new Date());
-		return newEntry;
-	}
-
 	private static Entity readLatest(DatastoreService datastore, Feed feed) {
 		// we're only concerned about the latest one, if any
 		Query q = new Query(feed.name()).addSort(DSPROP_RETRIEVED_DATE, SortDirection.DESCENDING);
@@ -83,7 +70,20 @@ public class LineStatusCronServlet extends HttpServlet {
 				&& ObjectTools.equals(oldEntry.getProperty(propName), newEntry.getProperty(propName));
 	}
 
-	private static String downloadFeed(Feed feed) throws IOException {
+	public static Entity downloadNewEntry(Feed feed) {
+		Entity newEntry = new Entity(feed.name());
+		try {
+			String feedResult = downloadFeed(feed);
+			newEntry.setProperty(DSPROP_CONTENT, new Text(feedResult));
+		} catch (Exception ex) {
+			LOG.error("Cannot load " + feed, ex);
+			newEntry.setProperty(DSPROP_ERROR, new Text(ObjectTools.getFullStackTrace(ex)));
+		}
+		newEntry.setProperty(DSPROP_RETRIEVED_DATE, new Date());
+		return newEntry;
+	}
+
+	public static String downloadFeed(Feed feed) throws IOException {
 		InputStream input = null;
 		try {
 			URL url = URL_BUILDER.getFeedUrl(feed);

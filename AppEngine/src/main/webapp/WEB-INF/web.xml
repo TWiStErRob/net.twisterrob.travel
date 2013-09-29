@@ -10,21 +10,21 @@
 
 	<!-- Servlets -->
 	<servlet>
-		<servlet-name>LineStatus</servlet-name>
-		<servlet-class>net.twisterrob.blt.gapp.LineStatusServlet</servlet-class>
+		<servlet-name>LineStatusHistory</servlet-name>
+		<servlet-class>net.twisterrob.blt.gapp.LineStatusHistoryServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>LineStatus</servlet-name>
-		<url-pattern>/LineStatus</url-pattern>
+		<servlet-name>LineStatusHistory</servlet-name>
+		<url-pattern>/LineStatusHistory</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>LineStatusCron</servlet-name>
-		<servlet-class>net.twisterrob.blt.gapp.LineStatusCronServlet</servlet-class>
+		<servlet-name>FeedCron</servlet-name>
+		<servlet-class>net.twisterrob.blt.gapp.FeedCronServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>LineStatusCron</servlet-name>
-		<url-pattern>/LineStatusCron</url-pattern>
+		<servlet-name>FeedCron</servlet-name>
+		<url-pattern>/FeedCron</url-pattern>
 	</servlet-mapping>
 
 	<servlet>

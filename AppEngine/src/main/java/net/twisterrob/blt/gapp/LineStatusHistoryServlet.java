@@ -1,8 +1,7 @@
 package net.twisterrob.blt.gapp;
-import static net.twisterrob.blt.gapp.LineStatusConsts.*;
+import static net.twisterrob.blt.gapp.FeedConsts.*;
 
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
 import java.util.*;
 
 import javax.servlet.*;
@@ -12,21 +11,17 @@ import name.fraser.neil.plaintext.*;
 import name.fraser.neil.plaintext.diff_match_patch.Diff;
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.blt.model.*;
-import net.twisterrob.java.io.IOTools;
 import net.twisterrob.java.utils.ObjectTools;
 import net.twisterrob.java.web.InvokerMap;
 
 import org.apache.tools.ant.filters.StringInputStream;
-import org.slf4j.*;
-import org.xml.sax.SAXException;
 
 import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.datastore.Query.SortDirection;
 
 @SuppressWarnings("serial")
-public class LineStatusServlet extends HttpServlet {
-
-	private static final Logger LOG = LoggerFactory.getLogger(LineStatusServlet.class);
+public class LineStatusHistoryServlet extends HttpServlet {
+	//private static final Logger LOG = LoggerFactory.getLogger(LineStatusHistoryServlet.class);
 
 	private static final String QUERY_DISPLAY_CURRENT = "current";
 	private static final String QUERY_DISPLAY_ERRORS = "errors";
@@ -47,7 +42,8 @@ public class LineStatusServlet extends HttpServlet {
 			max = DISPLAY_MAX_DEFAULT;
 		}
 		if (Boolean.parseBoolean(req.getParameter(QUERY_DISPLAY_CURRENT))) {
-			results.add(getCurrent(feed));
+			Entity entry = FeedCronServlet.downloadNewEntry(feed);
+			results.add(toResult(entry));
 		}
 		boolean skipErrors = true;
 		if (Boolean.parseBoolean(req.getParameter(QUERY_DISPLAY_ERRORS))) {
@@ -60,23 +56,7 @@ public class LineStatusServlet extends HttpServlet {
 			if (--max < 0) {
 				break; // we've had enough
 			}
-			Text content = (Text)entry.getProperty(DSPROP_CONTENT);
-			Text error = (Text)entry.getProperty(DSPROP_ERROR);
-			Date date = (Date)entry.getProperty(DSPROP_RETRIEVED_DATE);
-			Result result;
-			if (content != null) {
-				try {
-					LineStatusFeed feedContents = (LineStatusFeed)feed.getHandler().parse(
-							new StringInputStream(content.getValue(), ENCODING));
-					result = new Result(date, feedContents);
-				} catch (Exception ex) {
-					result = new Result(date, "Error while displaying loaded XML: " + ObjectTools.getFullStackTrace(ex));
-				}
-			} else if (error != null) {
-				result = new Result(date, error.getValue());
-			} else {
-				result = new Result(date, "Empty entity");
-			}
+			Result result = toResult(entry);
 			results.add(result);
 		}
 
@@ -90,34 +70,32 @@ public class LineStatusServlet extends HttpServlet {
 		view.forward(req, resp);
 	}
 
-	protected Result getCurrent(Feed feed) throws ServletException, IOException {
-		try {
-			LineStatusFeed feedContents = downloadFeed(feed);
-			return new Result(new Date(), feedContents);
-		} catch (Exception ex) {
-			return new Result(new Date(), ObjectTools.getFullStackTrace(ex));
+	private Result toResult(Entity entry) {
+		Result result;
+		Text content = (Text)entry.getProperty(DSPROP_CONTENT);
+		Text error = (Text)entry.getProperty(DSPROP_ERROR);
+		Date date = (Date)entry.getProperty(DSPROP_RETRIEVED_DATE);
+		if (content != null) {
+			try {
+				Feed feed = Feed.valueOf(entry.getKind());
+				LineStatusFeed feedContents = (LineStatusFeed)feed.getHandler().parse(
+						new StringInputStream(content.getValue(), ENCODING));
+				result = new Result(date, feedContents);
+			} catch (Exception ex) {
+				result = new Result(date, "Error while displaying loaded XML: " + ObjectTools.getFullStackTrace(ex));
+			}
+		} else if (error != null) {
+			result = new Result(date, error.getValue());
+		} else {
+			result = new Result(date, "Empty entity");
 		}
+		return result;
 	}
+
 	protected Iterable<Entity> fetchEntries(Feed feed) {
 		Query q = new Query(feed.name()).addSort(DSPROP_RETRIEVED_DATE, SortDirection.DESCENDING);
 		Iterable<Entity> results = datastore.prepare(q).asIterable();
 		return results;
-	}
-
-	private <T extends BaseFeed> T downloadFeed(Feed feed) throws IOException, SAXException {
-		URL url = URL_BUILDER.getFeedUrl(feed);
-		LOG.debug(url.toString());
-		HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-		connection.connect();
-		InputStream input = null;
-		try {
-			input = connection.getInputStream();
-			@SuppressWarnings("unchecked")
-			T root = (T)feed.getHandler().parse(input);
-			return root;
-		} finally {
-			IOTools.ignorantClose(input);
-		}
 	}
 
 	public static class Result {
@@ -149,7 +127,7 @@ public class LineStatusServlet extends HttpServlet {
 	}
 
 	private List<ResultChange> getDifferences(List<Result> results, boolean skipErrors) {
-		List<ResultChange> resultChanges = new ArrayList<LineStatusServlet.ResultChange>(results.size());
+		List<ResultChange> resultChanges = new ArrayList<LineStatusHistoryServlet.ResultChange>(results.size());
 		Result newResult = null;
 		for (Result oldResult: results) { // we're going forward, but the list is backwards
 			if (skipErrors && oldResult.getFullError() != null) {

@@ -14,9 +14,9 @@ import net.twisterrob.blt.io.feeds.Feed;
  */
 public enum DelayType {
 	Suspended("SU", 80, "Suspended"), // TODO validate code
-	PartSuspended("PS", 70, "Part Suspended"), // TODO validate code
+	PartSuspended("PS", 70, "Part Suspended"),
 	PlannedClosure("CS", 60, "Planned Closure"),
-	PartClosure("PC", 50, "Part Closure"), // TODO validate code
+	PartClosure("PC", 50, "Part Closure"),
 	SevereDelays("SD", 40, "Severe Delays"),
 	ReducedService("RS", 30, "Reduced Service"), // TODO validate code
 	BusService("BS", 20, "Bus Service"), // TODO validate code

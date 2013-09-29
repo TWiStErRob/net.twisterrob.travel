@@ -97,6 +97,26 @@ public enum Feed {
 			"http://cloud.tfl.gov.uk/TrackerNet/LineStatus/IncidentsOnly"),
 
 	/**
+	* <h3>Tube departure boards, line and station status</h3><br>
+	* <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17615">link</a><br>
+	* <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">link</a><br>
+	* <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf">link</a><br>
+	*/
+	TubeDepartureBoardsStationStatus(30 * SECOND, 30 * SECOND, 30 * SECOND, MISSING_HANDLER,
+			"http://cloud.tfl.gov.uk/TrackerNet/StationStatus", "http://cloud.tfl.gov.uk/TrackerNet/StationStatus"),
+	/**
+	 * <h3>Tube departure boards, line and station status</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17615">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf">link</a><br>
+	 * For example reasons see:
+	 * <a href="http://web.archive.org/web/20110615000000&#42;/http://www.tfl.gov.uk/tfl/livetravelnews/realtime/tube/default.html">The Wayback Machine</a><br>
+	 */
+	TubeDepartureBoardsStationStatusIncidents(30 * SECOND, 30 * SECOND, 30 * SECOND, MISSING_HANDLER,
+			"http://cloud.tfl.gov.uk/TrackerNet/StationStatus/IncidentsOnly",
+			"http://cloud.tfl.gov.uk/TrackerNet/StationStatus/IncidentsOnly"),
+
+	/**
 	 * <h3>Barclays Cycle Hire statistics</h3><br>
 	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17855">link</a><br>
 	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=21">link</a><br>
