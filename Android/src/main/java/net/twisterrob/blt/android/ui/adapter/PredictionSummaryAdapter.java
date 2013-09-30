@@ -1,6 +1,7 @@
 package net.twisterrob.blt.android.ui.adapter;
 
-import java.util.List;
+import java.util.*;
+import java.util.regex.Pattern;
 
 import net.twisterrob.android.adapter.BaseExpandableListAdapter;
 import net.twisterrob.blt.android.R;
@@ -68,6 +69,23 @@ public class PredictionSummaryAdapter
 			View childConvertView) {
 		List<Train> trains = m_root.collectTrains(currentGroup, currentChild);
 
+		boolean matches = false;
+		for (Direction dir: dirs) {
+			matches |= dir.matches(currentChild.getName());
+		}
+
+		if (!matches) {
+			childHolder.platform.setText("platform filtered out");
+			childHolder.platform.setTextColor(Color.rgb(192, 192, 192));
+			childHolder.platform.setVisibility(View.VISIBLE);
+			childHolder.description.setVisibility(View.GONE);
+			return;
+		} else {
+			childHolder.platform.setTextColor(Color.BLACK);
+			childHolder.platform.setVisibility(View.VISIBLE);
+			childHolder.description.setVisibility(View.VISIBLE);
+		}
+
 		if (trains.size() > 0) {
 			String platformDesc = String
 					.format("%s: %d trains are approaching.", currentChild.getName(), trains.size());
@@ -90,4 +108,29 @@ public class PredictionSummaryAdapter
 			childHolder.description.setVisibility(View.GONE);
 		}
 	}
+
+	private final EnumSet<Direction> dirs = EnumSet.allOf(Direction.class);
+	public void addDirection(Direction dir) {
+		dirs.add(dir);
+	}
+	public void removeDirection(Direction dir) {
+		dirs.remove(dir);
+	}
+
+	public static enum Direction {
+		West("(?i)westbound"),
+		East("(?i)eastbound"),
+		North("(?i)northbound"),
+		South("(?i)southbound"),
+		Other("(?i)^((?!westbound|eastbound|northbound|southbound).)*$"); // not contains the above
+		private final Pattern m_pattern;
+		private Direction(String pattern) {
+			m_pattern = Pattern.compile(pattern);
+		}
+
+		public boolean matches(String input) {
+			return m_pattern.matcher(input).find();
+		}
+	}
+
 }

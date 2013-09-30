@@ -6,7 +6,8 @@ import java.util.*;
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
 import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
-import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter;
+import net.twisterrob.blt.android.ui.adapter.*;
+import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.Direction;
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.blt.model.Line;
 import android.annotation.SuppressLint;
@@ -14,7 +15,7 @@ import android.app.ExpandableListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.view.MenuItem;
+import android.view.*;
 import android.widget.*;
 
 import com.handmark.pulltorefresh.library.*;
@@ -38,6 +39,8 @@ public class PredictionSummaryActivity extends ExpandableListActivity implements
 	private final Set<Integer> expandedGroupPositions = new TreeSet<Integer>();
 
 	private PullToRefreshExpandableListView m_refreshView;
+
+	private PredictionSummaryAdapter m_adapter;
 
 	@SuppressLint("NewApi")
 	@Override
@@ -98,7 +101,8 @@ public class PredictionSummaryActivity extends ExpandableListActivity implements
 
 	protected void dataReceived(PredictionSummaryFeed root) {
 		if (root != null) {
-			setListAdapter(new PredictionSummaryAdapter(PredictionSummaryActivity.this, root));
+			m_adapter = new PredictionSummaryAdapter(PredictionSummaryActivity.this, root);
+			setListAdapter(m_adapter);
 			m_lastUpdated = Calendar.getInstance();
 			m_refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(
 					"Last updated at " + fmt.format(m_lastUpdated.getTime()));
@@ -116,5 +120,50 @@ public class PredictionSummaryActivity extends ExpandableListActivity implements
 	@Override
 	public void onGroupCollapse(int groupPosition) {
 		expandedGroupPositions.remove(groupPosition);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.options_prediction_summary, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		Direction dir = null;
+		switch (item.getItemId()) {
+			case R.id.menu_context_prediction_summary_direction_east:
+				item.setChecked(!item.isChecked());
+				dir = Direction.East;
+				break;
+			case R.id.menu_context_prediction_summary_direction_west:
+				item.setChecked(!item.isChecked());
+				dir = Direction.West;
+				break;
+			case R.id.menu_context_prediction_summary_direction_north:
+				item.setChecked(!item.isChecked());
+				dir = Direction.North;
+				break;
+			case R.id.menu_context_prediction_summary_direction_south:
+				item.setChecked(!item.isChecked());
+				dir = Direction.South;
+				break;
+			case R.id.menu_context_prediction_summary_direction_others:
+				item.setChecked(!item.isChecked());
+				dir = Direction.Other;
+				break;
+			default:
+				return super.onMenuItemSelected(featureId, item);
+		}
+		if (dir != null && m_adapter != null) {
+			if (item.isChecked()) {
+				m_adapter.addDirection(dir);
+			} else {
+				m_adapter.removeDirection(dir);
+			}
+			m_adapter.notifyDataSetChanged();
+		}
+		return true;
 	}
 }

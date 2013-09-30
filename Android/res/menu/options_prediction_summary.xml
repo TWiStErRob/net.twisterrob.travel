@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/menu_context_prediction_summary_direction" android:title="Directions">
+		<menu>
+			<group android:checkableBehavior="all">
+				<item android:id="@+id/menu_context_prediction_summary_direction_north" android:title="Northbound" android:checked="true" />
+				<item android:id="@+id/menu_context_prediction_summary_direction_south" android:title="Southbound" android:checked="true" />
+				<item android:id="@+id/menu_context_prediction_summary_direction_west" android:title="Westbound" android:checked="true" />
+				<item android:id="@+id/menu_context_prediction_summary_direction_east" android:title="Eastbound" android:checked="true" />
+				<item android:id="@+id/menu_context_prediction_summary_direction_others" android:title="Others" android:checked="true" />
+			</group>
+		</menu>
+	</item>
+</menu>
