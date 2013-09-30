@@ -65,7 +65,7 @@ public class StatusActivity extends ListActivity implements OnRefreshListener<Li
 			protected void onPostExecute(AsyncTaskResult<LineStatusFeed> result) {
 				if (result.getError() != null) {
 					LOG.error("Cannot load line statuses", result.getError());
-					Toast.makeText(getApplicationContext(), "Cannot load line statuses" + result.getError(),
+					Toast.makeText(getApplicationContext(), "Cannot load line statuses: " + result.getError(),
 							Toast.LENGTH_LONG).show();
 					dataReceived(null);
 				} else if (result.getResult() == null) {

@@ -35,8 +35,8 @@ public class DownloadFeedTask<T extends BaseFeed> extends AsyncTask<Feed, Intege
 			LOG.debug("%s", url);
 			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 			try {
-				connection.setReadTimeout(3000);
 				connection.setConnectTimeout(1000);
+				connection.setReadTimeout(2000);
 				connection.connect();
 				InputStream input = connection.getInputStream();
 

@@ -16,7 +16,7 @@ import android.os.*;
 import android.support.v4.app.NavUtils;
 import android.view.*;
 import android.widget.*;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.handmark.pulltorefresh.library.*;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
@@ -28,16 +28,16 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 public class PredictionStationSelectorActivity extends ListActivity implements OnRefreshListener<ListView> {
 	public static final String EXTRA_LINE = "line";
 
-	private SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	private Calendar m_lastUpdated;
-
-	private PullToRefreshListView m_refreshView;
-	private ListView m_listView;
-
 	/**
 	 * @see #EXTRA_LINE
 	 */
 	private Line m_line;
+
+	private SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private Calendar m_lastUpdated;
+
+	private PullToRefreshListView m_refreshView;
+	private int m_lastPosition;
 
 	@SuppressLint("NewApi")
 	@Override
@@ -54,15 +54,12 @@ public class PredictionStationSelectorActivity extends ListActivity implements O
 		m_refreshView = (PullToRefreshListView)findViewById(R.id.asdf_list);
 		m_refreshView.setOnRefreshListener(this);
 
-		m_listView = m_refreshView.getRefreshableView();
-		m_listView.setOnItemSelectedListener(new OnItemSelectedListener() {
+		m_refreshView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// StationPrediction = (StationPrediction)parent.getItemAtPosition(position);
+				m_lastPosition = position;
 			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {}
 		});
 
 		// gather params
@@ -121,5 +118,8 @@ public class PredictionStationSelectorActivity extends ListActivity implements O
 					"Last updated at " + fmt.format(m_lastUpdated.getTime()));
 		}
 		m_refreshView.onRefreshComplete();
+		if (m_lastPosition != -1) {
+			m_refreshView.getRefreshableView().setSelection(m_lastPosition);
+		}
 	}
 }
