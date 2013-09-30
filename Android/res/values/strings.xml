@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Better London Travel</string>
-    <string name="launcher_stationmap">Better London Station Map</string>
-    <string name="launcher_linestatus">Better London Line Status</string>
+    <string name="launcher_stationmap">BLT Station Map</string>
+    <string name="launcher_linestatus">BLT Line Status</string>
     <string name="test">Test</string>
 </resources>
