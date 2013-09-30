@@ -24,8 +24,7 @@ public class PredictionSummaryAdapter
 		m_root = root;
 	}
 	protected static class GroupViewHolder {
-		TextView station;
-		TextView description;
+		TextView title;
 	}
 	protected static class ChildViewHolder {
 		TextView platform;
@@ -39,10 +38,9 @@ public class PredictionSummaryAdapter
 	@Override
 	protected GroupViewHolder createGroupHolder(View groupConvertView) {
 		GroupViewHolder holder = new GroupViewHolder();
-		holder.station = (TextView)groupConvertView.findViewById(R.id.prediction_station_name);
-		holder.station.setBackgroundColor(m_root.getLine().getBackground(colors));
-		holder.station.setTextColor(m_root.getLine().getForeground(colors));
-		holder.description = (TextView)groupConvertView.findViewById(R.id.prediction_station_description);
+		holder.title = (TextView)groupConvertView.findViewById(R.id.prediction_station_name);
+		holder.title.setBackgroundColor(m_root.getLine().getBackground(colors));
+		holder.title.setTextColor(m_root.getLine().getForeground(colors));
 		return holder;
 	}
 
@@ -50,17 +48,7 @@ public class PredictionSummaryAdapter
 	protected void bindGroupView(GroupViewHolder groupHolder, Station currentGroup, List<Platform> currentChildren,
 			View groupConvertView) {
 		String title = String.format("[%s] %s", currentGroup.getTrackerNetCode(), currentGroup.getName());
-
-		int trainCount = 0;
-		for (Platform platform: currentChildren) {
-			List<Train> trains = m_root.collectTrains(currentGroup, platform);
-			trainCount += trains.size();
-		}
-		String description = String.format("There are %d platforms at this station, overall expecting %d trains.",
-				currentChildren.size(), trainCount);
-
-		groupHolder.station.setText(title);
-		groupHolder.description.setText(description);
+		groupHolder.title.setText(title);
 	}
 
 	@Override
@@ -79,19 +67,27 @@ public class PredictionSummaryAdapter
 	protected void bindChildView(ChildViewHolder childHolder, Station currentGroup, Platform currentChild,
 			View childConvertView) {
 		List<Train> trains = m_root.collectTrains(currentGroup, currentChild);
-		String platformDesc = String.format("%s: %d trains are coming.", currentChild.getName(), trains.size());
 
-		StringBuilder trainBuilder = new StringBuilder();
-		for (Train train: trains) {
-			String trainDesc = String.format("[%1$tM:%1$tS] %2$s (%3$s)", train.getTimeToStation(),
-					train.getDestinationName(), train.getLocation());
-			trainBuilder.append(trainDesc).append("\n");
-		}
-		while (trainBuilder.length() > 0 && trainBuilder.charAt(trainBuilder.length() - 1) == '\n') {
-			trainBuilder.deleteCharAt(trainBuilder.length() - 1);
-		}
+		if (trains.size() > 0) {
+			String platformDesc = String
+					.format("%s: %d trains are approaching.", currentChild.getName(), trains.size());
 
-		childHolder.platform.setText(platformDesc);
-		childHolder.description.setText(trainBuilder);
+			StringBuilder trainBuilder = new StringBuilder();
+			for (Train train: trains) {
+				String trainDesc = String.format("[%1$tM:%1$tS] %2$s (%3$s)", train.getTimeToStation(),
+						train.getDestinationName(), train.getLocation());
+				trainBuilder.append(trainDesc).append("\n");
+			}
+			while (trainBuilder.length() > 0 && trainBuilder.charAt(trainBuilder.length() - 1) == '\n') {
+				trainBuilder.deleteCharAt(trainBuilder.length() - 1);
+			}
+
+			childHolder.platform.setText(platformDesc);
+			childHolder.description.setText(trainBuilder);
+			childHolder.description.setVisibility(View.VISIBLE);
+		} else {
+			childHolder.platform.setText(String.format("%s has no trains approaching", currentChild.getName()));
+			childHolder.description.setVisibility(View.GONE);
+		}
 	}
 }

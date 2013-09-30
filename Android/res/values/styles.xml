@@ -6,7 +6,9 @@
 
 	<!-- Default theme for ActionBar compatibility
 	     http://developer.android.com/guide/topics/ui/actionbar.html#Adding	-->
-	<style name="Theme.Default" parent="@style/Theme.AppCompat.Light"></style>
+	<style name="Theme.Default" parent="@style/Theme.AppCompat.Light">
+		<!-- empty contents -->
+	</style>
 
 	<!-- Variant of {@link #Theme} with no title bar -->
 	<style name="Theme.NoTitle" parent="@style/Theme.AppCompat.Light">

@@ -28,7 +28,7 @@
 			</intent-filter>
 		</activity>
 		<activity
-				android:name=".ui.activity.PredictionStationSelectorActivity"
+				android:name=".ui.activity.PredictionSummaryActivity"
 				android:label="@string/launcher_linestatus"
 			>
 			<!-- empty contents -->

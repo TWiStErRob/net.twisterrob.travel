@@ -12,11 +12,10 @@ import net.twisterrob.blt.model.Line;
 import android.annotation.SuppressLint;
 import android.app.ExpandableListActivity;
 import android.content.Intent;
-import android.os.*;
+import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.view.*;
+import android.view.MenuItem;
 import android.widget.*;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.handmark.pulltorefresh.library.*;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
@@ -33,8 +32,10 @@ public class PredictionSummaryActivity extends ExpandableListActivity implements
 	 */
 	private Line m_line;
 
-	private SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private final SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private Calendar m_lastUpdated;
+
+	private final Set<Integer> expandedGroupPositions = new TreeSet<Integer>();
 
 	private PullToRefreshExpandableListView m_refreshView;
 
@@ -44,21 +45,8 @@ public class PredictionSummaryActivity extends ExpandableListActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_prediction_summary);
 
-		// Make sure we're running on Honeycomb or higher to use ActionBar APIs
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			// Show the Up button in the action bar.
-			// TODO getActionBar().setDisplayHomeAsUpEnabled(true);
-		}
-
 		m_refreshView = (PullToRefreshExpandableListView)findViewById(R.id.asdf_list);
 		m_refreshView.setOnRefreshListener(this);
-
-		m_refreshView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				// StationPrediction = (StationPrediction)parent.getItemAtPosition(position);
-			}
-		});
 
 		// gather params
 		Intent intent = getIntent();
@@ -116,5 +104,17 @@ public class PredictionSummaryActivity extends ExpandableListActivity implements
 					"Last updated at " + fmt.format(m_lastUpdated.getTime()));
 		}
 		m_refreshView.onRefreshComplete();
+		for (Integer groupPosition: expandedGroupPositions) {
+			m_refreshView.getRefreshableView().expandGroup(groupPosition);
+		}
+	}
+
+	@Override
+	public void onGroupExpand(int groupPosition) {
+		expandedGroupPositions.add(groupPosition);
+	}
+	@Override
+	public void onGroupCollapse(int groupPosition) {
+		expandedGroupPositions.remove(groupPosition);
 	}
 }

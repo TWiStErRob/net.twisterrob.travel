@@ -2,23 +2,18 @@
 <!DOCTYPE layout>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
        <TextView
            android:id="@+id/prediction_station_name"
            android:layout_width="fill_parent"
            android:layout_height="wrap_content"
-           android:padding="4dip"
+           android:paddingTop="3dip"
+           android:paddingRight="3dip"
+           android:paddingBottom="3dip"
+           android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
            android:textStyle="bold"
            android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/prediction_station_description"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="@string/test"
-        android:textSize="12sp" />
 
 </LinearLayout>
