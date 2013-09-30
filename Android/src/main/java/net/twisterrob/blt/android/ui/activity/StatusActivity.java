@@ -42,10 +42,10 @@ public class StatusActivity extends ListActivity implements OnRefreshListener<Li
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				LineStatus status = (LineStatus)parent.getItemAtPosition(position);
-				Intent intent = new Intent(StatusActivity.this, PredictionStationSelectorActivity.class);
+				Intent intent = new Intent(StatusActivity.this, PredictionSummaryActivity.class);
 				{
 					Line line = status.getLine();
-					intent.putExtra(PredictionStationSelectorActivity.EXTRA_LINE, line);
+					intent.putExtra(PredictionSummaryActivity.EXTRA_LINE, line);
 				}
 				startActivity(intent);
 			}

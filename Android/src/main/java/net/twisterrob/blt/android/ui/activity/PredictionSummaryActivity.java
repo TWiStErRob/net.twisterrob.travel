@@ -6,11 +6,11 @@ import java.util.*;
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
 import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
-import net.twisterrob.blt.android.ui.adapter.LinePredictionSummaryAdapter;
+import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter;
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.blt.model.Line;
 import android.annotation.SuppressLint;
-import android.app.ListActivity;
+import android.app.ExpandableListActivity;
 import android.content.Intent;
 import android.os.*;
 import android.support.v4.app.NavUtils;
@@ -25,7 +25,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
  * http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf
  * @author TWiStEr
  */
-public class PredictionStationSelectorActivity extends ListActivity implements OnRefreshListener<ListView> {
+public class PredictionSummaryActivity extends ExpandableListActivity implements OnRefreshListener<ExpandableListView> {
 	public static final String EXTRA_LINE = "line";
 
 	/**
@@ -36,14 +36,13 @@ public class PredictionStationSelectorActivity extends ListActivity implements O
 	private SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private Calendar m_lastUpdated;
 
-	private PullToRefreshListView m_refreshView;
-	private int m_lastPosition;
+	private PullToRefreshExpandableListView m_refreshView;
 
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_status);
+		setContentView(R.layout.activity_prediction_summary);
 
 		// Make sure we're running on Honeycomb or higher to use ActionBar APIs
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -51,14 +50,13 @@ public class PredictionStationSelectorActivity extends ListActivity implements O
 			// TODO getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 
-		m_refreshView = (PullToRefreshListView)findViewById(R.id.asdf_list);
+		m_refreshView = (PullToRefreshExpandableListView)findViewById(R.id.asdf_list);
 		m_refreshView.setOnRefreshListener(this);
 
 		m_refreshView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// StationPrediction = (StationPrediction)parent.getItemAtPosition(position);
-				m_lastPosition = position;
 			}
 		});
 
@@ -81,7 +79,7 @@ public class PredictionStationSelectorActivity extends ListActivity implements O
 	}
 
 	@Override
-	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+	public void onRefresh(PullToRefreshBase<ExpandableListView> refreshView) {
 		m_refreshView.setRefreshing();
 		delayedGetRoot();
 	}
@@ -112,14 +110,11 @@ public class PredictionStationSelectorActivity extends ListActivity implements O
 
 	protected void dataReceived(PredictionSummaryFeed root) {
 		if (root != null) {
-			setListAdapter(new LinePredictionSummaryAdapter(PredictionStationSelectorActivity.this, root));
+			setListAdapter(new PredictionSummaryAdapter(PredictionSummaryActivity.this, root));
 			m_lastUpdated = Calendar.getInstance();
 			m_refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(
 					"Last updated at " + fmt.format(m_lastUpdated.getTime()));
 		}
 		m_refreshView.onRefreshComplete();
-		if (m_lastPosition != -1) {
-			m_refreshView.getRefreshableView().setSelection(m_lastPosition);
-		}
 	}
 }

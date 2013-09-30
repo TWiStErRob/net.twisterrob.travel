@@ -40,6 +40,10 @@ public class PredictionSummaryFeed extends BaseFeed {
 		return Collections.unmodifiableList(m_stations);
 	}
 
+	public Map<Station, List<Platform>> getStationPlatform() {
+		return m_stationPlatform;
+	}
+
 	@Override
 	void postProcess() {
 		super.postProcess();
@@ -84,5 +88,9 @@ public class PredictionSummaryFeed extends BaseFeed {
 			result.put(platform, trains);
 		}
 		return result;
+	}
+
+	public List<Train> collectTrains(Station station, Platform platform) {
+		return Collections.unmodifiableList(m_stationPlatformTrain.get(new MultiKey(station, platform)));
 	}
 }

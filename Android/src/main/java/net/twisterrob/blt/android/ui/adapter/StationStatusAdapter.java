@@ -2,6 +2,7 @@ package net.twisterrob.blt.android.ui.adapter;
 
 import java.util.Collection;
 
+import net.twisterrob.android.adapter.BaseListAdapter;
 import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.model.*;
 import android.content.Context;
@@ -16,7 +17,7 @@ public class StationStatusAdapter extends BaseListAdapter<LineStatus, StationSta
 		super(context, lines, false);
 	}
 
-	protected class ViewHolder {
+	protected static class ViewHolder {
 		TextView line;
 		TextView description;
 		TextView delay;

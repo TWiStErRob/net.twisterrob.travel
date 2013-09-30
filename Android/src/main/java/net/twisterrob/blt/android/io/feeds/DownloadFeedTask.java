@@ -8,6 +8,7 @@ import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
 import net.twisterrob.android.utils.log.*;
 import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.io.feeds.*;
+import net.twisterrob.java.io.IOTools;
 
 import org.xml.sax.SAXException;
 
@@ -26,32 +27,34 @@ public class DownloadFeedTask<T extends BaseFeed> extends AsyncTask<Feed, Intege
 		m_args = args;
 	}
 	protected AsyncTaskResult<T> doInBackground(Feed... feeds) {
-		Feed feed;
-		if (feeds == null || feeds.length != 1 || (feed = feeds[0]) == null) {
-			throw new IllegalArgumentException("Too many feeds, only one is handled, and must be one!");
-		}
+		HttpURLConnection connection = null;
+		InputStream input = null;
 		try {
+			if (feeds == null || feeds.length != 1 || feeds[0] == null) {
+				throw new IllegalArgumentException("Too many feeds, only one is handled, and must be one!");
+			}
+
+			Feed feed = feeds[0];
 			URL url = App.getInstance().getUrls().getFeedUrl(feed, m_args);
 			LOG.debug("%s", url);
-			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-			try {
-				connection.setConnectTimeout(1000);
-				connection.setReadTimeout(2000);
-				connection.connect();
-				InputStream input = connection.getInputStream();
 
-				@SuppressWarnings("unchecked")
-				T root = (T)feed.getHandler().parse(input);
-				return new AsyncTaskResult<T>(root);
-			} finally {
-				connection.disconnect();
-			}
+			connection = (HttpURLConnection)url.openConnection();
+			connection.setConnectTimeout(1000);
+			connection.setReadTimeout(2000);
+			connection.connect();
+			input = connection.getInputStream();
+
+			@SuppressWarnings("unchecked")
+			T root = (T)feed.getHandler().parse(input);
+			return new AsyncTaskResult<T>(root);
 		} catch (IOException ex) {
 			return new AsyncTaskResult<T>(ex);
 		} catch (SAXException ex) {
 			return new AsyncTaskResult<T>(ex);
 		} catch (Exception ex) {
 			return new AsyncTaskResult<T>(ex);
+		} finally {
+			IOTools.closeConnection(connection, input);
 		}
 	}
 }

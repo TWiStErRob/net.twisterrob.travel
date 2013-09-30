@@ -1,4 +1,4 @@
-package net.twisterrob.blt.android.ui.adapter;
+package net.twisterrob.android.adapter;
 
 import java.util.*;
 
@@ -36,7 +36,7 @@ public abstract class BaseListAdapter<T, VH> extends BaseAdapter {
 	}
 
 	public List<T> getItems() {
-		return m_items.subList(m_hasDefaultItem? 0 : 0, m_items.size());
+		return m_items.subList(m_hasDefaultItem? 1 : 0, m_items.size());
 	}
 
 	public void setItems(final Collection<T> items) {
@@ -66,6 +66,7 @@ public abstract class BaseListAdapter<T, VH> extends BaseAdapter {
 		} else {
 			holder = (VH)convertView.getTag();
 		}
+
 		if (currentItem == null) {
 			bindEmptyView(holder, convertView);
 		} else {
@@ -104,6 +105,8 @@ public abstract class BaseListAdapter<T, VH> extends BaseAdapter {
 
 	protected abstract VH createHolder(View convertView);
 
+	/** @deprecated Until I figure out why I did it. */
+	@Deprecated
 	protected void bindModel(final VH holder, final T currentItem) {}
 
 	protected abstract void bindView(VH holder, T currentItem, View convertView);
@@ -130,6 +133,8 @@ public abstract class BaseListAdapter<T, VH> extends BaseAdapter {
 		bindEmptyView(holder, convertView);
 	}
 
+	/** @deprecated Until I figure out why I did it. */
+	@Deprecated
 	protected void bindDropDownModel(final VH holder, final T currentItem) {
 		bindModel(holder, currentItem);
 	}

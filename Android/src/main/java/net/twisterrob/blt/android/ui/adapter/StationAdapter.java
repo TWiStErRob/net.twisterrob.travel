@@ -2,21 +2,23 @@ package net.twisterrob.blt.android.ui.adapter;
 
 import java.util.Collection;
 
+import net.twisterrob.android.adapter.BaseListAdapter;
 import net.twisterrob.android.utils.concurrent.*;
 import net.twisterrob.blt.android.R;
+import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder;
 import net.twisterrob.blt.model.Station;
 import android.content.Context;
 import android.view.*;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.*;
 
-public class StationAdapter extends BaseListAdapter<Station, StationAdapter.ViewHolder> {
+public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 
 	public StationAdapter(final Context context, final Collection<Station> items) {
 		super(context, items, false);
 	}
 
-	protected class ViewHolder {
+	protected static class ViewHolder {
 		TextView title;
 		TextView description;
 		ImageView icon;

@@ -19,7 +19,8 @@ public enum Line {
 			return colors.getCentralForeground();
 		}
 	},
-	Circle('?', "Circle") {
+	Circle('H', "Circle") { // Hammersmith & Circle?
+		// H from http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf / 5. Appendix A
 		public int getBackground(LineColors colors) {
 			return colors.getCircleBackground();
 		}
@@ -75,7 +76,7 @@ public enum Line {
 			return colors.getNorthernForeground();
 		}
 	},
-	Overground('-', "Overground") {
+	Overground('-', "Overground", "East London") {
 		public int getBackground(LineColors colors) {
 			return colors.getOvergroundBackground();
 		}
@@ -107,7 +108,7 @@ public enum Line {
 			return colors.getWaterlooAndCityForeground();
 		}
 	},
-	unknown('-', "Unknown", "") {
+	unknown('?', "Unknown", "") {
 		public int getBackground(LineColors colors) {
 			return colors.getUnknownBackground();
 		}
