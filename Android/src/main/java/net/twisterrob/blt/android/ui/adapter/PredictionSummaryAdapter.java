@@ -24,6 +24,7 @@ public class PredictionSummaryAdapter
 		super(context, root.getStations(), root.getStationPlatform());
 		m_root = root;
 	}
+
 	protected static class GroupViewHolder {
 		TextView title;
 	}
@@ -69,23 +70,6 @@ public class PredictionSummaryAdapter
 			View childConvertView) {
 		List<Train> trains = m_root.collectTrains(currentGroup, currentChild);
 
-		boolean matches = false;
-		for (Direction dir: dirs) {
-			matches |= dir.matches(currentChild.getName());
-		}
-
-		if (!matches) {
-			childHolder.platform.setText("platform filtered out");
-			childHolder.platform.setTextColor(Color.rgb(192, 192, 192));
-			childHolder.platform.setVisibility(View.VISIBLE);
-			childHolder.description.setVisibility(View.GONE);
-			return;
-		} else {
-			childHolder.platform.setTextColor(Color.BLACK);
-			childHolder.platform.setVisibility(View.VISIBLE);
-			childHolder.description.setVisibility(View.VISIBLE);
-		}
-
 		if (trains.size() > 0) {
 			String platformDesc = String
 					.format("%s: %d trains are approaching.", currentChild.getName(), trains.size());
@@ -107,6 +91,44 @@ public class PredictionSummaryAdapter
 			childHolder.platform.setText(String.format("%s has no trains approaching", currentChild.getName()));
 			childHolder.description.setVisibility(View.GONE);
 		}
+	}
+
+	@Override
+	protected List<Station> filterGroups(List<Station> groups) {
+		List<Station> filtered = new ArrayList<Station>();
+		for (Station station: groups) {
+			if (matches(getFilteredChildren(station))) {
+				filtered.add(station);
+			}
+		}
+		return filtered;
+	}
+
+	@Override
+	protected List<Platform> filterChildren(List<Platform> children, Station group) {
+		List<Platform> filtered = new ArrayList<Platform>();
+		for (Platform platform: children) {
+			if (matches(platform)) {
+				filtered.add(platform);
+			}
+		}
+		return filtered;
+	}
+
+	protected boolean matches(Platform currentChild) {
+		boolean matches = false;
+		for (Direction dir: dirs) {
+			matches |= dir.matches(currentChild.getName());
+		}
+		return matches;
+	}
+
+	private boolean matches(List<Platform> currentChildren) {
+		boolean matches = false;
+		for (Platform platform: currentChildren) {
+			matches = matches(platform);
+		}
+		return matches;
 	}
 
 	private final EnumSet<Direction> dirs = EnumSet.allOf(Direction.class);

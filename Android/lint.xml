@@ -4,4 +4,7 @@
     <issue id="HardcodedText" severity="ignore" />
     <issue id="ShowToast" severity="ignore" />
     <issue id="SimpleDateFormat" severity="ignore" />
+    <issue id="SmallSp">
+        <ignore path="res/layout/activity_prediction_summary.xml" />
+    </issue>
 </lint>
