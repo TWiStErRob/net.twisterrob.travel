@@ -1,9 +1,8 @@
 package net.twisterrob.blt.android.ui.adapter;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
-import net.twisterrob.android.adapter.BaseExpandableListAdapter;
+import net.twisterrob.android.adapter.BaseFilteringExpandableListAdapter;
 import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.ChildViewHolder;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.GroupViewHolder;
@@ -16,7 +15,7 @@ import android.widget.TextView;
 
 public class PredictionSummaryAdapter
 		extends
-			BaseExpandableListAdapter<Station, Platform, GroupViewHolder, ChildViewHolder> {
+			BaseFilteringExpandableListAdapter<Station, Platform, GroupViewHolder, ChildViewHolder> {
 	private static final LineColors colors = new TubeStatusPresentationLineColors();
 	private PredictionSummaryFeed m_root;
 
@@ -39,11 +38,11 @@ public class PredictionSummaryAdapter
 	}
 	@Override
 	protected GroupViewHolder createGroupHolder(View groupConvertView) {
-		GroupViewHolder holder = new GroupViewHolder();
-		holder.title = (TextView)groupConvertView.findViewById(R.id.prediction_station_name);
-		holder.title.setBackgroundColor(m_root.getLine().getBackground(colors));
-		holder.title.setTextColor(m_root.getLine().getForeground(colors));
-		return holder;
+		GroupViewHolder groupHolder = new GroupViewHolder();
+		groupHolder.title = (TextView)groupConvertView.findViewById(R.id.prediction_station_name);
+		groupHolder.title.setBackgroundColor(m_root.getLine().getBackground(colors));
+		groupHolder.title.setTextColor(m_root.getLine().getForeground(colors));
+		return groupHolder;
 	}
 
 	@Override
@@ -59,11 +58,11 @@ public class PredictionSummaryAdapter
 	}
 	@Override
 	protected ChildViewHolder createChildHolder(View childConvertView) {
-		ChildViewHolder holder = new ChildViewHolder();
-		holder.platform = (TextView)childConvertView.findViewById(R.id.prediction_platform_name);
-		holder.platform.setBackgroundColor(Color.rgb(224, 255, 255));
-		holder.description = (TextView)childConvertView.findViewById(R.id.prediction_platform_description);
-		return holder;
+		ChildViewHolder childHolder = new ChildViewHolder();
+		childHolder.platform = (TextView)childConvertView.findViewById(R.id.prediction_platform_name);
+		childHolder.platform.setBackgroundColor(Color.rgb(224, 255, 255));
+		childHolder.description = (TextView)childConvertView.findViewById(R.id.prediction_platform_description);
+		return childHolder;
 	}
 	@Override
 	protected void bindChildView(ChildViewHolder childHolder, Station currentGroup, Platform currentChild,
@@ -73,16 +72,7 @@ public class PredictionSummaryAdapter
 		if (trains.size() > 0) {
 			String platformDesc = String
 					.format("%s: %d trains are approaching.", currentChild.getName(), trains.size());
-
-			StringBuilder trainBuilder = new StringBuilder();
-			for (Train train: trains) {
-				String trainDesc = String.format("[%1$tM:%1$tS] %2$s (%3$s)", train.getTimeToStation(),
-						train.getDestinationName(), train.getLocation());
-				trainBuilder.append(trainDesc).append("\n");
-			}
-			while (trainBuilder.length() > 0 && trainBuilder.charAt(trainBuilder.length() - 1) == '\n') {
-				trainBuilder.deleteCharAt(trainBuilder.length() - 1);
-			}
+			String trainBuilder = buildIncomingTrains(trains);
 
 			childHolder.platform.setText(platformDesc);
 			childHolder.description.setText(trainBuilder);
@@ -93,11 +83,34 @@ public class PredictionSummaryAdapter
 		}
 	}
 
+	protected String buildIncomingTrains(List<Train> trains) {
+		StringBuilder trainBuilder = new StringBuilder();
+		for (Train train: trains) {
+			String trainDesc = String.format("[%1$tM:%1$tS] %2$s (%3$s)", train.getTimeToStation(),
+					train.getDestinationName(), train.getLocation());
+			trainBuilder.append(trainDesc).append("\n");
+		}
+		// remove trailing newlines
+		while (trainBuilder.length() > 0 && trainBuilder.charAt(trainBuilder.length() - 1) == '\n') {
+			trainBuilder.deleteCharAt(trainBuilder.length() - 1);
+		}
+		return trainBuilder.toString();
+	}
+
+	private Set<PlatformDirection> m_directions = EnumSet.allOf(PlatformDirection.class);
+
+	public void addDirection(PlatformDirection dir) {
+		m_directions.add(dir);
+	}
+	public void removeDirection(PlatformDirection dir) {
+		m_directions.remove(dir);
+	}
+
 	@Override
 	protected List<Station> filterGroups(List<Station> groups) {
 		List<Station> filtered = new ArrayList<Station>();
 		for (Station station: groups) {
-			if (matches(getFilteredChildren(station))) {
+			if (matches(getChildren(station))) {
 				filtered.add(station);
 			}
 		}
@@ -116,43 +129,14 @@ public class PredictionSummaryAdapter
 	}
 
 	protected boolean matches(Platform currentChild) {
-		boolean matches = false;
-		for (Direction dir: dirs) {
-			matches |= dir.matches(currentChild.getName());
-		}
-		return matches;
+		return m_directions.contains(currentChild.getDirection());
 	}
 
-	private boolean matches(List<Platform> currentChildren) {
+	protected boolean matches(List<Platform> currentChildren) {
 		boolean matches = false;
 		for (Platform platform: currentChildren) {
-			matches = matches(platform);
+			matches = matches || matches(platform);
 		}
 		return matches;
 	}
-
-	private final EnumSet<Direction> dirs = EnumSet.allOf(Direction.class);
-	public void addDirection(Direction dir) {
-		dirs.add(dir);
-	}
-	public void removeDirection(Direction dir) {
-		dirs.remove(dir);
-	}
-
-	public static enum Direction {
-		West("(?i)westbound"),
-		East("(?i)eastbound"),
-		North("(?i)northbound"),
-		South("(?i)southbound"),
-		Other("(?i)^((?!westbound|eastbound|northbound|southbound).)*$"); // not contains the above
-		private final Pattern m_pattern;
-		private Direction(String pattern) {
-			m_pattern = Pattern.compile(pattern);
-		}
-
-		public boolean matches(String input) {
-			return m_pattern.matcher(input).find();
-		}
-	}
-
 }

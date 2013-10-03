@@ -2,12 +2,14 @@ package net.twisterrob.blt.model;
 public class Platform {
 	private String name;
 	private int code;
+	private PlatformDirection direction;
 
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+		setDirection(PlatformDirection.parse(name));
 	}
 
 	public int getCode() {
@@ -16,6 +18,14 @@ public class Platform {
 	public void setCode(int code) {
 		this.code = code;
 	}
+
+	public PlatformDirection getDirection() {
+		return direction;
+	}
+	public void setDirection(PlatformDirection direction) {
+		this.direction = direction;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
