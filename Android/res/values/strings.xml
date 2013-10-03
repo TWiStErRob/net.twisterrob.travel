@@ -2,5 +2,6 @@
     <string name="app_name">Better London Travel</string>
     <string name="launcher_stationmap">BLT Station Map</string>
     <string name="launcher_linestatus">BLT Line Status</string>
+    <string name="launcher_prediction_summary">Train Predictions</string>
     <string name="test">Test</string>
 </resources>

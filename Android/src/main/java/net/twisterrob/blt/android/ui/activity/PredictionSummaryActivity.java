@@ -11,10 +11,9 @@ import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter;
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.blt.model.*;
 import android.annotation.SuppressLint;
-import android.app.ExpandableListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
@@ -29,7 +28,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
  * http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf
  * @author TWiStEr
  */
-public class PredictionSummaryActivity extends ExpandableListActivity
+public class PredictionSummaryActivity extends ActionBarActivity
 		implements
 			OnRefreshListener<ExpandableListView>,
 			OnGroupExpandListener,
@@ -55,6 +54,9 @@ public class PredictionSummaryActivity extends ExpandableListActivity
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_prediction_summary);
+
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 		buttons.put(PlatformDirection.East, (ToggleButton)this.findViewById(R.id.button_compass_east));
 		buttons.put(PlatformDirection.West, (ToggleButton)this.findViewById(R.id.button_compass_west));
 		buttons.put(PlatformDirection.North, (ToggleButton)this.findViewById(R.id.button_compass_north));
@@ -71,6 +73,8 @@ public class PredictionSummaryActivity extends ExpandableListActivity
 
 		m_refreshView = (PullToRefreshExpandableListView)findViewById(R.id.wrapper);
 		m_refreshView.setOnRefreshListener(this);
+		m_refreshView.getRefreshableView().setOnGroupExpandListener(this);
+		m_refreshView.getRefreshableView().setOnGroupCollapseListener(this);
 
 		// gather params
 		Intent intent = getIntent();
@@ -118,18 +122,8 @@ public class PredictionSummaryActivity extends ExpandableListActivity
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case android.R.id.home:
-				NavUtils.navigateUpFromSameTask(this);
-				return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
 	public void onRefresh(PullToRefreshBase<ExpandableListView> refreshView) {
-		m_refreshView.setRefreshing();
+		refreshView.setRefreshing();
 		delayedGetRoot();
 	}
 
@@ -161,8 +155,8 @@ public class PredictionSummaryActivity extends ExpandableListActivity
 		if (root != null) {
 			m_adapter = new PredictionSummaryAdapter(PredictionSummaryActivity.this, root);
 			resetCompassState();
-			setListAdapter(m_adapter);
 			m_lastUpdated = Calendar.getInstance();
+			m_refreshView.getRefreshableView().setAdapter(m_adapter);
 			m_refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(
 					"Last updated at " + fmt.format(m_lastUpdated.getTime()));
 		}
@@ -191,8 +185,7 @@ public class PredictionSummaryActivity extends ExpandableListActivity
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.options_prediction_summary, menu);
+		getMenuInflater().inflate(R.menu.options_prediction_summary, menu);
 		menuIDs.put(R.id.menu_context_prediction_summary_direction_east, PlatformDirection.East);
 		menuIDs.put(R.id.menu_context_prediction_summary_direction_west, PlatformDirection.West);
 		menuIDs.put(R.id.menu_context_prediction_summary_direction_north, PlatformDirection.North);
@@ -207,10 +200,11 @@ public class PredictionSummaryActivity extends ExpandableListActivity
 		for (Entry<PlatformDirection, MenuItem> entry: menus.entrySet()) {
 			entry.getValue().setChecked(m_directionsEnabled.contains(entry.getKey()));
 		}
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}
+
 	@Override
-	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_context_prediction_summary_direction_east:
 			case R.id.menu_context_prediction_summary_direction_west:
@@ -218,11 +212,10 @@ public class PredictionSummaryActivity extends ExpandableListActivity
 			case R.id.menu_context_prediction_summary_direction_south:
 			case R.id.menu_context_prediction_summary_direction_others:
 				toggleCompass(menuIDs.get(item.getItemId()));
-				break;
+				return true;
 			default:
-				return super.onMenuItemSelected(featureId, item);
+				return super.onOptionsItemSelected(item);
 		}
-		return true;
 	}
 
 	private final Set<PlatformDirection> m_directionsEnabled = EnumSet.allOf(PlatformDirection.class);
@@ -264,7 +257,7 @@ public class PredictionSummaryActivity extends ExpandableListActivity
 			} else {
 				m_adapter.removeDirection(dir);
 			}
-			setListAdapter(m_adapter);
+			m_refreshView.getRefreshableView().setAdapter(m_adapter);
 			m_adapter.notifyDataSetChanged();
 			restoreExpandedState();
 		}

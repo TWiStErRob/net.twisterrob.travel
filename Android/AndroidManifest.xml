@@ -14,7 +14,7 @@
 			android:name="net.twisterrob.blt.android.App"
 			android:icon="@drawable/ic_launcher"
 			android:label="@string/app_name"
-			android:theme="@style/Theme.NoTitle"
+			android:theme="@style/Theme.Default"
 		>
 		<uses-library android:name="com.google.android.maps" />
 
@@ -29,9 +29,9 @@
 		</activity>
 		<activity
 				android:name=".ui.activity.PredictionSummaryActivity"
-				android:label="@string/launcher_linestatus"
+				android:label="@string/launcher_prediction_summary"
 			>
-			<!-- empty contents -->
+			<meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.activity.StatusActivity" />
 		</activity>
 		<activity
 				android:name=".ui.activity.MainActivity"
