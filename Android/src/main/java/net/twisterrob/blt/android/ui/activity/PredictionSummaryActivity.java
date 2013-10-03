@@ -10,7 +10,6 @@ import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter;
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.blt.model.*;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -49,7 +48,6 @@ public class PredictionSummaryActivity extends ActionBarActivity
 
 	private PredictionSummaryAdapter m_adapter;
 
-	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,6 +55,19 @@ public class PredictionSummaryActivity extends ActionBarActivity
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+		onCreate_setupCompassButtons();
+
+		m_refreshView = (PullToRefreshExpandableListView)findViewById(R.id.wrapper);
+		m_refreshView.setOnRefreshListener(this);
+		m_refreshView.getRefreshableView().setOnGroupExpandListener(this);
+		m_refreshView.getRefreshableView().setOnGroupCollapseListener(this);
+
+		// gather params
+		Intent intent = getIntent();
+		m_line = (Line)intent.getSerializableExtra(EXTRA_LINE);
+	}
+
+	protected void onCreate_setupCompassButtons() {
 		buttons.put(PlatformDirection.East, (ToggleButton)this.findViewById(R.id.button_compass_east));
 		buttons.put(PlatformDirection.West, (ToggleButton)this.findViewById(R.id.button_compass_west));
 		buttons.put(PlatformDirection.North, (ToggleButton)this.findViewById(R.id.button_compass_north));
@@ -70,15 +81,6 @@ public class PredictionSummaryActivity extends ActionBarActivity
 				}
 			});
 		}
-
-		m_refreshView = (PullToRefreshExpandableListView)findViewById(R.id.wrapper);
-		m_refreshView.setOnRefreshListener(this);
-		m_refreshView.getRefreshableView().setOnGroupExpandListener(this);
-		m_refreshView.getRefreshableView().setOnGroupCollapseListener(this);
-
-		// gather params
-		Intent intent = getIntent();
-		m_line = (Line)intent.getSerializableExtra(EXTRA_LINE);
 	}
 
 	@Override
@@ -186,16 +188,16 @@ public class PredictionSummaryActivity extends ActionBarActivity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.options_prediction_summary, menu);
-		menuIDs.put(R.id.menu_context_prediction_summary_direction_east, PlatformDirection.East);
-		menuIDs.put(R.id.menu_context_prediction_summary_direction_west, PlatformDirection.West);
-		menuIDs.put(R.id.menu_context_prediction_summary_direction_north, PlatformDirection.North);
-		menuIDs.put(R.id.menu_context_prediction_summary_direction_south, PlatformDirection.South);
-		menuIDs.put(R.id.menu_context_prediction_summary_direction_others, PlatformDirection.Other);
-		menus.put(PlatformDirection.East, menu.findItem(R.id.menu_context_prediction_summary_direction_east));
-		menus.put(PlatformDirection.West, menu.findItem(R.id.menu_context_prediction_summary_direction_west));
-		menus.put(PlatformDirection.North, menu.findItem(R.id.menu_context_prediction_summary_direction_north));
-		menus.put(PlatformDirection.South, menu.findItem(R.id.menu_context_prediction_summary_direction_south));
-		menus.put(PlatformDirection.Other, menu.findItem(R.id.menu_context_prediction_summary_direction_others));
+		menuIDs.put(R.id.menu_option_compass_east, PlatformDirection.East);
+		menuIDs.put(R.id.menu_option_compass_west, PlatformDirection.West);
+		menuIDs.put(R.id.menu_option_compass_north, PlatformDirection.North);
+		menuIDs.put(R.id.menu_option_compass_south, PlatformDirection.South);
+		menuIDs.put(R.id.menu_option_compass_others, PlatformDirection.Other);
+		menus.put(PlatformDirection.East, menu.findItem(R.id.menu_option_compass_east));
+		menus.put(PlatformDirection.West, menu.findItem(R.id.menu_option_compass_west));
+		menus.put(PlatformDirection.North, menu.findItem(R.id.menu_option_compass_north));
+		menus.put(PlatformDirection.South, menu.findItem(R.id.menu_option_compass_south));
+		menus.put(PlatformDirection.Other, menu.findItem(R.id.menu_option_compass_others));
 		// fix checkboxes
 		for (Entry<PlatformDirection, MenuItem> entry: menus.entrySet()) {
 			entry.getValue().setChecked(m_directionsEnabled.contains(entry.getKey()));
@@ -206,11 +208,11 @@ public class PredictionSummaryActivity extends ActionBarActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.menu_context_prediction_summary_direction_east:
-			case R.id.menu_context_prediction_summary_direction_west:
-			case R.id.menu_context_prediction_summary_direction_north:
-			case R.id.menu_context_prediction_summary_direction_south:
-			case R.id.menu_context_prediction_summary_direction_others:
+			case R.id.menu_option_compass_east:
+			case R.id.menu_option_compass_west:
+			case R.id.menu_option_compass_north:
+			case R.id.menu_option_compass_south:
+			case R.id.menu_option_compass_others:
 				toggleCompass(menuIDs.get(item.getItemId()));
 				return true;
 			default:
