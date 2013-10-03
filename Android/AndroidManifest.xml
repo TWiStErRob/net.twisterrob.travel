@@ -1,8 +1,8 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-		package="net.twisterrob.blt.android"
-		android:versionCode="1"
-		android:versionName="1.0"
-	>
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	package="net.twisterrob.blt.android"
+	android:versionCode="1"
+	android:versionName="1.0">
 
 	<uses-sdk android:minSdkVersion="7" />
 
@@ -11,45 +11,50 @@
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 	<application
-			android:name="net.twisterrob.blt.android.App"
-			android:icon="@drawable/ic_launcher"
-			android:label="@string/app_name"
-			android:theme="@style/Theme.Default"
-		>
+		android:name="net.twisterrob.blt.android.App"
+		android:icon="@drawable/ic_launcher"
+		android:label="@string/app_name"
+		android:theme="@style/Theme.Default">
 		<uses-library android:name="com.google.android.maps" />
 
+		<!-- Line Status-->
 		<activity
-				android:name=".ui.activity.StatusActivity"
-				android:label="@string/launcher_linestatus"
-			>
+			android:name=".ui.activity.StatusActivity"
+			android:label="@string/launcher_linestatus">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+
+		<!-- Prediction Summary -->
 		<activity
-				android:name=".ui.activity.PredictionSummaryActivity"
-				android:label="@string/launcher_prediction_summary"
-			>
-			<meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.activity.StatusActivity" />
+			android:name=".ui.activity.PredictionSummaryActivity"
+			android:label="@string/launcher_prediction_summary">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".ui.activity.StatusActivity" />
 		</activity>
+
+		<!-- Main -->
 		<activity
-				android:name=".ui.activity.MainActivity"
-				android:label="@string/app_name"
-			>
+			android:name=".ui.activity.MainActivity"
+			android:label="@string/app_name">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+
+		<!-- Station Map -->
 		<activity
-				android:name=".ui.activity.StationMapActivity"
-				android:label="@string/launcher_stationmap"
-			>
+			android:name=".ui.activity.StationMapActivity"
+			android:label="@string/launcher_stationmap">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+
 	</application>
 </manifest>

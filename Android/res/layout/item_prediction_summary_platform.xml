@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE layout>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical">
 
-       <TextView
-           android:id="@+id/prediction_platform_name"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:paddingTop="3dip"
-           android:paddingRight="3dip"
-           android:paddingBottom="3dip"
-           android:textStyle="bold"
-           android:textSize="12sp" />
+	<TextView
+		android:id="@+id/prediction_platform_name"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingTop="3dip"
+		android:paddingRight="3dip"
+		android:paddingBottom="3dip"
+		android:textStyle="bold"
+		android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/prediction_platform_description"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-        android:gravity="left"
-        android:text="@string/test"
-        android:textSize="12sp" />
+	<TextView
+		android:id="@+id/prediction_platform_description"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+		android:gravity="left"
+		android:text="@string/test"
+		android:textSize="12sp" />
 
 </LinearLayout>

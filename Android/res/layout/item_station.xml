@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE layout>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="horizontal" >
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="horizontal">
 
-    <ImageView
-        android:id="@android:id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:scaleType="fitXY" />
+	<ImageView
+		android:id="@android:id/icon"
+		android:layout_width="wrap_content"
+		android:layout_height="fill_parent"
+		android:scaleType="fitXY" />
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:orientation="vertical">
 
-        <TextView
-            android:id="@android:id/text1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="@string/test"
-            android:textSize="24sp" />
+		<TextView
+			android:id="@android:id/text1"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:gravity="left"
+			android:text="@string/test"
+			android:textSize="24sp" />
 
-        <TextView
-            android:id="@android:id/text2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="@string/test"
-            android:textSize="12sp"
-            android:textStyle="italic" />
-    </LinearLayout>
+		<TextView
+			android:id="@android:id/text2"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:gravity="left"
+			android:text="@string/test"
+			android:textSize="12sp"
+			android:textStyle="italic" />
+	</LinearLayout>
 
 </LinearLayout>
