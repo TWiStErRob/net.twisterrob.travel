@@ -10,7 +10,8 @@
 		android:id="@android:id/icon"
 		android:layout_width="wrap_content"
 		android:layout_height="fill_parent"
-		android:scaleType="fitXY" />
+		android:scaleType="fitXY"
+		android:contentDescription="Station operator icon" />
 
 	<LinearLayout
 		android:layout_width="fill_parent"
@@ -22,7 +23,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:gravity="left"
-			android:text="@string/test"
+			android:text="@string/demo_title"
 			android:textSize="24sp" />
 
 		<TextView
@@ -30,7 +31,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:gravity="left"
-			android:text="@string/test"
+			android:text="@string/demo_short"
 			android:textSize="12sp"
 			android:textStyle="italic" />
 	</LinearLayout>

@@ -35,7 +35,7 @@ public class StatusActivity extends ListActivity implements OnRefreshListener<Li
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_status);
 
-		m_refreshView = (PullToRefreshListView)findViewById(R.id.asdf_list);
+		m_refreshView = (PullToRefreshListView)findViewById(R.id.wrapper);
 		m_refreshView.setOnRefreshListener(this);
 
 		m_refreshView.setOnItemClickListener(new OnItemClickListener() {

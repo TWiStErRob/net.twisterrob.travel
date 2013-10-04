@@ -20,8 +20,13 @@ public class PredictionSummaryAdapter
 	private PredictionSummaryFeed m_root;
 
 	public PredictionSummaryAdapter(final Context context, final PredictionSummaryFeed root) {
+		this(context, root, EnumSet.allOf(PlatformDirection.class));
+	}
+	public PredictionSummaryAdapter(final Context context, final PredictionSummaryFeed root,
+			Collection<PlatformDirection> directionsEnabled) {
 		super(context, root.getStations(), root.getStationPlatform());
 		m_root = root;
+		m_directions.addAll(directionsEnabled);
 	}
 
 	protected static class GroupViewHolder {
@@ -97,7 +102,7 @@ public class PredictionSummaryAdapter
 		return trainBuilder.toString();
 	}
 
-	private Set<PlatformDirection> m_directions = EnumSet.allOf(PlatformDirection.class);
+	private Set<PlatformDirection> m_directions = EnumSet.noneOf(PlatformDirection.class);
 
 	public void addDirection(PlatformDirection dir) {
 		m_directions.add(dir);
