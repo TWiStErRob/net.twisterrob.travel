@@ -8,10 +8,10 @@ import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
 import net.twisterrob.android.utils.tools.CollectionTools;
 import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
+import net.twisterrob.blt.android.ui.*;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter;
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.blt.model.*;
-import uk.co.senab.actionbarpulltorefresh.library.*;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,13 +43,12 @@ public class PredictionSummaryActivity extends ActionBarActivity
 
 	private final Set<String> m_expandedStationNames = new LinkedHashSet<String>();
 
-	private PullToRefreshAttacher m_ptrAttacher;
-	private DefaultHeaderTransformer m_header;
-	private CharSequence m_headerOriginalText;
+	private AppCompatPullToRefreshAttacher m_ptrAttacher;
 
 	private ExpandableListView m_listView;
 	private PredictionSummaryAdapter m_adapter;
-	private TextView m_emptyText;
+
+	private ListViewHandler m_listHandler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,17 +62,12 @@ public class PredictionSummaryActivity extends ActionBarActivity
 		onCreate_setupCompassButtons();
 
 		m_listView = (ExpandableListView)findViewById(android.R.id.list);
-		m_emptyText = (TextView)findViewById(android.R.id.empty);
+		m_listHandler = new ListViewHandler(this, m_listView, android.R.id.empty);
 
-		m_ptrAttacher = PullToRefreshAttacher.get(this);
-		PullToRefreshLayout wrapper = (PullToRefreshLayout)findViewById(R.id.layout$wrapper);
-		wrapper.setPullToRefreshAttacher(m_ptrAttacher, this);
-		m_header = (DefaultHeaderTransformer)m_ptrAttacher.getHeaderTransformer();
-		m_headerOriginalText = getText(uk.co.senab.actionbarpulltorefresh.library.R.string.pull_to_refresh_pull_label);
+		m_ptrAttacher = AppCompatPullToRefreshAttacher.get(this).init(R.id.layout$wrapper, this);
 
 		m_listView.setOnGroupExpandListener(this);
 		m_listView.setOnGroupCollapseListener(this);
-		m_listView.setEmptyView(m_emptyText);
 
 		// gather params
 		Intent intent = getIntent();
@@ -139,7 +133,7 @@ public class PredictionSummaryActivity extends ActionBarActivity
 
 	@Override
 	public void onRefreshStarted(View view) {
-		m_emptyText.setText("Please wait while data is being retrieved from TFL..");
+		m_listHandler.startTFLLoad();
 		m_ptrAttacher.setRefreshing(true);
 		delayedGetRoot();
 	}
@@ -152,24 +146,18 @@ public class PredictionSummaryActivity extends ActionBarActivity
 				if (result.getError() != null) {
 					String msg = "Cannot load line prediction summary: " + result.getError();
 					LOG.error(msg, result.getError());
-					Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
-					m_emptyText.setText(msg);
-					m_listView.setAdapter((ExpandableListAdapter)null);
+					m_listHandler.empty(msg);
 				} else if (result.getResult() == null) {
 					String msg = "No line prediction summary returned";
 					LOG.error(msg, result.getError());
-					Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
-					m_emptyText.setText(msg);
-					m_listView.setAdapter((ExpandableListAdapter)null);
+					m_listHandler.empty(msg);
 				} else {
 					PredictionSummaryFeed root = result.getResult();
 					root.setLine(m_line);
 					m_lastUpdated = Calendar.getInstance();
-					m_emptyText.setText("You've ruled out all stations, please loosen the filter.");
 					m_adapter = new PredictionSummaryAdapter(PredictionSummaryActivity.this, root, m_directionsEnabled);
-					m_listView.setAdapter(m_adapter);
-					String lastUpdateText = "\nLast updated at " + fmt.format(m_lastUpdated.getTime());
-					m_header.setPullText(m_headerOriginalText + lastUpdateText); // TODO override header
+					m_listHandler.update("You've ruled out all stations, please loosen the filter.", m_adapter);
+					m_ptrAttacher.setLastUpdated("Last updated at " + fmt.format(m_lastUpdated.getTime()));
 					restoreExpandedState();
 				}
 				m_ptrAttacher.setRefreshComplete();

@@ -6,10 +6,10 @@ import java.util.*;
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
 import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
+import net.twisterrob.blt.android.ui.*;
 import net.twisterrob.blt.android.ui.adapter.StationStatusAdapter;
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.blt.model.*;
-import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshAttacher;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,19 +27,19 @@ public class StatusActivity extends ActionBarActivity implements OnRefreshListen
 	private SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private Calendar m_lastUpdated;
 
-	private PullToRefreshAttacher m_pullToRefreshAttacher;
+	private AppCompatPullToRefreshAttacher m_ptrAttacher;
 	private ListView m_listView;
+	private ListViewHandler m_listHandler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_status);
 
-		m_pullToRefreshAttacher = PullToRefreshAttacher.get(this);
+		m_ptrAttacher = AppCompatPullToRefreshAttacher.get(this).init(R.id.layout$wrapper, this);
 
 		m_listView = (ListView)findViewById(android.R.id.list);
-		m_pullToRefreshAttacher.addRefreshableView(m_listView, this);
-
+		m_listHandler = new ListViewHandler(this, m_listView, android.R.id.empty);
 		m_listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				LineStatus status = (LineStatus)parent.getItemAtPosition(position);
@@ -58,6 +58,7 @@ public class StatusActivity extends ActionBarActivity implements OnRefreshListen
 
 	@Override
 	public void onRefreshStarted(View view) {
+		m_listHandler.startTFLLoad();
 		delayedGetRoot();
 	}
 
@@ -65,30 +66,23 @@ public class StatusActivity extends ActionBarActivity implements OnRefreshListen
 		new DownloadFeedTask<LineStatusFeed>() {
 			protected void onPostExecute(AsyncTaskResult<LineStatusFeed> result) {
 				if (result.getError() != null) {
-					LOG.error("Cannot load line statuses", result.getError());
-					Toast.makeText(getApplicationContext(), "Cannot load line statuses: " + result.getError(),
-							Toast.LENGTH_LONG).show();
-					dataReceived(null);
+					String msg = "Cannot load line statuses: " + result.getError();
+					LOG.error(msg, result.getError());
+					m_listHandler.empty(msg);
 				} else if (result.getResult() == null) {
-					LOG.error("No line statuses returned", result.getError());
-					Toast.makeText(getApplicationContext(), "No line statuses returned", Toast.LENGTH_LONG).show();
-					dataReceived(null);
+					String msg = "No line statuses returned";
+					LOG.error(msg, result.getError());
+					m_listHandler.empty(msg);
 				} else {
 					LineStatusFeed root = result.getResult();
-					dataReceived(root);
+					List<LineStatus> lines = root.getLineStatuses();
+					ListAdapter adapter = new StationStatusAdapter(StatusActivity.this, lines);
+					m_listHandler.update("No data present", adapter);
+					m_lastUpdated = Calendar.getInstance();
+					m_ptrAttacher.setLastUpdated("Last updated at " + fmt.format(m_lastUpdated.getTime()));
 				}
+				m_ptrAttacher.setRefreshComplete();
 			}
 		}.execute(Feed.TubeDepartureBoardsLineStatus);
-	}
-
-	protected void dataReceived(LineStatusFeed root) {
-		if (root != null) {
-			List<LineStatus> lines = root.getLineStatuses();
-			m_listView.setAdapter(new StationStatusAdapter(StatusActivity.this, lines));
-			m_lastUpdated = Calendar.getInstance();
-			String lastUpdateText = "Last updated at " + fmt.format(m_lastUpdated.getTime());
-			// TODO m_refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(lastUpdateText);
-		}
-		m_pullToRefreshAttacher.setRefreshComplete();
 	}
 }
