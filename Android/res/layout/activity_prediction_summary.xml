@@ -6,7 +6,7 @@
 	android:layout_height="fill_parent">
 
 	<include
-		android:id="@+id/layout_header"
+		android:id="@+id/layout$common_header"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
@@ -15,16 +15,16 @@
 	<RelativeLayout
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-		android:layout_below="@+id/layout_header"
-		android:layout_above="@+id/layout_footer">
+		android:layout_below="@+id/layout$common_header"
+		android:layout_above="@+id/layout$common_footer">
 		<RelativeLayout
-			android:id="@+id/header_compass"
+			android:id="@+id/layout$compass_header"
 			android:layout_width="fill_parent"
 			android:layout_height="70dp"
 			android:layout_alignParentTop="true"
 			android:gravity="left">
 			<ToggleButton
-				android:id="@+id/button_compass_center"
+				android:id="@+id/button$compass_center"
 				android:layout_width="20dp"
 				android:layout_height="20dp"
 				android:layout_margin="7dp"
@@ -34,10 +34,10 @@
 				android:textOff="O"
 				android:textSize="16sp" />
 			<ToggleButton
-				android:id="@+id/button_compass_north"
+				android:id="@+id/button$compass_north"
 				android:layout_width="35dp"
 				android:layout_height="35dp"
-				android:layout_above="@+id/button_compass_center"
+				android:layout_above="@+id/button$compass_center"
 				android:layout_centerHorizontal="true"
 				android:layout_marginTop="-35dp"
 				android:background="@drawable/compass_triangle"
@@ -46,10 +46,10 @@
 				android:textOff="N"
 				android:textSize="10sp" />
 			<ToggleButton
-				android:id="@+id/button_compass_south"
+				android:id="@+id/button$compass_south"
 				android:layout_width="35dp"
 				android:layout_height="35dp"
-				android:layout_below="@+id/button_compass_center"
+				android:layout_below="@+id/button$compass_center"
 				android:layout_centerHorizontal="true"
 				android:layout_marginBottom="-35dp"
 				android:background="@drawable/compass_triangle"
@@ -59,11 +59,11 @@
 				android:textOff="S"
 				android:textSize="10sp" />
 			<ToggleButton
-				android:id="@+id/button_compass_west"
+				android:id="@+id/button$compass_west"
 				android:layout_width="35dp"
 				android:layout_height="35dp"
 				android:layout_centerVertical="true"
-				android:layout_toLeftOf="@+id/button_compass_center"
+				android:layout_toLeftOf="@+id/button$compass_center"
 				android:background="@drawable/compass_triangle"
 				android:gravity="bottom|center_horizontal"
 				android:rotation="-90"
@@ -71,11 +71,11 @@
 				android:textOff="W"
 				android:textSize="10sp" />
 			<ToggleButton
-				android:id="@+id/button_compass_east"
+				android:id="@+id/button$compass_east"
 				android:layout_width="35dp"
 				android:layout_height="35dp"
 				android:layout_centerVertical="true"
-				android:layout_toRightOf="@+id/button_compass_center"
+				android:layout_toRightOf="@+id/button$compass_center"
 				android:background="@drawable/compass_triangle"
 				android:gravity="bottom|center_horizontal"
 				android:rotation="90"
@@ -83,26 +83,29 @@
 				android:textOff="E"
 				android:textSize="10sp" />
 		</RelativeLayout>
-		<ExpandableListView
-			android:id="@android:id/list"
-			android:layout_below="@+id/header_compass"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent" />
-		<TextView
-			android:id="@android:id/empty"
-			android:layout_below="@+id/header_compass"
+		<uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout
+			android:id="@+id/layout$wrapper"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
-			android:layout_gravity="center_horizontal"
-			android:layout_margin="8dp"
-			android:text="@string/demo_long"
-			android:textColor="#ff0000"
-			android:textSize="16sp" />
-
+			android:layout_below="@+id/layout$compass_header">
+			<ExpandableListView
+				android:id="@android:id/list"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent" />
+			<TextView
+				android:id="@android:id/empty"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+				android:layout_gravity="center_horizontal"
+				android:layout_margin="8dp"
+				android:text="@string/demo_long"
+				android:textColor="#ff0000"
+				android:textSize="16sp" />
+		</uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
 	</RelativeLayout>
 
 	<include
-		android:id="@+id/layout_footer"
+		android:id="@+id/layout$common_footer"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
