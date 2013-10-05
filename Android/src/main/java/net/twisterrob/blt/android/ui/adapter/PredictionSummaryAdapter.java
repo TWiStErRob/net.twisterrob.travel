@@ -20,7 +20,7 @@ public class PredictionSummaryAdapter
 	private PredictionSummaryFeed m_root;
 
 	public PredictionSummaryAdapter(final Context context, final PredictionSummaryFeed root) {
-		this(context, root, EnumSet.allOf(PlatformDirection.class));
+		this(context, root, EnumSet.noneOf(PlatformDirection.class));
 	}
 	public PredictionSummaryAdapter(final Context context, final PredictionSummaryFeed root,
 			Collection<PlatformDirection> directionsEnabled) {
@@ -113,6 +113,9 @@ public class PredictionSummaryAdapter
 
 	@Override
 	protected List<Station> filterGroups(List<Station> groups) {
+		if (m_directions.isEmpty()) {
+			return groups; // shortcut to show everything when there's nothing filtered
+		}
 		List<Station> filtered = new ArrayList<Station>();
 		for (Station station: groups) {
 			if (matches(getChildren(station))) {
@@ -124,6 +127,9 @@ public class PredictionSummaryAdapter
 
 	@Override
 	protected List<Platform> filterChildren(List<Platform> children, Station group) {
+		if (m_directions.isEmpty()) {
+			return children; // shortcut to show everything when there's nothing filtered
+		}
 		List<Platform> filtered = new ArrayList<Platform>();
 		for (Platform platform: children) {
 			if (matches(platform)) {

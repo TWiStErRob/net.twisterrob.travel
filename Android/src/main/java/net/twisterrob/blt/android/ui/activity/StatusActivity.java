@@ -9,37 +9,39 @@ import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
 import net.twisterrob.blt.android.ui.adapter.StationStatusAdapter;
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.blt.model.*;
-import android.app.ListActivity;
+import uk.co.senab.actionbarpulltorefresh.library.*;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-
-import com.handmark.pulltorefresh.library.*;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 
 /**
  * http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf
  * @author TWiStEr
  */
-public class StatusActivity extends ListActivity implements OnRefreshListener<ListView> {
+public class StatusActivity extends ActionBarActivity implements OnRefreshListener {
 
 	private SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private Calendar m_lastUpdated;
 
-	private PullToRefreshListView m_refreshView;
+	private PullToRefreshAttacher m_pullToRefreshAttacher;
+	private ListView m_listView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_status);
 
-		m_refreshView = (PullToRefreshListView)findViewById(R.id.wrapper);
-		m_refreshView.setOnRefreshListener(this);
+		m_pullToRefreshAttacher = PullToRefreshAttacher.get(this);
 
-		m_refreshView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
+		m_listView = (ListView)findViewById(android.R.id.list);
+		m_pullToRefreshAttacher.addRefreshableView(m_listView, this);
+
+		m_listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				LineStatus status = (LineStatus)parent.getItemAtPosition(position);
 				Intent intent = new Intent(StatusActivity.this, PredictionSummaryActivity.class);
@@ -52,11 +54,11 @@ public class StatusActivity extends ListActivity implements OnRefreshListener<Li
 		});
 
 		// actually start loading the data
-		this.onRefresh(m_refreshView);
+		this.onRefreshStarted(m_listView);
 	}
 
 	@Override
-	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+	public void onRefreshStarted(View view) {
 		delayedGetRoot();
 	}
 
@@ -83,11 +85,11 @@ public class StatusActivity extends ListActivity implements OnRefreshListener<Li
 	protected void dataReceived(LineStatusFeed root) {
 		if (root != null) {
 			List<LineStatus> lines = root.getLineStatuses();
-			setListAdapter(new StationStatusAdapter(StatusActivity.this, lines));
+			m_listView.setAdapter(new StationStatusAdapter(StatusActivity.this, lines));
 			m_lastUpdated = Calendar.getInstance();
-			m_refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(
-					"Last updated at " + fmt.format(m_lastUpdated.getTime()));
+			String lastUpdateText = "Last updated at " + fmt.format(m_lastUpdated.getTime());
+			// TODO m_refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(lastUpdateText);
 		}
-		m_refreshView.onRefreshComplete();
+		m_pullToRefreshAttacher.setRefreshComplete();
 	}
 }

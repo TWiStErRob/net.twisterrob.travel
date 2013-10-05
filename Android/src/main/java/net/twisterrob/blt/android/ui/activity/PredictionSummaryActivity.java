@@ -11,6 +11,8 @@ import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter;
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.blt.model.*;
+import uk.co.senab.actionbarpulltorefresh.library.*;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -20,16 +22,13 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 
-import com.handmark.pulltorefresh.library.*;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
-
 /**
  * http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf
  * @author TWiStEr
  */
 public class PredictionSummaryActivity extends ActionBarActivity
 		implements
-			OnRefreshListener<ExpandableListView>,
+			OnRefreshListener,
 			OnGroupExpandListener,
 			OnGroupCollapseListener {
 	public static final String EXTRA_LINE = "line";
@@ -44,7 +43,8 @@ public class PredictionSummaryActivity extends ActionBarActivity
 
 	private final Set<String> m_expandedStationNames = new LinkedHashSet<String>();
 
-	private PullToRefreshExpandableListView m_refreshView;
+	private PullToRefreshAttacher m_pullToRefreshAttacher;
+	private ExpandableListView m_listView;
 
 	private PredictionSummaryAdapter m_adapter;
 
@@ -61,16 +61,16 @@ public class PredictionSummaryActivity extends ActionBarActivity
 
 		onCreate_setupCompassButtons();
 
+		m_listView = (ExpandableListView)findViewById(android.R.id.list);
 		View emptyLayout = getLayoutInflater().inflate(R.layout.common_empty_list, null);
 		m_emptyText = (TextView)emptyLayout.findViewById(android.R.id.empty);
 
-		m_refreshView = (PullToRefreshExpandableListView)findViewById(R.id.wrapper);
-		m_refreshView.setOnRefreshListener(this);
-		ExpandableListView listView = m_refreshView.getRefreshableView();
-		m_refreshView.setEmptyView(emptyLayout);
-		listView.setOnGroupExpandListener(this);
-		listView.setOnGroupCollapseListener(this);
-		listView.setEmptyView(emptyLayout);
+		m_pullToRefreshAttacher = PullToRefreshAttacher.get(this);
+		m_pullToRefreshAttacher.addRefreshableView(m_listView, this);
+
+		m_listView.setOnGroupExpandListener(this);
+		m_listView.setOnGroupCollapseListener(this);
+		m_listView.setEmptyView(emptyLayout);
 
 		// gather params
 		Intent intent = getIntent();
@@ -85,9 +85,9 @@ public class PredictionSummaryActivity extends ActionBarActivity
 		buttons.put(PlatformDirection.South, (ToggleButton)this.findViewById(R.id.button_compass_south));
 		buttons.put(PlatformDirection.Other, (ToggleButton)this.findViewById(R.id.button_compass_center));
 		for (final Entry<PlatformDirection, ToggleButton> buttonMap: buttons.entrySet()) {
+			// restore UI state (setChecked) before attaching the handler to prevent calling it
 			buttonMap.getValue().setChecked(m_directionsEnabled.contains(buttonMap.getKey()));
 			buttonMap.getValue().setOnCheckedChangeListener(new OnCheckedChangeListener() {
-				@Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					toggleCompass(buttonMap.getKey(), isChecked);
 				}
@@ -99,7 +99,7 @@ public class PredictionSummaryActivity extends ActionBarActivity
 	protected void onResume() {
 		super.onResume();
 		// actually start loading the data
-		this.onRefresh(m_refreshView);
+		this.onRefreshStarted(m_listView);
 	}
 
 	@Override
@@ -135,9 +135,9 @@ public class PredictionSummaryActivity extends ActionBarActivity
 	}
 
 	@Override
-	public void onRefresh(PullToRefreshBase<ExpandableListView> refreshView) {
+	public void onRefreshStarted(View view) {
 		m_emptyText.setText("Please wait while data is being retrieved from TFL..");
-		refreshView.setRefreshing();
+		m_pullToRefreshAttacher.setRefreshing(true);
 		delayedGetRoot();
 	}
 
@@ -161,22 +161,20 @@ public class PredictionSummaryActivity extends ActionBarActivity
 					root.setLine(m_line);
 					m_lastUpdated = Calendar.getInstance();
 					m_adapter = new PredictionSummaryAdapter(PredictionSummaryActivity.this, root, m_directionsEnabled);
-					m_refreshView.getRefreshableView().setAdapter(m_adapter);
+					m_listView.setAdapter(m_adapter);
 					String lastUpdateText = "Last updated at " + fmt.format(m_lastUpdated.getTime());
-					m_refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(lastUpdateText);
+					// TODO m_refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(lastUpdateText);
 					restoreExpandedState();
 					m_emptyText.setText("You've ruled out all stations, please loosen the filter.");
 				}
-				m_refreshView.onRefreshComplete();
+				m_pullToRefreshAttacher.setRefreshComplete();
 			}
 		}.execute(Feed.TubeDepartureBoardsPredictionSummary);
 	}
 
-	@Override
 	public void onGroupExpand(int groupPosition) {
 		m_expandedStationNames.add(m_adapter.getGroup(groupPosition).getName());
 	}
-	@Override
 	public void onGroupCollapse(int groupPosition) {
 		m_expandedStationNames.remove(m_adapter.getGroup(groupPosition).getName());
 	}
@@ -190,7 +188,7 @@ public class PredictionSummaryActivity extends ActionBarActivity
 		int groupIndex = 0;
 		for (Station station: m_adapter.getGroups()) {
 			if (m_expandedStationNames.contains(station.getName())) {
-				m_refreshView.getRefreshableView().expandGroup(groupIndex);
+				m_listView.expandGroup(groupIndex);
 			}
 			if (station.getName().equals(lastExpanded)) {
 				lastExpandedGroupIndex = groupIndex;
@@ -198,7 +196,7 @@ public class PredictionSummaryActivity extends ActionBarActivity
 			++groupIndex;
 		}
 		if (lastExpandedGroupIndex != -1) {
-			m_refreshView.getRefreshableView().setSelectedGroup(lastExpandedGroupIndex);
+			m_listView.setSelectedGroup(lastExpandedGroupIndex);
 		}
 	}
 
@@ -237,7 +235,7 @@ public class PredictionSummaryActivity extends ActionBarActivity
 		}
 	}
 
-	private final Set<PlatformDirection> m_directionsEnabled = EnumSet.allOf(PlatformDirection.class);
+	private final Set<PlatformDirection> m_directionsEnabled = EnumSet.noneOf(PlatformDirection.class);
 	private final Map<Integer, PlatformDirection> menuIDs = new TreeMap<Integer, PlatformDirection>();
 	private final Map<PlatformDirection, MenuItem> menus = new EnumMap<PlatformDirection, MenuItem>(
 			PlatformDirection.class);
@@ -291,7 +289,7 @@ public class PredictionSummaryActivity extends ActionBarActivity
 
 	protected void refreshAdapter() {
 		m_adapter.notifyDataSetChanged();
-		m_refreshView.getRefreshableView().setAdapter(m_adapter);
+		m_listView.setAdapter(m_adapter);
 		restoreExpandedState();
 	}
 }

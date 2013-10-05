@@ -83,8 +83,8 @@
 				android:textOff="E"
 				android:textSize="10sp" />
 		</RelativeLayout>
-		<com.handmark.pulltorefresh.library.PullToRefreshExpandableListView
-			android:id="@+id/wrapper"
+		<ExpandableListView
+			android:id="@android:id/list"
 			android:layout_below="@+id/header_compass"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent" />
