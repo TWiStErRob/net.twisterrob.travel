@@ -62,15 +62,14 @@ public class PredictionSummaryActivity extends ActionBarActivity
 		onCreate_setupCompassButtons();
 
 		m_listView = (ExpandableListView)findViewById(android.R.id.list);
-		View emptyLayout = getLayoutInflater().inflate(R.layout.common_empty_list, null);
-		m_emptyText = (TextView)emptyLayout.findViewById(android.R.id.empty);
+		m_emptyText = (TextView)findViewById(android.R.id.empty);
 
 		m_pullToRefreshAttacher = PullToRefreshAttacher.get(this);
 		m_pullToRefreshAttacher.addRefreshableView(m_listView, this);
 
 		m_listView.setOnGroupExpandListener(this);
 		m_listView.setOnGroupCollapseListener(this);
-		m_listView.setEmptyView(emptyLayout);
+		m_listView.setEmptyView(m_emptyText);
 
 		// gather params
 		Intent intent = getIntent();
@@ -151,21 +150,23 @@ public class PredictionSummaryActivity extends ActionBarActivity
 					LOG.error(msg, result.getError());
 					Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
 					m_emptyText.setText(msg);
+					m_listView.setAdapter((ExpandableListAdapter)null);
 				} else if (result.getResult() == null) {
 					String msg = "No line prediction summary returned";
 					LOG.error(msg, result.getError());
 					Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
 					m_emptyText.setText(msg);
+					m_listView.setAdapter((ExpandableListAdapter)null);
 				} else {
 					PredictionSummaryFeed root = result.getResult();
 					root.setLine(m_line);
 					m_lastUpdated = Calendar.getInstance();
+					m_emptyText.setText("You've ruled out all stations, please loosen the filter.");
 					m_adapter = new PredictionSummaryAdapter(PredictionSummaryActivity.this, root, m_directionsEnabled);
 					m_listView.setAdapter(m_adapter);
 					String lastUpdateText = "Last updated at " + fmt.format(m_lastUpdated.getTime());
 					// TODO m_refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(lastUpdateText);
 					restoreExpandedState();
-					m_emptyText.setText("You've ruled out all stations, please loosen the filter.");
 				}
 				m_pullToRefreshAttacher.setRefreshComplete();
 			}

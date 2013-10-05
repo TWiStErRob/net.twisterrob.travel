@@ -88,6 +88,17 @@
 			android:layout_below="@+id/header_compass"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent" />
+		<TextView
+			android:id="@android:id/empty"
+			android:layout_below="@+id/header_compass"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:layout_gravity="center_horizontal"
+			android:layout_margin="8dp"
+			android:text="@string/demo_long"
+			android:textColor="#ff0000"
+			android:textSize="16sp" />
+
 	</RelativeLayout>
 
 	<include
