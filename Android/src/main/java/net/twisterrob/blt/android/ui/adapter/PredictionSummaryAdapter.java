@@ -45,6 +45,7 @@ public class PredictionSummaryAdapter
 	protected static class TrainViewHolder {
 		TextView train;
 		TextView description;
+		TextView time;
 	}
 
 	@Override
@@ -85,14 +86,18 @@ public class PredictionSummaryAdapter
 		if (currentLevel3.size() > 0) {
 			String platformDesc = String.format("%s: %d trains are approaching.", currentLevel2.getName(),
 					currentLevel3.size());
-			String trainBuilder = buildIncomingTrains(currentLevel3);
-
 			level2Holder.platform.setText(platformDesc);
-			level2Holder.description.setText(trainBuilder);
-			level2Holder.description.setVisibility(View.VISIBLE);
 		} else {
 			level2Holder.platform.setText(String.format("%s has no trains approaching", currentLevel2.getName()));
-			level2Holder.description.setVisibility(View.GONE);
+		}
+		level2Holder.description.setVisibility(View.GONE);
+	}
+
+	@Override
+	protected void bindLevel2Groups(ExpandableListView list, BaseExpandableListAdapter adapter) {
+		int groups = adapter.getGroupCount();
+		for (int i = 0; i < groups; ++i) {
+			list.expandGroup(i);
 		}
 	}
 
@@ -102,24 +107,19 @@ public class PredictionSummaryAdapter
 	}
 	@Override
 	protected TrainViewHolder createLevel3Holder(View level3ConvertView) {
-		return null;
+		TrainViewHolder trainHolder = new TrainViewHolder();
+		trainHolder.train = (TextView)level3ConvertView.findViewById(R.id.prediction_train_name);
+		trainHolder.description = (TextView)level3ConvertView.findViewById(R.id.prediction_train_description);
+		trainHolder.time = (TextView)level3ConvertView.findViewById(R.id.prediction_train_time);
+		return trainHolder;
 	}
 	@Override
 	protected void bindLevel3View(TrainViewHolder level3Holder, Station currentLevel1, Platform currentLevel2,
-			Train currentLevel3, View level3ConvertView) {}
-
-	protected String buildIncomingTrains(List<Train> trains) {
-		StringBuilder trainBuilder = new StringBuilder();
-		for (Train train: trains) {
-			String trainDesc = String.format("[%1$tM:%1$tS] %2$s (%3$s)", train.getTimeToStation(),
-					train.getDestinationName(), train.getLocation());
-			trainBuilder.append(trainDesc).append("\n");
-		}
-		// remove trailing newlines
-		while (trainBuilder.length() > 0 && trainBuilder.charAt(trainBuilder.length() - 1) == '\n') {
-			trainBuilder.deleteCharAt(trainBuilder.length() - 1);
-		}
-		return trainBuilder.toString();
+			Train currentLevel3, View level3ConvertView) {
+		String timeString = String.format("%1$tM:%1$tS", currentLevel3.getTimeToStation());
+		level3Holder.train.setText(currentLevel3.getDestinationName());
+		level3Holder.description.setText(currentLevel3.getLocation());
+		level3Holder.time.setText(timeString);
 	}
 
 	private Set<PlatformDirection> m_directions = EnumSet.noneOf(PlatformDirection.class);

@@ -3,6 +3,7 @@
 	<string name="launcher_stationmap">BLT Station Map</string>
 	<string name="launcher_linestatus">BLT Line Status</string>
 	<string name="launcher_prediction_summary">Train Predictions</string>
+	<string name="demo_time">12:34</string>
 	<string name="demo_title">Lorem ipsum</string>
 	<string name="demo_short">Lorem ipsum dolor sit amet</string>
 	<string name="demo_long">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
