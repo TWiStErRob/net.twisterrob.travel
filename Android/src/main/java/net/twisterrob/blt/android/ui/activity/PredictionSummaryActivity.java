@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.*;
+import android.view.View.MeasureSpec;
 import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
@@ -155,7 +156,8 @@ public class PredictionSummaryActivity extends ActionBarActivity
 					PredictionSummaryFeed root = result.getResult();
 					root.setLine(m_line);
 					m_lastUpdated = Calendar.getInstance();
-					m_adapter = new PredictionSummaryAdapter(PredictionSummaryActivity.this, root, m_directionsEnabled);
+					m_adapter = new PredictionSummaryAdapter(PredictionSummaryActivity.this, m_listView, root,
+							m_directionsEnabled);
 					m_listHandler.update("You've ruled out all stations, please loosen the filter.", m_adapter);
 					m_ptrAttacher.setLastUpdated("Last updated at " + fmt.format(m_lastUpdated.getTime()));
 					restoreExpandedState();
@@ -190,6 +192,13 @@ public class PredictionSummaryActivity extends ActionBarActivity
 		}
 		if (lastExpandedGroupIndex != -1) {
 			m_listView.setSelectedGroup(lastExpandedGroupIndex);
+			// FIXME doesn't work, maybe post async
+			View selectedView = m_listView.getAdapter().getView(lastExpandedGroupIndex, null, m_listView);
+			selectedView.measure( //
+					MeasureSpec.makeMeasureSpec(m_listView.getWidth(), MeasureSpec.AT_MOST), //
+					MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+			int height = selectedView.getMeasuredHeight();
+			m_listView.scrollBy(0, -height / 2);
 		}
 	}
 
