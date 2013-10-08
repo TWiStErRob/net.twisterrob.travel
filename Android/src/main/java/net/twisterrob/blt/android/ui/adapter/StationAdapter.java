@@ -1,19 +1,19 @@
 package net.twisterrob.blt.android.ui.adapter;
 
-import java.util.Collection;
+import java.io.IOException;
+import java.util.*;
 
 import net.twisterrob.android.adapter.BaseListAdapter;
-import net.twisterrob.android.utils.concurrent.*;
+import net.twisterrob.android.utils.tools.IOTools;
 import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder;
-import net.twisterrob.blt.model.Station;
+import net.twisterrob.blt.model.*;
 import android.content.Context;
-import android.view.*;
-import android.view.ViewGroup.LayoutParams;
+import android.graphics.Bitmap;
+import android.view.View;
 import android.widget.*;
 
 public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
-
 	public StationAdapter(final Context context, final Collection<Station> items) {
 		super(context, items, false);
 	}
@@ -38,6 +38,7 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 		return holder;
 	}
 
+	private Map<Type, Bitmap> bitmaps = new EnumMap<Type, Bitmap>(Type.class);
 	@Override
 	protected void bindView(final ViewHolder holder, final Station currentItem, final View convertView) {
 		String title = currentItem.getName();
@@ -45,14 +46,18 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 
 		holder.title.setText(title);
 		holder.description.setText(description);
-		new ImageViewDownloader(holder.icon, new Callback<ImageView>() {
-			@Override
-			public void call(ImageView param) {
-				// fix width to be square
-				LayoutParams params = param.getLayoutParams();
-				params.width = param.getHeight();
-				param.setLayoutParams(params);
+		Type type = currentItem.getType();
+		Bitmap icon = bitmaps.get(type);
+		if (icon == null) {
+			try {
+				icon = IOTools.getImage(type.getUrl(), true);
+				bitmaps.put(type, icon);
+			} catch (IOException ex) {
+				ex.printStackTrace();
 			}
-		}).execute(currentItem.getType().getUrl());
+		}
+		if (icon != null) {
+			holder.icon.setImageBitmap(icon);
+		}
 	}
 }

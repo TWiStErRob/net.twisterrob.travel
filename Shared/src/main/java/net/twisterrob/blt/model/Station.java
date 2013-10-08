@@ -1,10 +1,16 @@
 package net.twisterrob.blt.model;
 
-import java.util.List;
+import java.util.*;
 
 import net.twisterrob.android.utils.model.Location;
 
 public class Station {
+	public static final Comparator<Station> COMPARATOR_NAME = new Comparator<Station>() {
+		@Override
+		public int compare(Station o1, Station o2) {
+			return o1.getName().compareTo(o2.getName());
+		}
+	};
 	private int m_id;
 	private String m_name;
 	private String m_address;

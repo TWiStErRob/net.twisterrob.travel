@@ -3,19 +3,22 @@
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
+	android:layout_height="wrap_content"
 	android:orientation="horizontal">
 
 	<ImageView
 		android:id="@android:id/icon"
-		android:layout_width="wrap_content"
-		android:layout_height="fill_parent"
+		android:layout_width="30sp"
+		android:layout_height="30sp"
+		android:padding="2sp"
+		android:layout_gravity="center"
+		android:src="@drawable/ic_launcher"
 		android:scaleType="fitXY"
 		android:contentDescription="Station operator icon" />
 
 	<LinearLayout
 		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
+		android:layout_height="wrap_content"
 		android:orientation="vertical">
 
 		<TextView
@@ -24,7 +27,7 @@
 			android:layout_height="wrap_content"
 			android:gravity="left"
 			android:text="@string/demo_title"
-			android:textSize="24sp" />
+			android:textSize="20sp" />
 
 		<TextView
 			android:id="@android:id/text2"
