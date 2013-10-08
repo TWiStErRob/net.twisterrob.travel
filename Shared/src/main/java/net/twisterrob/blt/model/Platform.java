@@ -1,5 +1,9 @@
 package net.twisterrob.blt.model;
+
+import java.util.regex.*;
+
 public class Platform {
+	private static final Pattern PLATFORM_NUMBER = Pattern.compile(".*platform (\\d+).*", Pattern.CASE_INSENSITIVE);
 	private String name;
 	private int code;
 	private PlatformDirection direction;
@@ -53,5 +57,18 @@ public class Platform {
 			return false;
 		}
 		return true;
+	}
+
+	public int extractPlatformNumber() {
+		try {
+			Matcher matcher = PLATFORM_NUMBER.matcher(this.getName());
+			if (matcher.find()) {
+				return Integer.parseInt(matcher.group(1));
+			} else {
+				return 0;
+			}
+		} catch (NumberFormatException ex) {
+			return 0;
+		}
 	}
 }
