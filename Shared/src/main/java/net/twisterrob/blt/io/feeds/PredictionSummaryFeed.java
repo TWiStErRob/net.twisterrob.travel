@@ -82,7 +82,16 @@ public class PredictionSummaryFeed extends BaseFeed {
 	}
 
 	public Map<Platform, List<Train>> collectTrains(Station station) {
-		Map<Platform, List<Train>> result = new HashMap<Platform, List<Train>>();
+		Map<Platform, List<Train>> result = new TreeMap<Platform, List<Train>>(new Comparator<Platform>() {
+			@Override
+			public int compare(Platform platform1, Platform platform2) {
+				int p1 = platform1.extractPlatformNumber();
+				int p2 = platform2.extractPlatformNumber();
+				int dirDiff = platform1.getDirection().compareTo(platform2.getDirection());
+				int nameDiff = platform1.getName().compareTo(platform2.getName());
+				return (p1 < p2? -1 : (p1 == p2? (p1 != 0? 0 : dirDiff != 0? dirDiff : nameDiff) : 1));
+			}
+		});
 		for (Platform platform: m_stationPlatform.get(station)) {
 			List<Train> trains = m_stationPlatformTrain.get(new MultiKey(station, platform));
 			result.put(platform, trains);

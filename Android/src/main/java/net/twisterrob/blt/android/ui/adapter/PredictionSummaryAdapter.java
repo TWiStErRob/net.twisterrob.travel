@@ -28,7 +28,13 @@ public class PredictionSummaryAdapter
 	}
 
 	private static Map<Station, Map<Platform, List<Train>>> map(PredictionSummaryFeed root) {
-		Map<Station, Map<Platform, List<Train>>> data = new HashMap<Station, Map<Platform, List<Train>>>();
+		Map<Station, Map<Platform, List<Train>>> data = new TreeMap<Station, Map<Platform, List<Train>>>(
+				new Comparator<Station>() {
+					@Override
+					public int compare(Station lhs, Station rhs) {
+						return lhs.getName().compareTo(rhs.getName());
+					}
+				});
 		for (Station station: root.getStationPlatform().keySet()) {
 			data.put(station, root.collectTrains(station));
 		}
