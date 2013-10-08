@@ -1,46 +1,99 @@
 package net.twisterrob.blt.android.ui.activity;
 
-import java.util.List;
+import java.util.*;
 
-import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
-import net.twisterrob.blt.android.App;
-import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
-import net.twisterrob.blt.android.ui.adapter.StationAdapter;
-import net.twisterrob.blt.io.feeds.*;
-import net.twisterrob.blt.model.Station;
-import android.app.ListActivity;
+import net.twisterrob.android.adapter.BaseListAdapter;
+import net.twisterrob.blt.android.R;
+import net.twisterrob.blt.android.ui.activity.MainActivity.LauncherAdapter.LauncherViewHolder;
+import net.twisterrob.blt.model.Line;
+import android.app.Activity;
+import android.content.*;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.widget.*;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends ActionBarActivity {
+
+	private static final List<LauncherItem> launcherItems = Arrays.asList( //
+			new LauncherItem(R.string.launcher_linestatus, StatusActivity.class), //
+			new LauncherItem(R.string.launcher_stationlist, StationListActivity.class), //
+			new LauncherItem(R.string.launcher_prediction_summary, PredictionSummaryActivity.class) {
+				@Override
+				void addIntentParams(Intent intent) {
+					super.addIntentParams(intent);
+					intent.putExtra(PredictionSummaryActivity.EXTRA_LINE, Line.Central);
+				}
+			}, //
+			new LauncherItem(R.string.launcher_stationmap, StationMapActivity.class) //
+			);
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		delayedGetRoot();
+		setContentView(R.layout.activity_main);
+
+		GridView grid = (GridView)findViewById(android.R.id.list);
+		grid.setAdapter(new LauncherAdapter(this, launcherItems));
+		grid.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				LauncherItem item = (LauncherItem)parent.getItemAtPosition(position);
+				Intent intent = item.createIntent(MainActivity.this);
+				startActivity(intent);
+			}
+		});
 	}
 
-	private void delayedGetRoot() {
-		new DownloadFeedTask<FacilitiesFeed>() {
-			protected void onPostExecute(AsyncTaskResult<FacilitiesFeed> result) {
-				List<Station> stations;
-				if (result.getError() != null) {
-					LOG.error("Cannot load facitilies", result.getError());
-					Toast.makeText(getApplicationContext(), "Cannot load facitilies" + result.getError().getMessage(),
-							Toast.LENGTH_LONG).show();
-					stations = App.getInstance().getDataBaseHelper().getStations();
-				} else {
-					FacilitiesFeed root = result.getResult();
-					if (root != null) {
-						stations = root.getStations();
-						App.getInstance().getDataBaseHelper().updateTypes(root.getStyles());
-						App.getInstance().getDataBaseHelper().updateStations(stations);
-					} else {
-						stations = App.getInstance().getDataBaseHelper().getStations();
-					}
-				}
-				setListAdapter(new StationAdapter(MainActivity.this, stations));
-			};
-		}.execute(Feed.StationFacilities);
+	protected static class LauncherItem {
+		private int m_titleResource;
+		private Class<? extends Activity> m_targetActivityClass;
+
+		public LauncherItem(int titleResource, Class<? extends Activity> targetActivityClass) {
+			m_titleResource = titleResource;
+			m_targetActivityClass = targetActivityClass;
+		}
+
+		public int getTitle() {
+			return m_titleResource;
+		}
+		public String getTitle(Context context) {
+			return context.getString(m_titleResource);
+		}
+
+		Intent createIntent(Context context) {
+			Intent intent = new Intent(context, m_targetActivityClass);
+			addIntentParams(intent);
+			return intent;
+		}
+		void addIntentParams(Intent intent) {}
 	}
+
+	protected static class LauncherAdapter extends BaseListAdapter<LauncherItem, LauncherViewHolder> {
+		private LauncherAdapter(Context context, Collection<LauncherItem> items) {
+			super(context, items);
+		}
+
+		public static class LauncherViewHolder {
+			protected TextView title;
+		}
+
+		@Override
+		protected int getItemLayoutId() {
+			return R.layout.item_main_launcher;
+		}
+		@Override
+		protected LauncherViewHolder createHolder(View convertView) {
+			LauncherViewHolder holder = new LauncherViewHolder();
+			holder.title = (TextView)convertView.findViewById(R.id.main_launcher_title);
+			return holder;
+		}
+		@Override
+		protected void bindView(LauncherViewHolder holder, LauncherItem currentItem, View convertView) {
+			holder.title.setText(currentItem.getTitle());
+		}
+	}
+
 }

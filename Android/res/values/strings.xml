@@ -1,7 +1,8 @@
 <resources>
 	<string name="app_name">Better London Travel</string>
-	<string name="launcher_stationmap">BLT Station Map</string>
-	<string name="launcher_linestatus">BLT Line Status</string>
+	<string name="launcher_stationlist">Station List</string>
+	<string name="launcher_stationmap">Station Map</string>
+	<string name="launcher_linestatus">Line Status</string>
 	<string name="launcher_prediction_summary">Train Predictions</string>
 	<string name="demo_time">12:34</string>
 	<string name="demo_title">Lorem ipsum</string>

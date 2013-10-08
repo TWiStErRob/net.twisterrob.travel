@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE layout>
+<TextView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/main_launcher_title"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:background="@android:color/transparent"
+	android:gravity="center"
+	android:text="@string/demo_title"
+	android:drawableTop="@drawable/ic_launcher"
+	android:textSize="30sp" />
