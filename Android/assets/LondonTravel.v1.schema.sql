@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS Station (
 --	                                       CONSTRAINT "fk-Cinema-CinemaCompany" REFERENCES CinemaCompany(_id)
 --	,
 	name                NVARCHAR           NOT NULL UNIQUE,
+	type                NVARCHAR           NOT NULL
+	                                       CONSTRAINT "fk-Station-StationType" REFERENCES StationType(name),
 	address             NVARCHAR           NULL,
 	telephone           NVARCHAR           NULL,
 	latitude            REAL               NULL,

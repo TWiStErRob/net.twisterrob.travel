@@ -3,15 +3,15 @@ package net.twisterrob.blt.android.db;
 import java.util.*;
 
 import net.twisterrob.android.utils.model.Location;
-import net.twisterrob.blt.model.Station;
+import net.twisterrob.blt.model.*;
 import android.database.*;
 import android.database.sqlite.SQLiteDatabase;
 
 class DataBaseReader {
 	private static final String LAST_UPDATE = "strftime('%s', __last_update) * 1000";
 
-	private static final String[] STATION_DETAILS = {LAST_UPDATE, "_id", "name", "address", "telephone", "latitude",
-			"longitude"};
+	private static final String[] STATION_DETAILS = {LAST_UPDATE, "_id", "name", "type", "address", "telephone",
+			"latitude", "longitude"};
 	private static final String[] TYPE_DETAILS = {LAST_UPDATE, "_id", "name", "url"};
 
 	private final DataBaseHelper m_dataBaseHelper;
@@ -37,6 +37,7 @@ class DataBaseReader {
 	private Station readStation(final Cursor cursor) {
 		int id = cursor.getInt(cursor.getColumnIndex("_id"));
 		String name = cursor.getString(cursor.getColumnIndex("name"));
+		Type type = Type.get(cursor.getString(cursor.getColumnIndex("type")));
 		String address = cursor.getString(cursor.getColumnIndex("address"));
 		String telephone = cursor.getString(cursor.getColumnIndex("telephone"));
 		double latitude = cursor.getDouble(cursor.getColumnIndex("latitude"));
@@ -45,6 +46,7 @@ class DataBaseReader {
 		Station station = new Station();
 		station.setId(id);
 		station.setName(name);
+		station.setType(type);
 		station.setAddress(address);
 		station.setTelephone(telephone);
 		station.setLocation(new Location(latitude, longitude));

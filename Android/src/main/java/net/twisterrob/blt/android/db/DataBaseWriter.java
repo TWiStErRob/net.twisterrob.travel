@@ -114,6 +114,7 @@ class DataBaseWriter extends DataBaseAccess {
 		int column = 0;
 		bindObjectToProgram(m_insertStation, ++column, station.getId());
 		bindObjectToProgram(m_insertStation, ++column, station.getName());
+		bindObjectToProgram(m_insertStation, ++column, station.getType().getId());
 		bindObjectToProgram(m_insertStation, ++column, station.getAddress());
 		bindObjectToProgram(m_insertStation, ++column, station.getTelephone());
 		Location location = station.getLocation();
@@ -211,8 +212,8 @@ class DataBaseWriter extends DataBaseAccess {
 
 	// #noformat
 	private static final String SQL_INSERT_STATION = "INSERT INTO "
-			+ "Station(_id, name, address, telephone, latitude, longitude) "
-			+ "VALUES(   ?,    ?,       ?,         ?,        ?,         ?);";
+			+ "Station(_id, name, type, address, telephone, latitude, longitude) "
+			+ "VALUES(   ?,    ?,    ?,       ?,         ?,        ?,         ?);";
 	private static final String SQL_INSERT_STATION_TYPE = "INSERT INTO " + "StationType(name, url) "
 			+ "VALUES(        ?,   ?);";
 
