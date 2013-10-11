@@ -77,6 +77,45 @@ public enum Feed {
 			MISSING_URL),
 
 	/**
+	 * <h3>Tube departure boards, line summary</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17615">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">link</a> @ 3.1<br>
+	 * For example reasons see:
+	 * <a href="http://web.archive.org/web/20110615000000&#42;/http://www.tfl.gov.uk/tfl/livetravelnews/realtime/tube/default.html">The Wayback Machine</a><br>
+	 */
+	TubeDepartureBoardsPredictionSummary(30 * SECOND, 30 * SECOND, 30 * SECOND, PredictionSummaryFeedHandler.class,
+			"http://cloud.tfl.gov.uk/TrackerNet/PredictionSummary/V",
+			"http://cloud.tfl.gov.uk/TrackerNet/PredictionSummary/"),
+	/**
+	 * <h3>Tube departure boards, station details</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17615">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">link</a> @ 3.2<br>
+	 */
+	TubeDepartureBoardsPredictionDetailed(30 * SECOND, 30 * SECOND, 30 * SECOND, MISSING_HANDLER,
+			"http://cloud.tfl.gov.uk/TrackerNet/PredictionDetailed/C/BNK",
+			"http://cloud.tfl.gov.uk/TrackerNet/PredictionDetailed/"),
+
+	/**
+	 * <h3>Tube departure boards, line and station status</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17615">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">link</a> @ 3.3<br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf">link</a><br>
+	 */
+	TubeDepartureBoardsStationStatus(30 * SECOND, 30 * SECOND, 30 * SECOND, MISSING_HANDLER,
+			"http://cloud.tfl.gov.uk/TrackerNet/StationStatus", "http://cloud.tfl.gov.uk/TrackerNet/StationStatus"),
+	/**
+	 * <h3>Tube departure boards, line and station status</h3><br>
+	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17615">link</a><br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">link</a> @ 3.3<br>
+	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf">link</a><br>
+	 * For example reasons see:
+	 * <a href="http://web.archive.org/web/20110615000000&#42;/http://www.tfl.gov.uk/tfl/livetravelnews/realtime/tube/default.html">The Wayback Machine</a><br>
+	 */
+	TubeDepartureBoardsStationStatusIncidents(30 * SECOND, 30 * SECOND, 30 * SECOND, MISSING_HANDLER,
+			"http://cloud.tfl.gov.uk/TrackerNet/StationStatus/IncidentsOnly",
+			"http://cloud.tfl.gov.uk/TrackerNet/StationStatus/IncidentsOnly"),
+
+	/**
 	 * <h3>Tube departure boards, line and station status</h3><br>
 	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17615">link</a><br>
 	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">link</a><br>
@@ -95,39 +134,6 @@ public enum Feed {
 	TubeDepartureBoardsLineStatusIncidents(30 * SECOND, 30 * SECOND, 30 * SECOND, LineStatusFeedHandler.class,
 			"http://cloud.tfl.gov.uk/TrackerNet/LineStatus/IncidentsOnly",
 			"http://cloud.tfl.gov.uk/TrackerNet/LineStatus/IncidentsOnly"),
-
-	/**
-	* <h3>Tube departure boards, line and station status</h3><br>
-	* <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17615">link</a><br>
-	* <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">link</a> @ 3.3<br>
-	* <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf">link</a><br>
-	*/
-	TubeDepartureBoardsStationStatus(30 * SECOND, 30 * SECOND, 30 * SECOND, MISSING_HANDLER,
-			"http://cloud.tfl.gov.uk/TrackerNet/StationStatus", "http://cloud.tfl.gov.uk/TrackerNet/StationStatus"),
-	/**
-	 * <h3>Tube departure boards, line and station status</h3><br>
-	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17615">link</a><br>
-	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">link</a> @ 3.3<br>
-	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf">link</a><br>
-	 * For example reasons see:
-	 * <a href="http://web.archive.org/web/20110615000000&#42;/http://www.tfl.gov.uk/tfl/livetravelnews/realtime/tube/default.html">The Wayback Machine</a><br>
-	 */
-	TubeDepartureBoardsStationStatusIncidents(30 * SECOND, 30 * SECOND, 30 * SECOND, MISSING_HANDLER,
-			"http://cloud.tfl.gov.uk/TrackerNet/StationStatus/IncidentsOnly",
-			"http://cloud.tfl.gov.uk/TrackerNet/StationStatus/IncidentsOnly"),
-
-	/**
-	 * <h3>Tube departure boards, line and station status</h3><br>
-	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17615">link</a><br>
-	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">link</a> @ 3.1<br>
-	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf">link</a><br>
-	 * For example reasons see:
-	 * <a href="http://web.archive.org/web/20110615000000&#42;/http://www.tfl.gov.uk/tfl/livetravelnews/realtime/tube/default.html">The Wayback Machine</a><br>
-	 */
-	TubeDepartureBoardsPredictionSummary(30 * SECOND, 30 * SECOND, 30 * SECOND, PredictionSummaryFeedHandler.class,
-			"http://cloud.tfl.gov.uk/TrackerNet/PredictionSummary/V",
-			"http://cloud.tfl.gov.uk/TrackerNet/PredictionSummary/"),
-
 	/**
 	 * <h3>Barclays Cycle Hire statistics</h3><br>
 	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17855">link</a><br>

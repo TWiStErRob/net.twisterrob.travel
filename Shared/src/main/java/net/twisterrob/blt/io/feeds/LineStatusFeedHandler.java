@@ -9,39 +9,17 @@ import org.xml.sax.*;
 import android.sax.*;
 import android.util.Xml;
 
-/**
- * <table>
- * <tr><th>Attribute</th><th>Description</th></tr>
- * <tr><td>LineStatus/ID</td><td>An identifier for the line</td></tr>
- * <tr><td>LineStatus/@StatusDetails</td><td>A description of the status of the line if the status is not normal otherwise this will be blank</td></tr>
- * <tr><td>Children</td><td><table>
-	 * <tr><th>Attribute</th><th>Description</th></tr>
-	 * <tr><td>BranchDisruptions</td><td>Not Used</td></tr>
-	 * <tr><td>Line/@ID</td><td>A code representing the line</td></tr>
-	 * <tr><td>Line/@Name</td><td>The line name</td></tr>
-	 * <tr><td>Status/@ID</td><td>A numeric code representing the status of the line</td></tr>
-	 * <tr><td>Status/@CssClass</td><td>A text code representing the general status of the line, e.g. GoodService, DisruptedService</td></tr>
-	 * <tr><td>Status/@Description</td><td>A description of the status of the line e.g. Part Suspended, Severe Delays</td></tr>
-	 * <tr><td>Status/@IsActive</td><td>A Boolean indicating if the status shown is active</td></tr>
-	 * <tr><td>Children</td><td><table>
-		 * <tr><th>Attribute</th><th>Description</th></tr>
-		 * <tr><td>StatusType/@ID</td><td>A code representing the status type the service is checking. For this call it will always return the value “1”</td></tr>
-		 * <tr><td>StatusType/@Description</td><td>A description of the status type the service is checking. For this call it will always return the value “Line”</td></tr>
-	 * </table></td></tr>
- * </table></td></tr>
- * </table>
- * @author TWiStEr
- */
 public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
-	private static final String NS = "http://webservices.lul.co.uk/";
+	private interface X extends LineStatusFeedXml {} // Shorthand for the XML interface
+
 	private LineStatusFeed m_root;
 	private LineStatus m_lineStatus;
 
 	public LineStatusFeed parse(InputStream is) throws IOException, SAXException {
-		RootElement root = new RootElement(NS, "ArrayOfLineStatus");
-		Element lineStatusElement = root.getChild(NS, "LineStatus");
-		Element lineStatusLineElement = lineStatusElement.getChild(NS, "Line");
-		Element lineStatusStatusElement = lineStatusElement.getChild(NS, "Status");
+		RootElement root = new RootElement(X.Root.NS, X.Root.ELEMENT);
+		Element lineStatusElement = root.getChild(X.LineStatus.NS, X.LineStatus.ELEMENT);
+		Element lineStatusLineElement = lineStatusElement.getChild(X.Line.NS, X.Line.ELEMENT);
+		Element lineStatusStatusElement = lineStatusElement.getChild(X.Status.NS, X.Status.ELEMENT);
 
 		root.setElementListener(new ElementListener() {
 			@Override
@@ -54,7 +32,7 @@ public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 		lineStatusElement.setElementListener(new ElementListener() {
 			@Override
 			public void start(Attributes attributes) {
-				String attrStatusDetails = attributes.getValue("StatusDetails");
+				String attrStatusDetails = attributes.getValue(X.LineStatus.statusDetails);
 				m_lineStatus = new LineStatus();
 				m_lineStatus.setDescription(attrStatusDetails);
 			}
@@ -67,7 +45,7 @@ public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 		lineStatusLineElement.setElementListener(new ElementListener() {
 			@Override
 			public void start(Attributes attributes) {
-				String attrName = attributes.getValue("Name");
+				String attrName = attributes.getValue(X.Line.name);
 
 				Line line = Line.fromAlias(attrName);
 				if (line == Line.unknown && attrName != null) {
@@ -81,13 +59,13 @@ public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 		lineStatusStatusElement.setElementListener(new ElementListener() {
 			@Override
 			public void start(Attributes attributes) {
-				String attrId = attributes.getValue("ID");
+				String attrId = attributes.getValue(X.Status.id);
 				DelayType statusType = DelayType.fromID(attrId);
 				if (statusType == DelayType.Unknown && attrId != null) {
-					String attrDescription = attributes.getValue("Description");
+					String attrDescription = attributes.getValue(X.Status.description);
 					sendMail(DelayType.class + " new code: " + attrDescription + " as " + attrId);
 				}
-				String attrIsActive = attributes.getValue("IsActive");
+				String attrIsActive = attributes.getValue(X.Status.id);
 				boolean isActive = Boolean.parseBoolean(attrIsActive);
 				m_lineStatus.setType(statusType);
 				m_lineStatus.setActive(isActive);

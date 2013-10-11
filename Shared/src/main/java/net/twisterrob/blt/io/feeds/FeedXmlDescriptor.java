@@ -15,9 +15,10 @@ package net.twisterrob.blt.io.feeds;
  *     <li>Inner interfaces of the compilation unit are the elements possible in the XML, named <code>"CamelCase"</code>.<br>
  *         The extend the root interface and can override the namespaces.</li>
  *     <li>They each have special members:<ul>
+ *         <li><code>CHILDREN</code>: The possible children classes of the XML element, including {@link #CONTENT} for XML content.<br>
+ *             (or use {@link #NO_CHILDREN} if it doesn't have children).</li>
  *         <li><code>ELEMENT</code>: The name of the xml <code>&lt;element&gt;</code>
- *         <li><code>CHILDREN</code>: The possible children classes of the xml element.<br>
- *         This is used only as documentation.
+ *         This is used only as documentation.</li>
  *     </ul></li>
  *     <li>The attributes of each inner interface are named <code>"lowerCase"</code>.</li>
  *     <li>These attributes can have special values or format strings, for example:
@@ -28,14 +29,14 @@ package net.twisterrob.blt.io.feeds;
  * public interface InterfaceName {
  *     String NS = null;
  *     interface Root extends InterfaceName {
- *         String ELEMENT = "RootElementName";
  *         Class<? extends InterfaceName>[] CHILDREN = new Class[]{Child.class};
+ *         String ELEMENT = "RootElementName";
  *     }
  *     interface Child extends InterfaceName {
+ *         Class<? extends InterfaceName>[] CHILDREN = NO_CHILDREN;
  *         String ELEMENT = "ChildElementName";
  *         String created = "created";
  *         String created$format = "yyyy-MM-dd";
- *         Class<? extends InterfaceName>[] CHILDREN = new Class[]{};
  *     }
  * }
 </code></pre>
@@ -58,4 +59,19 @@ package net.twisterrob.blt.io.feeds;
  * </p>
  * @author TWiStEr
  */
-public interface FeedXmlDescriptor {}
+public interface FeedXmlDescriptor {
+	/**
+	 * This is to be used in the <code>CHILDREN</code> array when an element has content.
+	 * It can be ignored at use site.
+	 * @author TWiStEr
+	 */
+	interface CONTENT {}
+
+	/**
+	 * This is to be used as the <code>CHILDREN</code> array when an element has no children at all.
+	 * It can be ignored at use site.
+	 * @author TWiStEr
+	 */
+	@SuppressWarnings("rawtypes")
+	Class[] NO_CHILDREN = {};
+}
