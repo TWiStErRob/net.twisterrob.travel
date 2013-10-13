@@ -20,9 +20,6 @@ public interface LineColors {
 	int getDistrictBackground();
 	int getDistrictForeground();
 
-	int getDLRBackground();
-	int getDLRForeground();
-
 	int getHammersmithAndCityBackground();
 	int getHammersmithAndCityForeground();
 
@@ -35,9 +32,6 @@ public interface LineColors {
 	int getNorthernBackground();
 	int getNorthernForeground();
 
-	int getOvergroundBackground();
-	int getOvergroundForeground();
-
 	int getPiccadillyBackground();
 	int getPiccadillyForeground();
 
@@ -46,6 +40,18 @@ public interface LineColors {
 
 	int getWaterlooAndCityBackground();
 	int getWaterlooAndCityForeground();
+
+	int getDLRBackground();
+	int getDLRForeground();
+
+	int getOvergroundBackground();
+	int getOvergroundForeground();
+
+	int getTramBackground();
+	int getTramForeground();
+
+	int getEmiratesBackground();
+	int getEmiratesForeground();
 
 	int getUnknownBackground();
 	int getUnknownForeground();

@@ -48,14 +48,6 @@ public class TubeStatusPresentationLineColors implements LineColors {
 		return 0xFFFFFFFF;
 	}
 
-	public int getDLRBackground() {
-		return 0xFF00BBB4;
-	}
-
-	public int getDLRForeground() {
-		return 0xFFFFFFFF;
-	}
-
 	public int getHammersmithAndCityBackground() {
 		return 0xFFE899A8;
 	}
@@ -88,14 +80,6 @@ public class TubeStatusPresentationLineColors implements LineColors {
 		return 0xFFFFFFFF;
 	}
 
-	public int getOvergroundBackground() {
-		return 0xFFF86C00; // from image, text says #F86
-	}
-
-	public int getOvergroundForeground() {
-		return 0xFFFFFFFF;
-	}
-
 	public int getPiccadillyBackground() {
 		return 0xFF113892;
 	}
@@ -118,6 +102,38 @@ public class TubeStatusPresentationLineColors implements LineColors {
 
 	public int getWaterlooAndCityForeground() {
 		return 0xFF113892;
+	}
+
+	public int getDLRBackground() {
+		return 0xFF00BBB4;
+	}
+
+	public int getDLRForeground() {
+		return 0xFFFFFFFF;
+	}
+
+	public int getOvergroundBackground() {
+		return 0xFFF86C00; // from image, text says #F86
+	}
+
+	public int getOvergroundForeground() {
+		return 0xFFFFFFFF;
+	}
+
+	public int getTramBackground() {
+		return getUnknownBackground();
+	}
+
+	public int getTramForeground() {
+		return getUnknownForeground();
+	}
+
+	public int getEmiratesBackground() {
+		return getUnknownBackground();
+	}
+
+	public int getEmiratesForeground() {
+		return getUnknownForeground();
 	}
 
 	public int getUnknownBackground() {

@@ -48,14 +48,6 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 		return getUnknownForeground();
 	}
 
-	public int getDLRBackground() {
-		return 0x0000AFAD; // 0, 175, 173
-	}
-
-	public int getDLRForeground() {
-		return getUnknownForeground();
-	}
-
 	public int getHammersmithAndCityBackground() {
 		return 0x00D799AF; // 215, 153, 175
 	}
@@ -88,14 +80,6 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 		return getUnknownForeground();
 	}
 
-	public int getOvergroundBackground() {
-		return 0x00E86A10; // 232, 106, 16
-	}
-
-	public int getOvergroundForeground() {
-		return getUnknownForeground();
-	}
-
 	public int getPiccadillyBackground() {
 		return 0x000019A8; // 0, 25, 168
 	}
@@ -117,6 +101,38 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getWaterlooAndCityForeground() {
+		return getUnknownForeground();
+	}
+
+	public int getDLRBackground() {
+		return 0x0000AFAD; // 0, 175, 173
+	}
+
+	public int getDLRForeground() {
+		return getUnknownForeground();
+	}
+
+	public int getOvergroundBackground() {
+		return 0x00E86A10; // 232, 106, 16
+	}
+
+	public int getOvergroundForeground() {
+		return getUnknownForeground();
+	}
+
+	public int getTramBackground() {
+		return getUnknownBackground();
+	}
+
+	public int getTramForeground() {
+		return getUnknownForeground();
+	}
+
+	public int getEmiratesBackground() {
+		return getUnknownBackground();
+	}
+
+	public int getEmiratesForeground() {
 		return getUnknownForeground();
 	}
 

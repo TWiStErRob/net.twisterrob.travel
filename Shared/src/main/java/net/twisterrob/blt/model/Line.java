@@ -36,14 +36,6 @@ public enum Line {
 			return colors.getDistrictForeground();
 		}
 	},
-	DLR('-', "DLR", "Docklands Light Railway") {
-		public int getBackground(LineColors colors) {
-			return colors.getDLRBackground();
-		}
-		public int getForeground(LineColors colors) {
-			return colors.getDLRForeground();
-		}
-	},
 	HammersmithAndCity('H', "H'smith & City", "Hammersmith & City", "Hammersmith and City") {
 		public int getBackground(LineColors colors) {
 			return colors.getHammersmithAndCityBackground();
@@ -76,14 +68,6 @@ public enum Line {
 			return colors.getNorthernForeground();
 		}
 	},
-	Overground('-', "Overground", "East London") {
-		public int getBackground(LineColors colors) {
-			return colors.getOvergroundBackground();
-		}
-		public int getForeground(LineColors colors) {
-			return colors.getOvergroundForeground();
-		}
-	},
 	Piccadilly('P', "Piccadilly") {
 		public int getBackground(LineColors colors) {
 			return colors.getPiccadillyBackground();
@@ -106,6 +90,38 @@ public enum Line {
 		}
 		public int getForeground(LineColors colors) {
 			return colors.getWaterlooAndCityForeground();
+		}
+	},
+	DLR('-', "DLR", "Docklands Light Railway") {
+		public int getBackground(LineColors colors) {
+			return colors.getDLRBackground();
+		}
+		public int getForeground(LineColors colors) {
+			return colors.getDLRForeground();
+		}
+	},
+	Overground('-', "Overground", "East London") {
+		public int getBackground(LineColors colors) {
+			return colors.getOvergroundBackground();
+		}
+		public int getForeground(LineColors colors) {
+			return colors.getOvergroundForeground();
+		}
+	},
+	Tram('?', "Tram") {
+		public int getBackground(LineColors colors) {
+			return colors.getTramBackground();
+		}
+		public int getForeground(LineColors colors) {
+			return colors.getTramForeground();
+		}
+	},
+	EmiratesAirline('?', "Emirates Airline") {
+		public int getBackground(LineColors colors) {
+			return colors.getEmiratesBackground();
+		}
+		public int getForeground(LineColors colors) {
+			return colors.getEmiratesForeground();
 		}
 	},
 	unknown('?', "Unknown", "") {
