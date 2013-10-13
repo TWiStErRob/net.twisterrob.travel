@@ -32,6 +32,11 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 		public void setName(String name) {
 			this.name = name;
 		}
+
+		@Override
+		public String toString() {
+			return String.format("%2$s [%1$s]", id, name);
+		}
 	}
 	public static class StopPoint {
 
@@ -84,6 +89,10 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 			this.type = type;
 		}
 
+		@Override
+		public String toString() {
+			return String.format("%2$s @ %3$s [%1$s]", id, name, locality);
+		}
 	}
 
 	public static class RouteSection {
@@ -102,6 +111,11 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 		}
 		protected void addLink(RouteLink routeLink) {
 			routeLinks.add(routeLink);
+		}
+
+		@Override
+		public String toString() {
+			return String.format("%2$d links [%1$s]", id, routeLinks.size());
 		}
 	}
 	public static class RouteLink {
@@ -145,6 +159,11 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 		protected void setTo(StopPoint to) {
 			this.to = to;
 		}
+
+		@Override
+		public String toString() {
+			return String.format("%2$s -> %3$s [%1$s]", id, from.getName(), to.getName());
+		}
 	}
 	public static class Route {
 		private String id;
@@ -171,6 +190,42 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 		protected void setDescription(String description) {
 			this.description = description;
 		}
-	}
 
+		public List<StopPoint> getStopPoints() {
+			List<StopPoint> stopPoints = new ArrayList<StopPoint>();
+			for (RouteSection section: getRouteSections()) {
+				RouteLink last = null;
+				for (RouteLink link: section.getRouteLinks()) {
+					stopPoints.add(link.getFrom());
+					last = link;
+				}
+				if (last != null) {
+					stopPoints.add(last.getTo());
+				}
+			}
+			return stopPoints;
+		}
+
+		@Override
+		public String toString() {
+			return String.format("%2$s [%1$s]", id, description);
+		}
+	}
+	public Set<StopPoint> getStopPoints() {
+		Set<StopPoint> stopPoints = new TreeSet<StopPoint>(new Comparator<StopPoint>() {
+			@Override
+			public int compare(StopPoint o1, StopPoint o2) {
+				return o1.getId().compareTo(o2.getId());
+			}
+		});
+		for (Route route: getRoutes()) {
+			for (RouteSection section: route.getRouteSections()) {
+				for (RouteLink link: section.getRouteLinks()) {
+					stopPoints.add(link.getFrom());
+					stopPoints.add(link.getTo());
+				}
+			}
+		}
+		return stopPoints;
+	}
 }

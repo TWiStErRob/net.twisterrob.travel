@@ -119,7 +119,7 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 		 */
 		interface Place {
 			Class<?>[] CHILDREN = new Class[]{Location.class};
-			String ELEMENT = "Descriptor";
+			String ELEMENT = "Place";
 			/**
 			 * NPTG locality within which stop lies.
 			 * The XSD Type name is: NptgLocalityRefStructure
