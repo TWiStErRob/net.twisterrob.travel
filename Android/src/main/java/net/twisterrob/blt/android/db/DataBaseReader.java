@@ -2,8 +2,8 @@ package net.twisterrob.blt.android.db;
 
 import java.util.*;
 
-import net.twisterrob.android.utils.model.Location;
 import net.twisterrob.blt.model.*;
+import net.twisterrob.java.model.Location;
 import android.database.*;
 import android.database.sqlite.SQLiteDatabase;
 

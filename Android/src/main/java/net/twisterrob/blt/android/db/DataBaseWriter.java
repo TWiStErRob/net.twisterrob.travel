@@ -3,9 +3,9 @@ package net.twisterrob.blt.android.db;
 import java.util.Map;
 
 import net.twisterrob.android.utils.log.*;
-import net.twisterrob.android.utils.model.Location;
 import net.twisterrob.android.utils.tools.DBTools;
 import net.twisterrob.blt.model.Station;
+import net.twisterrob.java.model.Location;
 import android.content.ContentValues;
 import android.database.DatabaseUtils;
 import android.database.sqlite.*;

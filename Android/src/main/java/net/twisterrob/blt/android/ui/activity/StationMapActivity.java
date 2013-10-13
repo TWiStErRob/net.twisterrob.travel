@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import net.twisterrob.android.map.BaseItemizedOverlay;
+import net.twisterrob.android.utils.model.LocationUtils;
 import net.twisterrob.android.utils.tools.IOTools;
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.model.*;
@@ -105,7 +106,7 @@ public class StationMapActivity extends MapActivity {
 		private Resources m_res;
 		private Station m_station;
 		public Item(Resources res, Station station) {
-			super(station.getLocation().toGeoPoint(), station.getName(), station.getAddress());
+			super(LocationUtils.toGeoPoint(station.getLocation()), station.getName(), station.getAddress());
 			m_res = res;
 			m_station = station;
 		}

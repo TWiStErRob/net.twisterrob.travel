@@ -4,10 +4,9 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 
-import net.twisterrob.android.utils.model.Location;
-import net.twisterrob.android.utils.text.ElementAdapter;
 import net.twisterrob.android.utils.tools.PrimitiveTools;
 import net.twisterrob.blt.model.*;
+import net.twisterrob.java.model.Location;
 
 import org.xml.sax.*;
 
@@ -49,7 +48,7 @@ public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
 			public void end() {}
 
 		});
-		net.twisterrob.android.utils.text.ElementListener styleListener = new ElementAdapter() {
+		class StyleListener implements StartElementListener, EndTextElementListener {
 			private String m_id;
 			@Override
 			public void start(Attributes attributes) {
@@ -59,7 +58,8 @@ public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
 			public void end(String body) {
 				m_root.getStyles().put(m_id, body);
 			}
-		};
+		}
+		StyleListener styleListener = new StyleListener();
 		styleElement.setStartElementListener(styleListener);
 		styleHref.setEndTextElementListener(styleListener);
 		stationsElement.setElementListener(new ElementListener() {
@@ -161,7 +161,7 @@ public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
 				m_station.setFacilities(new ArrayList<Facility>());
 			}
 		});
-		ElementAdapter facilitiesListener = new ElementAdapter() {
+		stationFacility.setTextElementListener(new TextElementListener() {
 			private Facility m_facility;
 			@Override
 			public void start(Attributes attributes) {
@@ -179,10 +179,6 @@ public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
 				} else {
 					m_station.getFacilities().add(m_facility);
 				}
-			}
-			@Override
-			public void end() {
-				// m_facility = null; // Don't null, because end is called before end(text)
 			}
 			private List<Facility> handleExceptions() {
 				final String name = m_facility.getName();
@@ -207,10 +203,7 @@ public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
 
 				return result;
 			}
-
-		};
-		stationFacility.setElementListener(facilitiesListener);
-		stationFacility.setEndTextElementListener(facilitiesListener);
+		});
 
 		stationPlacemarkStyleUrl.setEndTextElementListener(new EndTextElementListener() {
 			@Override

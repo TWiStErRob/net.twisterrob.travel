@@ -2,7 +2,7 @@ package net.twisterrob.blt.model;
 
 import java.util.*;
 
-import net.twisterrob.android.utils.model.Location;
+import net.twisterrob.java.model.Location;
 
 public class Station {
 	public static final Comparator<Station> COMPARATOR_NAME = new Comparator<Station>() {
