@@ -119,7 +119,7 @@ public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
 					double lon = Double.parseDouble(parts[0]);
 					double lat = Double.parseDouble(parts[1]);
 					// double alt = Double.parseDouble(parts[2]);
-					m_station.setLocation(new Location(lon, lat));
+					m_station.setLocation(new Location(lat, lon));
 				}
 			}
 		});
