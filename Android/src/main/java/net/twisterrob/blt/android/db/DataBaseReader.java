@@ -49,7 +49,7 @@ class DataBaseReader {
 		station.setType(type);
 		station.setAddress(address);
 		station.setTelephone(telephone);
-		station.setLocation(new Location(latitude, longitude));
+		station.setLocation(new Location(longitude, latitude));
 		return station;
 	}
 
