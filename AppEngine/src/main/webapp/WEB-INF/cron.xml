@@ -6,13 +6,13 @@
 	<cron>
 		<url>/FeedCron?feed=TubeDepartureBoardsLineStatus</url>
 		<description>Get Line Status</description>
-		<schedule>every 1 minutes</schedule>
+		<schedule>every 5 minutes</schedule>
 		<timezone>Europe/London</timezone>
 	</cron>
 	<cron>
 		<url>/FeedCron?feed=TubeDepartureBoardsStationStatusIncidents</url>
 		<description>Get Station Incidents</description>
-		<schedule>every 1 minutes</schedule>
+		<schedule>every 5 minutes</schedule>
 		<timezone>Europe/London</timezone>
 	</cron>
 </cronentries>

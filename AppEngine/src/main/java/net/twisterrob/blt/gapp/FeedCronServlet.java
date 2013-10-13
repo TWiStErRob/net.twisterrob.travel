@@ -31,7 +31,7 @@ public class FeedCronServlet extends HttpServlet {
 		try {
 			feed = Feed.valueOf(feedString);
 		} catch (IllegalArgumentException ex) {
-			String message = String.format("No such feed: '%s', try: %s.", feedString, Arrays.toString(Feed.values()));
+			String message = String.format("No such feed: '%s'.", feedString);
 			LOG.warn(message);
 			resp.getWriter().println(message);
 			resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -76,7 +76,7 @@ public class FeedCronServlet extends HttpServlet {
 			String feedResult = downloadFeed(feed);
 			newEntry.setProperty(DSPROP_CONTENT, new Text(feedResult));
 		} catch (Exception ex) {
-			LOG.error("Cannot load " + feed, ex);
+			LOG.error("Cannot load '{}'!", feed, ex);
 			newEntry.setProperty(DSPROP_ERROR, new Text(ObjectTools.getFullStackTrace(ex)));
 		}
 		newEntry.setProperty(DSPROP_RETRIEVED_DATE, new Date());
@@ -87,7 +87,7 @@ public class FeedCronServlet extends HttpServlet {
 		InputStream input = null;
 		try {
 			URL url = URL_BUILDER.getFeedUrl(feed, Collections.<String, Object> emptyMap());
-			LOG.debug(url.toString());
+			LOG.debug("Requesting feed '{}': '{}'...", feed, url);
 			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 			connection.connect();
 			input = connection.getInputStream();

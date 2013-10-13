@@ -8,7 +8,7 @@ package net.twisterrob.blt.io.feeds;
  */
 @SuppressWarnings("unchecked")
 interface PredicitonSummaryFeedXml extends FeedXmlDescriptor {
-	String NS = null;
+	String NS = "";
 	interface Root extends PredicitonSummaryFeedXml {
 		Class<? extends PredicitonSummaryFeedXml>[] CHILDREN = new Class[]{Time.class, Station.class};
 		String ELEMENT = "ROOT";

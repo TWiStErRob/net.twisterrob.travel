@@ -23,11 +23,11 @@ public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSumm
 
 	@Override
 	public PredictionSummaryFeed parse(InputStream is) throws IOException, SAXException {
-		RootElement root = new RootElement(X.Root.ELEMENT);
-		Element timeElement = root.getChild(X.Time.ELEMENT);
-		Element stationElement = root.getChild(X.Station.ELEMENT);
-		Element platformElement = stationElement.getChild(X.Platform.ELEMENT);
-		Element trainElement = platformElement.getChild(X.Train.ELEMENT);
+		RootElement root = new RootElement(X.Root.NS, X.Root.ELEMENT);
+		Element timeElement = root.getChild(X.Time.NS, X.Time.ELEMENT);
+		Element stationElement = root.getChild(X.Station.NS, X.Station.ELEMENT);
+		Element platformElement = stationElement.getChild(X.Platform.NS, X.Platform.ELEMENT);
+		Element trainElement = platformElement.getChild(X.Train.NS, X.Train.ELEMENT);
 		root.setElementListener(new ElementListener() {
 			@Override
 			public void start(Attributes attributes) {

@@ -6,7 +6,7 @@
 		xsi:schemaLocation="http://appengine.google.com/ns/1.0 https://googleappengine.googlecode.com/svn-history/r376/trunk/java/src/main/com/google/appengine/tools/development/appengine-web.xsd"
 	>
 	<application>twisterrob-london</application>
-	<version>1</version>
+	<version>live</version>
 
 	<!-- Allows App Engine to send multiple requests to one instance in parallel. -->
 	<threadsafe>true</threadsafe>
