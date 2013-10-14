@@ -7,6 +7,7 @@ package net.twisterrob.blt.io.feeds;
  * @see http://www.transxchange.org.uk/schema/2.1/TransXChange_common.xsd
  * @see Feed#JourneyPlannerTimetables 
  */
+@SuppressWarnings("hiding")
 interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 	interface Root {
 		String NS = "http://www.transxchange.org.uk/";

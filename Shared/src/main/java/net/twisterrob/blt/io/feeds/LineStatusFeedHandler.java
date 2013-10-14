@@ -2,7 +2,11 @@ package net.twisterrob.blt.io.feeds;
 
 import java.io.*;
 
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.io.feeds.LineStatusFeedXml.Line;
+import net.twisterrob.blt.io.feeds.LineStatusFeedXml.LineStatus;
+import net.twisterrob.blt.io.feeds.LineStatusFeedXml.Root;
+import net.twisterrob.blt.io.feeds.LineStatusFeedXml.Status;
+import net.twisterrob.blt.model.DelayType;
 
 import org.xml.sax.*;
 
@@ -10,30 +14,27 @@ import android.sax.*;
 import android.util.Xml;
 
 public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
-	private interface X extends LineStatusFeedXml {} // Shorthand for the XML interface
+	LineStatusFeed m_root;
+	net.twisterrob.blt.model.LineStatus m_lineStatus;
 
-	private LineStatusFeed m_root;
-	private LineStatus m_lineStatus;
-
+	@Override
 	public LineStatusFeed parse(InputStream is) throws IOException, SAXException {
-		RootElement root = new RootElement(X.Root.NS, X.Root.ELEMENT);
-		Element lineStatusElement = root.getChild(X.LineStatus.NS, X.LineStatus.ELEMENT);
-		Element lineStatusLineElement = lineStatusElement.getChild(X.Line.NS, X.Line.ELEMENT);
-		Element lineStatusStatusElement = lineStatusElement.getChild(X.Status.NS, X.Status.ELEMENT);
+		RootElement root = new RootElement(Root.NS, Root.ELEMENT);
+		Element lineStatusElement = root.getChild(Root.NS, LineStatus.ELEMENT);
+		Element lineStatusLineElement = lineStatusElement.getChild(Root.NS, Line.ELEMENT);
+		Element lineStatusStatusElement = lineStatusElement.getChild(Root.NS, Status.ELEMENT);
 
-		root.setElementListener(new ElementListener() {
+		root.setStartElementListener(new StartElementListener() {
 			@Override
 			public void start(Attributes attributes) {
 				m_root = new LineStatusFeed();
 			}
-			@Override
-			public void end() {}
 		});
 		lineStatusElement.setElementListener(new ElementListener() {
 			@Override
 			public void start(Attributes attributes) {
-				String attrStatusDetails = attributes.getValue(X.LineStatus.statusDetails);
-				m_lineStatus = new LineStatus();
+				String attrStatusDetails = attributes.getValue(LineStatus.statusDetails);
+				m_lineStatus = new net.twisterrob.blt.model.LineStatus();
 				m_lineStatus.setDescription(attrStatusDetails);
 			}
 			@Override
@@ -42,36 +43,32 @@ public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 				m_lineStatus = null;
 			}
 		});
-		lineStatusLineElement.setElementListener(new ElementListener() {
+		lineStatusLineElement.setStartElementListener(new StartElementListener() {
 			@Override
 			public void start(Attributes attributes) {
-				String attrName = attributes.getValue(X.Line.name);
+				String attrName = attributes.getValue(Line.name);
 
-				Line line = Line.fromAlias(attrName);
-				if (line == Line.unknown && attrName != null) {
-					sendMail(Line.class + " new alias: " + attrName);
+				net.twisterrob.blt.model.Line line = net.twisterrob.blt.model.Line.fromAlias(attrName);
+				if (line == net.twisterrob.blt.model.Line.unknown && attrName != null) {
+					sendMail(net.twisterrob.blt.model.Line.class + " new alias: " + attrName);
 				}
 				m_lineStatus.setLine(line);
 			}
-			@Override
-			public void end() {}
 		});
-		lineStatusStatusElement.setElementListener(new ElementListener() {
+		lineStatusStatusElement.setStartElementListener(new StartElementListener() {
 			@Override
 			public void start(Attributes attributes) {
-				String attrId = attributes.getValue(X.Status.id);
+				String attrId = attributes.getValue(Status.id);
 				DelayType statusType = DelayType.fromID(attrId);
 				if (statusType == DelayType.Unknown && attrId != null) {
-					String attrDescription = attributes.getValue(X.Status.description);
+					String attrDescription = attributes.getValue(Status.description);
 					sendMail(DelayType.class + " new code: " + attrDescription + " as " + attrId);
 				}
-				String attrIsActive = attributes.getValue(X.Status.id);
+				String attrIsActive = attributes.getValue(Status.id);
 				boolean isActive = Boolean.parseBoolean(attrIsActive);
 				m_lineStatus.setType(statusType);
 				m_lineStatus.setActive(isActive);
 			}
-			@Override
-			public void end() {}
 		});
 
 		Xml.parse(is, Xml.Encoding.UTF_8, root.getContentHandler());

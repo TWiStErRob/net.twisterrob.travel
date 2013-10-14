@@ -5,7 +5,6 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 import net.twisterrob.blt.io.feeds.Feed;
@@ -25,7 +24,8 @@ public class FeedCronServlet extends HttpServlet {
 
 	private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@Override
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String feedString = String.valueOf(req.getParameter(QUERY_FEED));
 		Feed feed;
 		try {
@@ -85,15 +85,17 @@ public class FeedCronServlet extends HttpServlet {
 
 	public static String downloadFeed(Feed feed) throws IOException {
 		InputStream input = null;
+		String result;
 		try {
 			URL url = URL_BUILDER.getFeedUrl(feed, Collections.<String, Object> emptyMap());
 			LOG.debug("Requesting feed '{}': '{}'...", feed, url);
 			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 			connection.connect();
 			input = connection.getInputStream();
-			return IOTools.readAll(input);
+			result = IOTools.readAll(input);
 		} finally {
 			IOTools.ignorantClose(input);
 		}
+		return result;
 	}
 }

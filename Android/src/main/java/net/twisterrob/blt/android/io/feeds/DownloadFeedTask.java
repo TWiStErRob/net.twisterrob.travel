@@ -21,11 +21,11 @@ public class DownloadFeedTask<T extends BaseFeed> extends AsyncTask<Feed, Intege
 		this(null);
 	}
 	public DownloadFeedTask(Map<String, ?> args) {
-		if (args == null) {
-			args = Collections.emptyMap();
-		}
-		m_args = args;
+		m_args = args != null? args : Collections.<String, Object> emptyMap();
 	}
+
+	@SuppressWarnings("resource")
+	@Override
 	protected AsyncTaskResult<T> doInBackground(Feed... feeds) {
 		HttpURLConnection connection = null;
 		InputStream input = null;
@@ -44,7 +44,6 @@ public class DownloadFeedTask<T extends BaseFeed> extends AsyncTask<Feed, Intege
 			connection.connect();
 			input = connection.getInputStream();
 
-			@SuppressWarnings("unchecked")
 			T root = (T)feed.getHandler().parse(input);
 			return new AsyncTaskResult<T>(root);
 		} catch (IOException ex) {

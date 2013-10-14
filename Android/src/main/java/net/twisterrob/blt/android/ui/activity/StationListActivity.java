@@ -32,6 +32,7 @@ public class StationListActivity extends ListActivity {
 
 	private void delayedGetRoot() {
 		new DownloadFeedTask<FacilitiesFeed>() {
+			@Override
 			protected void onPostExecute(AsyncTaskResult<FacilitiesFeed> result) {
 				if (result.getError() != null) {
 					String msg = "Cannot load facitilies: " + result.getError().getMessage();
@@ -50,7 +51,7 @@ public class StationListActivity extends ListActivity {
 					App.getInstance().getDataBaseHelper().updateStations(stations);
 					setListData(stations);
 				}
-			};
+			}
 		}.execute(Feed.StationFacilities);
 	}
 }

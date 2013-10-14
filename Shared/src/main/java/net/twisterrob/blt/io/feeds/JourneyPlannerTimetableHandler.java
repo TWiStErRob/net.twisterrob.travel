@@ -24,30 +24,28 @@ import android.sax.*;
 import android.util.Xml;
 
 public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlannerTimetableFeed> {
-	private JourneyPlannerTimetableFeed m_root;
-	private Map<String, JourneyPlannerTimetableFeed.Locality> m_localities = new HashMap<String, JourneyPlannerTimetableFeed.Locality>();
-	private Map<String, JourneyPlannerTimetableFeed.StopPoint> m_stopPoints = new HashMap<String, JourneyPlannerTimetableFeed.StopPoint>();
-	private Map<String, JourneyPlannerTimetableFeed.RouteSection> m_routeSections = new HashMap<String, JourneyPlannerTimetableFeed.RouteSection>();
-	private Map<String, JourneyPlannerTimetableFeed.RouteLink> m_routeLinks = new HashMap<String, JourneyPlannerTimetableFeed.RouteLink>();
-	private Map<String, JourneyPlannerTimetableFeed.Route> m_routes = new HashMap<String, JourneyPlannerTimetableFeed.Route>();
-	private JourneyPlannerTimetableFeed.Locality m_localilty;
-	private JourneyPlannerTimetableFeed.StopPoint m_stopPoint;
-	private JourneyPlannerTimetableFeed.RouteSection m_routeSection;
-	private JourneyPlannerTimetableFeed.RouteLink m_routeLink;
-	private JourneyPlannerTimetableFeed.Route m_route;
-	private Integer m_east;
-	private Integer m_north;
+	protected JourneyPlannerTimetableFeed m_root;
+	protected Map<String, JourneyPlannerTimetableFeed.Locality> m_localities = new HashMap<String, JourneyPlannerTimetableFeed.Locality>();
+	protected Map<String, JourneyPlannerTimetableFeed.StopPoint> m_stopPoints = new HashMap<String, JourneyPlannerTimetableFeed.StopPoint>();
+	protected Map<String, JourneyPlannerTimetableFeed.RouteSection> m_routeSections = new HashMap<String, JourneyPlannerTimetableFeed.RouteSection>();
+	protected Map<String, JourneyPlannerTimetableFeed.RouteLink> m_routeLinks = new HashMap<String, JourneyPlannerTimetableFeed.RouteLink>();
+	protected Map<String, JourneyPlannerTimetableFeed.Route> m_routes = new HashMap<String, JourneyPlannerTimetableFeed.Route>();
+	protected JourneyPlannerTimetableFeed.Locality m_localilty;
+	protected JourneyPlannerTimetableFeed.StopPoint m_stopPoint;
+	protected JourneyPlannerTimetableFeed.RouteSection m_routeSection;
+	protected JourneyPlannerTimetableFeed.RouteLink m_routeLink;
+	protected JourneyPlannerTimetableFeed.Route m_route;
+	protected Integer m_east;
+	protected Integer m_north;
 
 	@Override
 	public JourneyPlannerTimetableFeed parse(InputStream is) throws IOException, SAXException {
 		RootElement root = new RootElement(Root.NS, Root.ELEMENT);
-		root.setElementListener(new ElementListener() {
+		root.setStartElementListener(new StartElementListener() {
 			@Override
 			public void start(Attributes attributes) {
 				m_root = new JourneyPlannerTimetableFeed();
 			}
-			@Override
-			public void end() {}
 		});
 
 		Element localities = root.getChild(Root.NS, Root.NptgLocalities);
@@ -68,7 +66,8 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 
 		Xml.parse(is, Xml.Encoding.UTF_8, root.getContentHandler());
 		m_root.postProcess();
-		return m_root;
+		return null;
+		//return m_root;
 	}
 
 	protected void setupLocalityParsing(Element locality) {

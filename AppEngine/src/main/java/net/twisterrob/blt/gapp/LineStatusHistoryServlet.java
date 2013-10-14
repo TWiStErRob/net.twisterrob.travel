@@ -1,7 +1,7 @@
 package net.twisterrob.blt.gapp;
 import static net.twisterrob.blt.gapp.FeedConsts.*;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 import javax.servlet.*;
@@ -30,6 +30,7 @@ public class LineStatusHistoryServlet extends HttpServlet {
 
 	private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
+	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Feed feed = Feed.TubeDepartureBoardsLineStatus;
 		List<Result> results = new LinkedList<Result>();
@@ -70,7 +71,7 @@ public class LineStatusHistoryServlet extends HttpServlet {
 		view.forward(req, resp);
 	}
 
-	private Result toResult(Entity entry) {
+	private static Result toResult(Entity entry) {
 		Result result;
 		Text content = (Text)entry.getProperty(DSPROP_CONTENT);
 		Text error = (Text)entry.getProperty(DSPROP_ERROR);
@@ -78,8 +79,9 @@ public class LineStatusHistoryServlet extends HttpServlet {
 		if (content != null) {
 			try {
 				Feed feed = Feed.valueOf(entry.getKind());
-				LineStatusFeed feedContents = (LineStatusFeed)feed.getHandler().parse(
-						new StringInputStream(content.getValue(), ENCODING));
+				InputStream stream = new StringInputStream(content.getValue(), ENCODING);
+				LineStatusFeed feedContents = (LineStatusFeed)feed.getHandler().parse(stream);
+				stream.close();
 				result = new Result(date, feedContents);
 			} catch (Exception ex) {
 				result = new Result(date, "Error while displaying loaded XML: " + ObjectTools.getFullStackTrace(ex));
@@ -126,7 +128,7 @@ public class LineStatusHistoryServlet extends HttpServlet {
 		}
 	}
 
-	private List<ResultChange> getDifferences(List<Result> results, boolean skipErrors) {
+	private static List<ResultChange> getDifferences(List<Result> results, boolean skipErrors) {
 		List<ResultChange> resultChanges = new ArrayList<LineStatusHistoryServlet.ResultChange>(results.size());
 		Result newResult = null;
 		for (Result oldResult: results) { // we're going forward, but the list is backwards
@@ -225,7 +227,7 @@ public class LineStatusHistoryServlet extends HttpServlet {
 				}
 			}
 		}
-		private String diffDesc(String oldDesc, String newDesc) {
+		private static String diffDesc(String oldDesc, String newDesc) {
 			diff_match_patch differ = new diff_match_patch();
 			LinkedList<Diff> diff = differ.diff_main(oldDesc, newDesc);
 			differ.diff_cleanupSemantic(diff);

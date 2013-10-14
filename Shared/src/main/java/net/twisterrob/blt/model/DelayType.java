@@ -48,13 +48,13 @@ public enum DelayType {
 
 	public static final Comparator<DelayType> ORDER_SEVERITY = new Comparator<DelayType>() {
 		public int compare(DelayType lhs, DelayType rhs) {
-			return lhs.m_severity - rhs.m_severity;
+			return lhs.getSeverity() - rhs.getSeverity();
 		}
 	};
 
 	public static final Comparator<DelayType> ORDER_TITLE = new Comparator<DelayType>() {
 		public int compare(DelayType lhs, DelayType rhs) {
-			return lhs.m_title.compareTo(rhs.m_title);
+			return lhs.getTitle().compareTo(rhs.getTitle());
 		}
 	};
 

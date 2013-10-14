@@ -64,11 +64,10 @@ public class Platform {
 			Matcher matcher = PLATFORM_NUMBER.matcher(this.getName());
 			if (matcher.find()) {
 				return Integer.parseInt(matcher.group(1));
-			} else {
-				return 0;
 			}
 		} catch (NumberFormatException ex) {
-			return 0;
+			// ignore
 		}
+		return 0;
 	}
 }

@@ -24,12 +24,8 @@ public abstract class PlatformPlatformDirectionFilter extends Filter {
 		List<Platform> platforms = getDataToFilter();
 		List<Platform> result = getDataToFilter();
 
-		if (constraint != null) {
-			constraint = constraint.toString().toLowerCase();
-		}
 		for (Platform platform: platforms) {
-			if (m_directions.contains(platform.getDirection()) && constraint != null
-					&& platform.getName().contains(constraint)) {
+			if (m_directions.contains(platform.getDirection())) {
 				result.add(platform);
 			}
 		}

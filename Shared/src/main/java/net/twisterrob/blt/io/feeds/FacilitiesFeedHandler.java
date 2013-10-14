@@ -14,9 +14,10 @@ import android.sax.*;
 import android.util.Xml;
 
 public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
-	private FacilitiesFeed m_root;
-	private Station m_station;
+	FacilitiesFeed m_root;
+	Station m_station;
 
+	@Override
 	public FacilitiesFeed parse(InputStream is) throws IOException, SAXException {
 		RootElement root = new RootElement("Root");
 		Element styleElement = root.getChild("Style");
@@ -39,13 +40,11 @@ public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
 		Element stationPlacemarkPoint = stationPlacemarkElement.getChild("Point");
 		Element stationCoordinates = stationPlacemarkPoint.getChild("coordinates");
 
-		root.setElementListener(new ElementListener() {
+		root.setStartElementListener(new StartElementListener() {
 			@Override
 			public void start(Attributes attributes) {
 				m_root = new FacilitiesFeed();
 			}
-			@Override
-			public void end() {}
 
 		});
 		class StyleListener implements StartElementListener, EndTextElementListener {
@@ -62,13 +61,11 @@ public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
 		StyleListener styleListener = new StyleListener();
 		styleElement.setStartElementListener(styleListener);
 		styleHref.setEndTextElementListener(styleListener);
-		stationsElement.setElementListener(new ElementListener() {
+		stationsElement.setStartElementListener(new StartElementListener() {
 			@Override
 			public void start(Attributes attributes) {
 				m_root.setStations(new ArrayList<Station>());
 			}
-			@Override
-			public void end() {}
 
 		});
 		stationElement.setElementListener(new ElementListener() {

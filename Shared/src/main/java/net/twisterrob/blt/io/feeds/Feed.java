@@ -414,10 +414,14 @@ public enum Feed {
 	public static enum Type {
 		Syndication("http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx"),
 		Other(null);
+
 		private final URL m_baseUrl;
+
+		@SuppressWarnings("synthetic-access")
 		private Type(String baseUrl) {
 			m_baseUrl = baseUrl != null? createURL(baseUrl) : null;
 		}
+
 		public URL getBaseUrl() {
 			return m_baseUrl;
 		}

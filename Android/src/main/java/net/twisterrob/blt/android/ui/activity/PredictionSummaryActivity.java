@@ -37,19 +37,19 @@ public class PredictionSummaryActivity extends ActionBarActivity
 	/**
 	 * @see #EXTRA_LINE
 	 */
-	private Line m_line;
+	protected Line m_line;
 
-	private final SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	private Calendar m_lastUpdated;
+	protected final SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	protected Calendar m_lastUpdated;
 
-	private final Set<String> m_expandedStationNames = new LinkedHashSet<String>();
+	protected final Set<String> m_expandedStationNames = new LinkedHashSet<String>();
 
-	private AppCompatPullToRefreshAttacher m_ptrAttacher;
+	protected AppCompatPullToRefreshAttacher m_ptrAttacher;
 
-	private ExpandableListView m_listView;
-	private PredictionSummaryAdapter m_adapter;
+	protected ExpandableListView m_listView;
+	protected PredictionSummaryAdapter m_adapter;
 
-	private ListViewHandler m_listHandler;
+	protected ListViewHandler m_listHandler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +143,7 @@ public class PredictionSummaryActivity extends ActionBarActivity
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("line", m_line);
 		new DownloadFeedTask<PredictionSummaryFeed>(args) {
+			@Override
 			protected void onPostExecute(AsyncTaskResult<PredictionSummaryFeed> result) {
 				if (result.getError() != null) {
 					String msg = "Cannot load line prediction summary: " + result.getError();
@@ -237,11 +238,11 @@ public class PredictionSummaryActivity extends ActionBarActivity
 		}
 	}
 
-	private final Set<PlatformDirection> m_directionsEnabled = EnumSet.noneOf(PlatformDirection.class);
-	private final Map<Integer, PlatformDirection> menuIDs = new TreeMap<Integer, PlatformDirection>();
-	private final Map<PlatformDirection, MenuItem> menus = new EnumMap<PlatformDirection, MenuItem>(
+	protected final Set<PlatformDirection> m_directionsEnabled = EnumSet.noneOf(PlatformDirection.class);
+	protected final Map<Integer, PlatformDirection> menuIDs = new TreeMap<Integer, PlatformDirection>();
+	protected final Map<PlatformDirection, MenuItem> menus = new EnumMap<PlatformDirection, MenuItem>(
 			PlatformDirection.class);
-	private final Map<PlatformDirection, ToggleButton> buttons = new EnumMap<PlatformDirection, ToggleButton>(
+	protected final Map<PlatformDirection, ToggleButton> buttons = new EnumMap<PlatformDirection, ToggleButton>(
 			PlatformDirection.class);
 
 	protected void resetCompassState() {

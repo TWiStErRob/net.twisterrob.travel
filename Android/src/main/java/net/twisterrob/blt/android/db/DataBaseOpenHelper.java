@@ -36,7 +36,7 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 		LOG.info("Opened database: %s", DBTools.toString(db));
 	}
 
-	private void backupDB(final SQLiteDatabase db, final String fileName) {
+	private static void backupDB(final SQLiteDatabase db, final String fileName) {
 		if (BuildConfig.DEBUG) {
 			try {
 				String target = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + fileName;
@@ -70,11 +70,12 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 	}
 
 	private static void realExecuteFile(final SQLiteDatabase db, final String dbSchemaFile) {
-		InputStream s;
+		InputStream s = null;
 		String statement = null;
+		BufferedReader reader = null;
 		try {
 			s = App.getInstance().getAssets().open(dbSchemaFile);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(s, IOTools.ENCODING));
+			reader = new BufferedReader(new InputStreamReader(s, IOTools.ENCODING));
 			while ((statement = DataBaseOpenHelper.getNextStatement(reader)) != null) {
 				db.execSQL(statement);
 			}
@@ -82,6 +83,8 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 			LOG.error("Error creating database from file: %s while executing\n%s", ex, dbSchemaFile, statement);
 		} catch (IOException ex) {
 			LOG.error("Error creating database from file: ", ex, dbSchemaFile);
+		} finally {
+			IOTools.ignorantClose(s, reader);
 		}
 	}
 

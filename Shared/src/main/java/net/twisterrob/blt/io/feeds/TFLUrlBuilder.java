@@ -30,13 +30,14 @@ public class TFLUrlBuilder implements URLBuilder {
 	public URL getFeedUrl(Feed feed, Map<String, ?> args) throws MalformedURLException {
 		if (feed.getType() == Feed.Type.Syndication) {
 			return getSyncdicationFeed(feed);
-		} else {
-			switch (feed) {
-				default:
-					return feed.getUrl();
-				case TubeDepartureBoardsPredictionSummary:
-					return new URL(feed.getUrl(), ((Line)args.get("line")).getTrackerNetCode());
-			}
+		}
+		switch (feed) {
+			case TubeDepartureBoardsPredictionSummary:
+				return new URL(feed.getUrl(), ((Line)args.get("line")).getTrackerNetCode());
+
+				//$CASES-OMITTED$
+			default:
+				return feed.getUrl();
 		}
 	}
 }

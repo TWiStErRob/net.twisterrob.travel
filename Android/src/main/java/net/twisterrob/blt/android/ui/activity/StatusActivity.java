@@ -24,12 +24,12 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class StatusActivity extends ActionBarActivity implements OnRefreshListener {
 
-	private SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	private Calendar m_lastUpdated;
+	protected SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	protected Calendar m_lastUpdated;
 
-	private AppCompatPullToRefreshAttacher m_ptrAttacher;
-	private ListView m_listView;
-	private ListViewHandler m_listHandler;
+	protected AppCompatPullToRefreshAttacher m_ptrAttacher;
+	protected ListView m_listView;
+	protected ListViewHandler m_listHandler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,7 @@ public class StatusActivity extends ActionBarActivity implements OnRefreshListen
 
 	private void delayedGetRoot() {
 		new DownloadFeedTask<LineStatusFeed>() {
+			@Override
 			protected void onPostExecute(AsyncTaskResult<LineStatusFeed> result) {
 				if (result.getError() != null) {
 					String msg = "Cannot load line statuses: " + result.getError();

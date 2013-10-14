@@ -5,12 +5,14 @@ import java.util.Map;
 import net.twisterrob.android.utils.log.*;
 import net.twisterrob.android.utils.tools.DBTools;
 import net.twisterrob.blt.model.Station;
+import net.twisterrob.java.io.IOTools;
 import net.twisterrob.java.model.Location;
 import android.content.ContentValues;
 import android.database.DatabaseUtils;
 import android.database.sqlite.*;
 
-@SuppressWarnings("unused")
+@SuppressWarnings("resource")
+//TODO fix resource leaks
 class DataBaseWriter extends DataBaseAccess {
 	private static final Log LOG = LogFactory.getLog(Tag.DB);
 
@@ -63,33 +65,39 @@ class DataBaseWriter extends DataBaseAccess {
 			database.setTransactionSuccessful();
 		} finally {
 			database.endTransaction();
+			database.close();
 		}
 	}
 
 	public void insertStation(final Station station) {
-		LOG.debug("Inserting station: %d, %s, %s", station.getId(), station.getName(), station.getLocation());
-		SQLiteDatabase database = prepareDB();
-		int column = 0;
-		bindObjectToProgram(m_insertStation, ++column, station.getId());
-		bindObjectToProgram(m_insertStation, ++column, station.getName());
-		bindObjectToProgram(m_insertStation, ++column, station.getAddress());
-		bindObjectToProgram(m_insertStation, ++column, station.getTelephone());
-		Location location = station.getLocation();
-		if (location != null) {
-			bindObjectToProgram(m_insertStation, ++column, location.getLatitude());
-			bindObjectToProgram(m_insertStation, ++column, location.getLongitude());
-		} else {
-			m_insertStation.bindNull(++column);
-			m_insertStation.bindNull(++column);
-		}
-		long stationID;
+		SQLiteDatabase database = null;
 		try {
-			stationID = m_insertStation.executeInsert();
-		} catch (SQLiteConstraintException ex) {
-			LOG.warn("Cannot insert station, getting existing (%s)", ex, station.getName());
-			stationID = getStationID(station.getName());
+			LOG.debug("Inserting station: %d, %s, %s", station.getId(), station.getName(), station.getLocation());
+			database = prepareDB();
+			int column = 0;
+			bindObjectToProgram(m_insertStation, ++column, station.getId());
+			bindObjectToProgram(m_insertStation, ++column, station.getName());
+			bindObjectToProgram(m_insertStation, ++column, station.getAddress());
+			bindObjectToProgram(m_insertStation, ++column, station.getTelephone());
+			Location location = station.getLocation();
+			if (location != null) {
+				bindObjectToProgram(m_insertStation, ++column, location.getLatitude());
+				bindObjectToProgram(m_insertStation, ++column, location.getLongitude());
+			} else {
+				m_insertStation.bindNull(++column);
+				m_insertStation.bindNull(++column);
+			}
+			long stationID;
+			try {
+				stationID = m_insertStation.executeInsert();
+			} catch (SQLiteConstraintException ex) {
+				LOG.warn("Cannot insert station, getting existing (%s)", ex, station.getName());
+				stationID = getStationID(station.getName());
+			}
+			station.setId((int)stationID);
+		} finally {
+			IOTools.ignorantClose(database);
 		}
-		station.setId((int)stationID);
 	}
 	public void updateStations(final Iterable<Station> stations) {
 		SQLiteDatabase database = prepareDB();
@@ -101,6 +109,7 @@ class DataBaseWriter extends DataBaseAccess {
 			database.setTransactionSuccessful();
 		} finally {
 			database.endTransaction();
+			database.close();
 		}
 	}
 
@@ -109,6 +118,7 @@ class DataBaseWriter extends DataBaseAccess {
 		SQLiteDatabase database = prepareDB();
 		if (m_dataBaseHelper.getReader().getStation(station.getId()) != null) {
 			LOG.debug("Already existing, skipping (TODO: implement update)");
+			database.close();
 			return;
 		}
 		int column = 0;
@@ -164,13 +174,15 @@ class DataBaseWriter extends DataBaseAccess {
 		long typeId;
 		try {
 			typeId = m_insertStationType.executeInsert();
-			LOG.debug("Inserted type: %s: %s", name, url);
+			LOG.debug("Inserted type: [%d] %s: %s", typeId, name, url);
 		} catch (SQLiteConstraintException ex) {
 			LOG.warn("Cannot insert station type, getting existing (%s)", ex, name);
 			// typeId = getStationTypeID(name);
 			updateType(name, url);
 		}
 	}
+
+	@SuppressWarnings("unused")
 	private long getStationTypeID(final String stationTypeName) {
 		SQLiteDatabase database = m_dataBaseHelper.getReadableDatabase();
 		return longForQuery(database, "SELECT _id FROM StationType WHERE name = ?", new String[]{stationTypeName});

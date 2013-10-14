@@ -25,6 +25,10 @@ public enum PlatformDirection {
 		}
 	},
 	Other() {
+		/**
+		 * Matches everything else.
+		 * @param input not used
+		 */
 		@Override
 		public boolean matches(String input) {
 			return true;

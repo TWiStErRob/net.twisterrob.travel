@@ -2,6 +2,9 @@ import java.io.*;
 import java.util.*;
 
 import net.twisterrob.blt.io.feeds.*;
+import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.Route;
+import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.RouteLink;
+import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.RouteSection;
 import net.twisterrob.blt.model.Line;
 
 public class TravelNetworkParser {
@@ -22,15 +25,35 @@ public class TravelNetworkParser {
 			put(Line.WaterlooAndCity, "tfl_1-WAC_-60102-y05.xml");
 			put(Line.DLR, "tfl_25-DLR_-6-y05.xml");
 			put(Line.EmiratesAirline, "tfl_71-CABd-1-y05.xml");
-			put(Line.Overground, "");
+			//put(Line.Overground, "");
 		}
 	};
 	public static void main(String[] args) throws Throwable {
-		Line line = Line.District;
+		Line line = Line.Circle;
 		JourneyPlannerTimetableHandler handler = new JourneyPlannerTimetableHandler();
 		File file = new File(DATA_ROOT, FILES.get(line));
 		FileInputStream stream = new FileInputStream(file);
 		JourneyPlannerTimetableFeed feed = handler.parse(stream);
-		new LineDisplay(line, feed);
+		stream.close();
+		new LineDisplay(line, feed).setVisible(true);
+		//test();
+	}
+	protected static void test() throws Throwable {
+		for (Line line: FILES.keySet()) {
+			JourneyPlannerTimetableHandler handler = new JourneyPlannerTimetableHandler();
+			File file = new File(DATA_ROOT, FILES.get(line));
+			FileInputStream stream = new FileInputStream(file);
+			JourneyPlannerTimetableFeed feed = handler.parse(stream);
+			stream.close();
+			for (Route route: feed.getRoutes()) {
+				for (RouteSection section: route.getRouteSections()) {
+					for (RouteLink link: section.getRouteLinks()) {
+						if (link.getDistance() == 0) {
+							System.out.println(link);
+						}
+					}
+				}
+			}
+		}
 	}
 }

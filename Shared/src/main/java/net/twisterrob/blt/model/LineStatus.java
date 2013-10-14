@@ -24,9 +24,10 @@ public class LineStatus {
 	}
 	public void setDescription(String description) {
 		if (description != null && description.trim().length() == 0) {
-			description = null;
+			m_description = null;
+		} else {
+			m_description = description;
 		}
-		m_description = description;
 	}
 
 	public boolean isActive() {

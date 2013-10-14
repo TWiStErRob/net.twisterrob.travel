@@ -14,12 +14,12 @@ import android.util.Xml;
  * @author TWiStEr
  */
 public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSummaryFeed> {
-	private interface X extends PredicitonSummaryFeedXml {} // Shorthand for the XML interface
+	private interface X extends PredicitonSummaryFeedXml { /* Shorthand for the XML interface */}
 
-	private PredictionSummaryFeed m_root;
-	private Station m_station;
-	private Platform m_platform;
-	private Train m_train;
+	PredictionSummaryFeed m_root;
+	Station m_station;
+	Platform m_platform;
+	Train m_train;
 
 	@Override
 	public PredictionSummaryFeed parse(InputStream is) throws IOException, SAXException {
@@ -28,13 +28,11 @@ public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSumm
 		Element stationElement = root.getChild(X.Station.NS, X.Station.ELEMENT);
 		Element platformElement = stationElement.getChild(X.Platform.NS, X.Platform.ELEMENT);
 		Element trainElement = platformElement.getChild(X.Train.NS, X.Train.ELEMENT);
-		root.setElementListener(new ElementListener() {
+		root.setStartElementListener(new StartElementListener() {
 			@Override
 			public void start(Attributes attributes) {
 				m_root = new PredictionSummaryFeed();
 			}
-			@Override
-			public void end() {}
 		});
 
 		timeElement.setStartElementListener(new StartElementListener() {

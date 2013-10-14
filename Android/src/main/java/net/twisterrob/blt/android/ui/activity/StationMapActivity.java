@@ -17,8 +17,7 @@ import android.view.*;
 import com.google.android.maps.*;
 
 public class StationMapActivity extends MapActivity {
-
-	private MapView m_map;
+	protected MapView m_map;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -81,7 +80,7 @@ public class StationMapActivity extends MapActivity {
 	private final class BaseItemizedOverlayExtension extends BaseItemizedOverlay<Item> {
 		private final List<Station> m_stations;
 
-		private BaseItemizedOverlayExtension(Drawable defaultMarker, List<Station> stations) {
+		protected BaseItemizedOverlayExtension(Drawable defaultMarker, List<Station> stations) {
 			super(defaultMarker);
 			m_stations = stations;
 			populate();

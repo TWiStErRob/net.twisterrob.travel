@@ -68,11 +68,16 @@ public class MainActivity extends ActionBarActivity {
 			addIntentParams(intent);
 			return intent;
 		}
-		void addIntentParams(Intent intent) {}
+		/**
+		 * @param intent to add params to
+		 */
+		void addIntentParams(Intent intent) {
+			// optional @Override
+		}
 	}
 
 	protected static class LauncherAdapter extends BaseListAdapter<LauncherItem, LauncherViewHolder> {
-		private LauncherAdapter(Context context, Collection<LauncherItem> items) {
+		protected LauncherAdapter(Context context, Collection<LauncherItem> items) {
 			super(context, items);
 		}
 

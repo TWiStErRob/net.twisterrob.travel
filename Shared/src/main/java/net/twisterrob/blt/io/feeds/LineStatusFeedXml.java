@@ -7,15 +7,14 @@ package net.twisterrob.blt.io.feeds;
  * @see Feed#TubeDepartureBoardsLineStatus 
  * @see Feed#TubeDepartureBoardsLineStatusIncidents 
  */
-@SuppressWarnings("unchecked")
 interface LineStatusFeedXml extends FeedXmlDescriptor {
-	String NS = "http://webservices.lul.co.uk/";
-	interface Root extends LineStatusFeedXml {
-		Class<? extends LineStatusFeedXml>[] CHILDREN = new Class[]{LineStatus.class};
+	interface Root {
+		String NS = "http://webservices.lul.co.uk/";
+		Class<?>[] CHILDREN = new Class[]{LineStatus.class};
 		String ELEMENT = "ArrayOfLineStatus";
 	}
-	interface LineStatus extends LineStatusFeedXml {
-		Class<? extends LineStatusFeedXml>[] CHILDREN = new Class[]{BranchDisruptions.class, Line.class, Status.class};
+	interface LineStatus {
+		Class<?>[] CHILDREN = new Class[]{BranchDisruptions.class, Line.class, Status.class};
 		String ELEMENT = "LineStatus";
 		/**
 		 * <code>LineStatus ID</code>: An identifier for the line.
@@ -26,20 +25,20 @@ interface LineStatusFeedXml extends FeedXmlDescriptor {
 		 */
 		String statusDetails = "StatusDetails";
 	}
-	interface BranchDisruptions extends LineStatusFeedXml {
-		Class<? extends LineStatusFeedXml>[] CHILDREN = new Class[]{BranchDisruption.class};
+	interface BranchDisruptions {
+		Class<?>[] CHILDREN = new Class[]{BranchDisruption.class};
 		/**
 		 * <code>BranchDisruptions</code>: Not Used.
 		 */
 		String ELEMENT = "BranchDisruptions";
 	}
-	interface BranchDisruption extends LineStatusFeedXml {
-		Class<? extends LineStatusFeedXml>[] CHILDREN = NO_CHILDREN;
+	interface BranchDisruption {
+		Class<?>[] CHILDREN = NO_CHILDREN;
 		String ELEMENT = "BranchDisruption";
 		// TODO
 	}
-	interface Line extends LineStatusFeedXml {
-		Class<? extends LineStatusFeedXml>[] CHILDREN = NO_CHILDREN;
+	interface Line {
+		Class<?>[] CHILDREN = NO_CHILDREN;
 		String ELEMENT = "Line";
 		/**
 		 * <code>Line ID</code>: A code representing the line.
@@ -50,8 +49,8 @@ interface LineStatusFeedXml extends FeedXmlDescriptor {
 		 */
 		String name = "Name";
 	}
-	interface Status extends LineStatusFeedXml {
-		Class<? extends LineStatusFeedXml>[] CHILDREN = new Class[]{StatusType.class};
+	interface Status {
+		Class<?>[] CHILDREN = new Class[]{StatusType.class};
 		String ELEMENT = "Status";
 		/**
 		 * <code>Status ID</code>: A numeric code representing the status of the line.
@@ -70,8 +69,8 @@ interface LineStatusFeedXml extends FeedXmlDescriptor {
 		 */
 		String isActive = "IsActive";
 	}
-	interface StatusType extends LineStatusFeedXml {
-		Class<? extends LineStatusFeedXml>[] CHILDREN = NO_CHILDREN;
+	interface StatusType {
+		Class<?>[] CHILDREN = NO_CHILDREN;
 		String ELEMENT = "Status";
 		/**
 		 * <code>StatusType ID</code>: A code representing the status type the service is checking. For this call it will always return the value “1”.

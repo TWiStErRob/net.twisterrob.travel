@@ -65,7 +65,9 @@ public interface FeedXmlDescriptor {
 	 * It can be ignored at use site.
 	 * @author TWiStEr
 	 */
-	interface CONTENT {}
+	interface CONTENT {
+		// tag interface
+	}
 
 	/**
 	 * This is to be used as the <code>CHILDREN</code> array when an element has no children at all.

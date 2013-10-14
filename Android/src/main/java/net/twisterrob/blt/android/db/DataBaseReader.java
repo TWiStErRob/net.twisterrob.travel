@@ -7,6 +7,8 @@ import net.twisterrob.java.model.Location;
 import android.database.*;
 import android.database.sqlite.SQLiteDatabase;
 
+@SuppressWarnings("resource")
+// TODO fix resource leaks
 class DataBaseReader {
 	private static final String LAST_UPDATE = "strftime('%s', __last_update) * 1000";
 
@@ -34,7 +36,7 @@ class DataBaseReader {
 		return stations;
 	}
 
-	private Station readStation(final Cursor cursor) {
+	private static Station readStation(final Cursor cursor) {
 		int id = cursor.getInt(cursor.getColumnIndex("_id"));
 		String name = cursor.getString(cursor.getColumnIndex("name"));
 		Type type = Type.get(cursor.getString(cursor.getColumnIndex("type")));

@@ -7,16 +7,19 @@ import javax.swing.event.*;
 
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.Route;
+import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.RouteLink;
+import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.RouteSection;
 import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.StopPoint;
 import net.twisterrob.blt.model.*;
+import net.twisterrob.java.model.Location;
 
 public class LineDisplay extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private JList list;
-	private RouteMapDrawer routeMap;
-	private RouteDrawer routeLine;
-	private Color fg;
-	private Color bg;
+	protected JList list;
+	protected RouteMapDrawer routeMap;
+	protected RouteDrawer routeLine;
+	protected Color fg;
+	protected Color bg;
 
 	public LineDisplay(final Line line, JourneyPlannerTimetableFeed feed) {
 		super(line.getTitle());
@@ -45,6 +48,7 @@ public class LineDisplay extends JFrame {
 				JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				Route route = (Route)value;
 				label.setText(route.getDescription());
+				label.setToolTipText(route.getId());
 				if (isSelected) { // Is it the selected item in dropdown list?  
 					label.setBackground(UIManager.getColor("ComboBox.selectionBackground"));
 					label.setForeground(UIManager.getColor("ComboBox.selectionForeground"));
@@ -64,10 +68,11 @@ public class LineDisplay extends JFrame {
 				JList list = (JList)e.getSource();
 				Route route = (Route)list.getSelectedValue();
 				routeLine.setRoute(route);
+				routeMap.setRoute(route);
 			}
 		});
-		JScrollPane scroll = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane scroll = new JScrollPane(list, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		panel.add(scroll, BorderLayout.WEST);
 
 		routeMap = new RouteMapDrawer(stopPoints);
@@ -75,7 +80,6 @@ public class LineDisplay extends JFrame {
 
 		pack();
 		list.setSelectedIndex(0);
-		setVisible(true);
 	}
 	class RouteDrawer extends JPanel {
 		private static final long serialVersionUID = 1L;
@@ -87,6 +91,7 @@ public class LineDisplay extends JFrame {
 			setBackground(Color.WHITE);
 		}
 
+		@Override
 		public void paint(Graphics g) {
 			super.paint(g);
 			if (route == null) {
@@ -138,15 +143,72 @@ public class LineDisplay extends JFrame {
 
 		private Route route;
 		private final Set<StopPoint> stations;
+		double minLat;
+		double maxLat;
+		double minLon;
+		double maxLon;
 
 		public RouteMapDrawer(Set<StopPoint> stations) {
 			this.stations = stations;
+			minMax();
 		}
 
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
+		protected void minMax() {
+			minLat = Double.POSITIVE_INFINITY;
+			maxLat = Double.NEGATIVE_INFINITY;
+			minLon = Double.POSITIVE_INFINITY;
+			maxLon = Double.NEGATIVE_INFINITY;
+			for (StopPoint station: stations) {
+				Location loc = station.getLocation();
+				double lat = loc.getLatitude();
+				double lon = loc.getLongitude();
+				if (lat < minLat) {
+					minLat = lat;
+				}
+				if (lat > maxLat) {
+					maxLat = lat;
+				}
+				if (lon < minLon) {
+					minLon = lon;
+				}
+				if (lon > maxLon) {
+					maxLon = lon;
+				}
+			}
+		}
+
+		@Override
+		public void paint(Graphics g) {
+			super.paint(g);
+			Graphics2D g2 = (Graphics2D)g;
+			int r = 8;
+			double offX = minLon, offY = minLat;
+			int width = getWidth(), height = getHeight();
+			double scaleX = width / (maxLon - minLon);
+			double scaleY = height / (maxLat - minLat);
+			scaleX = scaleY = Math.min(scaleX, scaleY) * .90;
+			int alignX = (width - (int)((maxLon - offX) * scaleX)) / 2;
+			int alignY = -(height - (int)((maxLat - offY) * scaleY)) / 2;
+			for (StopPoint station: stations) {
+				Location loc = station.getLocation();
+				int x = (int)((loc.getLongitude() - offX) * scaleX) + alignX;
+				int y = height - (int)((loc.getLatitude() - offY) * scaleY) + alignY;
+				g.setColor(bg);
+				g.fillOval(x - r / 2, y - r / 2, r, r);
+			}
 			if (route == null) {
 				return;
+			}
+			g2.setStroke(new BasicStroke(r / 2));
+			for (RouteSection section: route.getRouteSections()) {
+				for (RouteLink link: section.getRouteLinks()) {
+					int fromX = (int)((link.getFrom().getLocation().getLongitude() - offX) * scaleX) + alignX;
+					int fromY = height - (int)((link.getFrom().getLocation().getLatitude() - offY) * scaleY) + alignY;
+					int toX = (int)((link.getTo().getLocation().getLongitude() - offX) * scaleX) + alignX;
+					int toY = height - (int)((link.getTo().getLocation().getLatitude() - offY) * scaleY) + alignY;
+					g.setColor(bg);
+					g.drawLine(fromX, fromY, toX, toY);
+				}
 			}
 		}
 

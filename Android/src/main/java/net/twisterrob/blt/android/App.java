@@ -60,12 +60,11 @@ public class App extends android.app.Application {
 		return helper;
 	}
 
-	public Cache<URL, Bitmap> getPosterCache() {
+	public static Cache<URL, Bitmap> getPosterCache() {
 		return getCache(CACHE_IMAGE);
 	}
 
-	private <K, V> Cache<K, V> getCache(final String cacheName) {
-		@SuppressWarnings("unchecked")
+	private static <K, V> Cache<K, V> getCache(final String cacheName) {
 		Cache<K, V> cache = (Cache<K, V>)s_caches.get(cacheName);
 		if (cache == null) {
 			cache = createCache(cacheName);
@@ -74,8 +73,7 @@ public class App extends android.app.Application {
 		return cache;
 	}
 
-	@SuppressWarnings("unchecked")
-	private <T> T createCache(final String cacheClass) {
+	private static <T> T createCache(final String cacheClass) {
 		try {
 			return (T)Class.forName(cacheClass).newInstance();
 		} catch (IllegalAccessException ex) {
