@@ -7,6 +7,7 @@ import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.Route;
 import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.RouteLink;
 import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.RouteSection;
+import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.StopPoint;
 import net.twisterrob.blt.model.Line;
 
 public class TravelNetworkParser {
@@ -37,9 +38,65 @@ public class TravelNetworkParser {
 		FileInputStream stream = new FileInputStream(file);
 		JourneyPlannerTimetableFeed feed = handler.parse(stream);
 		stream.close();
-		new LineDisplay(line, feed.getRoutes()).setVisible(true);
+		List<Route> routes = feed.getRoutes();
+		reconstruct(routes);
+		new LineDisplay(line, routes).setVisible(true);
 		//testAll();
 	}
+	private static @Nonnull
+	List<Route> reconstruct(@Nonnull List<Route> routes) {
+		Map<String, Node> nodes = new HashMap<String, Node>();
+		for (StopPoint stop: JourneyPlannerTimetableFeed.getStopPoints(routes)) {
+			nodes.put(stop.getName(), new Node(stop));
+		}
+		for (Route route: routes) {
+			for (RouteSection section: route.getRouteSections()) {
+				for (RouteLink link: section.getRouteLinks()) {
+					StopPoint from = link.getFrom();
+					StopPoint to = link.getTo();
+					Node fromNode = nodes.get(from.getName());
+					Node toNode = nodes.get(to.getName());
+					fromNode.out.add(toNode);
+					toNode.in.add(fromNode);
+				}
+			}
+		}
+
+		// TODO make these set
+		List<Node> starts = new LinkedList<Node>();
+		List<Node> ends = new LinkedList<Node>();
+		List<Node> leafs = new LinkedList<Node>();
+		for (Node node: nodes.values()) {
+			if (node.in.isEmpty()) {
+				starts.add(node);
+			}
+			if (node.out.isEmpty()) {
+				ends.add(node);
+			}
+			if (node.in.equals(node.out)) {
+				leafs.add(node);
+			}
+		}
+		System.out.printf("Starts: %s\n", starts);
+		System.out.printf("Ends: %s\n", ends);
+		System.out.printf("Leafs: %s\n", leafs);
+
+		return Collections.emptyList();
+	}
+	static class Node {
+		@Nonnull StopPoint stop;
+		final @Nonnull List<Node> in = new LinkedList<Node>();
+		final @Nonnull List<Node> out = new LinkedList<Node>();
+		public Node(@Nonnull StopPoint stop) {
+			this.stop = stop;
+		}
+
+		@Override
+		public String toString() {
+			return String.format("%2$s", stop.getId(), stop.getName());
+		}
+	}
+
 	protected static void testAll() throws Throwable {
 		for (Line line: FILES.keySet()) {
 			JourneyPlannerTimetableHandler handler = new JourneyPlannerTimetableHandler();

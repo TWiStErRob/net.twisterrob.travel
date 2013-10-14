@@ -42,6 +42,10 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 	@Override
 	void postProcess() {
 		super.postProcess();
+		collapseRoutes();
+	}
+
+	public void collapseRoutes() {
 		routes : for (Iterator<Route> iterator = routes.iterator(); iterator.hasNext();) {
 			Route route = iterator.next();
 			for (Route other: getRoutes()) {
@@ -51,6 +55,9 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 				}
 			}
 		}
+	}
+
+	public void collapseBidis() {
 		reverseRoutes : for (Iterator<Route> iterator = routes.iterator(); iterator.hasNext();) {
 			Route route = iterator.next();
 			for (Route other: getRoutes()) {
