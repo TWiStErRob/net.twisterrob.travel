@@ -2,6 +2,9 @@ package net.twisterrob.blt.io.feeds;
 
 import java.io.*;
 
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
+
 import net.twisterrob.blt.io.feeds.LineStatusFeedXml.Line;
 import net.twisterrob.blt.io.feeds.LineStatusFeedXml.LineStatus;
 import net.twisterrob.blt.io.feeds.LineStatusFeedXml.Root;
@@ -13,8 +16,9 @@ import org.xml.sax.*;
 import android.sax.*;
 import android.util.Xml;
 
+@NotThreadSafe
 public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
-	LineStatusFeed m_root;
+	@Nonnull LineStatusFeed m_root = new LineStatusFeed();
 	net.twisterrob.blt.model.LineStatus m_lineStatus;
 
 	@Override

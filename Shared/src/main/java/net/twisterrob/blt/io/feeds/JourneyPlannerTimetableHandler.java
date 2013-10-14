@@ -3,6 +3,9 @@ package net.twisterrob.blt.io.feeds;
 import java.io.*;
 import java.util.*;
 
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
+
 import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeedXml.AnnotatedNptgLocalityRef;
 import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeedXml.Root;
 import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeedXml.Route;
@@ -23,13 +26,14 @@ import org.xml.sax.*;
 import android.sax.*;
 import android.util.Xml;
 
+@NotThreadSafe
 public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlannerTimetableFeed> {
-	protected JourneyPlannerTimetableFeed m_root;
-	protected Map<String, JourneyPlannerTimetableFeed.Locality> m_localities = new HashMap<String, JourneyPlannerTimetableFeed.Locality>();
-	protected Map<String, JourneyPlannerTimetableFeed.StopPoint> m_stopPoints = new HashMap<String, JourneyPlannerTimetableFeed.StopPoint>();
-	protected Map<String, JourneyPlannerTimetableFeed.RouteSection> m_routeSections = new HashMap<String, JourneyPlannerTimetableFeed.RouteSection>();
-	protected Map<String, JourneyPlannerTimetableFeed.RouteLink> m_routeLinks = new HashMap<String, JourneyPlannerTimetableFeed.RouteLink>();
-	protected Map<String, JourneyPlannerTimetableFeed.Route> m_routes = new HashMap<String, JourneyPlannerTimetableFeed.Route>();
+	protected @Nonnull JourneyPlannerTimetableFeed m_root = new JourneyPlannerTimetableFeed();
+	protected @Nonnull Map<String, JourneyPlannerTimetableFeed.Locality> m_localities = new HashMap<String, JourneyPlannerTimetableFeed.Locality>();
+	protected @Nonnull Map<String, JourneyPlannerTimetableFeed.StopPoint> m_stopPoints = new HashMap<String, JourneyPlannerTimetableFeed.StopPoint>();
+	protected @Nonnull Map<String, JourneyPlannerTimetableFeed.RouteSection> m_routeSections = new HashMap<String, JourneyPlannerTimetableFeed.RouteSection>();
+	protected @Nonnull Map<String, JourneyPlannerTimetableFeed.RouteLink> m_routeLinks = new HashMap<String, JourneyPlannerTimetableFeed.RouteLink>();
+	protected @Nonnull Map<String, JourneyPlannerTimetableFeed.Route> m_routes = new HashMap<String, JourneyPlannerTimetableFeed.Route>();
 	protected JourneyPlannerTimetableFeed.Locality m_localilty;
 	protected JourneyPlannerTimetableFeed.StopPoint m_stopPoint;
 	protected JourneyPlannerTimetableFeed.RouteSection m_routeSection;
@@ -66,10 +70,8 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 
 		Xml.parse(is, Xml.Encoding.UTF_8, root.getContentHandler());
 		m_root.postProcess();
-		return null;
-		//return m_root;
+		return m_root;
 	}
-
 	protected void setupLocalityParsing(Element locality) {
 		locality.setElementListener(new ElementListener() {
 			@Override

@@ -4,6 +4,9 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
+
 import net.twisterrob.android.utils.tools.PrimitiveTools;
 import net.twisterrob.blt.model.*;
 import net.twisterrob.java.model.Location;
@@ -13,8 +16,9 @@ import org.xml.sax.*;
 import android.sax.*;
 import android.util.Xml;
 
+@NotThreadSafe
 public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
-	FacilitiesFeed m_root;
+	@Nonnull FacilitiesFeed m_root = new FacilitiesFeed();
 	Station m_station;
 
 	@Override
@@ -45,7 +49,6 @@ public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
 			public void start(Attributes attributes) {
 				m_root = new FacilitiesFeed();
 			}
-
 		});
 		class StyleListener implements StartElementListener, EndTextElementListener {
 			private String m_id;

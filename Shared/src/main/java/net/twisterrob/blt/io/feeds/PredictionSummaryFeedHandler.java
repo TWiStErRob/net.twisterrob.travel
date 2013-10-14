@@ -4,19 +4,21 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
+
 import net.twisterrob.blt.model.*;
 
 import org.xml.sax.*;
 
 import android.sax.*;
 import android.util.Xml;
-/**
- * @author TWiStEr
- */
+
+@NotThreadSafe
 public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSummaryFeed> {
 	private interface X extends PredicitonSummaryFeedXml { /* Shorthand for the XML interface */}
 
-	PredictionSummaryFeed m_root;
+	@Nonnull PredictionSummaryFeed m_root = new PredictionSummaryFeed();
 	Station m_station;
 	Platform m_platform;
 	Train m_train;
