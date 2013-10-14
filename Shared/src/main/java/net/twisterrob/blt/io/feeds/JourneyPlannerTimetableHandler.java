@@ -203,6 +203,7 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 				m_routeLink = new JourneyPlannerTimetableFeed.RouteLink();
 				m_routeLink.setId(attrId);
 			}
+			@SuppressWarnings("null")
 			@Override
 			public void end() {
 				m_routeLinks.put(m_routeLink.getId(), m_routeLink);
@@ -252,6 +253,7 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 				m_route = new JourneyPlannerTimetableFeed.Route();
 				m_route.setId(attrId);
 			}
+			@SuppressWarnings("null")
 			@Override
 			public void end() {
 				m_routes.put(m_route.getId(), m_route);
@@ -266,6 +268,7 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 			}
 		});
 		route.getChild(Root.NS, Route.RouteSectionRef).setEndTextElementListener(new EndTextElementListener() {
+			@SuppressWarnings("null")
 			@Override
 			public void end(String body) {
 				JourneyPlannerTimetableFeed.RouteSection section = m_routeSections.get(body);

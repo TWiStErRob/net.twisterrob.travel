@@ -2,8 +2,10 @@ package net.twisterrob.blt.model;
 
 import java.util.Arrays;
 
+import javax.annotation.*;
+
 public enum Line {
-	Bakerloo('B', "Bakerloo") {
+	@Nonnull Bakerloo('B', "Bakerloo") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getBakerlooBackground();
@@ -13,7 +15,7 @@ public enum Line {
 			return colors.getBakerlooForeground();
 		}
 	},
-	Central('C', "Central") {
+	@Nonnull Central('C', "Central") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getCentralBackground();
@@ -23,7 +25,7 @@ public enum Line {
 			return colors.getCentralForeground();
 		}
 	},
-	Circle('H', "Circle") { // Hammersmith & Circle?
+	@Nonnull Circle('H', "Circle") { // Hammersmith & Circle?
 		// H from http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf / 5. Appendix A
 		@Override
 		public int getBackground(LineColors colors) {
@@ -34,7 +36,7 @@ public enum Line {
 			return colors.getCircleForeground();
 		}
 	},
-	District('D', "District") {
+	@Nonnull District('D', "District") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getDistrictBackground();
@@ -44,7 +46,7 @@ public enum Line {
 			return colors.getDistrictForeground();
 		}
 	},
-	HammersmithAndCity('H', "H'smith & City", "Hammersmith & City", "Hammersmith and City") {
+	@Nonnull HammersmithAndCity('H', "H'smith & City", "Hammersmith & City", "Hammersmith and City") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getHammersmithAndCityBackground();
@@ -54,7 +56,7 @@ public enum Line {
 			return colors.getHammersmithAndCityForeground();
 		}
 	},
-	Jubilee('J', "Jubilee") {
+	@Nonnull Jubilee('J', "Jubilee") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getJubileeBackground();
@@ -64,7 +66,7 @@ public enum Line {
 			return colors.getJubileeForeground();
 		}
 	},
-	Metropolitan('M', "Metropolitan") {
+	@Nonnull Metropolitan('M', "Metropolitan") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getMetropolitanBackground();
@@ -74,7 +76,7 @@ public enum Line {
 			return colors.getMetropolitanForeground();
 		}
 	},
-	Northern('N', "Northern") {
+	@Nonnull Northern('N', "Northern") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getNorthernBackground();
@@ -84,7 +86,7 @@ public enum Line {
 			return colors.getNorthernForeground();
 		}
 	},
-	Piccadilly('P', "Piccadilly") {
+	@Nonnull Piccadilly('P', "Piccadilly") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getPiccadillyBackground();
@@ -94,7 +96,7 @@ public enum Line {
 			return colors.getPiccadillyForeground();
 		}
 	},
-	Victoria('V', "Victoria") {
+	@Nonnull Victoria('V', "Victoria") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getVictoriaBackground();
@@ -104,7 +106,7 @@ public enum Line {
 			return colors.getVictoriaForeground();
 		}
 	},
-	WaterlooAndCity('W', "Waterloo & City", "Waterloo and City") {
+	@Nonnull WaterlooAndCity('W', "Waterloo & City", "Waterloo and City") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getWaterlooAndCityBackground();
@@ -114,7 +116,7 @@ public enum Line {
 			return colors.getWaterlooAndCityForeground();
 		}
 	},
-	DLR('-', "DLR", "Docklands Light Railway") {
+	@Nonnull DLR('-', "DLR", "Docklands Light Railway") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getDLRBackground();
@@ -124,7 +126,7 @@ public enum Line {
 			return colors.getDLRForeground();
 		}
 	},
-	Overground('-', "Overground", "East London") {
+	@Nonnull Overground('-', "Overground", "East London") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getOvergroundBackground();
@@ -134,7 +136,7 @@ public enum Line {
 			return colors.getOvergroundForeground();
 		}
 	},
-	Tram('?', "Tram") {
+	@Nonnull Tram('?', "Tram") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getTramBackground();
@@ -144,7 +146,7 @@ public enum Line {
 			return colors.getTramForeground();
 		}
 	},
-	EmiratesAirline('?', "Emirates Airline") {
+	@Nonnull EmiratesAirline('?', "Emirates Airline") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getEmiratesBackground();
@@ -154,7 +156,7 @@ public enum Line {
 			return colors.getEmiratesForeground();
 		}
 	},
-	unknown('?', "Unknown", "") {
+	@Nonnull unknown('?', "Unknown", "") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getUnknownBackground();
@@ -180,10 +182,10 @@ public enum Line {
 		return m_aliases[0];
 	}
 
-	public abstract int getBackground(LineColors colors);
-	public abstract int getForeground(LineColors colors);
+	public abstract int getBackground(@Nonnull LineColors colors);
+	public abstract int getForeground(@Nonnull LineColors colors);
 
-	public static Line fromAlias(String alias) {
+	public static Line fromAlias(@Nullable String alias) {
 		for (Line line: values()) {
 			if (Arrays.asList(line.m_aliases).contains(alias)) {
 				return line;

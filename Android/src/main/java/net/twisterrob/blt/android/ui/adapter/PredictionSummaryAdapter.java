@@ -2,6 +2,8 @@ package net.twisterrob.blt.android.ui.adapter;
 
 import java.util.*;
 
+import javax.annotation.Nonnull;
+
 import net.twisterrob.android.adapter.BaseFilteringExpandableList3Adapter;
 import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.ChildViewHolder;
@@ -17,7 +19,7 @@ import android.widget.*;
 public class PredictionSummaryAdapter
 		extends
 			BaseFilteringExpandableList3Adapter<Station, Platform, Train, GroupViewHolder, ChildViewHolder, TrainViewHolder> {
-	private static final LineColors colors = new TubeStatusPresentationLineColors();
+	private static final @Nonnull LineColors colors = new TubeStatusPresentationLineColors();
 	private PredictionSummaryFeed m_root;
 
 	public PredictionSummaryAdapter(final Context context, ExpandableListView outerList,

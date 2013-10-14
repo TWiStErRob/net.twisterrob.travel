@@ -2,6 +2,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -21,7 +22,7 @@ public class LineDisplay extends JFrame {
 	protected Color fg;
 	protected Color bg;
 
-	public LineDisplay(final Line line, JourneyPlannerTimetableFeed feed) {
+	public LineDisplay(final @Nonnull Line line, @Nonnull List<Route> routes) {
 		super(line.getTitle());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(1024, 800));
@@ -30,7 +31,7 @@ public class LineDisplay extends JFrame {
 		fg = new Color(line.getForeground(colors));
 		bg = new Color(line.getBackground(colors));
 
-		Set<StopPoint> stopPoints = feed.getStopPoints();
+		Set<StopPoint> stopPoints = JourneyPlannerTimetableFeed.getStopPoints(routes);
 
 		Container panel = getContentPane();
 		panel.setLayout(new BorderLayout());
@@ -38,7 +39,7 @@ public class LineDisplay extends JFrame {
 		routeLine = new RouteDrawer();
 		panel.add(routeLine, BorderLayout.SOUTH);
 
-		list = new JList(feed.getRoutes().toArray());
+		list = new JList(routes.toArray());
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setCellRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = 1L;
