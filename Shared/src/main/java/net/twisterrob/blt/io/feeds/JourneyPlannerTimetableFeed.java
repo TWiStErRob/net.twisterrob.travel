@@ -42,9 +42,48 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 	@Override
 	void postProcess() {
 		super.postProcess();
+		fixRoutes();
 		collapseRoutes();
 	}
 
+	/**
+	 * Somehow there are two 'Pudding Mill Lane' -> 'Blackwall' -> 'East India' -> 'Stratford' route section parts
+	 * on {@link Line#DLR}, which is not possible in reality because there are no rails between these stations.
+	 */
+	private void fixRoutes() {
+		for (Route route: routes) {
+			for (RouteSection section: route.getRouteSections()) {
+				RouteLink link1 = null;
+				RouteLink link2 = null;
+				RouteLink link3 = null;
+				for (RouteLink link: section.getRouteLinks()) {
+					link1 = link2;
+					link2 = link3;
+					link3 = link;
+					if (true //
+							&& link1 != null
+							&& "Pudding Mill Lane".equals(link1.getFrom().getName())
+							&& "Blackwall".equals(link1.getTo().getName())
+							&& link2 != null
+							&& "Blackwall".equals(link2.getFrom().getName())
+							&& "East India".equals(link2.getTo().getName())
+							&& link3 != null
+							&& "East India".equals(link3.getFrom().getName())
+							&& "Stratford".equals(link3.getTo().getName())) {
+						@SuppressWarnings("synthetic-access")
+						List<RouteLink> links = section.routeLinks;
+						StopPoint from = link1.getFrom();
+						StopPoint to = link3.getTo();
+						links.remove(link2);
+						links.remove(link3);
+						link1.setFrom(from);
+						link1.setTo(to);
+						break;
+					}
+				}
+			}
+		}
+	}
 	public void collapseRoutes() {
 		routes : for (Iterator<Route> iterator = routes.iterator(); iterator.hasNext();) {
 			Route route = iterator.next();
@@ -62,7 +101,7 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 			Route route = iterator.next();
 			for (Route other: getRoutes()) {
 				if (other != route && exactOpposite(other, route)) {
-					other.setDescription(route.getDescription() + " [bidi]");
+					other.setDescription(route.getDescription() + " (bidi)");
 					iterator.remove();
 					continue reverseRoutes;
 				}
@@ -142,10 +181,20 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 
 		@Override
 		public String toString() {
-			return String.format("%2$s [%1$s]", id, name);
+			return String.format("%2$s {%1$s}", id, name);
 		}
 	}
-	public static class StopPoint {
+	public static class StopPoint implements Comparable<StopPoint> {
+		public static final Comparator<StopPoint> BY_ID = new Comparator<StopPoint>() {
+			public int compare(StopPoint o1, StopPoint o2) {
+				return o1.getId().compareTo(o2.getId());
+			}
+		};
+		public static final Comparator<StopPoint> BY_NAME = new Comparator<StopPoint>() {
+			public int compare(StopPoint o1, StopPoint o2) {
+				return o1.getName().compareTo(o2.getName());
+			}
+		};
 		private String id;
 		private String name;
 		private Locality locality;
@@ -197,10 +246,14 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 
 		@Override
 		public String toString() {
-			return String.format("%2$s @ %3$s [%1$s]", id, name, locality);
+			return String.format("%2$s @ %3$s {%1$s}", id, name, locality);
+		}
+
+		public int compareTo(StopPoint o) {
+			return this.name.compareTo(o.name);
 		}
 	}
-	public static class RouteSection {
+	public static class RouteSection implements Iterable<StopPoint> {
 		private String id;
 		private @Nonnull List<RouteLink> routeLinks = new ArrayList<RouteLink>();
 
@@ -222,10 +275,13 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 
 		@Override
 		public String toString() {
-			return String.format("%2$d links [%1$s]", id, routeLinks.size());
+			return String.format("%2$d links {%1$s}", id, routeLinks.size());
+		}
+		public Iterator<StopPoint> iterator() {
+			return new StopPointIterators(routeLinks.iterator());
 		}
 	}
-	public static class RouteLink {
+	public static class RouteLink implements Iterable<StopPoint> {
 		private String id;
 		private int distance;
 		private DirectionEnum direction;
@@ -269,10 +325,14 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 
 		@Override
 		public String toString() {
-			return String.format("%2$s -> %3$s [%1$s]", id, from.getName(), to.getName());
+			return String.format("%2$s -> %3$s {%1$s}", id, from.getName(), to.getName());
+		}
+
+		public Iterator<StopPoint> iterator() {
+			return Arrays.asList(from, to).iterator();
 		}
 	}
-	public static class Route {
+	public static class Route implements Iterable<StopPoint> {
 		private String id;
 		private @Nonnull List<RouteSection> routeSections = new ArrayList<RouteSection>();
 		private String description;
@@ -284,15 +344,17 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 			this.id = id;
 		}
 
+		protected void addSection(@Nonnull RouteSection routeSection) {
+			routeSections.add(routeSection);
+		}
 		@SuppressWarnings("null")
 		@Nonnull
 		public List<RouteSection> getRouteSections() {
 			return Collections.unmodifiableList(routeSections);
 		}
-		protected void addSection(@Nonnull RouteSection routeSection) {
-			routeSections.add(routeSection);
+		public Iterator<StopPoint> iterator() {
+			return new StopPointIterators(routeSections.iterator());
 		}
-
 		public String getDescription() {
 			return description;
 		}
@@ -318,7 +380,34 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 
 		@Override
 		public String toString() {
-			return String.format("%2$s [%1$s]", id, description);
+			return String.format("%2$s {%1$s}", id, description);
+		}
+	}
+	private static final class StopPointIterators implements Iterator<StopPoint> {
+		private Iterator<? extends Iterable<StopPoint>> it;
+		private Iterator<StopPoint> current = null;
+		public StopPointIterators(Iterator<? extends Iterable<StopPoint>> iterator) {
+			this.it = iterator;
+		}
+		public boolean hasNext() {
+			if (current == null || !current.hasNext()) {
+				current = null;
+				if (it.hasNext()) {
+					current = it.next().iterator();
+				} else {
+					return false;
+				}
+			}
+			return current.hasNext();
+		}
+		public StopPoint next() {
+			if (current == null || !current.hasNext()) {
+				throw new NoSuchElementException();
+			}
+			return current.next();
+		}
+		public void remove() {
+			throw new UnsupportedOperationException();
 		}
 	}
 }

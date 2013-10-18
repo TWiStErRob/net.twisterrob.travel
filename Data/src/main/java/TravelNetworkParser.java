@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 
@@ -32,83 +33,60 @@ public class TravelNetworkParser {
 	};
 	public static void main(String[] args) throws Throwable {
 		@Nonnull
-		Line line = Line.District;
+		Line line = Line.DLR;
 		JourneyPlannerTimetableHandler handler = new JourneyPlannerTimetableHandler();
 		File file = new File(DATA_ROOT, FILES.get(line));
 		FileInputStream stream = new FileInputStream(file);
-		JourneyPlannerTimetableFeed feed = handler.parse(stream);
-		stream.close();
+		JourneyPlannerTimetableFeed feed;
+		try {
+			feed = handler.parse(stream);
+		} finally {
+			stream.close();
+		}
 		List<Route> routes = feed.getRoutes();
-		reconstruct(routes);
-		new LineDisplay(line, routes).setVisible(true);
-		//testAll();
+		//routes = reconstruct(routes);
+		// new LineDisplay(line, routes).setVisible(true);
+		//feed.collapseBidis();
+		testAll();
 	}
 	private static @Nonnull
 	List<Route> reconstruct(@Nonnull List<Route> routes) {
-		Map<String, Node> nodes = new HashMap<String, Node>();
-		for (StopPoint stop: JourneyPlannerTimetableFeed.getStopPoints(routes)) {
-			nodes.put(stop.getName(), new Node(stop));
-		}
-		for (Route route: routes) {
-			for (RouteSection section: route.getRouteSections()) {
-				for (RouteLink link: section.getRouteLinks()) {
-					StopPoint from = link.getFrom();
-					StopPoint to = link.getTo();
-					Node fromNode = nodes.get(from.getName());
-					Node toNode = nodes.get(to.getName());
-					fromNode.out.add(toNode);
-					toNode.in.add(fromNode);
-				}
-			}
-		}
-
-		// TODO make these set
-		List<Node> starts = new LinkedList<Node>();
-		List<Node> ends = new LinkedList<Node>();
-		List<Node> leafs = new LinkedList<Node>();
-		for (Node node: nodes.values()) {
-			if (node.in.isEmpty()) {
-				starts.add(node);
-			}
-			if (node.out.isEmpty()) {
-				ends.add(node);
-			}
-			if (node.in.equals(node.out)) {
-				leafs.add(node);
-			}
-		}
-		System.out.printf("Starts: %s\n", starts);
-		System.out.printf("Ends: %s\n", ends);
-		System.out.printf("Leafs: %s\n", leafs);
+		RouteInfo info = new RouteInfo(routes);
+		info.build();
+		//info.setPrintProgress("   ");
+		info.analyze();
+		System.out.printf("\033[1;32mLeafs\033[0m: %s\n", info.getLeafs());
+		System.out.printf("\033[1;32mJunctions\033[0m: %s\n", info.getJunctions());
 
 		return Collections.emptyList();
 	}
-	static class Node {
-		@Nonnull StopPoint stop;
-		final @Nonnull List<Node> in = new LinkedList<Node>();
-		final @Nonnull List<Node> out = new LinkedList<Node>();
-		public Node(@Nonnull StopPoint stop) {
-			this.stop = stop;
-		}
-
-		@Override
-		public String toString() {
-			return String.format("%2$s", stop.getId(), stop.getName());
+	protected static void printNameGroups(RouteInfo info) {
+		Map<String, Set<StopPoint>> groups = info.groupByName(false);
+		for (Entry<String, Set<StopPoint>> o: groups.entrySet()) {
+			for (StopPoint stop: o.getValue()) {
+				System.out.printf("%3$s/%1$s,\"%2$s\"\n", stop.getId(), stop.getLocation(), o.getKey());
+			}
 		}
 	}
 
 	protected static void testAll() throws Throwable {
 		for (Line line: FILES.keySet()) {
+			System.out.printf("\033[1;35m%s\033[0m\n", line);
 			JourneyPlannerTimetableHandler handler = new JourneyPlannerTimetableHandler();
 			File file = new File(DATA_ROOT, FILES.get(line));
 			FileInputStream stream = new FileInputStream(file);
-			JourneyPlannerTimetableFeed feed = handler.parse(stream);
-			stream.close();
+			JourneyPlannerTimetableFeed feed;
+			try {
+				feed = handler.parse(stream);
+			} finally {
+				stream.close();
+			}
+			reconstruct(feed.getRoutes());
 			for (Route route: feed.getRoutes()) {
 				for (RouteSection section: route.getRouteSections()) {
 					for (RouteLink link: section.getRouteLinks()) {
 						if (link.getDistance() == 0) {
-							System.out.println(link);
+							System.out.printf("\033[1;31m0 distance\033[0m: %s\n", link);
 						}
 					}
 				}

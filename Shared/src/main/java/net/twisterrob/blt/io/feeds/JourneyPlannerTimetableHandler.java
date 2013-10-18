@@ -146,7 +146,7 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 			}
 			@Override
 			public void end() {
-				m_stopPoint.setLocation(LocationConverter.E_N_to_LonLat(m_east, m_north));
+				m_stopPoint.setLocation(LocationConverter.gridRef2LatLon(m_east, m_north));
 				m_east = null;
 				m_north = null;
 			}
