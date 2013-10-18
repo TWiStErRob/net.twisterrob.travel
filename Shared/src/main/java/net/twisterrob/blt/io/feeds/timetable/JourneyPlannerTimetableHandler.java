@@ -1,4 +1,4 @@
-package net.twisterrob.blt.io.feeds;
+package net.twisterrob.blt.io.feeds.timetable;
 
 import java.io.*;
 import java.util.*;
@@ -6,19 +6,20 @@ import java.util.*;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeedXml.AnnotatedNptgLocalityRef;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeedXml.Root;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeedXml.Route;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeedXml.RouteLink;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeedXml.RouteLink.DirectionEnum;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeedXml.RouteSection;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeedXml.StopPoint;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeedXml.StopPoint.Descriptor;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeedXml.StopPoint.Place;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeedXml.StopPoint.Place.Location;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeedXml.StopPoint.Place.Location.PrecisionEnum;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeedXml.StopPoint.StopClassification;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeedXml.StopPoint.StopClassification.StopTypeEnum;
+import net.twisterrob.blt.io.feeds.BaseFeedHandler;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.AnnotatedNptgLocalityRef;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.Root;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.Route;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.RouteLink;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.RouteLink.DirectionEnum;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.RouteSection;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Descriptor;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Place;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Place.Location;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Place.Location.PrecisionEnum;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.StopClassification;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.StopClassification.StopTypeEnum;
 import net.twisterrob.java.model.LocationConverter;
 
 import org.xml.sax.*;
@@ -29,16 +30,16 @@ import android.util.Xml;
 @NotThreadSafe
 public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlannerTimetableFeed> {
 	protected @Nonnull JourneyPlannerTimetableFeed m_root = new JourneyPlannerTimetableFeed();
-	protected @Nonnull Map<String, JourneyPlannerTimetableFeed.Locality> m_localities = new HashMap<String, JourneyPlannerTimetableFeed.Locality>();
-	protected @Nonnull Map<String, JourneyPlannerTimetableFeed.StopPoint> m_stopPoints = new HashMap<String, JourneyPlannerTimetableFeed.StopPoint>();
-	protected @Nonnull Map<String, JourneyPlannerTimetableFeed.RouteSection> m_routeSections = new HashMap<String, JourneyPlannerTimetableFeed.RouteSection>();
-	protected @Nonnull Map<String, JourneyPlannerTimetableFeed.RouteLink> m_routeLinks = new HashMap<String, JourneyPlannerTimetableFeed.RouteLink>();
-	protected @Nonnull Map<String, JourneyPlannerTimetableFeed.Route> m_routes = new HashMap<String, JourneyPlannerTimetableFeed.Route>();
-	protected JourneyPlannerTimetableFeed.Locality m_localilty;
-	protected JourneyPlannerTimetableFeed.StopPoint m_stopPoint;
-	protected JourneyPlannerTimetableFeed.RouteSection m_routeSection;
-	protected JourneyPlannerTimetableFeed.RouteLink m_routeLink;
-	protected JourneyPlannerTimetableFeed.Route m_route;
+	protected @Nonnull Map<String, net.twisterrob.blt.io.feeds.timetable.Locality> m_localities = new HashMap<String, net.twisterrob.blt.io.feeds.timetable.Locality>();
+	protected @Nonnull Map<String, net.twisterrob.blt.io.feeds.timetable.StopPoint> m_stopPoints = new HashMap<String, net.twisterrob.blt.io.feeds.timetable.StopPoint>();
+	protected @Nonnull Map<String, net.twisterrob.blt.io.feeds.timetable.RouteSection> m_routeSections = new HashMap<String, net.twisterrob.blt.io.feeds.timetable.RouteSection>();
+	protected @Nonnull Map<String, net.twisterrob.blt.io.feeds.timetable.RouteLink> m_routeLinks = new HashMap<String, net.twisterrob.blt.io.feeds.timetable.RouteLink>();
+	protected @Nonnull Map<String, net.twisterrob.blt.io.feeds.timetable.Route> m_routes = new HashMap<String, net.twisterrob.blt.io.feeds.timetable.Route>();
+	protected net.twisterrob.blt.io.feeds.timetable.Locality m_localilty;
+	protected net.twisterrob.blt.io.feeds.timetable.StopPoint m_stopPoint;
+	protected net.twisterrob.blt.io.feeds.timetable.RouteSection m_routeSection;
+	protected net.twisterrob.blt.io.feeds.timetable.RouteLink m_routeLink;
+	protected net.twisterrob.blt.io.feeds.timetable.Route m_route;
 	protected Integer m_east;
 	protected Integer m_north;
 
@@ -76,7 +77,7 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 		locality.setElementListener(new ElementListener() {
 			@Override
 			public void start(Attributes attributes) {
-				m_localilty = new JourneyPlannerTimetableFeed.Locality();
+				m_localilty = new Locality();
 			}
 			@Override
 			public void end() {
@@ -104,7 +105,7 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 		stopPoint.setElementListener(new ElementListener() {
 			@Override
 			public void start(Attributes attributes) {
-				m_stopPoint = new JourneyPlannerTimetableFeed.StopPoint();
+				m_stopPoint = new net.twisterrob.blt.io.feeds.timetable.StopPoint();
 			}
 			@Override
 			public void end() {
@@ -132,7 +133,7 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 				.setEndTextElementListener(new EndTextElementListener() {
 					@Override
 					public void end(String body) {
-						JourneyPlannerTimetableFeed.Locality locality = m_localities.get(body);
+						net.twisterrob.blt.io.feeds.timetable.Locality locality = m_localities.get(body);
 						m_stopPoint.setLocality(locality);
 					}
 				});
@@ -182,7 +183,7 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 			@Override
 			public void start(Attributes attributes) {
 				String attrId = attributes.getValue(RouteSection.id);
-				m_routeSection = new JourneyPlannerTimetableFeed.RouteSection();
+				m_routeSection = new net.twisterrob.blt.io.feeds.timetable.RouteSection();
 				m_routeSection.setId(attrId);
 			}
 			@Override
@@ -200,7 +201,7 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 			@Override
 			public void start(Attributes attributes) {
 				String attrId = attributes.getValue(RouteLink.id);
-				m_routeLink = new JourneyPlannerTimetableFeed.RouteLink();
+				m_routeLink = new net.twisterrob.blt.io.feeds.timetable.RouteLink();
 				m_routeLink.setId(attrId);
 			}
 			@SuppressWarnings("null")
@@ -216,7 +217,7 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 				.setEndTextElementListener(new EndTextElementListener() {
 					@Override
 					public void end(String body) {
-						JourneyPlannerTimetableFeed.StopPoint from = m_stopPoints.get(body);
+						net.twisterrob.blt.io.feeds.timetable.StopPoint from = m_stopPoints.get(body);
 						m_routeLink.setFrom(from);
 					}
 				});
@@ -225,7 +226,7 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 				.setEndTextElementListener(new EndTextElementListener() {
 					@Override
 					public void end(String body) {
-						JourneyPlannerTimetableFeed.StopPoint to = m_stopPoints.get(body);
+						net.twisterrob.blt.io.feeds.timetable.StopPoint to = m_stopPoints.get(body);
 						m_routeLink.setTo(to);
 					}
 				});
@@ -250,7 +251,7 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 			@Override
 			public void start(Attributes attributes) {
 				String attrId = attributes.getValue(Route.id);
-				m_route = new JourneyPlannerTimetableFeed.Route();
+				m_route = new net.twisterrob.blt.io.feeds.timetable.Route();
 				m_route.setId(attrId);
 			}
 			@SuppressWarnings("null")
@@ -271,7 +272,7 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 			@SuppressWarnings("null")
 			@Override
 			public void end(String body) {
-				JourneyPlannerTimetableFeed.RouteSection section = m_routeSections.get(body);
+				net.twisterrob.blt.io.feeds.timetable.RouteSection section = m_routeSections.get(body);
 				m_route.addSection(section);
 			}
 		});

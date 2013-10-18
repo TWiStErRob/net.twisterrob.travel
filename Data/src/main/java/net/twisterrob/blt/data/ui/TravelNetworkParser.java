@@ -1,14 +1,13 @@
+package net.twisterrob.blt.data.ui;
 import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 
+import net.twisterrob.blt.data.algo.RouteInfo;
 import net.twisterrob.blt.io.feeds.*;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.Route;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.RouteLink;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.RouteSection;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.StopPoint;
+import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.model.Line;
 
 public class TravelNetworkParser {

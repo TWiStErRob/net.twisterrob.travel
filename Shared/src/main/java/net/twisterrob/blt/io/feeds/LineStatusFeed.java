@@ -26,7 +26,7 @@ public class LineStatusFeed extends BaseFeed {
 	}
 
 	@Override
-	void postProcess() {
+	protected void postProcess() {
 		for (LineStatus lineStatus: m_lineStatuses) {
 			m_statusMap.put(lineStatus.getLine(), lineStatus);
 		}

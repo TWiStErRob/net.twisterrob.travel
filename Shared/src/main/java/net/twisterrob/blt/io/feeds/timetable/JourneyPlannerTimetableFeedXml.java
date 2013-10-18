@@ -1,4 +1,6 @@
-package net.twisterrob.blt.io.feeds;
+package net.twisterrob.blt.io.feeds.timetable;
+
+import net.twisterrob.blt.io.feeds.*;
 
 /**
  * TODO

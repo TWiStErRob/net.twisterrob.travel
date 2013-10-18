@@ -1,12 +1,10 @@
+package net.twisterrob.blt.data.algo;
 import java.util.*;
 import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.Route;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.RouteLink;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.RouteSection;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.StopPoint;
+import net.twisterrob.blt.io.feeds.timetable.*;
 
 public class RouteInfo {
 	private List<Route> routes;
@@ -34,7 +32,7 @@ public class RouteInfo {
 		this.printProgress = leftPaddingChar;
 	}
 
-	Map<String, Set<StopPoint>> groupByName(boolean collapseLocation) {
+	public Map<String, Set<StopPoint>> groupByName(boolean collapseLocation) {
 		Map<String, Set<StopPoint>> grouping = new HashMap<>();
 		for (Route route: routes) {
 			for (StopPoint stop: route) {
@@ -66,7 +64,7 @@ public class RouteInfo {
 		return grouping;
 	}
 
-	void build() {
+	public void build() {
 		for (Route route: routes) {
 			for (StopPoint stop: route) {
 				nodes.put(stop, new Node(stop));
@@ -86,7 +84,7 @@ public class RouteInfo {
 		}
 	}
 
-	void analyze() {
+	public void analyze() {
 		Node first = nodes.values().iterator().next();
 		if (printProgress != null) {
 			System.out.printf("Starting from: ", first);

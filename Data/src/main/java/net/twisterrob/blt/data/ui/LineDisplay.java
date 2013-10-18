@@ -1,3 +1,4 @@
+package net.twisterrob.blt.data.ui;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -6,17 +7,13 @@ import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.event.*;
 
-import net.twisterrob.blt.io.feeds.*;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.Route;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.RouteLink;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.RouteSection;
-import net.twisterrob.blt.io.feeds.JourneyPlannerTimetableFeed.StopPoint;
+import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.model.*;
 import net.twisterrob.java.model.Location;
 
 public class LineDisplay extends JFrame {
 	private static final long serialVersionUID = 1L;
-	protected JList list;
+	protected JList<Route> list;
 	protected RouteMapDrawer routeMap;
 	protected RouteDrawer routeLine;
 	protected Color fg;
@@ -39,12 +36,12 @@ public class LineDisplay extends JFrame {
 		routeLine = new RouteDrawer();
 		panel.add(routeLine, BorderLayout.SOUTH);
 
-		list = new JList(routes.toArray());
+		list = new JList<>(routes.toArray(new Route[routes.size()]));
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setCellRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 					boolean cellHasFocus) {
 				JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				Route route = (Route)value;
@@ -66,8 +63,8 @@ public class LineDisplay extends JFrame {
 				if (e.getValueIsAdjusting()) {
 					return;
 				}
-				JList list = (JList)e.getSource();
-				Route route = (Route)list.getSelectedValue();
+				JList<Route> list = (JList<Route>)e.getSource();
+				Route route = list.getSelectedValue();
 				routeLine.setRoute(route);
 				routeMap.setRoute(route);
 			}

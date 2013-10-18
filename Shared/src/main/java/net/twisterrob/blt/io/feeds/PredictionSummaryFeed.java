@@ -45,7 +45,7 @@ public class PredictionSummaryFeed extends BaseFeed {
 	}
 
 	@Override
-	void postProcess() {
+	protected void postProcess() {
 		super.postProcess();
 	}
 
