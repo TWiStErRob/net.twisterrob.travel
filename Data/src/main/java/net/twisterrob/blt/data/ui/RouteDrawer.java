@@ -64,42 +64,51 @@ class RouteDrawer extends JPanel {
 		if (route == null) {
 			return;
 		}
+		int top = getInsets().top;
+		int left = getInsets().left;
+		int width = getWidth() - getInsets().left - getInsets().right;
+		int height = getHeight() - getInsets().top - getInsets().bottom;
+
 		List<StopPoint> stops = route.getStopPoints();
-		int stopWidth = getWidth() / stops.size();
-		int midHeight = getHeight() / 2;
+		int stopWidth = width / stops.size();
+		int midHeight = height / 2;
 		g.setColor(stopColor);
-		g.fillRect(stopWidth / 4, midHeight - lineThick / 2, getWidth() - stopWidth / 2, lineThick);
+		g.fillRect(stopWidth / 4, midHeight - lineThick / 2, width - stopWidth / 2, lineThick);
 
 		for (int i = 0; i < stops.size(); ++i) {
 			StopPoint stop = stops.get(i);
-			int left = stopWidth * i;
-			int right = stopWidth * (i + 1);
-			int midPos = (left + right) / 2;
+
+			// draw stop indicator
+			int stopLeft = stopWidth * i;
+			int stopRighht = stopWidth * (i + 1);
+			int midPos = (stopLeft + stopRighht) / 2;
 			if (highlights.contains(stop.getName())) {
 				g.setColor(stopHighlight);
 			} else {
 				g.setColor(stopColor);
 			}
-			if (i % 2 == 0) {
+			boolean isAbove = i % 2 == 0;
+			if (isAbove) { // alternate above/below
 				g.fillRect(midPos - stopThick / 2, midHeight - stopHeight, stopThick, stopHeight); // above
 			} else {
 				g.fillRect(midPos - stopThick / 2, midHeight - 0, stopThick, stopHeight); // below
 			}
 
 			String name = stop.getName();
-			int x = midPos - g.getFontMetrics().stringWidth(name) / 2;
-			int y;
-			if (i % 2 == 0) {
-				y = midHeight - (stopHeight + textDistance) + 0 /* y == baseline */; // above
+			// draw stop name
+			int textX = midPos - g.getFontMetrics().stringWidth(name) / 2;
+			int textY;
+			if (isAbove) { // alternate above/below
+				textY = midHeight - (stopHeight + textDistance) + 0 /* y == baseline */; // above
 			} else {
-				y = midHeight + (stopHeight + textDistance) + g.getFontMetrics().getAscent(); // below
+				textY = midHeight + (stopHeight + textDistance) + g.getFontMetrics().getAscent(); // below
 			}
 			if (highlights.contains(stop.getName())) {
 				g.setColor(textHighlight);
 			} else {
 				g.setColor(textColor);
 			}
-			g.drawString(name, x, y);
+			g.drawString(name, textX, textY);
 		}
 	}
 }
