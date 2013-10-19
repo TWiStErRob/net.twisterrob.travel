@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 import javax.annotation.Nonnull;
 
 import net.twisterrob.blt.data.algo.RouteInfo;
-import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.model.Line;
 
@@ -32,7 +31,7 @@ public class TravelNetworkParser {
 	};
 	public static void main(String[] args) throws Throwable {
 		@Nonnull
-		Line line = Line.DLR;
+		Line line = Line.Piccadilly;
 		JourneyPlannerTimetableHandler handler = new JourneyPlannerTimetableHandler();
 		File file = new File(DATA_ROOT, FILES.get(line));
 		FileInputStream stream = new FileInputStream(file);
@@ -44,8 +43,7 @@ public class TravelNetworkParser {
 		}
 		List<Route> routes = feed.getRoutes();
 		//routes = reconstruct(routes);
-		// new LineDisplay(line, routes).setVisible(true);
-		//feed.collapseBidis();
+		new LineDisplay(line, routes, "Turnham Green").setVisible(true);
 		testAll();
 	}
 	private static @Nonnull
@@ -70,18 +68,20 @@ public class TravelNetworkParser {
 
 	protected static void testAll() throws Throwable {
 		for (Line line: FILES.keySet()) {
-			System.out.printf("\033[1;35m%s\033[0m\n", line);
 			JourneyPlannerTimetableHandler handler = new JourneyPlannerTimetableHandler();
 			File file = new File(DATA_ROOT, FILES.get(line));
 			FileInputStream stream = new FileInputStream(file);
 			JourneyPlannerTimetableFeed feed;
 			try {
 				feed = handler.parse(stream);
+				System.out.printf("\033[1;35m%s\033[0m (\033[35m%s\033[0m)\n", //
+						feed.getLine(), feed.getOperator().getTradingName());
 			} finally {
 				stream.close();
 			}
-			reconstruct(feed.getRoutes());
-			for (Route route: feed.getRoutes()) {
+			List<Route> routes = feed.getRoutes();
+			reconstruct(routes);
+			for (Route route: routes) {
 				for (RouteSection section: route.getRouteSections()) {
 					for (RouteLink link: section.getRouteLinks()) {
 						if (link.getDistance() == 0) {

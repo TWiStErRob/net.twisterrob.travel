@@ -136,7 +136,7 @@ public enum Line {
 			return colors.getOvergroundForeground();
 		}
 	},
-	@Nonnull Tram('?', "Tram") {
+	@Nonnull Tram('?', "Tram", "Tramlink 1", "Tramlink 2", "Tramlink 3", "Tramlink 4") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getTramBackground();
@@ -146,7 +146,7 @@ public enum Line {
 			return colors.getTramForeground();
 		}
 	},
-	@Nonnull EmiratesAirline('?', "Emirates Airline") {
+	@Nonnull EmiratesAirline('?', "Emirates Air Line", "Emirates Airline") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getEmiratesBackground();

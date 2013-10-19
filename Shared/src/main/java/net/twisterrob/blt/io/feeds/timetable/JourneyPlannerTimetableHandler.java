@@ -8,11 +8,14 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import net.twisterrob.blt.io.feeds.BaseFeedHandler;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.AnnotatedNptgLocalityRef;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.Operator;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.Root;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.Route;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.RouteLink;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.RouteLink.DirectionEnum;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.RouteSection;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.Service;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.Service.Line;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Descriptor;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Place;
@@ -68,6 +71,28 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 		Element routes = root.getChild(Root.NS, Root.Routes);
 		Element route = routes.getChild(Root.NS, Route.ELEMENT);
 		setupRouteParsing(route);
+
+		Element services = root.getChild(Root.NS, Root.Services);
+		Element service = services.getChild(Root.NS, Service.ELEMENT);
+		Element lines = service.getChild(Root.NS, Service.Lines);
+		Element line = lines.getChild(Root.NS, Line.ELEMENT);
+		Element lineName = line.getChild(Root.NS, Line.LineName);
+		lineName.setEndTextElementListener(new EndTextElementListener() {
+			public void end(String body) {
+				net.twisterrob.blt.model.Line line = net.twisterrob.blt.model.Line.fromAlias(body);
+				m_root.setLine(line);
+			}
+		});
+
+		Element operators = root.getChild(Root.NS, Root.Operators);
+		Element operator = operators.getChild(Root.NS, Operator.ELEMENT);
+		Element operatorCode = operator.getChild(Root.NS, Operator.OperatorCode);
+		operatorCode.setEndTextElementListener(new EndTextElementListener() {
+			public void end(String body) {
+				net.twisterrob.blt.model.Operator op = net.twisterrob.blt.model.Operator.valueOf(body);
+				m_root.setOperator(op);
+			}
+		});
 
 		Xml.parse(is, Xml.Encoding.UTF_8, root.getContentHandler());
 		m_root.postProcess();

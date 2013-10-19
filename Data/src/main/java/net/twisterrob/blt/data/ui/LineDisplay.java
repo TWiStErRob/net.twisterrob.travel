@@ -18,11 +18,14 @@ public class LineDisplay extends JFrame {
 	protected RouteDrawer routeLine;
 	protected Color fg;
 	protected Color bg;
+	protected List<String> highlights;
 
-	public LineDisplay(final @Nonnull Line line, @Nonnull List<Route> routes) {
+	public LineDisplay(final @Nonnull Line line, @Nonnull List<Route> routes, String... highlights) {
 		super(line.getTitle());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(1024, 800));
+
+		this.highlights = Arrays.asList(highlights);
 
 		LineColors colors = new TubeStatusPresentationLineColors();
 		fg = new Color(line.getForeground(colors));
@@ -106,17 +109,22 @@ public class LineDisplay extends JFrame {
 			g.fillRect(stopWidth / 4, midHeight - lineThick / 2, getWidth() - stopWidth / 2, lineThick);
 
 			for (int i = 0; i < stops.size(); ++i) {
+				StopPoint stop = stops.get(i);
 				int left = stopWidth * i;
 				int right = stopWidth * (i + 1);
 				int midPos = (left + right) / 2;
-				g.setColor(bg);
+				if (highlights.contains(stop.getName())) {
+					g.setColor(new Color(~bg.getRGB()));
+				} else {
+					g.setColor(bg);
+				}
 				if (i % 2 == 0) {
 					g.fillRect(midPos - stopThick / 2, midHeight - stopHeight, stopThick, stopHeight); // above
 				} else {
 					g.fillRect(midPos - stopThick / 2, midHeight - 0, stopThick, stopHeight); // below
 				}
 
-				String name = stops.get(i).getName();
+				String name = stop.getName();
 				int x = midPos - g.getFontMetrics().stringWidth(name) / 2;
 				int y;
 				if (i % 2 == 0) {
@@ -124,7 +132,11 @@ public class LineDisplay extends JFrame {
 				} else {
 					y = midHeight + (stopHeight + textDistance) + g.getFontMetrics().getAscent(); // below
 				}
-				g.setColor(Color.BLACK);
+				if (highlights.contains(stop.getName())) {
+					g.setColor(Color.RED);
+				} else {
+					g.setColor(Color.BLACK);
+				}
 				g.drawString(name, x, y);
 			}
 		}
@@ -179,7 +191,8 @@ public class LineDisplay extends JFrame {
 		public void paint(Graphics g) {
 			super.paint(g);
 			Graphics2D g2 = (Graphics2D)g;
-			int r = 8;
+			int line = 4;
+			int r = 10;
 			double offX = minLon, offY = minLat;
 			int width = getWidth(), height = getHeight();
 			double scaleX = width / (maxLon - minLon);
@@ -187,24 +200,33 @@ public class LineDisplay extends JFrame {
 			scaleX = scaleY = Math.min(scaleX, scaleY) * .90;
 			int alignX = (width - (int)((maxLon - offX) * scaleX)) / 2;
 			int alignY = -(height - (int)((maxLat - offY) * scaleY)) / 2;
+			Color stopColor = LineDisplay.this.bg.darker();
 			for (StopPoint station: stations) {
 				Location loc = station.getLocation();
 				int x = (int)((loc.getLongitude() - offX) * scaleX) + alignX;
 				int y = height - (int)((loc.getLatitude() - offY) * scaleY) + alignY;
-				g.setColor(bg);
+				if (highlights.contains(station.getName())) {
+					g.setColor(new Color(~stopColor.getRGB()));
+				} else {
+					g.setColor(stopColor);
+				}
 				g.fillOval(x - r / 2, y - r / 2, r, r);
 			}
 			if (route == null) {
 				return;
 			}
-			g2.setStroke(new BasicStroke(r / 2));
+			g2.setStroke(new BasicStroke(line));
 			for (RouteSection section: route.getRouteSections()) {
 				for (RouteLink link: section.getRouteLinks()) {
 					int fromX = (int)((link.getFrom().getLocation().getLongitude() - offX) * scaleX) + alignX;
 					int fromY = height - (int)((link.getFrom().getLocation().getLatitude() - offY) * scaleY) + alignY;
 					int toX = (int)((link.getTo().getLocation().getLongitude() - offX) * scaleX) + alignX;
 					int toY = height - (int)((link.getTo().getLocation().getLatitude() - offY) * scaleY) + alignY;
-					g.setColor(bg);
+					if (highlights.contains(link.getFrom().getName()) && highlights.contains(link.getTo().getName())) {
+						g.setColor(new Color(~bg.getRGB()));
+					} else {
+						g.setColor(bg);
+					}
 					g.drawLine(fromX, fromY, toX, toY);
 				}
 			}

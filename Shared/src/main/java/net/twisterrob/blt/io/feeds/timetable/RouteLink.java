@@ -3,6 +3,7 @@ package net.twisterrob.blt.io.feeds.timetable;
 import java.util.*;
 
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.RouteLink.DirectionEnum;
+import net.twisterrob.java.model.Location;
 
 public class RouteLink implements Iterable<StopPoint> {
 	private String id;
@@ -53,5 +54,14 @@ public class RouteLink implements Iterable<StopPoint> {
 
 	public Iterator<StopPoint> iterator() {
 		return Arrays.asList(from, to).iterator();
+	}
+
+	/**
+	 * TODO calculate meters
+	 * @return a relative closeness of the two endpoints
+	 */
+	public double getEstimatedDistance() {
+		Location diff = from.getLocation().diff(to.getLocation());
+		return Math.sqrt(diff.getLatitude() * diff.getLatitude() + diff.getLongitude() * diff.getLongitude());
 	}
 }

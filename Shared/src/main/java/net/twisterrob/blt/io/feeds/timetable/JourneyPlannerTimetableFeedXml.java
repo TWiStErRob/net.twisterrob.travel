@@ -13,8 +13,8 @@ import net.twisterrob.blt.io.feeds.*;
 interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 	interface Root {
 		String NS = "http://www.transxchange.org.uk/";
-		Class<?>[] CHILDREN = new Class[]{StopAreas.class, JourneyPatternSections.class, Operators.class,
-				Services.class, VehicleJourneys.class, Registrations.class, SupportingDocuments.class};
+		Class<?>[] CHILDREN = new Class[]{StopAreas.class, JourneyPatternSections.class, VehicleJourneys.class,
+				Registrations.class, SupportingDocuments.class};
 		String ELEMENT = "TransXChange";
 		String modificationTime = "ModificationDateTime";
 		String modificationTime$format = "yyyy-MM-dd'T'HH:mm:ss.SXXX";
@@ -53,6 +53,20 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 		 * @see Route
 		 */
 		String Routes = "Routes";
+
+		/**
+		 * Definitions of services..
+		 * The XSD Type name is: ServicesStructure
+		 * @see Service
+		 */
+		String Services = "Services";
+
+		/**
+		 * Definitions of operators..
+		 * The XSD Type name is: OperatorsStructure
+		 * @see Operator
+		 */
+		String Operators = "Operators";
 	}
 	/**
 	 * A NPTG locality reference annotated by its names.
@@ -327,24 +341,38 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 		Class<?>[] CHILDREN = new Class[]{};
 		String ELEMENT = "JourneyPatternSections";
 	}
-	/**
-	 * Definitions of operators..
-	 * The XSD Type name is: OperatorsStructure
-	 */
-	@Deprecated
-	interface Operators {
+
+	interface Operator {
 		Class<?>[] CHILDREN = new Class[]{};
-		String ELEMENT = "Operators";
+		String ELEMENT = "Operator";
+		/**
+		 * Format: OId_{OperatorCode}
+		 */
+		String id = "id";
+		String OperatorCode = "OperatorCode";
+		String OperatorShortName = "OperatorShortName";
+		String OperatorNameOnLicence = "OperatorNameOnLicence";
+		String TradingName = "TradingName";
+
+		interface Line {
+			Class<?>[] CHILDREN = new Class[]{};
+			String ELEMENT = "Line";
+			String LineName = "LineName";
+		}
 	}
-	/**
-	 * Definitions of services..
-	 * The XSD Type name is: ServicesStructure
-	 */
-	@Deprecated
-	interface Services {
+
+	interface Service {
 		Class<?>[] CHILDREN = new Class[]{};
-		String ELEMENT = "Services";
+		String ELEMENT = "Service";
+		String Lines = "Lines";
+
+		interface Line {
+			Class<?>[] CHILDREN = new Class[]{};
+			String ELEMENT = "Line";
+			String LineName = "LineName";
+		}
 	}
+
 	/**
 	 * Definitions of vehicle journeys, used in one or more services..
 	 * The XSD Type name is: VehicleJourneysStructure
