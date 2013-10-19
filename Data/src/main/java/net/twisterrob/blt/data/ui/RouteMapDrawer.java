@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.model.*;
-import net.twisterrob.java.model.Location;
+import net.twisterrob.java.model.*;
 
 class RouteMapDrawer extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -25,13 +25,10 @@ class RouteMapDrawer extends JPanel {
 	private Color stopColor;
 	private Color stopHighlight;
 
+	private LocationToScreenTransformer transformer;
+
 	private static final Stroke lineStroke = new BasicStroke(4);
 	private static final int stopRadius = 10;
-
-	private double minLat;
-	private double maxLat;
-	private double minLon;
-	private double maxLon;
 
 	public RouteMapDrawer(Set<StopPoint> stations, Line line, Route route, List<String> highlights) {
 		setLine(line);
@@ -45,7 +42,7 @@ class RouteMapDrawer extends JPanel {
 	}
 	public void setStations(Set<StopPoint> stations) {
 		this.stations = stations;
-		minMax();
+		transformer = new LocationToScreenTransformer(StopPoint.getLocations(stations));
 		repaint();
 	}
 
@@ -75,30 +72,6 @@ class RouteMapDrawer extends JPanel {
 		repaint();
 	}
 
-	private void minMax() {
-		minLat = Double.POSITIVE_INFINITY;
-		maxLat = Double.NEGATIVE_INFINITY;
-		minLon = Double.POSITIVE_INFINITY;
-		maxLon = Double.NEGATIVE_INFINITY;
-		for (StopPoint station: stations) {
-			Location loc = station.getLocation();
-			double lat = loc.getLatitude();
-			double lon = loc.getLongitude();
-			if (lat < minLat) {
-				minLat = lat;
-			}
-			if (lat > maxLat) {
-				maxLat = lat;
-			}
-			if (lon < minLon) {
-				minLon = lon;
-			}
-			if (lon > maxLon) {
-				maxLon = lon;
-			}
-		}
-	}
-
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
@@ -107,18 +80,12 @@ class RouteMapDrawer extends JPanel {
 		int left = getInsets().left + stopRadius / 2;
 		int width = getWidth() - getInsets().left - getInsets().right - stopRadius;
 		int height = getHeight() - getInsets().top - getInsets().bottom - stopRadius;
+		transformer.init(width, height);
 
-		double geoOffX = minLon, geoOffY = minLat;
-		double geoScaleX = width / (maxLon - minLon);
-		double geoScaleY = height / (maxLat - minLat);
-		geoScaleX = Math.min(geoScaleX, geoScaleY); // preserve aspect ratio
-		geoScaleY = /* reverse vertically */-1 * Math.min(geoScaleX, geoScaleY); // preserve aspect ratio
-		int geoAlignX = (width - (int)((maxLon - geoOffX) * geoScaleX)) / 2; // center horizontally
-		int geoAlignY = (height - (int)((maxLat - geoOffY) * geoScaleY)) / 2; // center vertically
 		for (StopPoint station: stations) {
 			Location stopLoc = station.getLocation();
-			int stopX = left + geoAlignX + (int)((stopLoc.getLongitude() - geoOffX) * geoScaleX);
-			int stopY = top + geoAlignY + (int)((stopLoc.getLatitude() - geoOffY) * geoScaleY);
+			int stopX = left + transformer.lon2Screen(stopLoc.getLongitude());
+			int stopY = top + transformer.lat2Screen(stopLoc.getLatitude());
 			if (highlights.contains(station.getName())) {
 				g.setColor(stopHighlight);
 			} else {
@@ -134,13 +101,13 @@ class RouteMapDrawer extends JPanel {
 			for (RouteLink link: section.getRouteLinks()) {
 				StopPoint from = link.getFrom();
 				Location fromLoc = from.getLocation();
-				int fromX = left + (int)((fromLoc.getLongitude() - geoOffX) * geoScaleX) + geoAlignX;
-				int fromY = top + (int)((fromLoc.getLatitude() - geoOffY) * geoScaleY) + geoAlignY;
+				int fromX = left + transformer.lon2Screen(fromLoc.getLongitude());
+				int fromY = top + transformer.lat2Screen(fromLoc.getLatitude());
 
 				StopPoint to = link.getTo();
 				Location toLoc = to.getLocation();
-				int toX = left + (int)((toLoc.getLongitude() - geoOffX) * geoScaleX) + geoAlignX;
-				int toY = top + (int)((toLoc.getLatitude() - geoOffY) * geoScaleY) + geoAlignY;
+				int toX = left + transformer.lon2Screen(toLoc.getLongitude());
+				int toY = top + transformer.lat2Screen(toLoc.getLatitude());
 
 				if (highlights.contains(from.getName()) && highlights.contains(to.getName())) {
 					g.setColor(lineHighlight);

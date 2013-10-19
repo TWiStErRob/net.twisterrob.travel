@@ -1,6 +1,6 @@
 package net.twisterrob.blt.io.feeds.timetable;
 
-import java.util.Comparator;
+import java.util.*;
 
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.StopClassification.StopTypeEnum;
 import net.twisterrob.java.model.Location;
@@ -72,5 +72,25 @@ public class StopPoint implements Comparable<StopPoint> {
 
 	public int compareTo(StopPoint o) {
 		return this.name.compareTo(o.name);
+	}
+	public static Iterable<Location> getLocations(final Iterable<StopPoint> stations) {
+		return new Iterable<Location>() {
+			public Iterator<Location> iterator() {
+				return new Iterator<Location>() {
+					Iterator<StopPoint> it = stations.iterator();
+					public void remove() {
+						throw new UnsupportedOperationException();
+					}
+
+					public Location next() {
+						return it.next().getLocation();
+					}
+
+					public boolean hasNext() {
+						return it.hasNext();
+					}
+				};
+			}
+		};
 	}
 }
