@@ -55,6 +55,7 @@ public class LineDisplay extends JFrame {
 		panel.add(scroll, BorderLayout.WEST);
 
 		routeMap = new RouteMapDrawer(stopPoints, line, null, this.highlights);
+		routeMap.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		panel.add(routeMap, BorderLayout.CENTER);
 
 		pack();

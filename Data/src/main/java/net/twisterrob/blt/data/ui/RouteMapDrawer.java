@@ -103,23 +103,28 @@ class RouteMapDrawer extends JPanel {
 	public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D g2 = (Graphics2D)g;
-		double offX = minLon, offY = minLat;
-		int width = getWidth(), height = getHeight();
-		double scaleX = width / (maxLon - minLon);
-		double scaleY = height / (maxLat - minLat);
-		scaleX = scaleY = Math.min(scaleX, scaleY) * .90f; // aspect ratio
-		int alignX = (width - (int)((maxLon - offX) * scaleX)) / 2;
-		int alignY = -(height - (int)((maxLat - offY) * scaleY)) / 2;
+		int top = getInsets().top + stopRadius / 2;
+		int left = getInsets().left + stopRadius / 2;
+		int width = getWidth() - getInsets().left - getInsets().right - stopRadius;
+		int height = getHeight() - getInsets().top - getInsets().bottom - stopRadius;
+
+		double geoOffX = minLon, geoOffY = minLat;
+		double geoScaleX = width / (maxLon - minLon);
+		double geoScaleY = height / (maxLat - minLat);
+		geoScaleX = Math.min(geoScaleX, geoScaleY); // preserve aspect ratio
+		geoScaleY = /* reverse vertically */-1 * Math.min(geoScaleX, geoScaleY); // preserve aspect ratio
+		int geoAlignX = (width - (int)((maxLon - geoOffX) * geoScaleX)) / 2; // center horizontally
+		int geoAlignY = (height - (int)((maxLat - geoOffY) * geoScaleY)) / 2; // center vertically
 		for (StopPoint station: stations) {
-			Location loc = station.getLocation();
-			int x = (int)((loc.getLongitude() - offX) * scaleX) + alignX;
-			int y = height - (int)((loc.getLatitude() - offY) * scaleY) + alignY;
+			Location stopLoc = station.getLocation();
+			int stopX = left + geoAlignX + (int)((stopLoc.getLongitude() - geoOffX) * geoScaleX);
+			int stopY = top + geoAlignY + (int)((stopLoc.getLatitude() - geoOffY) * geoScaleY);
 			if (highlights.contains(station.getName())) {
 				g.setColor(stopHighlight);
 			} else {
 				g.setColor(stopColor);
 			}
-			g.fillOval(x - stopRadius / 2, y - stopRadius / 2, stopRadius, stopRadius);
+			g.fillOval(stopX - stopRadius / 2, stopY - stopRadius / 2, stopRadius, stopRadius);
 		}
 		if (route == null) {
 			return;
@@ -127,11 +132,17 @@ class RouteMapDrawer extends JPanel {
 		g2.setStroke(lineStroke);
 		for (RouteSection section: route.getRouteSections()) {
 			for (RouteLink link: section.getRouteLinks()) {
-				int fromX = (int)((link.getFrom().getLocation().getLongitude() - offX) * scaleX) + alignX;
-				int fromY = height - (int)((link.getFrom().getLocation().getLatitude() - offY) * scaleY) + alignY;
-				int toX = (int)((link.getTo().getLocation().getLongitude() - offX) * scaleX) + alignX;
-				int toY = height - (int)((link.getTo().getLocation().getLatitude() - offY) * scaleY) + alignY;
-				if (highlights.contains(link.getFrom().getName()) && highlights.contains(link.getTo().getName())) {
+				StopPoint from = link.getFrom();
+				Location fromLoc = from.getLocation();
+				int fromX = left + (int)((fromLoc.getLongitude() - geoOffX) * geoScaleX) + geoAlignX;
+				int fromY = top + (int)((fromLoc.getLatitude() - geoOffY) * geoScaleY) + geoAlignY;
+
+				StopPoint to = link.getTo();
+				Location toLoc = to.getLocation();
+				int toX = left + (int)((toLoc.getLongitude() - geoOffX) * geoScaleX) + geoAlignX;
+				int toY = top + (int)((toLoc.getLatitude() - geoOffY) * geoScaleY) + geoAlignY;
+
+				if (highlights.contains(from.getName()) && highlights.contains(to.getName())) {
 					g.setColor(lineHighlight);
 				} else {
 					g.setColor(lineColor);
