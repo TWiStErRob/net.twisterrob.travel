@@ -22,8 +22,11 @@ class RouteDrawer extends JPanel {
 
 	private static final int lineThick = 6;
 	private static final int stopThick = 6;
+	private static final int outerRadius = 18;
+	private static final int innerRadius = 12;
 	private static final int stopHeight = 10;
 	private static final int textDistance = 10;
+	private static final int internalPadding = 25;
 
 	public RouteDrawer(Line line, Route route, List<String> highlights) {
 		setLine(line);
@@ -65,50 +68,90 @@ class RouteDrawer extends JPanel {
 			return;
 		}
 		int top = getInsets().top;
-		int left = getInsets().left;
-		int width = getWidth() - getInsets().left - getInsets().right;
+		int left = getInsets().left + internalPadding;
+		int width = getWidth() - getInsets().left - getInsets().right - internalPadding * 2;
 		int height = getHeight() - getInsets().top - getInsets().bottom;
 
-		List<StopPoint> stops = route.getStopPoints();
-		int stopWidth = width / stops.size();
-		int midHeight = height / 2;
-		g.setColor(stopColor);
-		g.fillRect(stopWidth / 4, midHeight - lineThick / 2, width - stopWidth / 2, lineThick);
+		List<RouteLink> links = route.getRouteLinks();
+		int linkWidth = width / links.size();
+		left += (width - linkWidth * links.size()) / 2; // center align based on rounding error
+		int midHeight = top + height / 2;
 
-		for (int i = 0; i < stops.size(); ++i) {
-			StopPoint stop = stops.get(i);
-
-			// draw stop indicator
-			int stopLeft = stopWidth * i;
-			int stopRighht = stopWidth * (i + 1);
-			int midPos = (stopLeft + stopRighht) / 2;
-			if (highlights.contains(stop.getName())) {
+		StopPoint last = null;
+		int stopLeft = left;
+		boolean above = false;
+		for (int i = 0; i < links.size(); ++i) {
+			RouteLink link = links.get(i);
+			if (highlights.contains(link.getFrom().getName()) && highlights.contains(link.getTo().getName())) {
 				g.setColor(stopHighlight);
 			} else {
 				g.setColor(stopColor);
 			}
-			boolean isAbove = i % 2 == 0;
-			if (isAbove) { // alternate above/below
-				g.fillRect(midPos - stopThick / 2, midHeight - stopHeight, stopThick, stopHeight); // above
-			} else {
-				g.fillRect(midPos - stopThick / 2, midHeight - 0, stopThick, stopHeight); // below
-			}
+			g.fillRect(stopLeft, midHeight - lineThick / 2, linkWidth, lineThick);
 
-			String name = stop.getName();
-			// draw stop name
-			int textX = midPos - g.getFontMetrics().stringWidth(name) / 2;
-			int textY;
-			if (isAbove) { // alternate above/below
-				textY = midHeight - (stopHeight + textDistance) + 0 /* y == baseline */; // above
-			} else {
-				textY = midHeight + (stopHeight + textDistance) + g.getFontMetrics().getAscent(); // below
-			}
-			if (highlights.contains(stop.getName())) {
-				g.setColor(textHighlight);
-			} else {
-				g.setColor(textColor);
-			}
-			g.drawString(name, textX, textY);
+			StopPoint stop = link.getFrom();
+			paintStop(g, stop, above, stopLeft, midHeight, i == 0? StopType.START : StopType.ROUTE);
+
+			// prepare next
+			last = stop;
+			above = !above;
+			stopLeft += linkWidth;
 		}
+		paintStop(g, last, links.size() % 2 == 0, stopLeft, midHeight, StopType.END);
+	}
+
+	private static enum StopType {
+		START,
+		ROUTE,
+		INTERCHANGE,
+		END,
+		IGNORE
+	}
+
+	protected void paintStop(Graphics g, StopPoint stop, boolean indicateAbove, int stopX, int stopY, StopType type) {
+		// draw stop indicator
+		switch (type) {
+			case ROUTE:
+			case IGNORE:
+				if (highlights.contains(stop.getName())) {
+					g.setColor(stopHighlight);
+				} else {
+					g.setColor(stopColor);
+				}
+				if (indicateAbove) { // alternate above/below
+					g.fillRect(stopX - stopThick / 2, stopY - stopHeight, stopThick, stopHeight); // above
+				} else {
+					g.fillRect(stopX - stopThick / 2, stopY - 0, stopThick, stopHeight); // below
+				}
+				break;
+			case START:
+			case END:
+				g.setColor(Color.BLACK);
+				g.fillOval(stopX - outerRadius / 2, stopY - outerRadius / 2, outerRadius, outerRadius);
+				g.setColor(Color.WHITE);
+				g.fillOval(stopX - innerRadius / 2, stopY - innerRadius / 2, innerRadius, innerRadius);
+				if (type == StopType.END) {
+					g.setColor(Color.BLACK);
+					g.drawLine(stopX - outerRadius / 2, stopY - outerRadius / 2, stopX + outerRadius / 2, stopY
+							+ outerRadius / 2);
+				}
+		}
+
+		String name = stop.getName();
+		// draw stop name
+		int textX = stopX - g.getFontMetrics().stringWidth(name) / 2;
+		int textY;
+		if (indicateAbove) { // alternate above/below
+			textY = stopY - (stopHeight + textDistance) + 0 /* y == baseline */; // above
+		} else {
+			textY = stopY + (stopHeight + textDistance) + g.getFontMetrics().getAscent()
+					- g.getFontMetrics().getDescent(); // below
+		}
+		if (highlights.contains(stop.getName())) {
+			g.setColor(textHighlight);
+		} else {
+			g.setColor(textColor);
+		}
+		g.drawString(name, textX, textY);
 	}
 }

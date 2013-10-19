@@ -50,6 +50,16 @@ public class Route implements Iterable<StopPoint> {
 		return stopPoints;
 	}
 
+	public List<RouteLink> getRouteLinks() {
+		List<RouteLink> links = new ArrayList<RouteLink>();
+		for (RouteSection section: getRouteSections()) {
+			for (RouteLink link: section.getRouteLinks()) {
+				links.add(link);
+			}
+		}
+		return links;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("%2$s {%1$s}", id, description);

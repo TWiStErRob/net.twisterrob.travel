@@ -33,6 +33,7 @@ public class LineDisplay extends JFrame {
 		panel.setLayout(new BorderLayout());
 
 		routeLine = new RouteDrawer(line, null, this.highlights);
+		routeLine.setBorder(BorderFactory.createEmptyBorder(5, 35, 5, 35));
 		panel.add(routeLine, BorderLayout.SOUTH);
 
 		list = new JList<>(routes.toArray(new Route[routes.size()]));

@@ -28,7 +28,10 @@ class RouteMapDrawer extends JPanel {
 	private LocationToScreenTransformer transformer;
 
 	private static final Stroke lineStroke = new BasicStroke(4);
+	private static final Stroke crossStroke = new BasicStroke(1);
 	private static final int stopRadius = 10;
+	private static final int outerRadius = 18;
+	private static final int innerRadius = 12;
 
 	public RouteMapDrawer(Set<StopPoint> stations, Line line, Route route, List<String> highlights) {
 		setLine(line);
@@ -82,40 +85,87 @@ class RouteMapDrawer extends JPanel {
 		int height = getHeight() - getInsets().top - getInsets().bottom - stopRadius;
 		transformer.init(width, height);
 
-		for (StopPoint station: stations) {
-			Location stopLoc = station.getLocation();
-			int stopX = left + transformer.lon2Screen(stopLoc.getLongitude());
-			int stopY = top + transformer.lat2Screen(stopLoc.getLatitude());
-			if (highlights.contains(station.getName())) {
-				g.setColor(stopHighlight);
-			} else {
-				g.setColor(stopColor);
-			}
-			g.fillOval(stopX - stopRadius / 2, stopY - stopRadius / 2, stopRadius, stopRadius);
-		}
-		if (route == null) {
-			return;
-		}
-		g2.setStroke(lineStroke);
-		for (RouteSection section: route.getRouteSections()) {
-			for (RouteLink link: section.getRouteLinks()) {
-				StopPoint from = link.getFrom();
-				Location fromLoc = from.getLocation();
-				int fromX = left + transformer.lon2Screen(fromLoc.getLongitude());
-				int fromY = top + transformer.lat2Screen(fromLoc.getLatitude());
-
-				StopPoint to = link.getTo();
-				Location toLoc = to.getLocation();
-				int toX = left + transformer.lon2Screen(toLoc.getLongitude());
-				int toY = top + transformer.lat2Screen(toLoc.getLatitude());
-
-				if (highlights.contains(from.getName()) && highlights.contains(to.getName())) {
-					g.setColor(lineHighlight);
-				} else {
-					g.setColor(lineColor);
+		Set<StopPoint> drawn = new TreeSet<>(StopPoint.BY_ID);
+		if (route != null) {
+			for (RouteSection section: route.getRouteSections()) {
+				StopPoint last = null;
+				for (RouteLink link: section.getRouteLinks()) {
+					paintLink(g2, link, left, top);
+					paintStop(g2, link.getFrom(), left, top, last == null? StopType.START : StopType.ROUTE);
+					drawn.add(link.getFrom());
+					last = link.getTo();
 				}
-				g.drawLine(fromX, fromY, toX, toY);
+				paintStop(g2, last, left, top, StopType.END);
+				drawn.add(last);
 			}
+		}
+
+		for (StopPoint stopPoint: stations) {
+			if (drawn.contains(stopPoint)) {
+				continue;
+			}
+			paintStop(g2, stopPoint, left, top, StopType.IGNORE);
 		}
 	}
+
+	private static enum StopType {
+		START,
+		ROUTE,
+		INTERCHANGE,
+		END,
+		IGNORE
+	}
+
+	/**
+	 * @param interchange <code>true</code> -> circle, <code>false</code> -> circle+cross, <code>null</code> -> dot
+	 */
+	protected void paintStop(Graphics2D g, StopPoint station, int offsetX, int offsetY, StopType type) {
+		Location stopLoc = station.getLocation();
+		int stopX = offsetX + transformer.lon2Screen(stopLoc.getLongitude());
+		int stopY = offsetY + transformer.lat2Screen(stopLoc.getLatitude());
+		switch (type) {
+			case ROUTE:
+			case IGNORE:
+				if (highlights.contains(station.getName())) {
+					g.setColor(stopHighlight);
+				} else {
+					g.setColor(stopColor);
+				}
+				g.fillOval(stopX - stopRadius / 2, stopY - stopRadius / 2, stopRadius, stopRadius);
+				break;
+			case START:
+			case END:
+				g.setColor(Color.BLACK);
+				g.fillOval(stopX - outerRadius / 2, stopY - outerRadius / 2, outerRadius, outerRadius);
+				g.setColor(Color.WHITE);
+				g.fillOval(stopX - innerRadius / 2, stopY - innerRadius / 2, innerRadius, innerRadius);
+				if (type == StopType.END) {
+					g.setStroke(crossStroke);
+					g.setColor(Color.BLACK);
+					g.drawLine(stopX - outerRadius / 2, stopY - outerRadius / 2, stopX + outerRadius / 2, stopY
+							+ outerRadius / 2);
+				}
+		}
+	}
+
+	protected void paintLink(Graphics2D g, RouteLink link, int offsetX, int offsetY) {
+		StopPoint from = link.getFrom();
+		Location fromLoc = from.getLocation();
+		int fromX = offsetX + transformer.lon2Screen(fromLoc.getLongitude());
+		int fromY = offsetY + transformer.lat2Screen(fromLoc.getLatitude());
+
+		StopPoint to = link.getTo();
+		Location toLoc = to.getLocation();
+		int toX = offsetX + transformer.lon2Screen(toLoc.getLongitude());
+		int toY = offsetY + transformer.lat2Screen(toLoc.getLatitude());
+
+		g.setStroke(lineStroke);
+		if (highlights.contains(from.getName()) && highlights.contains(to.getName())) {
+			g.setColor(lineHighlight);
+		} else {
+			g.setColor(lineColor);
+		}
+		g.drawLine(fromX, fromY, toX, toY);
+	}
+
 }
