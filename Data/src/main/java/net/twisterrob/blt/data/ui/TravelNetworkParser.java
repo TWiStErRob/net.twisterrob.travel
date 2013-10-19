@@ -78,9 +78,12 @@ public class TravelNetworkParser {
 		info.analyze();
 		System.out.printf("\033[1;32mLeafs\033[0m: %s\n", info.getLeafs());
 		System.out.printf("\033[1;32mJunctions\033[0m: %s\n", info.getJunctions());
-		Set<Node> starts = info.getStarts();
+		Set<Node> starts = new TreeSet<>(info.getStarts());
+		starts.removeAll(info.getLeafs());
 		System.out.printf("\033[1;32mStart\033[0m: %s\n", starts);
-		System.out.printf("\033[1;32mEnd\033[0m: %s\n", info.getEnds());
+		Set<Node> ends = new TreeSet<>(info.getEnds());
+		starts.removeAll(info.getLeafs());
+		System.out.printf("\033[1;32mEnd\033[0m: %s\n", ends);
 
 		return feed.getRoutes();
 	}
@@ -92,5 +95,4 @@ public class TravelNetworkParser {
 			}
 		}
 	}
-
 }
