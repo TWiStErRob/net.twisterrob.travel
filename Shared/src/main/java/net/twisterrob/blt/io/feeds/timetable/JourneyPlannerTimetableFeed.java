@@ -28,6 +28,19 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 		this.operator = operator;
 	}
 
+	public JourneyPlannerTimetableFeed merge(JourneyPlannerTimetableFeed other) {
+		if (this.line != other.line) {
+			throw new IllegalArgumentException("Can't merge different lines.");
+		}
+		JourneyPlannerTimetableFeed newFeed = new JourneyPlannerTimetableFeed();
+		newFeed.setLine(line);
+		newFeed.setOperator(operator);
+		newFeed.routes.addAll(this.routes);
+		newFeed.routes.addAll(other.routes);
+		newFeed.postProcess();
+		return newFeed;
+	}
+
 	@SuppressWarnings("null")
 	@Nonnull
 	public List<Route> getRoutes() {

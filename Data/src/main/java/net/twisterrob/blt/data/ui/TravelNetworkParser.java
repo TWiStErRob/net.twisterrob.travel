@@ -5,9 +5,11 @@ import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 
-import net.twisterrob.blt.data.algo.RouteInfo;
+import net.twisterrob.blt.data.algo.*;
 import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.model.Line;
+
+import org.xml.sax.SAXException;
 
 public class TravelNetworkParser {
 	private static final String DATA_ROOT = "../temp/feed15/lultramdlrcablecarriver";
@@ -26,36 +28,48 @@ public class TravelNetworkParser {
 			put(Line.WaterlooAndCity, "tfl_1-WAC_-60102-y05.xml");
 			put(Line.DLR, "tfl_25-DLR_-6-y05.xml");
 			put(Line.EmiratesAirline, "tfl_71-CABd-1-y05.xml");
+			put(Line.Tram, "tfl_63-TRM1-1-y05.xml");
 			//put(Line.Overground, "");
 		}
 	};
 	public static void main(String[] args) throws Throwable {
-		@Nonnull
-		Line line = Line.Piccadilly;
-		JourneyPlannerTimetableHandler handler = new JourneyPlannerTimetableHandler();
-		File file = new File(DATA_ROOT, FILES.get(line));
-		FileInputStream stream = new FileInputStream(file);
-		JourneyPlannerTimetableFeed feed;
-		try {
-			feed = handler.parse(stream);
-		} finally {
-			stream.close();
-		}
-		List<Route> routes = feed.getRoutes();
-		//routes = reconstruct(routes);
-		new LineDisplay(line, routes, "Turnham Green").setVisible(true);
+		readAndDisplay(new File(DATA_ROOT, FILES.get(Line.Tram)), true);
 		testAll();
 	}
+
+	protected static void readAndDisplay(File file, boolean gui) throws IOException, SAXException,
+			FileNotFoundException {
+		JourneyPlannerTimetableHandler handler = new JourneyPlannerTimetableHandler();
+		try (FileInputStream stream = new FileInputStream(file)) {
+			JourneyPlannerTimetableFeed feed = handler.parse(stream);
+			System.out.printf("\033[1;35m%s\033[0m (\033[35m%s\033[0m)\n", //
+					feed.getLine(), feed.getOperator().getTradingName());
+			List<Route> routes = reconstruct(feed);
+			if (gui) {
+				new LineDisplay(feed.getLine(), routes, "Turnham Green").setVisible(true);
+			}
+		}
+	}
+
+	protected static void testAll() throws Throwable {
+		for (Line line: FILES.keySet()) {
+			File file = new File(DATA_ROOT, FILES.get(line));
+			readAndDisplay(file, false);
+		}
+	}
+
 	private static @Nonnull
-	List<Route> reconstruct(@Nonnull List<Route> routes) {
-		RouteInfo info = new RouteInfo(routes);
+	List<Route> reconstruct(@Nonnull JourneyPlannerTimetableFeed feed) {
+		RouteInfo info = new RouteInfo(feed.getRoutes());
 		info.build();
-		//info.setPrintProgress("   ");
 		info.analyze();
 		System.out.printf("\033[1;32mLeafs\033[0m: %s\n", info.getLeafs());
 		System.out.printf("\033[1;32mJunctions\033[0m: %s\n", info.getJunctions());
+		Set<Node> starts = info.getStarts();
+		System.out.printf("\033[1;32mStart\033[0m: %s\n", starts);
+		System.out.printf("\033[1;32mEnd\033[0m: %s\n", info.getEnds());
 
-		return Collections.emptyList();
+		return feed.getRoutes();
 	}
 	protected static void printNameGroups(RouteInfo info) {
 		Map<String, Set<StopPoint>> groups = info.groupByName(false);
@@ -66,30 +80,4 @@ public class TravelNetworkParser {
 		}
 	}
 
-	protected static void testAll() throws Throwable {
-		for (Line line: FILES.keySet()) {
-			JourneyPlannerTimetableHandler handler = new JourneyPlannerTimetableHandler();
-			File file = new File(DATA_ROOT, FILES.get(line));
-			FileInputStream stream = new FileInputStream(file);
-			JourneyPlannerTimetableFeed feed;
-			try {
-				feed = handler.parse(stream);
-				System.out.printf("\033[1;35m%s\033[0m (\033[35m%s\033[0m)\n", //
-						feed.getLine(), feed.getOperator().getTradingName());
-			} finally {
-				stream.close();
-			}
-			List<Route> routes = feed.getRoutes();
-			reconstruct(routes);
-			for (Route route: routes) {
-				for (RouteSection section: route.getRouteSections()) {
-					for (RouteLink link: section.getRouteLinks()) {
-						if (link.getDistance() == 0) {
-							System.out.printf("\033[1;31m0 distance\033[0m: %s\n", link);
-						}
-					}
-				}
-			}
-		}
-	}
 }

@@ -121,7 +121,7 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getTramBackground() {
-		return getUnknownBackground();
+		return 0x7ac141; // TODO real value
 	}
 
 	public int getTramForeground() {
@@ -129,7 +129,7 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getEmiratesBackground() {
-		return getUnknownBackground();
+		return 0xe91e3d; // TODO real value
 	}
 
 	public int getEmiratesForeground() {

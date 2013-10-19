@@ -20,6 +20,9 @@ public class LineDisplay extends JFrame {
 	protected Color bg;
 	protected List<String> highlights;
 
+	public LineDisplay(JourneyPlannerTimetableFeed feed, String... highlights) {
+		this(feed.getLine(), feed.getRoutes(), highlights);
+	}
 	public LineDisplay(final @Nonnull Line line, @Nonnull List<Route> routes, String... highlights) {
 		super(line.getTitle());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

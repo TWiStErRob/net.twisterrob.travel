@@ -1,0 +1,31 @@
+package net.twisterrob.blt.data.algo;
+
+import java.util.*;
+
+import javax.annotation.Nonnull;
+
+import net.twisterrob.blt.io.feeds.timetable.StopPoint;
+
+public class Node implements Comparable<Node> {
+	@Nonnull StopPoint data;
+	final @Nonnull Map<Node, State> in = new TreeMap<>();
+	final @Nonnull Map<Node, State> out = new TreeMap<>();
+	State state = State.EMPTY;
+	public Node(@Nonnull StopPoint data) {
+		this.data = data;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s[%s]", data.getName(), state);
+	}
+	public int compareTo(Node o) {
+		return StopPoint.BY_NAME.compare(this.data, o.data);
+	}
+
+	static enum State {
+		EMPTY,
+		VISIT,
+		CLOSE;
+	}
+}

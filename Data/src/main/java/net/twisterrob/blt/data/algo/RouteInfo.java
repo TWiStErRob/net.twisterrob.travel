@@ -2,8 +2,7 @@ package net.twisterrob.blt.data.algo;
 import java.util.*;
 import java.util.Map.Entry;
 
-import javax.annotation.Nonnull;
-
+import net.twisterrob.blt.data.algo.Node.State;
 import net.twisterrob.blt.io.feeds.timetable.*;
 
 public class RouteInfo {
@@ -11,6 +10,8 @@ public class RouteInfo {
 	private Map<StopPoint, Node> nodes = new TreeMap<>(StopPoint.BY_NAME);
 	private Set<Node> junctions = new TreeSet<>();
 	private Set<Node> leafs = new TreeSet<>();
+	private Set<Node> starts = new TreeSet<>();
+	private Set<Node> ends = new TreeSet<>();
 	private String printProgress = null;
 
 	public RouteInfo(List<Route> routes) {
@@ -24,6 +25,12 @@ public class RouteInfo {
 	}
 	public Set<Node> getLeafs() {
 		return leafs;
+	}
+	public Set<Node> getStarts() {
+		return starts;
+	}
+	public Set<Node> getEnds() {
+		return ends;
 	}
 	public boolean isPrintProgress() {
 		return printProgress != null;
@@ -71,6 +78,8 @@ public class RouteInfo {
 			}
 		}
 		for (Route route: routes) {
+			Node first = null;
+			Node last = null;
 			for (RouteSection section: route.getRouteSections()) {
 				for (RouteLink link: section.getRouteLinks()) {
 					StopPoint from = link.getFrom();
@@ -79,8 +88,15 @@ public class RouteInfo {
 					Node toNode = nodes.get(to);
 					fromNode.out.put(toNode, State.EMPTY);
 					toNode.in.put(fromNode, State.EMPTY);
+
+					if (first == null) {
+						first = fromNode;
+					}
+					last = toNode;
 				}
 			}
+			starts.add(first);
+			ends.add(last);
 		}
 	}
 
@@ -144,28 +160,5 @@ public class RouteInfo {
 					padding, oldState, newState, fromNode, toNode);
 		}
 		edge.setValue(newState);
-	}
-	static enum State {
-		EMPTY,
-		VISIT,
-		CLOSE;
-	}
-
-	static class Node implements Comparable<Node> {
-		@Nonnull StopPoint data;
-		final @Nonnull Map<Node, State> in = new TreeMap<>();
-		final @Nonnull Map<Node, State> out = new TreeMap<>();
-		State state = State.EMPTY;
-		public Node(@Nonnull StopPoint data) {
-			this.data = data;
-		}
-
-		@Override
-		public String toString() {
-			return String.format("%s[%s]", data.getName(), state);
-		}
-		public int compareTo(Node o) {
-			return StopPoint.BY_NAME.compare(this.data, o.data);
-		}
 	}
 }
