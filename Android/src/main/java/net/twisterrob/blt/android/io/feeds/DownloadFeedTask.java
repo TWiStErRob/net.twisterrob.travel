@@ -44,7 +44,6 @@ public class DownloadFeedTask<T extends BaseFeed> extends AsyncTask<Feed, Intege
 			connection.connect();
 			input = connection.getInputStream();
 
-			@SuppressWarnings("null")
 			T root = (T)feed.getHandler().parse(input);
 			return new AsyncTaskResult<T>(root);
 		} catch (IOException ex) {

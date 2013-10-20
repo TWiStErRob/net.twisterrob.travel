@@ -26,7 +26,6 @@ class DownloadFilesTask extends AsyncTask<URL, Integer, AsyncTaskResult<Faciliti
 				connection.connect();
 				input = connection.getInputStream();
 
-				@SuppressWarnings("null")
 				FacilitiesFeed root = new FacilitiesFeedHandler().parse(input);
 				return new AsyncTaskResult<FacilitiesFeed>(root);
 			} finally {

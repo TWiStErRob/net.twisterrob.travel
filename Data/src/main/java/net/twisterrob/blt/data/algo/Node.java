@@ -2,16 +2,14 @@ package net.twisterrob.blt.data.algo;
 
 import java.util.*;
 
-import javax.annotation.Nonnull;
-
 import net.twisterrob.blt.io.feeds.timetable.StopPoint;
 
 public class Node implements Comparable<Node> {
-	@Nonnull StopPoint data;
-	final @Nonnull Map<Node, State> in = new TreeMap<>();
-	final @Nonnull Map<Node, State> out = new TreeMap<>();
+	StopPoint data;
+	final Map<Node, State> in = new TreeMap<>();
+	final Map<Node, State> out = new TreeMap<>();
 	State state = State.EMPTY;
-	public Node(@Nonnull StopPoint data) {
+	public Node(StopPoint data) {
 		this.data = data;
 	}
 

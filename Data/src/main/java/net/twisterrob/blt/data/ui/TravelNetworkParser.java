@@ -3,8 +3,6 @@ import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
 
-import javax.annotation.Nonnull;
-
 import net.twisterrob.blt.data.algo.*;
 import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.model.Line;
@@ -51,6 +49,9 @@ public class TravelNetworkParser {
 				}
 			}
 		}
+		if (feed == null) {
+			return;
+		}
 		System.out.printf("\033[1;35m%s\033[0m (\033[35m%s\033[0m)\n", feed.getLine(), feed.getOperator()
 				.getTradingName());
 		List<Route> routes = reconstruct(feed);
@@ -71,8 +72,7 @@ public class TravelNetworkParser {
 		}
 	}
 
-	private static @Nonnull
-	List<Route> reconstruct(@Nonnull JourneyPlannerTimetableFeed feed) {
+	private static List<Route> reconstruct(JourneyPlannerTimetableFeed feed) {
 		RouteInfo info = new RouteInfo(feed.getRoutes());
 		info.build();
 		info.analyze();

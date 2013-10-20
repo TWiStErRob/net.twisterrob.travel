@@ -3,7 +3,6 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -20,7 +19,7 @@ public class LineDisplay extends JFrame {
 	public LineDisplay(JourneyPlannerTimetableFeed feed, String... highlights) {
 		this(feed.getLine(), feed.getRoutes(), highlights);
 	}
-	public LineDisplay(final @Nonnull Line line, @Nonnull List<Route> routes, String... highlights) {
+	public LineDisplay(final Line line, List<Route> routes, String... highlights) {
 		super(line.getTitle());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(1024, 800));
@@ -69,7 +68,6 @@ public class LineDisplay extends JFrame {
 		private final Color bg;
 
 		LineRouteCellRenderer(Line line) {
-			@Nonnull
 			LineColors colors = new TubeStatusPresentationLineColors();
 			fg = new Color(line.getForeground(colors));
 			bg = new Color(line.getBackground(colors));

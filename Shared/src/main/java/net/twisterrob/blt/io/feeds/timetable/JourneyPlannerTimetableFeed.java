@@ -2,15 +2,13 @@ package net.twisterrob.blt.io.feeds.timetable;
 
 import java.util.*;
 
-import javax.annotation.Nonnull;
-
 import net.twisterrob.blt.io.feeds.BaseFeed;
 import net.twisterrob.blt.model.*;
 
 public class JourneyPlannerTimetableFeed extends BaseFeed {
 	Line line;
 	Operator operator;
-	@Nonnull List<Route> routes = new ArrayList<Route>();
+	List<Route> routes = new ArrayList<Route>();
 	private static final RouteFixer[] FIXERS = {new DLRWestferry2CanaryWharfFixer(),
 			new DLRPuddingMillLane2StratfordFixer(), new ReverseLinkDistanceFixer(),
 			new MostSimilarLinkDistanceFixer(), new CollapseRoutesFixer()};
@@ -41,20 +39,17 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 		return newFeed;
 	}
 
-	@SuppressWarnings("null")
-	@Nonnull
 	public List<Route> getRoutes() {
 		return Collections.unmodifiableList(routes);
 	}
-	protected void addRoute(@Nonnull Route route) {
+	protected void addRoute(Route route) {
 		routes.add(route);
 	}
 
-	@Nonnull
-	public static Set<StopPoint> getStopPoints(@Nonnull List<Route> routes) {
+	public static Set<StopPoint> getStopPoints(List<Route> routes) {
 		Set<StopPoint> stopPoints = new TreeSet<StopPoint>(new Comparator<StopPoint>() {
 			@Override
-			public int compare(@Nonnull StopPoint o1, @Nonnull StopPoint o2) {
+			public int compare(StopPoint o1, StopPoint o2) {
 				return o1.getId().compareTo(o2.getId());
 			}
 		});

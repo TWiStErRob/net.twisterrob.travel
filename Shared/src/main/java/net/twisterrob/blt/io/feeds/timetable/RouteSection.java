@@ -2,11 +2,9 @@ package net.twisterrob.blt.io.feeds.timetable;
 
 import java.util.*;
 
-import javax.annotation.Nonnull;
-
 public class RouteSection implements Iterable<StopPoint> {
 	private String id;
-	@Nonnull List<RouteLink> routeLinks = new ArrayList<RouteLink>();
+	List<RouteLink> routeLinks = new ArrayList<RouteLink>();
 
 	public String getId() {
 		return id;
@@ -15,12 +13,10 @@ public class RouteSection implements Iterable<StopPoint> {
 		this.id = id;
 	}
 
-	@SuppressWarnings("null")
-	@Nonnull
 	public List<RouteLink> getRouteLinks() {
 		return Collections.unmodifiableList(routeLinks);
 	}
-	protected void addLink(@Nonnull RouteLink routeLink) {
+	protected void addLink(RouteLink routeLink) {
 		routeLinks.add(routeLink);
 	}
 

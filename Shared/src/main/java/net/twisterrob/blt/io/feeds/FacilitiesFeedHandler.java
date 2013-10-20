@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 
-import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import net.twisterrob.android.utils.tools.PrimitiveTools;
@@ -18,7 +17,7 @@ import android.util.Xml;
 
 @NotThreadSafe
 public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
-	@Nonnull FacilitiesFeed m_root = new FacilitiesFeed();
+	FacilitiesFeed m_root = new FacilitiesFeed();
 	Station m_station;
 
 	@Override

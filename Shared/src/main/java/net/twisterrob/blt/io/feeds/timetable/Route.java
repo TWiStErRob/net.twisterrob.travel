@@ -2,11 +2,9 @@ package net.twisterrob.blt.io.feeds.timetable;
 
 import java.util.*;
 
-import javax.annotation.Nonnull;
-
 public class Route implements Iterable<StopPoint> {
 	private String id;
-	private @Nonnull List<RouteSection> routeSections = new ArrayList<RouteSection>();
+	private List<RouteSection> routeSections = new ArrayList<RouteSection>();
 	private String description;
 
 	public String getId() {
@@ -16,11 +14,9 @@ public class Route implements Iterable<StopPoint> {
 		this.id = id;
 	}
 
-	protected void addSection(@Nonnull RouteSection routeSection) {
+	protected void addSection(RouteSection routeSection) {
 		routeSections.add(routeSection);
 	}
-	@SuppressWarnings("null")
-	@Nonnull
 	public List<RouteSection> getRouteSections() {
 		return Collections.unmodifiableList(routeSections);
 	}
@@ -34,7 +30,6 @@ public class Route implements Iterable<StopPoint> {
 		this.description = description;
 	}
 
-	@Nonnull
 	public List<StopPoint> getStopPoints() {
 		List<StopPoint> stopPoints = new ArrayList<StopPoint>();
 		for (RouteSection section: getRouteSections()) {

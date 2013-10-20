@@ -4,7 +4,6 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
-import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import net.twisterrob.blt.model.*;
@@ -18,7 +17,7 @@ import android.util.Xml;
 public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSummaryFeed> {
 	private interface X extends PredicitonSummaryFeedXml { /* Shorthand for the XML interface */}
 
-	@Nonnull PredictionSummaryFeed m_root = new PredictionSummaryFeed();
+	PredictionSummaryFeed m_root = new PredictionSummaryFeed();
 	Station m_station;
 	Platform m_platform;
 	Train m_train;
