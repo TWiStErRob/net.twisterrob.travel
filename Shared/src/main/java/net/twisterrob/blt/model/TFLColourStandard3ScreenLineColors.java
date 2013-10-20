@@ -17,7 +17,7 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getBakerlooBackground() {
-		return 0x00894E24; // 137, 78, 36
+		return 0xFF894E24; // 137, 78, 36
 	}
 
 	public int getBakerlooForeground() {
@@ -25,7 +25,7 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getCentralBackground() {
-		return 0x00DC241F; // 220, 36, 31
+		return 0xFFDC241F; // 220, 36, 31
 	}
 
 	public int getCentralForeground() {
@@ -33,7 +33,7 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getCircleBackground() {
-		return 0x00FFCE00; // 255, 206, 0
+		return 0xFFFFCE00; // 255, 206, 0
 	}
 
 	public int getCircleForeground() {
@@ -41,7 +41,7 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getDistrictBackground() {
-		return 0x00007229; // 0, 114, 41
+		return 0xFF007229; // 0, 114, 41
 	}
 
 	public int getDistrictForeground() {
@@ -49,7 +49,7 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getHammersmithAndCityBackground() {
-		return 0x00D799AF; // 215, 153, 175
+		return 0xFFD799AF; // 215, 153, 175
 	}
 
 	public int getHammersmithAndCityForeground() {
@@ -57,7 +57,7 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getJubileeBackground() {
-		return 0x00868F98; // 134, 143, 152
+		return 0xFF868F98; // 134, 143, 152
 	}
 
 	public int getJubileeForeground() {
@@ -65,7 +65,7 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getMetropolitanBackground() {
-		return 0x00751056; // 117, 16, 86
+		return 0xFF751056; // 117, 16, 86
 	}
 
 	public int getMetropolitanForeground() {
@@ -73,7 +73,7 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getNorthernBackground() {
-		return 0x00000000; // 0, 0, 0
+		return 0xFF000000; // 0, 0, 0
 	}
 
 	public int getNorthernForeground() {
@@ -81,7 +81,7 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getPiccadillyBackground() {
-		return 0x000019A8; // 0, 25, 168
+		return 0xFF0019A8; // 0, 25, 168
 	}
 
 	public int getPiccadillyForeground() {
@@ -89,7 +89,7 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getVictoriaBackground() {
-		return 0x0000A0E2; // 0, 160, 226
+		return 0xFF00A0E2; // 0, 160, 226
 	}
 
 	public int getVictoriaForeground() {
@@ -97,7 +97,7 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getWaterlooAndCityBackground() {
-		return 0x0076D0BD; // 118, 208, 189
+		return 0xFF76D0BD; // 118, 208, 189
 	}
 
 	public int getWaterlooAndCityForeground() {
@@ -105,7 +105,7 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getDLRBackground() {
-		return 0x0000AFAD; // 0, 175, 173
+		return 0xFF00AFAD; // 0, 175, 173
 	}
 
 	public int getDLRForeground() {
@@ -113,7 +113,7 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getOvergroundBackground() {
-		return 0x00E86A10; // 232, 106, 16
+		return 0xFFE86A10; // 232, 106, 16
 	}
 
 	public int getOvergroundForeground() {
@@ -121,7 +121,7 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getTramBackground() {
-		return 0x7ac141; // TODO real value
+		return 0xFF7ac141; // TODO real value
 	}
 
 	public int getTramForeground() {
@@ -129,7 +129,7 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getEmiratesBackground() {
-		return 0xe91e3d; // TODO real value
+		return 0xFFe91e3d; // TODO real value
 	}
 
 	public int getEmiratesForeground() {
@@ -137,10 +137,10 @@ public class TFLColourStandard3ScreenLineColors implements LineColors {
 	}
 
 	public int getUnknownBackground() {
-		return 0x00FFFFFF; // 255, 255, 255
+		return 0xFFFFFFFF; // 255, 255, 255
 	}
 
 	public int getUnknownForeground() {
-		return 0x00000000; // 0, 0, 0
+		return 0xFF000000; // 0, 0, 0
 	}
 }

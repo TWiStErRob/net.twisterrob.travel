@@ -3,10 +3,11 @@ package net.twisterrob.blt.android.data;
 import java.util.*;
 
 import net.twisterrob.blt.android.R;
-import net.twisterrob.blt.model.StopType;
+import net.twisterrob.blt.model.*;
 
 public class JavaStaticData implements StaticData {
 	private Map<StopType, Integer> stopTypeLogos = new EnumMap<StopType, Integer>(StopType.class);
+	private LineColors colors = new TubeStatusPresentationLineColors();
 
 	public JavaStaticData() {
 		initStopTypeDrawables();
@@ -28,5 +29,9 @@ public class JavaStaticData implements StaticData {
 
 	public Map<StopType, Integer> getStopTypeLogos() {
 		return stopTypeLogos;
+	}
+
+	public LineColors getLineColors() {
+		return colors;
 	}
 }

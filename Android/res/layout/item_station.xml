@@ -21,13 +21,57 @@
 		android:layout_height="wrap_content"
 		android:orientation="vertical">
 
-		<TextView
-			android:id="@android:id/text1"
+		<RelativeLayout
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:gravity="left"
-			android:text="@string/demo_title"
-			android:textSize="20sp" />
+			android:orientation="vertical">
+			<TextView
+				android:id="@android:id/text1"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_centerVertical="true"
+				android:gravity="left"
+				android:text="@string/demo_title"
+				android:textSize="20sp" />
+			<View
+				android:id="@+id/box_line_1"
+				android:layout_width="10dp"
+				android:layout_height="20dp"
+				android:layout_alignParentRight="true"
+				android:layout_centerVertical="true"
+				android:layout_marginRight="10dp" />
+			<View
+				android:id="@+id/box_line_2"
+				android:layout_width="10dp"
+				android:layout_height="20dp"
+				android:layout_toLeftOf="@+id/box_line_1"
+				android:layout_centerVertical="true" />
+			<View
+				android:id="@+id/box_line_3"
+				android:layout_width="10dp"
+				android:layout_height="20dp"
+				android:layout_toLeftOf="@+id/box_line_2"
+				android:layout_centerVertical="true" />
+			<View
+				android:id="@+id/box_line_4"
+				android:layout_width="10dp"
+				android:layout_height="20dp"
+				android:layout_toLeftOf="@+id/box_line_3"
+				android:layout_centerVertical="true" />
+			<View
+				android:id="@+id/box_line_5"
+				android:layout_width="10dp"
+				android:layout_height="20dp"
+				android:layout_toLeftOf="@+id/box_line_4"
+				android:layout_centerVertical="true" />
+			<View
+				android:id="@+id/box_line_6"
+				android:layout_width="10dp"
+				android:layout_height="20dp"
+				android:layout_toLeftOf="@+id/box_line_5"
+				android:layout_centerVertical="true" />
+		</RelativeLayout>
 
 		<TextView
 			android:id="@android:id/text2"

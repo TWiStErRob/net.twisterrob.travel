@@ -88,5 +88,20 @@ class DataBaseReader {
 		return types;
 	}
 
+	public List<Line> getLines(int id) {
+		List<Line> lines = new LinkedList<Line>();
+		SQLiteDatabase database = m_dataBaseHelper.getReadableDatabase();
+		Cursor cursor = database.rawQuery(
+				"select l.name from line_stop ls join line l on ls.line = l._id where ls.stop = ?;",
+				new String[]{String.valueOf(id)});
+		while (cursor.moveToNext()) {
+			String lineString = cursor.getString(0);
+			Line line = Line.valueOf(lineString);
+			lines.add(line);
+		}
+		cursor.close();
+		return lines;
+	}
+
 	// #endregion
 }

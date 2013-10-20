@@ -121,7 +121,7 @@ public class TubeStatusPresentationLineColors implements LineColors {
 	}
 
 	public int getTramBackground() {
-		return 0x7ac141; // TODO real value
+		return 0xFF7ac141; // TODO real value
 	}
 
 	public int getTramForeground() {
@@ -129,7 +129,7 @@ public class TubeStatusPresentationLineColors implements LineColors {
 	}
 
 	public int getEmiratesBackground() {
-		return 0xe91e3d; // TODO real value
+		return 0xFFe91e3d; // TODO real value
 	}
 
 	public int getEmiratesForeground() {
