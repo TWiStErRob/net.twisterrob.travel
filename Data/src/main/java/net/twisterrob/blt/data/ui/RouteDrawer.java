@@ -57,11 +57,11 @@ class RouteDrawer extends RouteComponent {
 			paintStop(g2, stop, above, stopLeft, midHeight, i == 0? StopType.START : StopType.ROUTE);
 
 			// prepare next
-			last = stop;
+			last = link.getTo();
 			above = !above;
 			stopLeft += linkWidth;
 		}
-		paintStop(g2, last, links.size() % 2 == 0, stopLeft, midHeight, StopType.END);
+		paintStop(g2, last, above, stopLeft, midHeight, StopType.END);
 	}
 
 	protected void paintStop(Graphics2D g, StopPoint stop, boolean indicateAbove, int stopX, int stopY, StopType type) {
@@ -91,7 +91,7 @@ class RouteDrawer extends RouteComponent {
 				throw new WTF();
 		}
 
-		String name = stop.getName();
+		String name = cleanStopName(stop.getName());
 		// draw stop name
 		int textX = stopX - g.getFontMetrics().stringWidth(name) / 2;
 		int textY;

@@ -76,6 +76,10 @@ public abstract class RouteComponent extends JPanel {
 		g.drawLine(stopX - outerRadius / 2, stopY - outerRadius / 2, stopX + outerRadius / 2, stopY + outerRadius / 2);
 	}
 
+	protected static String cleanStopName(String name) {
+		return name.replaceAll("(Underground Station|Tram(link)? Stop)", "");
+	}
+
 	protected static enum StopType {
 		START,
 		ROUTE,

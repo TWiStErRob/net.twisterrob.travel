@@ -55,7 +55,7 @@ public class TravelNetworkParser {
 				.getTradingName());
 		List<Route> routes = reconstruct(feed);
 		if (gui) {
-			new LineDisplay(feed.getLine(), routes, "Turnham Green").setVisible(true);
+			new LineDisplay(feed.getLine(), routes, "Turnham Green", "Birkbeck", "Harrington Road").setVisible(true);
 		}
 	}
 
