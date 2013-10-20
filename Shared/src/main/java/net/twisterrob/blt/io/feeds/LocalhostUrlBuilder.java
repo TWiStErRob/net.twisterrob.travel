@@ -6,7 +6,7 @@ import java.util.Map;
 import net.twisterrob.blt.model.Line;
 
 public class LocalhostUrlBuilder implements URLBuilder {
-	private static final String LOCALHOST = "http://192.168.0.3:8081/"; // wifi
+	private static final String LOCALHOST = "http://192.168.0.2:8081/"; // wifi
 	//	private static final String LOCALHOST = "http://192.168.43.165:8081/"; // tether local
 	@Override
 	public URL getFeedUrl(Feed feed, Map<String, ?> args) throws MalformedURLException {

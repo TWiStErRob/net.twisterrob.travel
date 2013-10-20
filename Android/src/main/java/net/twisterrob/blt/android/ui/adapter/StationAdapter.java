@@ -38,7 +38,7 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 		return holder;
 	}
 
-	private Map<Type, Bitmap> bitmaps = new EnumMap<Type, Bitmap>(Type.class);
+	private Map<StopType, Bitmap> bitmaps = new EnumMap<StopType, Bitmap>(StopType.class);
 	@Override
 	protected void bindView(final ViewHolder holder, final Station currentItem, final View convertView) {
 		String title = currentItem.getName();
@@ -46,11 +46,12 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 
 		holder.title.setText(title);
 		holder.description.setText(description);
-		Type type = currentItem.getType();
+		StopType type = currentItem.getType();
 		Bitmap icon = bitmaps.get(type);
 		if (icon == null) {
 			try {
-				icon = IOTools.getImage(type.getUrl(), true);
+				// TODO from type
+				icon = IOTools.getImage("http://www.tfl.gov.uk/tfl-global/images/syndication/roundel-tube.png", true);
 				bitmaps.put(type, icon);
 			} catch (IOException ex) {
 				ex.printStackTrace();

@@ -13,7 +13,8 @@ import android.os.Environment;
 
 class DataBaseOpenHelper extends SQLiteOpenHelper {
 	private static final String DB_SCHEMA_FILE = "LondonTravel.v1.schema.sql";
-	private static final String DB_DATA_FILE = "LondonTravel.v1.data.sql";
+	private static final String[] DB_DATA_FILES = {"LondonTravel.v1.data.sql", "LondonTravel.v1.data-Stop.sql",
+			"LondonTravel.v1.data-Line_Stop.sql"};
 	private static final String DB_CLEAN_FILE = "LondonTravel.v1.clean.sql";
 	private static final String DB_DEVELOPMENT_FILE = "LondonTravel.v1.development.sql";
 	private static final String DB_NAME = "LondonTravel";
@@ -54,7 +55,9 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 		LOG.debug("Creating database: %s", DBTools.toString(db));
 		DataBaseOpenHelper.execFile(db, DB_CLEAN_FILE);
 		DataBaseOpenHelper.execFile(db, DB_SCHEMA_FILE);
-		DataBaseOpenHelper.execFile(db, DB_DATA_FILE);
+		for (String dataFile: DB_DATA_FILES) {
+			DataBaseOpenHelper.execFile(db, dataFile);
+		}
 		LOG.info("Created database: %s", DBTools.toString(db));
 	}
 

@@ -124,7 +124,7 @@ class DataBaseWriter extends DataBaseAccess {
 		int column = 0;
 		bindObjectToProgram(m_insertStation, ++column, station.getId());
 		bindObjectToProgram(m_insertStation, ++column, station.getName());
-		bindObjectToProgram(m_insertStation, ++column, station.getType().getId());
+		bindObjectToProgram(m_insertStation, ++column, station.getType().ordinal());
 		bindObjectToProgram(m_insertStation, ++column, station.getAddress());
 		bindObjectToProgram(m_insertStation, ++column, station.getTelephone());
 		Location location = station.getLocation();

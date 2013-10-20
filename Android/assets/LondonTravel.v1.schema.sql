@@ -1,44 +1,38 @@
 BEGIN TRANSACTION;
 
-CREATE TABLE IF NOT EXISTS Station (
-	__last_update       DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+CREATE TABLE IF NOT EXISTS StopType (
+	_id                 INTEGER            NOT NULL, -- StopType.ordinal()
+	name                NVARCHAR           NOT NULL UNIQUE, -- StopType.name()
+	PRIMARY KEY(_id)
+);
+
+CREATE TABLE IF NOT EXISTS Stop (
 	_id                 INTEGER            NOT NULL,
---	_company            INTEGER            NOT NULL DEFAULT 1
---	                                       CONSTRAINT "fk-Cinema-CinemaCompany" REFERENCES CinemaCompany(_id)
---	,
-	name                NVARCHAR           NOT NULL UNIQUE,
+	name                NVARCHAR           NOT NULL,
 	type                NVARCHAR           NOT NULL
-	                                       CONSTRAINT "fk-Station-StationType" REFERENCES StationType(name),
+	                                       CONSTRAINT "fk-Stop-StopType" REFERENCES StopType(_id),
+	latitude            REAL               NOT NULL,
+	longitude           REAL               NOT NULL,
+	precision           INTEGER            NOT NULL,
+	locality            NVARCHAR           NULL,
 	address             NVARCHAR           NULL,
 	telephone           NVARCHAR           NULL,
-	latitude            REAL               NULL,
-	longitude           REAL               NULL,
 	PRIMARY KEY(_id)
 );
 
-CREATE TABLE IF NOT EXISTS StationType (
-	__last_update       DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	_id                 INTEGER            NOT NULL,
-	name                NVARCHAR           NOT NULL UNIQUE,
-	url                 NVARCHAR           NULL,
+CREATE TABLE IF NOT EXISTS Line (
+	_id                 INTEGER            NOT NULL, -- Line.ordinal()
+	name                NVARCHAR           NOT NULL UNIQUE, -- Line.name()
 	PRIMARY KEY(_id)
 );
 
-CREATE TRIGGER IF NOT EXISTS StationType_last_update
-	AFTER UPDATE OF name, url ON StationType
-	FOR EACH ROW
-	WHEN
-		    OLD.name <> NEW.name
-		 OR OLD.url <> NEW.url
-	BEGIN
-		UPDATE
-			StationType
-		SET
-			__last_update = CURRENT_TIMESTAMP
-		WHERE
-			_id = NEW._id
-		; -- NEOS
-	END
-;
+CREATE TABLE IF NOT EXISTS Line_Stop (
+	line                INTEGER            NOT NULL
+	                                       CONSTRAINT "fk-Line_Stop-Line" REFERENCES Line(_id),
+	stop                INTEGER            NOT NULL
+	                                       CONSTRAINT "fk-Line_Stop-Stop" REFERENCES Stop(_id),
+	PRIMARY KEY(line, stop)
+);
 
 END TRANSACTION;

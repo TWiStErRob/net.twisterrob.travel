@@ -26,4 +26,14 @@ public class Node implements Comparable<Node> {
 		VISIT,
 		CLOSE;
 	}
+
+	public StopPoint getStop() {
+		return this.data;
+	}
+	public Collection<Node> getOut() {
+		return Collections.unmodifiableCollection(out.keySet());
+	}
+	public Collection<Node> getIn() {
+		return Collections.unmodifiableCollection(in.keySet());
+	}
 }

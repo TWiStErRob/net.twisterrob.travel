@@ -24,13 +24,13 @@ public class RouteSection implements Iterable<StopPoint> {
 		if (routeLinks.isEmpty()) {
 			return null;
 		}
-		return routeLinks.listIterator(0).next().getFrom();
+		return routeLinks.get(0).getFrom();
 	}
 	public StopPoint lastStop() {
 		if (routeLinks.isEmpty()) {
 			return null;
 		}
-		return routeLinks.listIterator(routeLinks.size()).previous().getTo();
+		return routeLinks.get(routeLinks.size() - 1).getTo();
 	}
 
 	@Override

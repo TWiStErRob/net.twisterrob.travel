@@ -7,7 +7,7 @@ import net.twisterrob.android.map.BaseItemizedOverlay;
 import net.twisterrob.android.utils.model.LocationUtils;
 import net.twisterrob.android.utils.tools.IOTools;
 import net.twisterrob.blt.android.*;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.model.Station;
 import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.drawable.*;
@@ -35,7 +35,9 @@ public class StationMapActivity extends MapActivity {
 			@Override
 			protected Bitmap doInBackground(Void... params) {
 				try {
-					return IOTools.getImage(Type.Tube.getUrl(), true);
+					// TODO get from stop
+					return IOTools.getImage("http://www.tfl.gov.uk/tfl-global/images/syndication/roundel-tube.png",
+							true);
 				} catch (IOException ex) {
 					ex.printStackTrace();
 					return null;
@@ -103,7 +105,7 @@ public class StationMapActivity extends MapActivity {
 
 	public static class Item extends OverlayItem {
 		private Resources m_res;
-		private Station m_station;
+		@SuppressWarnings("unused") private Station m_station;
 		public Item(Resources res, Station station) {
 			super(LocationUtils.toGeoPoint(station.getLocation()), station.getName(), station.getAddress());
 			m_res = res;
@@ -113,7 +115,8 @@ public class StationMapActivity extends MapActivity {
 		public Drawable getMarker(int arg0) {
 			Bitmap result;
 			try {
-				result = IOTools.getImage(m_station.getType().getUrl(), true);
+				// TODO from type
+				result = IOTools.getImage("http://www.tfl.gov.uk/tfl-global/images/syndication/roundel-tube.png", true);
 				Drawable drawable = new BitmapDrawable(m_res, result);
 				BaseItemizedOverlay.bindCenter(drawable);
 				return drawable;

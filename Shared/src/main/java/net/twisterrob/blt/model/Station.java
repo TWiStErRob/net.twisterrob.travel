@@ -19,7 +19,7 @@ public class Station {
 	private List<Zone> m_zones;
 	private List<Facility> m_facilities;
 	private List<Line> m_lines;
-	private Type m_type = Type.Unknown;
+	private StopType m_type = StopType.unknown;
 	private String m_trackerNetCode;
 
 	@Override
@@ -91,13 +91,13 @@ public class Station {
 		m_lines = lines;
 	}
 
-	public Type getType() {
+	public StopType getType() {
 		return m_type;
 	}
 
-	public void setType(Type type) {
+	public void setType(StopType type) {
 		if (type == null) {
-			throw new IllegalArgumentException("Type must be set, use Type." + Type.Unknown + " if not sure");
+			throw new IllegalArgumentException("Type must be set, use Type." + StopType.unknown + " if not sure");
 		}
 		m_type = type;
 	}

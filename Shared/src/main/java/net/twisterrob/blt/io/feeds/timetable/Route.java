@@ -59,4 +59,35 @@ public class Route implements Iterable<StopPoint> {
 	public String toString() {
 		return String.format("%2$s {%1$s}", id, description);
 	}
+
+	/**
+	 * @deprecated TODO finish
+	 */
+	@SuppressWarnings("unused")
+	@Deprecated
+	public Route reconstruct() {
+		List<StopPoint> stops = getStopPoints();
+		StopPoint first = firstStop();
+		StopPoint last = lastStop();
+		int sectionNum = 0;
+		RouteSection currentSection = new RouteSection();
+		currentSection.setId(String.valueOf(sectionNum++));
+		for (StopPoint stop: stops) {
+			RouteLink link = new RouteLink();
+		}
+		return this;
+	}
+	protected StopPoint firstStop() {
+		if (routeSections.isEmpty()) {
+			return null;
+		}
+		return routeSections.get(0).firstStop();
+	}
+	protected StopPoint lastStop() {
+		if (routeSections.isEmpty()) {
+			return null;
+		}
+		return routeSections.get(routeSections.size() - 1).lastStop();
+	}
+
 }

@@ -10,11 +10,11 @@ import android.database.sqlite.SQLiteDatabase;
 @SuppressWarnings("resource")
 // TODO fix resource leaks
 class DataBaseReader {
-	private static final String LAST_UPDATE = "strftime('%s', __last_update) * 1000";
+	// private static final String LAST_UPDATE = "strftime('%s', __last_update) * 1000";
 
-	private static final String[] STATION_DETAILS = {LAST_UPDATE, "_id", "name", "type", "address", "telephone",
-			"latitude", "longitude"};
-	private static final String[] TYPE_DETAILS = {LAST_UPDATE, "_id", "name", "url"};
+	private static final String[] STATION_DETAILS = {"_id", "name", "type", "address", "telephone", "latitude",
+			"longitude"};
+	private static final String[] TYPE_DETAILS = {"_id", "name", "url"};
 
 	private final DataBaseHelper m_dataBaseHelper;
 
@@ -27,7 +27,7 @@ class DataBaseReader {
 	public List<Station> getStations() {
 		List<Station> stations = new ArrayList<Station>();
 		SQLiteDatabase database = m_dataBaseHelper.getReadableDatabase();
-		Cursor cursor = database.query("Station", STATION_DETAILS, null, null, null, null, null);
+		Cursor cursor = database.query("Stop", STATION_DETAILS, null, null, null, null, null);
 		while (cursor.moveToNext()) {
 			Station station = readStation(cursor);
 			stations.add(station);
@@ -39,7 +39,7 @@ class DataBaseReader {
 	private static Station readStation(final Cursor cursor) {
 		int id = cursor.getInt(cursor.getColumnIndex("_id"));
 		String name = cursor.getString(cursor.getColumnIndex("name"));
-		Type type = Type.get(cursor.getString(cursor.getColumnIndex("type")));
+		StopType type = StopType.values()[cursor.getInt(cursor.getColumnIndex("type"))];
 		String address = cursor.getString(cursor.getColumnIndex("address"));
 		String telephone = cursor.getString(cursor.getColumnIndex("telephone"));
 		double latitude = cursor.getDouble(cursor.getColumnIndex("latitude"));
@@ -57,13 +57,13 @@ class DataBaseReader {
 
 	public int getNumberOfStations() {
 		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
-		int entries = (int)DatabaseUtils.queryNumEntries(db, "Station");
+		int entries = (int)DatabaseUtils.queryNumEntries(db, "Stop");
 		return entries;
 	}
 
 	public Station getStation(final int stationId) {
 		SQLiteDatabase database = m_dataBaseHelper.getReadableDatabase();
-		Cursor cursor = database.query("Station", STATION_DETAILS, "_id = ?", new String[]{String.valueOf(stationId)},
+		Cursor cursor = database.query("Stop", STATION_DETAILS, "_id = ?", new String[]{String.valueOf(stationId)},
 				null, null, null);
 		Station station = null;
 		if (cursor.moveToNext()) {
@@ -73,12 +73,12 @@ class DataBaseReader {
 		return station;
 	}
 
-	public Map<String, String> getTypes() {
+	@SuppressWarnings("unused")
+	private Map<String, String> getTypes() {
 		Map<String, String> types = new HashMap<String, String>();
 		SQLiteDatabase database = m_dataBaseHelper.getReadableDatabase();
 		Cursor cursor = database.query("StationType", TYPE_DETAILS, null, null, null, null, null);
 		while (cursor.moveToNext()) {
-			@SuppressWarnings("unused")
 			int id = cursor.getInt(cursor.getColumnIndex("_id"));
 			String name = cursor.getString(cursor.getColumnIndex("name"));
 			String url = cursor.getString(cursor.getColumnIndex("url"));

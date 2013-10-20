@@ -207,7 +207,15 @@ public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
 		stationPlacemarkStyleUrl.setEndTextElementListener(new EndTextElementListener() {
 			@Override
 			public void end(String body) {
-				m_station.setType(Type.get(body));
+				StopType type = StopType.unknown;
+				if ("tubeStyle".equals(body)) {
+					type = StopType.Underground;
+				} else if ("overgroundStyle".equals(body)) {
+					type = StopType.Overground;
+				} else if ("dlrStyle".equals(body)) {
+					type = StopType.DLR;
+				}
+				m_station.setType(type);
 			}
 		});
 

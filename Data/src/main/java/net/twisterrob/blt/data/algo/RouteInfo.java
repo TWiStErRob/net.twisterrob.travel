@@ -25,7 +25,7 @@ public class RouteInfo {
 	public Set<Node> getJunctions() {
 		return junctions;
 	}
-	public Set<Node> getLeafs() {
+	public Set<Node> getLeaves() {
 		return leafs;
 	}
 	public Set<Node> getStarts() {
@@ -33,6 +33,14 @@ public class RouteInfo {
 	}
 	public Set<Node> getEnds() {
 		return ends;
+	}
+	public Node getNode(String stopName) {
+		for (StopPoint stop: nodes.keySet()) {
+			if (stop.getName().equals(stopName)) {
+				return nodes.get(stop);
+			}
+		}
+		return null;
 	}
 	public boolean isPrintProgress() {
 		return printProgress != null;
@@ -122,7 +130,9 @@ public class RouteInfo {
 		switch (node.out.size()) {
 			case 0: // trains only go there (weird)
 			case 1: // it has two neighbors, but it's the same
-				leafs.add(node);
+				if (node.out.equals(node.in)) {
+					leafs.add(node);
+				}
 				break;
 			case 2:
 				// general station with two neighbors

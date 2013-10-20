@@ -2,7 +2,7 @@ package net.twisterrob.blt.android.db;
 
 import java.util.*;
 
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.model.Station;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -41,7 +41,6 @@ public class DataBaseHelper {
 
 	public void openDB() {
 		getWritableDatabase();
-		Type.reset(getTypes());
 	}
 
 	public List<Station> getStations() {
@@ -50,10 +49,6 @@ public class DataBaseHelper {
 
 	public void updateStations(Iterable<Station> stations) {
 		m_writer.updateStations(stations);
-	}
-
-	public Map<String, String> getTypes() {
-		return m_reader.getTypes();
 	}
 
 	public void updateTypes(Map<String, String> styles) {
