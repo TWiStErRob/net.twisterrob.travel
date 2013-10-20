@@ -2,6 +2,8 @@ package net.twisterrob.blt.data.algo;
 import java.util.*;
 import java.util.Map.Entry;
 
+import javax.annotation.CheckForNull;
+
 import net.twisterrob.blt.data.algo.Node.State;
 import net.twisterrob.blt.io.feeds.timetable.*;
 
@@ -35,7 +37,7 @@ public class RouteInfo {
 	public boolean isPrintProgress() {
 		return printProgress != null;
 	}
-	public void setPrintProgress(String leftPaddingChar) {
+	public void setPrintProgress(@CheckForNull String leftPaddingChar) {
 		this.printProgress = leftPaddingChar;
 	}
 

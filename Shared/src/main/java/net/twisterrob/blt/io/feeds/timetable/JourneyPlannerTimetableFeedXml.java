@@ -1,6 +1,13 @@
 package net.twisterrob.blt.io.feeds.timetable;
 
 import net.twisterrob.blt.io.feeds.*;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.RouteLink.From;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.RouteLink.To;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Descriptor;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Place;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Place.Location;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.StopClassification;
+import net.twisterrob.java.annotations.SimpleDateFormatString;
 
 /**
  * TODO
@@ -11,13 +18,13 @@ import net.twisterrob.blt.io.feeds.*;
  */
 @SuppressWarnings("hiding")
 interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
+	@Children({StopAreas.class, JourneyPatternSections.class, VehicleJourneys.class, Registrations.class,
+			SupportingDocuments.class})
 	interface Root {
 		String NS = "http://www.transxchange.org.uk/";
-		Class<?>[] CHILDREN = new Class[]{StopAreas.class, JourneyPatternSections.class, VehicleJourneys.class,
-				Registrations.class, SupportingDocuments.class};
 		String ELEMENT = "TransXChange";
-		String modificationTime = "ModificationDateTime";
-		String modificationTime$format = "yyyy-MM-dd'T'HH:mm:ss.SXXX";
+		@Attribute String modificationTime = "ModificationDateTime";
+		@ValueConstraint @SimpleDateFormatString String modificationTime$format = "yyyy-MM-dd'T'HH:mm:ss.SXXX";
 
 		/**
 		 * Names of Nptg Localities used in Local stop definitions.
@@ -26,47 +33,41 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 		 * that include the locality name eg "Barset, High Street".
 		 * Locality names of externally referenced NaPTAN stops should be included in the AnnotatedStopPointRef instead.
 		 * The XSD Type name is: TransXChangeNptgLocalitiesStructure
-		 * @see AnnotatedNptgLocalityRef
 		 */
-		String NptgLocalities = "NptgLocalities";
+		@Child @Children(AnnotatedNptgLocalityRef.class) String NptgLocalities = "NptgLocalities";
 
 		/**
 		 * Local Stop definitions for Stops used in services.
 		 * Normally Stops will be defined simply by referencing their NaPTAN AtcoCode in a StopPointRef.
 		 * Stops can also be defined locally here.
 		 * The XSD Type name is: TransXChangeStopPointsStructure
-		 * @see StopPoint
 		 */
-		String StopPoints = "StopPoints";
+		@Child @Children(StopPoint.class) String StopPoints = "StopPoints";
 
 		/**
 		 * Definitions of the Route Sections, i.e. collections of  of route links, making up all or part of a Route.
 		 * These are used in Route definitions.
 		 * The XSD Type name is: RouteSectionsStructure
-		 * @see RouteSection
 		 */
-		String RouteSections = "RouteSections";
+		@Child @Children(RouteSection.class) String RouteSections = "RouteSections";
 
 		/**
-		 * Definitions of transport Routes..
+		 * Definitions of transport Routes.
 		 * The XSD Type name is: RoutesStructure
-		 * @see Route
 		 */
-		String Routes = "Routes";
+		@Child @Children(Route.class) String Routes = "Routes";
 
 		/**
-		 * Definitions of services..
+		 * Definitions of services.
 		 * The XSD Type name is: ServicesStructure
-		 * @see Service
 		 */
-		String Services = "Services";
+		@Child @Children(Service.class) String Services = "Services";
 
 		/**
-		 * Definitions of operators..
+		 * Definitions of operators.
 		 * The XSD Type name is: OperatorsStructure
-		 * @see Operator
 		 */
-		String Operators = "Operators";
+		@Child @Children(Operator.class) String Operators = "Operators";
 	}
 	/**
 	 * A NPTG locality reference annotated by its names.
@@ -74,95 +75,91 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 	 * The XSD Type name is: AnnotatedNptgLocalityRefStructure
 	 */
 	interface AnnotatedNptgLocalityRef {
-		Class<?>[] CHILDREN = new Class[]{};
 		String ELEMENT = "AnnotatedNptgLocalityRef";
 		/**
-		 * Unique identifier of the locality..
+		 * Unique identifier of the locality.
 		 * The XSD Type name is: NptgLocalityRefStructure
 		 */
-		String ID = "NptgLocalityRef";
+		@Child String ID = "NptgLocalityRef";
 
 		/**
 		 * Name of NPTG Locality in which one ore more locally defined stop in this document lies.
 		 * To be used when publishing stop names.
 		 * The XSD Type name is: NaturalLanguageStringStructure
 		 */
-		String Name = "LocalityName";
+		@Child String Name = "LocalityName";
 
 		/**
-		 * Any qualifier of NPTG Locality in which stop lies..
+		 * Any qualifier of NPTG Locality in which stop lies.
 		 * The XSD Type name is: NaturalLanguageStringStructure
 		 */
-		String Qualifier = "LocalityQualifier";
+		@Child String Qualifier = "LocalityQualifier";
 	}
 
 	/**
 	 * A NaPTAN stop definition.
 	 * The XSD Type name is: StopPointStructure
 	 */
+	@Children({Descriptor.class, Place.class, StopClassification.class})
 	interface StopPoint {
-		Class<?>[] CHILDREN = new Class[]{Descriptor.class, Place.class, StopClassification.class};
 		String ELEMENT = "StopPoint";
-		String creationTime = "CreationDateTime";
-		String creationTime$format = "yyyy-MM-dd'T'HH:mm:ss";
+		@Attribute String creationTime = "CreationDateTime";
+		@ValueConstraint @SimpleDateFormatString String creationTime$format = "yyyy-MM-dd'T'HH:mm:ss";
 		/**
 		 * Full NaPTAN stop identifier that uniquely identifies the stop within the UK.
 		 */
-		String AtcoCode = "AtcoCode";
+		@Child String AtcoCode = "AtcoCode";
 		/**
-		 * NPTG administrative area that manages stop data. 000-999.
+		 * NPTG administrative area that manages stop data.
 		 */
-		String AdminstrativeAreaRef = "AdminstrativeAreaRef";
+		@Child @Value(regex = "\\d{3}") String AdminstrativeAreaRef = "AdminstrativeAreaRef";
 		/**
 		 * Notes about a stop.
 		 */
-		String Notes = "Notes";
+		@Child String Notes = "Notes";
 
 		/**
-		 * Structured textual description of stop..
+		 * Structured textual description of stop.
 		 * The XSD Type name is: DescriptorStructure
 		 */
 		interface Descriptor {
-			Class<?>[] CHILDREN = new Class[]{};
 			String ELEMENT = "Descriptor";
 			/**
 			 * Common name for the stop in a specified language.
 			 */
-			String CommonName = "CommonName";
+			@Child String CommonName = "CommonName";
 		}
 		/**
 		 * Place where stop is located.
 		 * The XSD Type name is: inline element Place
 		 */
+		@Children({Location.class})
 		interface Place {
-			Class<?>[] CHILDREN = new Class[]{Location.class};
 			String ELEMENT = "Place";
 			/**
 			 * NPTG locality within which stop lies.
 			 * The XSD Type name is: NptgLocalityRefStructure
 			 */
-			String NptgLocalityRef = "NptgLocalityRef";
+			@Child String NptgLocalityRef = "NptgLocalityRef";
 
 			/**
 			 * Spatial coordinates of stop.
 			 * The XSD Type name is: LocationStructure
 			 */
 			interface Location {
-				Class<?>[] CHILDREN = new Class[]{};
 				String ELEMENT = "Location";
 				/**
 				 * Precision of geocoding.
-				 * @see PrecisionEnum
 				 */
-				String precision = "Precision";
+				@Attribute @Value(enumeration = PrecisionEnum.class) String precision = "Precision";
 				/**
 				 * OS 1 metre - 6 digits, max: 999999
 				 */
-				String Easting = "Easting";
+				@Child @Value(regex = "\\d{6}") String Easting = "Easting";
 				/**
 				 * OS 1 metre - 6/7 digits, max: 1999999
 				 */
-				String Northing = "Northing";
+				@Child @Value(regex = "1?\\d{6}") String Northing = "Northing";
 
 				enum PrecisionEnum {
 					_1km(1000),
@@ -188,13 +185,11 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 		 * The XSD Type name is: StopClassificationStructure
 		 */
 		interface StopClassification {
-			Class<?>[] CHILDREN = new Class[]{};
 			String ELEMENT = "StopClassification";
 			/**
 			 * Classification of the stop as one of the NaPTAN stop types.
-			 * @see StopTypeEnum
 			 */
-			String StopType = "StopType";
+			@Child @Value(enumeration = StopTypeEnum.class) String StopType = "StopType";
 
 			// TODO OnStreet/OffStreet
 
@@ -239,20 +234,18 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 	}
 
 	/**
-	 * A NaPTAN stop reference annotated by common name..
+	 * A NaPTAN stop reference annotated by common name.
 	 * The XSD Type name is: AnnotatedStopPointRefStructure
 	 */
 	interface AnnotatedStopPointRef {
-		Class<?>[] CHILDREN = new Class[]{};
 		String ELEMENT = "AnnotatedStopPointRef";
 	}
 	/**
-	 * Local StopArea definitions. Normally StopAreas will be defined as part of their NaPTAN Definition. Areas can be defined locally here..
+	 * Local StopArea definitions. Normally StopAreas will be defined as part of their NaPTAN Definition. Areas can be defined locally here.
 	 * The XSD Type name is: StopAreasStructure
 	 */
 	@Deprecated
 	interface StopAreas {
-		Class<?>[] CHILDREN = new Class[]{};
 		String ELEMENT = "StopAreas";
 	}
 
@@ -261,29 +254,28 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 	 * Definitions of the Route Sections, i.e. collections of  of route links, making up all or part of a Route. These are used in Route definitions.
 	 * The XSD Type name is: RouteSectionsStructure/RouteSection
 	 */
+	@Children({RouteLink.class})
 	interface RouteSection {
-		Class<?>[] CHILDREN = new Class[]{RouteLink.class};
 		String ELEMENT = "RouteSection";
-		String id = "id";
+		@Attribute String id = "id";
 	}
 
 	/**
 	 * A piece of the network topology connection two stops.
 	 * The XSD Type name is: RouteSectionsStructure/RouteSection/RouteLink
 	 */
+	@Children({From.class, To.class})
 	interface RouteLink {
-		Class<?>[] CHILDREN = new Class[]{From.class, To.class};
 		String ELEMENT = "RouteLink";
-		String id = "id";
+		@Attribute String id = "id";
 		/**
 		 * Distance in metres along track of the link.
 		 */
-		String Distance = "Distance";
+		@Child @Value(regex = "\\d+") String Distance = "Distance";
 		/**
-		 * Direction of the route running over the link. Enumerated value.
-		 * @see DirectionEnum
+		 * Direction of the route running over the link.
 		 */
-		String Direction = "Direction";
+		@Child @Value(enumeration = DirectionEnum.class) String Direction = "Direction";
 		enum DirectionEnum {
 			inbound,
 			outbound,
@@ -294,23 +286,21 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 		 * The stop at which the link begins.
 		 */
 		interface From {
-			Class<?>[] CHILDREN = new Class[]{};
 			String ELEMENT = "From";
 			/**
-			 * Reference to a NaPTAN stop. <code>[0-9]{3}[A-Za-z0-9]{2,9}</code>	
+			 * Reference to a NaPTAN stop.	
 			 */
-			String StopPointRef = "StopPointRef";
+			@Child @Value(regex = "[0-9]{3}[A-Za-z0-9]{2,9}") String StopPointRef = "StopPointRef";
 		}
 		/**
 		 * The stop at which the link ends.
 		 */
 		interface To {
-			Class<?>[] CHILDREN = new Class[]{};
 			String ELEMENT = "To";
 			/**
-			 * Reference to a NaPTAN stop. <code>[0-9]{3}[A-Za-z0-9]{2,9}</code>
+			 * Reference to a NaPTAN stop.
 			 */
-			String StopPointRef = "StopPointRef";
+			@Child @Value(regex = "[0-9]{3}[A-Za-z0-9]{2,9}") String StopPointRef = "StopPointRef";
 		}
 	}
 
@@ -320,84 +310,72 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 	 * The XSD Type name is: RoutesStructure/Route
 	 */
 	interface Route {
-		Class<?>[] CHILDREN = new Class[]{};
 		String ELEMENT = "Route";
-		String id = "id";
+		@Attribute String id = "id";
 		/**
 		 * Short description of the Route.
 		 */
-		String Description = "Description";
+		@Child String Description = "Description";
 		/**
 		 * An ordered collection of RouteSections that make up the Route. The order is the sequence of traversal.
 		 */
-		String RouteSectionRef = "RouteSectionRef";
+		@Child String RouteSectionRef = "RouteSectionRef";
 	}
 
 	/**
-	 * Definitions of journey pattern sections..
+	 * Definitions of journey pattern sections.
 	 * The XSD Type name is: JourneyPatternSectionsStructure
 	 */
 	interface JourneyPatternSections {
-		Class<?>[] CHILDREN = new Class[]{};
 		String ELEMENT = "JourneyPatternSections";
 	}
 
 	interface Operator {
-		Class<?>[] CHILDREN = new Class[]{};
 		String ELEMENT = "Operator";
-		/**
-		 * Format: OId_{OperatorCode}
-		 */
-		String id = "id";
-		String OperatorCode = "OperatorCode";
-		String OperatorShortName = "OperatorShortName";
-		String OperatorNameOnLicence = "OperatorNameOnLicence";
-		String TradingName = "TradingName";
+		@Attribute @Value(regex = "OId_[A-Z]+") String id = "id";
+		@Child @Value(regex = "[A-Z]+") String OperatorCode = "OperatorCode";
+		@Child String OperatorShortName = "OperatorShortName";
+		@Child String OperatorNameOnLicence = "OperatorNameOnLicence";
+		@Child String TradingName = "TradingName";
 
 		interface Line {
-			Class<?>[] CHILDREN = new Class[]{};
 			String ELEMENT = "Line";
-			String LineName = "LineName";
+			@Child String LineName = "LineName";
 		}
 	}
 
 	interface Service {
-		Class<?>[] CHILDREN = new Class[]{};
-		String ELEMENT = "Service";
-		String Lines = "Lines";
+		@Child String ELEMENT = "Service";
+		@Child @Children(Line.class) String Lines = "Lines";
 
 		interface Line {
-			Class<?>[] CHILDREN = new Class[]{};
 			String ELEMENT = "Line";
-			String LineName = "LineName";
+			@Child String LineName = "LineName";
 		}
 	}
 
 	/**
-	 * Definitions of vehicle journeys, used in one or more services..
+	 * Definitions of vehicle journeys, used in one or more services.
 	 * The XSD Type name is: VehicleJourneysStructure
 	 */
 	@Deprecated
 	interface VehicleJourneys {
-		Class<?>[] CHILDREN = new Class[]{};
 		String ELEMENT = "VehicleJourneys";
 	}
 	/**
-	 * Registration details..
+	 * Registration details.
 	 * The XSD Type name is: RegistrationsStructure
 	 */
 	@Deprecated
 	interface Registrations {
-		Class<?>[] CHILDREN = new Class[]{};
 		String ELEMENT = "Registrations";
 	}
 	/**
-	 * Additional documents describing the service..
+	 * Additional documents describing the service.
 	 * The XSD Type name is: SupportingDocumentsStructure
 	 */
 	@Deprecated
 	interface SupportingDocuments {
-		Class<?>[] CHILDREN = new Class[]{};
 		String ELEMENT = "SupportingDocuments";
 	}
 }

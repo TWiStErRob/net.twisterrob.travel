@@ -1,35 +1,36 @@
 package net.twisterrob.blt.io.feeds;
 
+import net.twisterrob.java.annotations.SimpleDateFormatString;
+
 /**
  * The feed structure of the TrackerNet prediction summary API.
  * @author TWiStEr
  * @see http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf#3.1.5
  * @see Feed#TubeDepartureBoardsPredictionSummary 
  */
-@SuppressWarnings("unchecked")
 interface PredicitonSummaryFeedXml extends FeedXmlDescriptor {
-	String NS = "";
-	interface Root extends PredicitonSummaryFeedXml {
-		Class<? extends PredicitonSummaryFeedXml>[] CHILDREN = new Class[]{Time.class, Station.class};
+	@Children({Time.class, Station.class})
+	interface Root {
+		String NS = "";
 		String ELEMENT = "ROOT";
 	}
-	interface Time extends PredicitonSummaryFeedXml {
+	interface Time {
 		String ELEMENT = "Time";
 		/**
 		 * <code>Time TimeStamp</code>: The date/time the service was run in the format YYYY/MM/DD HH:MM:SS.
 		 * @see #timeStamp$format
 		 */
-		String timeStamp = "TimeStamp";
+		@Attribute String timeStamp = "TimeStamp";
 		/**
 		 * @see #timeStamp
 		 */
-		String timeStamp$format = "yyyy/MM/dd HH:mm:ss";
+		@ValueConstraint @SimpleDateFormatString String timeStamp$format = "yyyy/MM/dd HH:mm:ss";
 	}
 	/**
 	 * <code>S(tation)</code>: A construct representing a station on the line.
 	 */
-	interface Station extends PredicitonSummaryFeedXml {
-		Class<? extends PredicitonSummaryFeedXml>[] CHILDREN = new Class[]{Platform.class};
+	@Children(Platform.class)
+	interface Station {
 		/**
 		 * <code>S(tation)</code>: A construct representing a station on the line.
 		 */
@@ -37,17 +38,17 @@ interface PredicitonSummaryFeedXml extends FeedXmlDescriptor {
 		/**
 		 * <code>Code</code>: A code representing the station (see Appendix B for valid values).
 		 */
-		String code = "Code";
+		@Attribute String code = "Code";
 		/**
 		 * <code>N(ame)</code>: The name of the station.
 		 */
-		String name = "N";
+		@Attribute String name = "N";
 	}
 	/**
 	 * <code>P(latform)</code>: A construct representing a platform on the station.
 	 */
-	interface Platform extends PredicitonSummaryFeedXml {
-		Class<? extends PredicitonSummaryFeedXml>[] CHILDREN = new Class[]{Train.class};
+	@Children(Train.class)
+	interface Platform {
 		/**
 		 * <code>P(latform)</code>: A construct representing a platform on the station.
 		 */
@@ -55,17 +56,16 @@ interface PredicitonSummaryFeedXml extends FeedXmlDescriptor {
 		/**
 		 * <code>N(ame)</code>: The name of the platform.
 		 */
-		String name = "N";
+		@Attribute String name = "N";
 		/**
 		 * <code>C(ode)</code>: A code representing the platform.
 		 */
-		String code = "Code";
+		@Attribute String code = "Code";
 	}
 	/**
 	 * <code>T(rain)</code>: A construct representing a train in the prediction list.
 	 */
-	interface Train extends PredicitonSummaryFeedXml {
-		Class<? extends PredicitonSummaryFeedXml>[] CHILDREN = NO_CHILDREN;
+	interface Train {
 		/**
 		 * <code>T(rain)</code>: A construct representing a train in the prediction list.
 		 */
@@ -73,36 +73,36 @@ interface PredicitonSummaryFeedXml extends FeedXmlDescriptor {
 		/**
 		 * <code>S(et number)</code>: The set number of the train.
 		 */
-		String setNumber = "S";
+		@Attribute String setNumber = "S";
 		/**
 		 * <code>T(rip number)</code>: The trip number of the train.
 		 */
-		String tripNumber = "T";
+		@Attribute String tripNumber = "T";
 		/**
 		 * <code>D(estination)</code>: A code representing the destination of the train.
 		 */
-		String destinationCode = "D";
+		@Attribute String destinationCode = "D";
 		/**
 		 * <code>C(?)</code>: A value in representing the ‘time to station’ for this train in the format MM:SS.
 		 * @see #timeToStation$format
 		 * @see #timeToStation$atPlatform
 		 */
-		String timeToStation = "C";
+		@Attribute String timeToStation = "C";
 		/**
 		 * @see #timeToStation
 		 */
-		String timeToStation$format = "m:ss";
+		@ValueConstraint @SimpleDateFormatString String timeToStation$format = "m:ss";
 		/**
 		 * @see #timeToStation
 		 */
-		String timeToStation$atPlatform = "-";
+		@ValueConstraint String timeToStation$atPlatform = "-";
 		/**
 		 * <code>L(ocation)</code>: The current location of the train.
 		 */
-		String Location = "L";
+		@Attribute String Location = "L";
 		/**
 		 * <code>DE(stination)</code>: The name of the destination of the train.
 		 */
-		String destinationName = "DE";
+		@Attribute String destinationName = "DE";
 	}
 }

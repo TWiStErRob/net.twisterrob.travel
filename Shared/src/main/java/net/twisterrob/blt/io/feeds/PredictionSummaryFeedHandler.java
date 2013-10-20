@@ -6,7 +6,11 @@ import java.util.*;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.io.feeds.PredicitonSummaryFeedXml.Platform;
+import net.twisterrob.blt.io.feeds.PredicitonSummaryFeedXml.Root;
+import net.twisterrob.blt.io.feeds.PredicitonSummaryFeedXml.Station;
+import net.twisterrob.blt.io.feeds.PredicitonSummaryFeedXml.Time;
+import net.twisterrob.blt.io.feeds.PredicitonSummaryFeedXml.Train;
 
 import org.xml.sax.*;
 
@@ -15,20 +19,18 @@ import android.util.Xml;
 
 @NotThreadSafe
 public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSummaryFeed> {
-	private interface X extends PredicitonSummaryFeedXml { /* Shorthand for the XML interface */}
-
 	PredictionSummaryFeed m_root = new PredictionSummaryFeed();
-	Station m_station;
-	Platform m_platform;
-	Train m_train;
+	net.twisterrob.blt.model.Station m_station;
+	net.twisterrob.blt.model.Platform m_platform;
+	net.twisterrob.blt.model.Train m_train;
 
 	@Override
 	public PredictionSummaryFeed parse(InputStream is) throws IOException, SAXException {
-		RootElement root = new RootElement(X.Root.NS, X.Root.ELEMENT);
-		Element timeElement = root.getChild(X.Time.NS, X.Time.ELEMENT);
-		Element stationElement = root.getChild(X.Station.NS, X.Station.ELEMENT);
-		Element platformElement = stationElement.getChild(X.Platform.NS, X.Platform.ELEMENT);
-		Element trainElement = platformElement.getChild(X.Train.NS, X.Train.ELEMENT);
+		RootElement root = new RootElement(Root.NS, Root.ELEMENT);
+		Element timeElement = root.getChild(Root.NS, Time.ELEMENT);
+		Element stationElement = root.getChild(Root.NS, Station.ELEMENT);
+		Element platformElement = stationElement.getChild(Root.NS, Platform.ELEMENT);
+		Element trainElement = platformElement.getChild(Root.NS, Train.ELEMENT);
 		root.setStartElementListener(new StartElementListener() {
 			@Override
 			public void start(Attributes attributes) {
@@ -37,10 +39,10 @@ public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSumm
 		});
 
 		timeElement.setStartElementListener(new StartElementListener() {
-			private final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat(X.Time.timeStamp$format, Locale.UK);
+			private final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat(Time.timeStamp$format, Locale.UK);
 			@Override
 			public void start(Attributes attributes) {
-				String attrTimeStamp = attributes.getValue(X.Time.timeStamp);
+				String attrTimeStamp = attributes.getValue(Time.timeStamp);
 				Date date;
 				try {
 					date = TIMESTAMP_FORMAT.parse(attrTimeStamp);
@@ -55,10 +57,10 @@ public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSumm
 		stationElement.setElementListener(new ElementListener() {
 			@Override
 			public void start(Attributes attributes) {
-				String attrCode = attributes.getValue(X.Station.code);
-				String attrName = attributes.getValue(X.Station.name);
+				String attrCode = attributes.getValue(Station.code);
+				String attrName = attributes.getValue(Station.name);
 				String name = attrName.replaceAll("\\.+$", ""); // remove trailing .
-				m_station = new Station();
+				m_station = new net.twisterrob.blt.model.Station();
 				m_station.setName(name);
 				m_station.setTrackerNetCode(attrCode);
 			}
@@ -71,11 +73,11 @@ public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSumm
 		platformElement.setElementListener(new ElementListener() {
 			@Override
 			public void start(Attributes attributes) {
-				String attrCode = attributes.getValue(X.Platform.code);
+				String attrCode = attributes.getValue(Platform.code);
 				int code = Integer.parseInt(attrCode);
-				String attrName = attributes.getValue(X.Platform.name);
+				String attrName = attributes.getValue(Platform.name);
 
-				m_platform = new Platform();
+				m_platform = new net.twisterrob.blt.model.Platform();
 				m_platform.setName(attrName);
 				m_platform.setCode(code);
 			}
@@ -86,31 +88,31 @@ public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSumm
 			}
 		});
 		trainElement.setElementListener(new ElementListener() {
-			private final DateFormat TIME_TO_FORMAT = new SimpleDateFormat(X.Train.timeToStation$format, Locale.UK);
+			private final DateFormat TIME_TO_FORMAT = new SimpleDateFormat(Train.timeToStation$format, Locale.UK);
 			@Override
 			public void start(Attributes attributes) {
-				String attrSetNumber = attributes.getValue(X.Train.setNumber);
+				String attrSetNumber = attributes.getValue(Train.setNumber);
 				int setNumber = Integer.parseInt(attrSetNumber);
-				String attrTripNumber = attributes.getValue(X.Train.tripNumber);
+				String attrTripNumber = attributes.getValue(Train.tripNumber);
 				int tripNumber = Integer.parseInt(attrTripNumber);
-				String attrLocation = attributes.getValue(X.Train.Location);
-				String attrDestinationCode = attributes.getValue(X.Train.destinationCode);
+				String attrLocation = attributes.getValue(Train.Location);
+				String attrDestinationCode = attributes.getValue(Train.destinationCode);
 				int destinationCode = Integer.parseInt(attrDestinationCode);
-				String attrDestinationName = attributes.getValue(X.Train.destinationName);
-				String attrTimeToStation = attributes.getValue(X.Train.timeToStation);
+				String attrDestinationName = attributes.getValue(Train.destinationName);
+				String attrTimeToStation = attributes.getValue(Train.timeToStation);
 				Date timeToStation;
 				try {
-					if (X.Train.timeToStation$atPlatform.equals(attrTimeToStation)) {
+					if (Train.timeToStation$atPlatform.equals(attrTimeToStation)) {
 						timeToStation = new Date(0);
 					} else {
 						timeToStation = TIME_TO_FORMAT.parse(attrTimeToStation);
 					}
 				} catch (ParseException e) {
-					throw new IllegalArgumentException(attrTimeToStation + " is not in " + X.Train.timeToStation$format
+					throw new IllegalArgumentException(attrTimeToStation + " is not in " + Train.timeToStation$format
 							+ " format");
 				}
 
-				m_train = new Train();
+				m_train = new net.twisterrob.blt.model.Train();
 				m_train.setLocation(attrLocation);
 				m_train.setDestinationCode(destinationCode);
 				m_train.setDestinationName(attrDestinationName);
