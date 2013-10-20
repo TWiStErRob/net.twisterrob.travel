@@ -4,39 +4,26 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-import javax.swing.JPanel;
-
 import net.twisterrob.blt.io.feeds.timetable.*;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.model.Line;
+import net.twisterrob.java.exceptions.WTF;
 import net.twisterrob.java.model.*;
 
-class RouteMapDrawer extends JPanel {
-	private static final long serialVersionUID = 1L;
+class RouteMapDrawer extends RouteComponent {
+	private static final long serialVersionUID = -5789033664415561910L;
 
-	private Line line;
 	private Set<StopPoint> stations;
-	private Route route;
-	private List<String> highlights;
 
-	private @Nonnull LineColors colors = new TubeStatusPresentationLineColors();
-	private Color lineColor;
-	private Color lineHighlight;
 	private Color stopColor;
 	private Color stopHighlight;
 
 	private LocationToScreenTransformer transformer;
 
 	private static final Stroke lineStroke = new BasicStroke(4);
-	private static final Stroke crossStroke = new BasicStroke(1);
 	private static final int stopRadius = 10;
-	private static final int outerRadius = 18;
-	private static final int innerRadius = 12;
 
 	public RouteMapDrawer(Set<StopPoint> stations, Line line, Route route, List<String> highlights) {
-		setLine(line);
-		setRoute(route);
-		setHighlights(highlights);
+		super(line, route, highlights);
 		setStations(stations);
 	}
 
@@ -49,29 +36,11 @@ class RouteMapDrawer extends JPanel {
 		repaint();
 	}
 
-	public Line getLine() {
-		return line;
-	}
+	@Override
 	public void setLine(Line line) {
-		this.line = line;
-		lineColor = new Color(line.getBackground(colors));
-		lineHighlight = new Color(~lineColor.getRGB());
+		super.setLine(line);
 		stopColor = lineColor.darker();
 		stopHighlight = new Color(~lineColor.getRGB());
-		repaint();
-	}
-	public Route getRoute() {
-		return route;
-	}
-	public void setRoute(Route route) {
-		this.route = route;
-		repaint();
-	}
-	public List<String> getHighlights() {
-		return highlights;
-	}
-	public void setHighlights(List<String> highlights) {
-		this.highlights = highlights;
 		repaint();
 	}
 
@@ -86,8 +55,8 @@ class RouteMapDrawer extends JPanel {
 		transformer.init(width, height);
 
 		Set<StopPoint> drawn = new TreeSet<>(StopPoint.BY_ID);
-		if (route != null) {
-			for (RouteSection section: route.getRouteSections()) {
+		if (getRoute() != null) {
+			for (RouteSection section: getRoute().getRouteSections()) {
 				StopPoint last = null;
 				for (RouteLink link: section.getRouteLinks()) {
 					paintLink(g2, link, left, top);
@@ -108,14 +77,6 @@ class RouteMapDrawer extends JPanel {
 		}
 	}
 
-	private static enum StopType {
-		START,
-		ROUTE,
-		INTERCHANGE,
-		END,
-		IGNORE
-	}
-
 	/**
 	 * @param interchange <code>true</code> -> circle, <code>false</code> -> circle+cross, <code>null</code> -> dot
 	 */
@@ -126,25 +87,22 @@ class RouteMapDrawer extends JPanel {
 		switch (type) {
 			case ROUTE:
 			case IGNORE:
-				if (highlights.contains(station.getName())) {
+				if (needsHighlight(station)) {
 					g.setColor(stopHighlight);
 				} else {
 					g.setColor(stopColor);
 				}
 				g.fillOval(stopX - stopRadius / 2, stopY - stopRadius / 2, stopRadius, stopRadius);
 				break;
+			case INTERCHANGE:
 			case START:
+				drawStart(g, stopX, stopY);
+				break;
 			case END:
-				g.setColor(Color.BLACK);
-				g.fillOval(stopX - outerRadius / 2, stopY - outerRadius / 2, outerRadius, outerRadius);
-				g.setColor(Color.WHITE);
-				g.fillOval(stopX - innerRadius / 2, stopY - innerRadius / 2, innerRadius, innerRadius);
-				if (type == StopType.END) {
-					g.setStroke(crossStroke);
-					g.setColor(Color.BLACK);
-					g.drawLine(stopX - outerRadius / 2, stopY - outerRadius / 2, stopX + outerRadius / 2, stopY
-							+ outerRadius / 2);
-				}
+				drawEnd(g, stopX, stopY);
+				break;
+			default:
+				throw new WTF();
 		}
 	}
 
@@ -160,7 +118,7 @@ class RouteMapDrawer extends JPanel {
 		int toY = offsetY + transformer.lat2Screen(toLoc.getLatitude());
 
 		g.setStroke(lineStroke);
-		if (highlights.contains(from.getName()) && highlights.contains(to.getName())) {
+		if (needsHighlight(link)) {
 			g.setColor(lineHighlight);
 		} else {
 			g.setColor(lineColor);
