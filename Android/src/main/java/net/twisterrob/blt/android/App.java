@@ -6,6 +6,7 @@ import java.util.*;
 import net.twisterrob.android.mail.MailSenderAsyncTask;
 import net.twisterrob.android.utils.LibContextProvider;
 import net.twisterrob.android.utils.cache.*;
+import net.twisterrob.blt.android.data.*;
 import net.twisterrob.blt.android.db.DataBaseHelper;
 import net.twisterrob.blt.io.feeds.*;
 import android.graphics.Bitmap;
@@ -16,6 +17,8 @@ public class App extends android.app.Application {
 	private static final boolean DEBUG = true;
 	private static final String CACHE_IMAGE = ImageSDNetCache.class.getName();
 	private static final Map<String, Cache<?, ?>> s_caches = new HashMap<String, Cache<?, ?>>();
+
+	private StaticData m_static = new JavaStaticData();
 
 	public App() {
 		s_instance = this;
@@ -46,6 +49,10 @@ public class App extends android.app.Application {
 
 	public URLBuilder getUrls() {
 		return m_urlBuilder;
+	}
+
+	public StaticData getStaticData() {
+		return m_static;
 	}
 
 	public DataBaseHelper getDataBaseHelper() {

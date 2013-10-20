@@ -8,7 +8,7 @@
 
 	<ImageView
 		android:id="@android:id/icon"
-		android:layout_width="30sp"
+		android:layout_width="36sp"
 		android:layout_height="30sp"
 		android:padding="2sp"
 		android:layout_gravity="center"
