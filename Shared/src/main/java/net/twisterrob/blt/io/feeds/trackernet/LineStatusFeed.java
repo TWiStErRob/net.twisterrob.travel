@@ -1,7 +1,8 @@
-package net.twisterrob.blt.io.feeds;
+package net.twisterrob.blt.io.feeds.trackernet;
 
 import java.util.*;
 
+import net.twisterrob.blt.io.feeds.BaseFeed;
 import net.twisterrob.blt.model.*;
 
 public class LineStatusFeed extends BaseFeed {

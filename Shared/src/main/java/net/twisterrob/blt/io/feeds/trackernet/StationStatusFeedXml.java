@@ -1,4 +1,6 @@
-package net.twisterrob.blt.io.feeds;
+package net.twisterrob.blt.io.feeds.trackernet;
+
+import net.twisterrob.blt.io.feeds.*;
 
 /**
  * The feed structure of the TrackerNet line status API.

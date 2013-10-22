@@ -7,7 +7,7 @@ import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.ChildViewHolder;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.GroupViewHolder;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.TrainViewHolder;
-import net.twisterrob.blt.io.feeds.PredictionSummaryFeed;
+import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeed;
 import net.twisterrob.blt.model.*;
 import android.content.Context;
 import android.graphics.Color;

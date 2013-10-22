@@ -1,13 +1,14 @@
-package net.twisterrob.blt.io.feeds;
+package net.twisterrob.blt.io.feeds.trackernet;
 
 import java.io.*;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import net.twisterrob.blt.io.feeds.LineStatusFeedXml.Line;
-import net.twisterrob.blt.io.feeds.LineStatusFeedXml.LineStatus;
-import net.twisterrob.blt.io.feeds.LineStatusFeedXml.Root;
-import net.twisterrob.blt.io.feeds.LineStatusFeedXml.Status;
+import net.twisterrob.blt.io.feeds.BaseFeedHandler;
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.Line;
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.LineStatus;
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.Root;
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.Status;
 import net.twisterrob.blt.model.DelayType;
 
 import org.xml.sax.*;
@@ -47,6 +48,7 @@ public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 			}
 		});
 		lineStatusLineElement.setStartElementListener(new StartElementListener() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void start(Attributes attributes) {
 				String attrName = attributes.getValue(Line.name);
@@ -59,6 +61,7 @@ public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 			}
 		});
 		lineStatusStatusElement.setStartElementListener(new StartElementListener() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void start(Attributes attributes) {
 				String attrId = attributes.getValue(Status.id);

@@ -1,4 +1,4 @@
-package net.twisterrob.blt.io.feeds;
+package net.twisterrob.blt.io.feeds.trackernet;
 
 import java.io.*;
 import java.text.*;
@@ -6,11 +6,8 @@ import java.util.*;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import net.twisterrob.blt.io.feeds.PredictionSummaryFeedXml.Platform;
-import net.twisterrob.blt.io.feeds.PredictionSummaryFeedXml.Root;
-import net.twisterrob.blt.io.feeds.PredictionSummaryFeedXml.Station;
-import net.twisterrob.blt.io.feeds.PredictionSummaryFeedXml.Time;
-import net.twisterrob.blt.io.feeds.PredictionSummaryFeedXml.Train;
+import net.twisterrob.blt.io.feeds.BaseFeedHandler;
+import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeedXml.*;
 
 import org.xml.sax.*;
 

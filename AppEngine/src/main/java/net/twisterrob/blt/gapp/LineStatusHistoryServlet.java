@@ -10,6 +10,7 @@ import javax.servlet.http.*;
 import name.fraser.neil.plaintext.*;
 import name.fraser.neil.plaintext.diff_match_patch.Diff;
 import net.twisterrob.blt.io.feeds.*;
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
 import net.twisterrob.blt.model.*;
 import net.twisterrob.java.utils.ObjectTools;
 import net.twisterrob.java.web.InvokerMap;

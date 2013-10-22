@@ -1,5 +1,6 @@
-package net.twisterrob.blt.io.feeds;
+package net.twisterrob.blt.io.feeds.trackernet;
 
+import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.java.annotations.SimpleDateFormatString;
 
 /**
