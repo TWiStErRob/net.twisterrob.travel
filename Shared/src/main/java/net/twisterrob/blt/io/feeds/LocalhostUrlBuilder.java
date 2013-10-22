@@ -24,7 +24,10 @@ public class LocalhostUrlBuilder implements URLBuilder {
 			case TubeDepartureBoardsPredictionSummary:
 				spec = String.format("PredictionSummary-%s.xml", ((Line)args.get("line")).getTrackerNetCode());
 				break;
-
+			case TubeDepartureBoardsPredictionDetailed:
+				spec = String.format("PredictionDetailed-%s-%s.xml", ((Line)args.get("line")).getTrackerNetCode(),
+						args.get("station"));
+				break;
 			//$CASES-OMITTED$
 			default:
 				throw new UnsupportedOperationException(feed + " is not yet supported");

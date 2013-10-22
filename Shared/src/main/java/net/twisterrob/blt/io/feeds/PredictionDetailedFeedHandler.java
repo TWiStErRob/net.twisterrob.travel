@@ -6,11 +6,11 @@ import java.util.*;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import net.twisterrob.blt.io.feeds.PredictionSummaryFeedXml.Platform;
-import net.twisterrob.blt.io.feeds.PredictionSummaryFeedXml.Root;
-import net.twisterrob.blt.io.feeds.PredictionSummaryFeedXml.Station;
-import net.twisterrob.blt.io.feeds.PredictionSummaryFeedXml.Time;
-import net.twisterrob.blt.io.feeds.PredictionSummaryFeedXml.Train;
+import net.twisterrob.blt.io.feeds.PredictionDetailedFeedXml.Platform;
+import net.twisterrob.blt.io.feeds.PredictionDetailedFeedXml.Root;
+import net.twisterrob.blt.io.feeds.PredictionDetailedFeedXml.Station;
+import net.twisterrob.blt.io.feeds.PredictionDetailedFeedXml.Train;
+import net.twisterrob.blt.model.Line;
 
 import org.xml.sax.*;
 
@@ -18,8 +18,8 @@ import android.sax.*;
 import android.util.Xml;
 
 @NotThreadSafe
-public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSummaryFeed> {
-	PredictionSummaryFeed m_root = new PredictionSummaryFeed();
+public class PredictionDetailedFeedHandler extends BaseFeedHandler<PredictionSummaryFeed> {
+	PredictionSummaryFeed m_root;
 	net.twisterrob.blt.model.Station m_station;
 	net.twisterrob.blt.model.Platform m_platform;
 	net.twisterrob.blt.model.Train m_train;
@@ -27,7 +27,8 @@ public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSumm
 	@Override
 	public PredictionSummaryFeed parse(InputStream is) throws IOException, SAXException {
 		RootElement root = new RootElement(Root.NS, Root.ELEMENT);
-		Element timeElement = root.getChild(Root.NS, Time.ELEMENT);
+		Element timeElement = root.getChild(Root.NS, Root.WhenCreated);
+		Element lineElement = root.getChild(Root.NS, Root.Line);
 		Element stationElement = root.getChild(Root.NS, Station.ELEMENT);
 		Element platformElement = stationElement.getChild(Root.NS, Platform.ELEMENT);
 		Element trainElement = platformElement.getChild(Root.NS, Train.ELEMENT);
@@ -38,19 +39,24 @@ public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSumm
 			}
 		});
 
-		timeElement.setStartElementListener(new StartElementListener() {
-			private final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat(Time.timeStamp$format, Locale.UK);
-			@Override
-			public void start(Attributes attributes) {
-				String attrTimeStamp = attributes.getValue(Time.timeStamp);
+		timeElement.setEndTextElementListener(new EndTextElementListener() {
+			private final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat(Root.WhenCreated$format, Locale.UK);
+			public void end(String body) {
 				Date date;
 				try {
-					date = TIMESTAMP_FORMAT.parse(attrTimeStamp);
+					date = TIMESTAMP_FORMAT.parse(body);
 				} catch (ParseException e) {
 					// TODO log
 					date = new Date();
 				}
 				m_root.setTimeStamp(date);
+			}
+		});
+
+		lineElement.setEndTextElementListener(new EndTextElementListener() {
+			public void end(String body) {
+				Line line = Line.fromTrackerNetCode(body.charAt(0));
+				m_root.setLine(line);
 			}
 		});
 
@@ -73,7 +79,7 @@ public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSumm
 		platformElement.setElementListener(new ElementListener() {
 			@Override
 			public void start(Attributes attributes) {
-				String attrCode = attributes.getValue(Platform.code);
+				String attrCode = attributes.getValue(Platform.number);
 				int code = Integer.parseInt(attrCode);
 				String attrName = attributes.getValue(Platform.name);
 
@@ -88,7 +94,7 @@ public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSumm
 			}
 		});
 		trainElement.setElementListener(new ElementListener() {
-			private final DateFormat TIME_TO_FORMAT = new SimpleDateFormat(Train.timeToStation$format, Locale.UK);
+			private final DateFormat TIME_TO_FORMAT = new SimpleDateFormat(Train.timeTo$format, Locale.UK);
 			@Override
 			public void start(Attributes attributes) {
 				String attrSetNumber = attributes.getValue(Train.setNumber);
@@ -99,16 +105,16 @@ public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSumm
 				String attrDestinationCode = attributes.getValue(Train.destinationCode);
 				int destinationCode = Integer.parseInt(attrDestinationCode);
 				String attrDestinationName = attributes.getValue(Train.destinationName);
-				String attrTimeToStation = attributes.getValue(Train.timeToStation);
+				String attrTimeToStation = attributes.getValue(Train.timeTo);
 				Date timeToStation;
 				try {
-					if (Train.timeToStation$atPlatform.equals(attrTimeToStation)) {
+					if (Train.timeTo$atPlatform.equals(attrTimeToStation)) {
 						timeToStation = new Date(0);
 					} else {
 						timeToStation = TIME_TO_FORMAT.parse(attrTimeToStation);
 					}
 				} catch (ParseException e) {
-					throw new IllegalArgumentException(attrTimeToStation + " is not in " + Train.timeToStation$format
+					throw new IllegalArgumentException(attrTimeToStation + " is not in " + Train.timeTo$format
 							+ " format");
 				}
 

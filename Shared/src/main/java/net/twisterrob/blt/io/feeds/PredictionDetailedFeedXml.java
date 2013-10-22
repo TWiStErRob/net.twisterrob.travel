@@ -8,9 +8,9 @@ import net.twisterrob.java.annotations.SimpleDateFormatString;
  * @see http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf#3.2.5
  * @see Feed#TubeDepartureBoardsPredictionDetailed
  */
-interface PredicitonDetailedFeedXml extends FeedXmlDescriptor {
+interface PredictionDetailedFeedXml extends FeedXmlDescriptor {
 	interface Root {
-		String NS = "http://trackernet.lul.co.uk/";
+		String NS = "http://trackernet.lul.co.uk";
 		String ELEMENT = "ROOT";
 		/**
 		 * <code>Disclaimer</code>: A disclaimer about the information only nature of the service.
@@ -36,7 +36,7 @@ interface PredicitonDetailedFeedXml extends FeedXmlDescriptor {
 		/**
 		 * <code>S(tation)</code>: A construct representing a station on the line.
 		 */
-		@Child(Station.class) String Station = PredicitonDetailedFeedXml.Station.ELEMENT;
+		@Child(Station.class) String Station = PredictionDetailedFeedXml.Station.ELEMENT;
 	}
 
 	/**
@@ -121,12 +121,17 @@ interface PredicitonDetailedFeedXml extends FeedXmlDescriptor {
 		/**
 		 * <code>TimeTo</code>: A value representing the ‘time to station’ for this train in minutes and seconds in the format MM:SS.
 		 * @see #timeTo$format
+		 * @see #timeTo$atPlatform
 		 */
 		@Attribute String timeTo = "TimeTo";
 		/**
 		 * @see #timeTo
 		 */
 		@ValueConstraint @SimpleDateFormatString String timeTo$format = "m:ss";
+		/**
+		 * @see #timeTo
+		 */
+		@ValueConstraint @SimpleDateFormatString String timeTo$atPlatform = "-";
 		/**
 		 * <code>Location</code>: The current location of the train.
 		 */

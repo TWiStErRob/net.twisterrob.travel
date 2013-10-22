@@ -32,7 +32,7 @@
 		<!-- Line Status-->
 		<activity
 			android:name=".ui.activity.StatusActivity"
-			android:label="@string/launcher_linestatus">
+			android:label="@string/launcher_line_status">
 			<intent-filter>
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
@@ -50,7 +50,16 @@
 		<!-- Station List -->
 		<activity
 			android:name=".ui.activity.StationListActivity"
-			android:label="@string/launcher_stationlist">
+			android:label="@string/launcher_station_list">
+			<intent-filter>
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		
+		<!-- Station Info -->
+		<activity
+			android:name=".ui.activity.StationInfoActivity"
+			android:label="@string/launcher_station_info">
 			<intent-filter>
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
@@ -59,7 +68,7 @@
 		<!-- Station Map -->
 		<activity
 			android:name=".ui.activity.StationMapActivity"
-			android:label="@string/launcher_stationmap">
+			android:label="@string/launcher_station_map">
 			<intent-filter>
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>

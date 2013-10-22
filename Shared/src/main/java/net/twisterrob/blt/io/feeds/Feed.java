@@ -91,7 +91,7 @@ public enum Feed {
 	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17615">link</a><br>
 	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">link</a> @ 3.2<br>
 	 */
-	TubeDepartureBoardsPredictionDetailed(30 * SECOND, 30 * SECOND, 30 * SECOND, MISSING_HANDLER,
+	TubeDepartureBoardsPredictionDetailed(30 * SECOND, 30 * SECOND, 30 * SECOND, PredictionDetailedFeedHandler.class,
 			"http://cloud.tfl.gov.uk/TrackerNet/PredictionDetailed/C/BNK",
 			"http://cloud.tfl.gov.uk/TrackerNet/PredictionDetailed/"),
 

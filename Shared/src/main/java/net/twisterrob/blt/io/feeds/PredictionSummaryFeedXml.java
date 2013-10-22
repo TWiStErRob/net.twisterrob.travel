@@ -8,7 +8,7 @@ import net.twisterrob.java.annotations.SimpleDateFormatString;
  * @see http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf#3.1.5
  * @see Feed#TubeDepartureBoardsPredictionSummary 
  */
-interface PredicitonSummaryFeedXml extends FeedXmlDescriptor {
+interface PredictionSummaryFeedXml extends FeedXmlDescriptor {
 	@Children({Time.class, Station.class})
 	interface Root {
 		String NS = "";

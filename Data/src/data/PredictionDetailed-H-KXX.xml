@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ROOT xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://trackernet.lul.co.uk">
+  <Disclaimer>This system is an INFORMATION ONLY system, relying entirely on 
+				information received from the relevant Operational Railway Control System(s). It is NOT 
+				considered a safety related system in the Railway Engineering sense. However, 
+				the information reported may trigger user intervention by staff regarding possible 
+				incidents on the railway, and confirmation of the situation observed should be obtained prior 
+				to any corrective action being taken.</Disclaimer>
+  <WhenCreated>22 Oct 2013 21:55:26</WhenCreated>
+  <Line>H</Line>
+  <LineName>Circle, Hammersmith &amp; City Line</LineName>
+  <S Code="KXX" Mess="" N="King's Cross St. Pancras." CurTime="21:55:26">
+    <P N="Westbound - Platform 1" Num="1" TrackCode="TJNC:ND:NE">
+      <T LCID="1025416" SetNo="415" TripNo="15" SecondsTo="128" TimeTo="2:30" Location="Between Farringdon and King's Cross" Destination="Uxbridge" DestCode="445" Order="0" DepartTime="20:55:11" DepartInterval="128" Departed="0" Direction="0" IsStalled="0" TrackCode="TJCZ" LN="M" />
+      <T LCID="1020014" SetNo="000" TripNo="0" SecondsTo="238" TimeTo="4:00" Location="Farringdon Sidings" Destination="Check Front of Train" DestCode="0" Order="0" DepartTime="4:01:49" DepartInterval="238" Departed="0" Direction="0" IsStalled="0" TrackCode="TJGT" LN="H" />
+      <T LCID="1025138" SetNo="230" TripNo="17" SecondsTo="258" TimeTo="4:30" Location="Left Barbican" Destination="Hammersmith" DestCode="196" Order="0" DepartTime="20:55:03" DepartInterval="258" Departed="0" Direction="0" IsStalled="0" TrackCode="TJ234C.234D" LN="H" />
+      <T LCID="1025368" SetNo="215" TripNo="27" SecondsTo="632" TimeTo="11:00" Location="Between Aldgate and Liverpool Street" Destination="Hammersmith" DestCode="196" Order="0" DepartTime="20:55:14" DepartInterval="632" Departed="0" Direction="0" IsStalled="0" TrackCode="TJGLALD_2" LN="H" />
+      <T LCID="1025112" SetNo="455" TripNo="20" SecondsTo="791" TimeTo="13:00" Location="At Aldgate Platform 2" Destination="Chesham" DestCode="97" Order="0" DepartTime="20:54:47" DepartInterval="791" Departed="0" Direction="0" IsStalled="0" TrackCode="TJTB/TEALD" LN="M" />
+      <T LCID="1025374" SetNo="247" TripNo="1" SecondsTo="963" TimeTo="16:00" Location="Between Stepney Green and Whitechapel" Destination="Harrow-On-The-Hill(Semifast)" DestCode="800" Order="0" DepartTime="20:55:17" DepartInterval="963" Departed="0" Direction="0" IsStalled="0" TrackCode="TD870C" LN="H" />
+      <T LCID="2002998" SetNo="216" TripNo="23" SecondsTo="1182" TimeTo="20:00" Location="Between Blackfriars and Mansion House" Destination="Hammersmith" DestCode="196" Order="0" DepartTime="20:55:21" DepartInterval="1182" Departed="0" Direction="0" IsStalled="0" TrackCode="TD831A" LN="H" />
+      <T LCID="1025439" SetNo="232" TripNo="14" SecondsTo="1329" TimeTo="22:00" Location="Between West Ham and Bromley-by-Bow" Destination="Harrow-On-The-Hill(Semifast)" DestCode="800" Order="0" DepartTime="20:55:21" DepartInterval="1329" Departed="0" Direction="0" IsStalled="0" TrackCode="TD906D" LN="H" />
+      <T LCID="2003004" SetNo="217" TripNo="25" SecondsTo="1737" TimeTo="29:00" Location="At Victoria Platform 2" Destination="Hammersmith" DestCode="196" Order="0" DepartTime="20:54:43" DepartInterval="1737" Departed="0" Direction="0" IsStalled="0" TrackCode="TD775.777" LN="H" />
+    </P>
+    <P N="Eastbound - Platform 2" Num="2" TrackCode="TJ205.SC">
+      <T LCID="1025407" SetNo="261" TripNo="17" SecondsTo="0" TimeTo="-" Location="At Platform" Destination="Barking" DestCode="73" Order="0" DepartTime="20:55:20" DepartInterval="0" Departed="0" Direction="0" IsStalled="0" TrackCode="TJ205.SC" LN="H" />
+      <T LCID="2002999" SetNo="206" TripNo="25" SecondsTo="175" TimeTo="3:00" Location="Left Great Portland Street" Destination="Circle Line" DestCode="103" Order="0" DepartTime="20:55:19" DepartInterval="175" Departed="0" Direction="0" IsStalled="0" TrackCode="TJ191A(2)" LN="H" />
+      <T LCID="1022011" SetNo="441" TripNo="16" SecondsTo="250" TimeTo="4:30" Location="Approaching Great Portland Street" Destination="Aldgate" DestCode="12" Order="0" DepartTime="20:55:20" DepartInterval="250" Departed="0" Direction="0" IsStalled="0" TrackCode="TJADBKM" LN="M" />
+      <T LCID="2003000" SetNo="237" TripNo="14" SecondsTo="407" TimeTo="7:00" Location="At Baker Street Platform 5" Destination="Barking" DestCode="73" Order="0" DepartTime="20:53:54" DepartInterval="407" Departed="0" Direction="0" IsStalled="0" TrackCode="TJ145A" LN="H" />
+      <T LCID="1025278" SetNo="425" TripNo="15" SecondsTo="572" TimeTo="10:00" Location="Between Finchley Road and Baker Street" Destination="Aldgate" DestCode="12" Order="0" DepartTime="20:55:21" DepartInterval="572" Departed="0" Direction="0" IsStalled="0" TrackCode="TJ881B" LN="M" />
+      <T LCID="2003003" SetNo="207" TripNo="25" SecondsTo="589" TimeTo="10:00" Location="Left Edgware Road" Destination="Check Front of Train" DestCode="518" Order="0" DepartTime="20:54:35" DepartInterval="589" Departed="0" Direction="0" IsStalled="0" TrackCode="TJBHEDG" LN="H" />
+      <T LCID="1025453" SetNo="000" TripNo="0" SecondsTo="812" TimeTo="14:00" Location="At Paddington platform 16" Destination="Check Front of Train" DestCode="518" Order="0" DepartTime="20:52:53" DepartInterval="812" Departed="0" Direction="0" IsStalled="0" TrackCode="TJ129A" LN="H" />
+      <T LCID="2003007" SetNo="240" TripNo="14" SecondsTo="1022" TimeTo="17:00" Location="Between Latimer Road and Westbourne Park" Destination="Check Front of Train" DestCode="518" Order="0" DepartTime="20:53:55" DepartInterval="1022" Departed="0" Direction="0" IsStalled="0" TrackCode="TBHTHLGRO" LN="H" />
+      <T LCID="1024584" SetNo="466" TripNo="10" SecondsTo="1256" TimeTo="21:00" Location="At Wembley Park Platform 5" Destination="Aldgate" DestCode="12" Order="0" DepartTime="20:54:55" DepartInterval="1256" Departed="0" Direction="0" IsStalled="0" TrackCode="TJEF:GHWEM" LN="M" />
+      <T LCID="1025275" SetNo="202" TripNo="25" SecondsTo="1268" TimeTo="21:00" Location="Between South Kensington and Gloucester Road" Destination="Circle Line" DestCode="103" Order="0" DepartTime="20:55:08" DepartInterval="1268" Departed="0" Direction="0" IsStalled="0" TrackCode="TDHZ-HY-HX-HWGLR" LN="H" />
+      <T LCID="2003011" SetNo="210" TripNo="25" SecondsTo="1382" TimeTo="23:00" Location="Between Hammersmith and Shepherd's Bush Market" Destination="Check Front of Train" DestCode="518" Order="0" DepartTime="20:55:03" DepartInterval="1382" Departed="0" Direction="0" IsStalled="0" TrackCode="TBHTHGHRO" LN="H" />
+      <T LCID="1025341" SetNo="426" TripNo="14" SecondsTo="1499" TimeTo="25:00" Location="Between Northwick Park and  Preston Road" Destination="Aldgate" DestCode="19" Order="0" DepartTime="20:53:22" DepartInterval="1499" Departed="0" Direction="0" IsStalled="0" TrackCode="TFKTNWPPRDOL" LN="M" />
+      <T LCID="2002940" SetNo="000" TripNo="0" SecondsTo="1502" TimeTo="25:00" Destination="Check Front of Train" DestCode="518" Order="0" DepartTime="19:39:20" DepartInterval="1502" Departed="0" Direction="0" IsStalled="0" TrackCode="TH101B" LN="H" />
+      <T LCID="2002993" SetNo="000" TripNo="0" SecondsTo="1508" TimeTo="25:00" Location="Between Goldhawk Road and Hammersmith" Destination="Check Front of Train" DestCode="518" Order="0" DepartTime="20:55:19" DepartInterval="1508" Departed="0" Direction="0" IsStalled="0" TrackCode="TH101A" LN="H" />
+      <T LCID="2002975" SetNo="264" TripNo="2" SecondsTo="1636" TimeTo="27:00" Location="At Victoria Platform 1" Destination="Circle Line" DestCode="103" Order="0" DepartTime="20:54:59" DepartInterval="1636" Departed="0" Direction="0" IsStalled="0" TrackCode="TD782.784" LN="H" />
+      <T LCID="1023949" SetNo="476" TripNo="9" SecondsTo="1709" TimeTo="28:00" Location="Left West Harrow" Destination="Check Front of Train" DestCode="507" Order="0" DepartTime="18:30:52" DepartInterval="1709" Departed="0" Direction="0" IsStalled="0" TrackCode="TJ721C" LN="M" />
+      <T LCID="1025401" SetNo="451" TripNo="0" SecondsTo="1731" TimeTo="29:00" Location="Between Rayners Lane and West Harrow" Destination="Check Front of Train" DestCode="0" Order="0" DepartTime="20:55:11" DepartInterval="1731" Departed="0" Direction="0" IsStalled="0" TrackCode="TJJJRAY" LN="M" />
+    </P>
+  </S>
+</ROOT>

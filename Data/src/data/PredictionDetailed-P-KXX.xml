@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ROOT xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://trackernet.lul.co.uk">
+  <Disclaimer>This system is an INFORMATION ONLY system, relying entirely on 
+				information received from the relevant Operational Railway Control System(s). It is NOT 
+				considered a safety related system in the Railway Engineering sense. However, 
+				the information reported may trigger user intervention by staff regarding possible 
+				incidents on the railway, and confirmation of the situation observed should be obtained prior 
+				to any corrective action being taken.</Disclaimer>
+  <WhenCreated>22 Oct 2013 21:56:32</WhenCreated>
+  <Line>P</Line>
+  <LineName>Piccadilly Line</LineName>
+  <S Code="KXX" Mess="" N="King's Cross St. Pancras." CurTime="21:56:32">
+    <P N="Westbound - Platform 5" Num="5" TrackCode="TP7900.790AKXX">
+      <T LCID="1023933" SetNo="357" TripNo="13" SecondsTo="6" TimeTo="0:30" Location="Between Caledonian Road and King's Cross" Destination="Check Front of Train" DestCode="512" Order="0" DepartTime="20:56:28" DepartInterval="6" Departed="0" Direction="0" IsStalled="0" TrackCode="TP802E" LN="P" />
+      <T LCID="1024222" SetNo="341" TripNo="12" SecondsTo="100" TimeTo="2:00" Location="Between Caledonian Road and King's Cross" Destination="Heathrow T123 + 5" DestCode="219" Order="0" DepartTime="20:56:28" DepartInterval="100" Departed="0" Direction="0" IsStalled="0" TrackCode="TP806BA.808B" LN="P" />
+      <T LCID="1024695" SetNo="260" TripNo="12" SecondsTo="322" TimeTo="5:00" Location="Between Arsenal and Holloway Road" Destination="Heathrow via T4 Loop" DestCode="410" Order="0" DepartTime="20:56:00" DepartInterval="322" Departed="0" Direction="0" IsStalled="0" TrackCode="TP828A.830C" LN="P" />
+      <T LCID="1024598" SetNo="277" TripNo="7" SecondsTo="382" TimeTo="6:00" Location="Between Finsbury Park and Arsenal" Destination="Uxbridge" DestCode="448" Order="0" DepartTime="20:56:20" DepartInterval="382" Departed="0" Direction="0" IsStalled="0" TrackCode="TPF.EARL" LN="P" />
+      <T LCID="1024552" SetNo="257" TripNo="11" SecondsTo="637" TimeTo="11:00" Location="Between Turnpike Lane and Manor House" Destination="Heathrow T123 + 5" DestCode="219" Order="0" DepartTime="20:56:20" DepartInterval="637" Departed="0" Direction="0" IsStalled="0" TrackCode="TP854C.B" LN="P" />
+      <T LCID="1024400" SetNo="255" TripNo="11" SecondsTo="834" TimeTo="14:00" Location="Between Wood Green and Turnpike Lane" Destination="Heathrow via T4 Loop" DestCode="410" Order="0" DepartTime="20:56:27" DepartInterval="834" Departed="0" Direction="0" IsStalled="0" TrackCode="TPZTUL" LN="P" />
+      <T LCID="1020349" SetNo="256" TripNo="12" SecondsTo="1118" TimeTo="19:00" Location="Approaching Bounds Green" Destination="Check Front of Train" DestCode="512" Order="0" DepartTime="20:56:16" DepartInterval="1118" Departed="0" Direction="0" IsStalled="0" TrackCode="TP894.896CD" LN="P" />
+      <T LCID="1020750" SetNo="267" TripNo="10" SecondsTo="1315" TimeTo="22:00" Location="Between Southgate and Arnos Grove" Destination="Heathrow T123 + 5" DestCode="219" Order="0" DepartTime="20:56:21" DepartInterval="1315" Departed="0" Direction="0" IsStalled="0" TrackCode="TP904A" LN="P" />
+      <T LCID="1022609" SetNo="270" TripNo="10" SecondsTo="1536" TimeTo="26:00" Location="Between Oakwood and Southgate" Destination="Heathrow via T4 Loop" DestCode="410" Order="0" DepartTime="20:56:27" DepartInterval="1536" Departed="0" Direction="0" IsStalled="0" TrackCode="TP916A.B.C" LN="P" />
+      <T LCID="1023261" SetNo="300" TripNo="12" SecondsTo="1792" TimeTo="30:00" Location="Between Cockfosters and Oakwood" Destination="Uxbridge" DestCode="448" Order="0" DepartTime="20:56:27" DepartInterval="1792" Departed="0" Direction="0" IsStalled="0" TrackCode="TPBLOKW" LN="P" />
+    </P>
+    <P N="Eastbound - Platform 6" Num="6" TrackCode="TPBRKXX">
+      <T LCID="1024917" SetNo="264" TripNo="11" SecondsTo="20" TimeTo="0:30" Location="Between Russell Square and King's Cross" Destination="Cockfosters" DestCode="104" Order="0" DepartTime="20:56:18" DepartInterval="20" Departed="0" Direction="0" IsStalled="0" TrackCode="TPBHRSQ_3" LN="P" />
+      <T LCID="1022520" SetNo="306" TripNo="11" SecondsTo="250" TimeTo="4:30" Location="At Holborn Platform 4" Destination="Cockfosters" DestCode="104" Order="0" DepartTime="20:55:46" DepartInterval="250" Departed="0" Direction="0" IsStalled="0" TrackCode="TP769A.BHOL" LN="P" />
+      <T LCID="2002692" SetNo="305" TripNo="10" SecondsTo="421" TimeTo="7:00" Location="At Leicester Square Platform 2" Destination="Cockfosters" DestCode="104" Order="0" DepartTime="20:56:12" DepartInterval="421" Departed="0" Direction="0" IsStalled="0" TrackCode="TP749A.BLSQ" LN="P" />
+      <T LCID="1023617" SetNo="342" TripNo="15" SecondsTo="763" TimeTo="13:00" Location="At Hyde Park Corner Platform 1" Destination="Arnos Grove" DestCode="36" Order="0" DepartTime="20:53:58" DepartInterval="763" Departed="0" Direction="0" IsStalled="0" TrackCode="TP709AB" LN="P" />
+      <T LCID="1024723" SetNo="324" TripNo="7" SecondsTo="987" TimeTo="16:00" Location="Left South Kensington" Destination="Cockfosters" DestCode="104" Order="0" DepartTime="20:56:10" DepartInterval="987" Departed="0" Direction="0" IsStalled="0" TrackCode="TP679C-681A" LN="P" />
+      <T LCID="1024652" SetNo="313" TripNo="11" SecondsTo="1086" TimeTo="18:00" Location="Left Gloucester Road" Destination="Cockfosters" DestCode="104" Order="0" DepartTime="20:56:18" DepartInterval="1086" Departed="0" Direction="0" IsStalled="0" TrackCode="TP669C-671AB" LN="P" />
+      <T LCID="1023759" SetNo="265" TripNo="11" SecondsTo="1318" TimeTo="22:00" Location="Between Barons Court and Earl's Court" Destination="Cockfosters" DestCode="104" Order="0" DepartTime="20:55:56" DepartInterval="1318" Departed="0" Direction="0" IsStalled="0" TrackCode="TP651ABCD" LN="P" />
+      <T LCID="1025425" SetNo="321" TripNo="10" SecondsTo="1452" TimeTo="24:00" Location="Between Hammersmith and Barons Court" Destination="Cockfosters" DestCode="105" Order="0" DepartTime="20:56:18" DepartInterval="1452" Departed="0" Direction="0" IsStalled="0" TrackCode="TPCM_1" LN="P" />
+      <T LCID="2002910" SetNo="316" TripNo="11" SecondsTo="1643" TimeTo="27:00" Location="At Ravenscourt Park Platform 3" Destination="Cockfosters" DestCode="104" Order="0" DepartTime="20:56:12" DepartInterval="1643" Departed="0" Direction="0" IsStalled="0" TrackCode="TP635C.639A" LN="P" />
+    </P>
+  </S>
+</ROOT>

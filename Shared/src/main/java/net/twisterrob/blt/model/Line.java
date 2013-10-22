@@ -197,4 +197,12 @@ public enum Line {
 		}
 		return Line.unknown;
 	}
+	public static Line fromTrackerNetCode(char code) {
+		for (Line line: values()) {
+			if (line.m_code == code) {
+				return line;
+			}
+		}
+		return Line.unknown;
+	}
 }

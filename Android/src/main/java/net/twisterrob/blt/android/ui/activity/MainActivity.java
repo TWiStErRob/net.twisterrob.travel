@@ -17,8 +17,8 @@ import android.widget.AdapterView.OnItemClickListener;
 public class MainActivity extends ActionBarActivity {
 
 	private static final List<LauncherItem> launcherItems = Arrays.asList( //
-			new LauncherItem(R.string.launcher_linestatus, StatusActivity.class), //
-			new LauncherItem(R.string.launcher_stationlist, StationListActivity.class), //
+			new LauncherItem(R.string.launcher_line_status, StatusActivity.class), //
+			new LauncherItem(R.string.launcher_station_list, StationListActivity.class), //
 			new LauncherItem(R.string.launcher_prediction_summary, PredictionSummaryActivity.class) {
 				@Override
 				void addIntentParams(Intent intent) {
@@ -26,7 +26,14 @@ public class MainActivity extends ActionBarActivity {
 					intent.putExtra(PredictionSummaryActivity.EXTRA_LINE, Line.Central);
 				}
 			}, //
-			new LauncherItem(R.string.launcher_stationmap, StationMapActivity.class) //
+			new LauncherItem(R.string.launcher_station_map, StationMapActivity.class), //
+			new LauncherItem(R.string.launcher_station_info, StationInfoActivity.class) {
+				@Override
+				void addIntentParams(Intent intent) {
+					super.addIntentParams(intent);
+					intent.putExtra(StationInfoActivity.EXTRA_STATION_NAME, "King's Cross St. Pancras");
+				}
+			} //
 			);
 
 	@Override

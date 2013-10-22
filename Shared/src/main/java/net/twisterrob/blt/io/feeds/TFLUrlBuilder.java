@@ -34,7 +34,9 @@ public class TFLUrlBuilder implements URLBuilder {
 		switch (feed) {
 			case TubeDepartureBoardsPredictionSummary:
 				return new URL(feed.getUrl(), ((Line)args.get("line")).getTrackerNetCode());
-
+			case TubeDepartureBoardsPredictionDetailed:
+				return new URL(new URL(feed.getUrl(), ((Line)args.get("line")).getTrackerNetCode()),
+						(String)args.get("station"));
 				//$CASES-OMITTED$
 			default:
 				return feed.getUrl();
