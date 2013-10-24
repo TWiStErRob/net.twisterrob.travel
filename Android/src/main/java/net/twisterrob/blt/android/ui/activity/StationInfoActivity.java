@@ -8,7 +8,7 @@ import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
 import net.twisterrob.blt.android.ui.*;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter;
-import net.twisterrob.blt.io.feeds.*;
+import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeed;
 import net.twisterrob.blt.model.*;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
@@ -42,6 +42,15 @@ public class StationInfoActivity extends ActionBarActivity
 
 	protected ListViewHandler m_listHandler;
 
+	private final Map<Station, Map<Platform, List<Train>>> m_map = new TreeMap<Station, Map<Platform, List<Train>>>(
+			new Comparator<Station>() {
+				public int compare(Station lhs, Station rhs) {
+					int first = Station.COMPARATOR_NAME.compare(lhs, rhs);
+					return first != 0? first : lhs.getLines().get(0).compareTo(rhs.getLines().get(0));
+				}
+			});
+
+	private List<Line> m_lines;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,7 +59,10 @@ public class StationInfoActivity extends ActionBarActivity
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		m_listView = (ExpandableListView)findViewById(android.R.id.list);
+		m_adapter = new PredictionSummaryAdapter(StationInfoActivity.this, m_listView, m_map,
+				Collections.<PlatformDirection> emptySet());
 		m_listHandler = new ListViewHandler(this, m_listView, android.R.id.empty);
+		m_listHandler.update("You've ruled out all stations, please loosen the filter.", m_adapter);
 
 		m_ptrAttacher = AppCompatPullToRefreshAttacher.get(this).init(R.id.layout$wrapper, this);
 
@@ -79,32 +91,59 @@ public class StationInfoActivity extends ActionBarActivity
 	}
 
 	private void delayedGetRoot() {
-		Map<String, Object> args = new HashMap<String, Object>();
-		args.put("line", Line.Northern);
-		args.put("station", "KXX");
-		new DownloadFeedTask<PredictionSummaryFeed>(args) {
-			@Override
-			protected void onPostExecute(AsyncTaskResult<PredictionSummaryFeed> result) {
-				if (result.getError() != null) {
-					String msg = "Cannot load line prediction summary: " + result.getError();
-					LOG.error(msg, result.getError());
-					m_listHandler.empty(msg);
-				} else if (result.getResult() == null) {
-					String msg = "No line prediction summary returned";
-					LOG.error(msg, result.getError());
-					m_listHandler.empty(msg);
-				} else {
-					PredictionSummaryFeed root = result.getResult();
-					root.setLine(Line.Northern);
-					m_lastUpdated = Calendar.getInstance();
-					m_adapter = new PredictionSummaryAdapter(StationInfoActivity.this, m_listView, root,
-							Collections.<PlatformDirection> emptySet());
-					m_listHandler.update("You've ruled out all stations, please loosen the filter.", m_adapter);
-					m_ptrAttacher.setLastUpdated("Last updated at " + fmt.format(m_lastUpdated.getTime()));
+		List<Line> lines = Arrays.asList(Line.Piccadilly, Line.Northern, Line.Metropolitan, Line.Victoria,
+				Line.HammersmithAndCity);
+		m_lines = lines;
+		m_doneLines.clear();
+		for (Line line: lines) {
+			Map<String, Object> args = new HashMap<String, Object>();
+			args.put("line", line);
+			args.put("station", "KXX");
+			new DownloadFeedTask<PredictionSummaryFeed>(args) {
+				@Override
+				protected void onPostExecute(AsyncTaskResult<PredictionSummaryFeed> result) {
+					if (result.getError() != null) {
+						String msg = "Cannot load line prediction summary: " + result.getError();
+						LOG.error(msg, result.getError());
+						m_listHandler.empty(msg);
+					} else if (result.getResult() == null) {
+						String msg = "No line prediction summary returned";
+						LOG.error(msg, result.getError());
+						m_listHandler.empty(msg);
+					} else {
+						PredictionSummaryFeed root = result.getResult();
+						addResult(root);
+					}
+					m_ptrAttacher.setRefreshComplete();
 				}
-				m_ptrAttacher.setRefreshComplete();
-			}
-		}.execute(Feed.TubeDepartureBoardsPredictionDetailed);
+			}.execute(Feed.TubeDepartureBoardsPredictionDetailed);
+		}
+	}
+
+	List<Line> m_doneLines = new ArrayList<Line>();
+
+	protected synchronized void addResult(PredictionSummaryFeed root) {
+		m_lastUpdated = Calendar.getInstance();
+		m_ptrAttacher.setLastUpdated("Last updated at " + fmt.format(m_lastUpdated.getTime()));
+		m_doneLines.add(root.getLine());
+		Map<Station, Map<Platform, List<Train>>> map = map(root);
+		m_map.putAll(map);
+		if (m_lines.size() == m_doneLines.size()) {
+			m_adapter.notifyDataSetChanged();
+			m_listHandler.update("Done " + m_lines + " vs " + m_doneLines, m_adapter);
+		} else {
+			m_listHandler.empty("Pending " + m_lines + " vs " + m_doneLines);
+		}
+	}
+
+	private static Map<Station, Map<Platform, List<Train>>> map(PredictionSummaryFeed root) {
+		Map<Station, Map<Platform, List<Train>>> data = new TreeMap<Station, Map<Platform, List<Train>>>(
+				Station.COMPARATOR_NAME);
+
+		for (Station station: root.getStationPlatform().keySet()) {
+			data.put(station, root.collectTrains(station));
+		}
+		return data;
 	}
 
 	public void onGroupExpand(int groupPosition) {

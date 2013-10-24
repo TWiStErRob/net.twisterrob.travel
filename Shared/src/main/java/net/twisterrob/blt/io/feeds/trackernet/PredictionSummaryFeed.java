@@ -27,6 +27,9 @@ public class PredictionSummaryFeed extends BaseFeed {
 		return m_line;
 	}
 	public void setLine(Line line) {
+		for (Station station: m_stations) {
+			station.setLines(Collections.singletonList(line));
+		}
 		this.m_line = line;
 	}
 
@@ -48,6 +51,11 @@ public class PredictionSummaryFeed extends BaseFeed {
 	@Override
 	protected void postProcess() {
 		super.postProcess();
+		if (m_line != null) {
+			for (Station station: m_stations) {
+				station.setLines(Collections.singletonList(m_line));
+			}
+		}
 	}
 
 	void addStation(Station station) {

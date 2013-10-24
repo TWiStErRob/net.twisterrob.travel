@@ -10,7 +10,7 @@ import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
 import net.twisterrob.blt.android.ui.*;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter;
-import net.twisterrob.blt.io.feeds.*;
+import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeed;
 import net.twisterrob.blt.model.*;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
@@ -158,13 +158,21 @@ public class PredictionSummaryActivity extends ActionBarActivity
 					PredictionSummaryFeed root = result.getResult();
 					root.setLine(m_line);
 					m_lastUpdated = Calendar.getInstance();
-					m_adapter = new PredictionSummaryAdapter(PredictionSummaryActivity.this, m_listView, root,
+					m_adapter = new PredictionSummaryAdapter(PredictionSummaryActivity.this, m_listView, map(root),
 							m_directionsEnabled);
 					m_listHandler.update("You've ruled out all stations, please loosen the filter.", m_adapter);
 					m_ptrAttacher.setLastUpdated("Last updated at " + fmt.format(m_lastUpdated.getTime()));
 					restoreExpandedState();
 				}
 				m_ptrAttacher.setRefreshComplete();
+			}
+			private Map<Station, Map<Platform, List<Train>>> map(PredictionSummaryFeed root) {
+				Map<Station, Map<Platform, List<Train>>> data = new TreeMap<Station, Map<Platform, List<Train>>>(
+						Station.COMPARATOR_NAME);
+				for (Station station: root.getStationPlatform().keySet()) {
+					data.put(station, root.collectTrains(station));
+				}
+				return data;
 			}
 		}.execute(Feed.TubeDepartureBoardsPredictionSummary);
 	}

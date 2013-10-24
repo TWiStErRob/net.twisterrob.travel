@@ -3,11 +3,10 @@ package net.twisterrob.blt.android.ui.adapter;
 import java.util.*;
 
 import net.twisterrob.android.adapter.BaseFilteringExpandableList3Adapter;
-import net.twisterrob.blt.android.R;
+import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.ChildViewHolder;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.GroupViewHolder;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.TrainViewHolder;
-import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeed;
 import net.twisterrob.blt.model.*;
 import android.content.Context;
 import android.graphics.Color;
@@ -17,28 +16,12 @@ import android.widget.*;
 public class PredictionSummaryAdapter
 		extends
 			BaseFilteringExpandableList3Adapter<Station, Platform, Train, GroupViewHolder, ChildViewHolder, TrainViewHolder> {
-	private static final LineColors colors = new TubeStatusPresentationLineColors();
-	private PredictionSummaryFeed m_root;
+	private static final LineColors colors = App.getInstance().getStaticData().getLineColors();
 
 	public PredictionSummaryAdapter(final Context context, ExpandableListView outerList,
-			final PredictionSummaryFeed root, Collection<PlatformDirection> directionsEnabled) {
-		super(context, outerList, map(root));
-		m_root = root;
+			Map<Station, Map<Platform, List<Train>>> data, Collection<PlatformDirection> directionsEnabled) {
+		super(context, outerList, data);
 		m_directions.addAll(directionsEnabled);
-	}
-
-	private static Map<Station, Map<Platform, List<Train>>> map(PredictionSummaryFeed root) {
-		Map<Station, Map<Platform, List<Train>>> data = new TreeMap<Station, Map<Platform, List<Train>>>(
-				new Comparator<Station>() {
-					@Override
-					public int compare(Station lhs, Station rhs) {
-						return lhs.getName().compareTo(rhs.getName());
-					}
-				});
-		for (Station station: root.getStationPlatform().keySet()) {
-			data.put(station, root.collectTrains(station));
-		}
-		return data;
 	}
 
 	protected static class GroupViewHolder {
@@ -55,6 +38,16 @@ public class PredictionSummaryAdapter
 	}
 
 	@Override
+	protected Map<Station, List<Platform>> createChildrenMap() {
+		return new TreeMap<Station, List<Platform>>(new Comparator<Station>() {
+			public int compare(Station lhs, Station rhs) {
+				int first = Station.COMPARATOR_NAME.compare(lhs, rhs);
+				return first != 0? first : lhs.getLines().get(0).compareTo(rhs.getLines().get(0));
+			}
+		});
+	}
+
+	@Override
 	protected int getLevel1LayoutId() {
 		return R.layout.item_prediction_summary_station;
 	}
@@ -62,8 +55,6 @@ public class PredictionSummaryAdapter
 	protected GroupViewHolder createGroupHolder(View groupConvertView) {
 		GroupViewHolder groupHolder = new GroupViewHolder();
 		groupHolder.title = (TextView)groupConvertView.findViewById(R.id.prediction_station_name);
-		groupHolder.title.setBackgroundColor(m_root.getLine().getBackground(colors));
-		groupHolder.title.setTextColor(m_root.getLine().getForeground(colors));
 		return groupHolder;
 	}
 
@@ -72,6 +63,8 @@ public class PredictionSummaryAdapter
 			View level1ConvertView) {
 		String title = String.format("[%s] %s", currentLevel1.getTrackerNetCode(), currentLevel1.getName());
 		level1Holder.title.setText(title);
+		level1Holder.title.setBackgroundColor(currentLevel1.getLines().get(0).getBackground(colors));
+		level1Holder.title.setTextColor(currentLevel1.getLines().get(0).getForeground(colors));
 	}
 
 	@Override
