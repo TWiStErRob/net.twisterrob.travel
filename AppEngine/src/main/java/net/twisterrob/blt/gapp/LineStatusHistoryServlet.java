@@ -11,7 +11,8 @@ import name.fraser.neil.plaintext.*;
 import name.fraser.neil.plaintext.diff_match_patch.Diff;
 import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus;
+import net.twisterrob.blt.model.Line;
 import net.twisterrob.java.utils.ObjectTools;
 import net.twisterrob.java.web.InvokerMap;
 

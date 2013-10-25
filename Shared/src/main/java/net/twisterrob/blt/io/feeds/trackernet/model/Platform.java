@@ -1,6 +1,8 @@
-package net.twisterrob.blt.model;
+package net.twisterrob.blt.io.feeds.trackernet.model;
 
 import java.util.regex.*;
+
+import net.twisterrob.blt.model.PlatformDirection;
 
 public class Platform {
 	private static final Pattern PLATFORM_NUMBER = Pattern.compile(".*platform (\\d+).*", Pattern.CASE_INSENSITIVE);

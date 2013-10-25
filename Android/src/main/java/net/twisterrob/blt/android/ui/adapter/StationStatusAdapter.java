@@ -4,7 +4,8 @@ import java.util.Collection;
 
 import net.twisterrob.android.adapter.BaseListAdapter;
 import net.twisterrob.blt.android.*;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.io.feeds.trackernet.model.*;
+import net.twisterrob.blt.model.LineColors;
 import android.content.Context;
 import android.graphics.*;
 import android.view.View;

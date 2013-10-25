@@ -1,4 +1,4 @@
-package net.twisterrob.blt.io.feeds;
+package net.twisterrob.blt.io.feeds.facilities;
 
 import java.io.*;
 import java.util.*;
@@ -7,6 +7,7 @@ import java.util.regex.*;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import net.twisterrob.android.utils.tools.PrimitiveTools;
+import net.twisterrob.blt.io.feeds.BaseFeedHandler;
 import net.twisterrob.blt.model.*;
 import net.twisterrob.java.model.Location;
 
@@ -145,6 +146,7 @@ public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
 			}
 		});
 		stationServingLine.setEndTextElementListener(new EndTextElementListener() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void end(String body) {
 				Line line = Line.fromAlias(body);

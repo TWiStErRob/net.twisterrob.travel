@@ -2,7 +2,8 @@ package net.twisterrob.blt.android.ui.adapter;
 
 import java.util.*;
 
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.io.feeds.trackernet.model.Platform;
+import net.twisterrob.blt.model.PlatformDirection;
 import android.widget.Filter;
 
 /**

@@ -4,7 +4,7 @@ import java.util.Map;
 
 import net.twisterrob.android.utils.log.*;
 import net.twisterrob.android.utils.tools.DBTools;
-import net.twisterrob.blt.model.Station;
+import net.twisterrob.blt.android.db.model.Station;
 import net.twisterrob.java.io.IOTools;
 import net.twisterrob.java.model.Location;
 import android.content.ContentValues;

@@ -12,6 +12,7 @@ import net.twisterrob.blt.android.ui.*;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter;
 import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeed;
+import net.twisterrob.blt.io.feeds.trackernet.model.*;
 import net.twisterrob.blt.model.*;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 import android.content.Intent;

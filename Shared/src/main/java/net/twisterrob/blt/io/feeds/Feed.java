@@ -4,6 +4,7 @@ import static net.twisterrob.blt.io.feeds.Feed.Type.*;
 
 import java.net.*;
 
+import net.twisterrob.blt.io.feeds.facilities.FacilitiesFeedHandler;
 import net.twisterrob.blt.io.feeds.trackernet.*;
 /**
  * Feeds provided by Transport for London<br>
@@ -351,7 +352,7 @@ public enum Feed {
 	 */
 	private int m_maxDisplay;
 	private URL m_url = null;
-	private Class<? extends BaseFeedHandler<? extends BaseFeed>> m_handler;
+	private Class<? extends FeedHandler<? extends BaseFeed>> m_handler;
 	private final URL m_sampleUrl;
 
 	/**
@@ -360,7 +361,7 @@ public enum Feed {
 	private int m_feedId = -1;
 
 	private Feed(Type type, int freshTime, int maxDelay, int maxDisplay,
-			Class<? extends BaseFeedHandler<? extends BaseFeed>> handler, String sampleUrl) {
+			Class<? extends FeedHandler<? extends BaseFeed>> handler, String sampleUrl) {
 		this.m_type = type;
 		this.m_freshTime = freshTime;
 		this.m_maxDelay = maxDelay;
@@ -369,13 +370,13 @@ public enum Feed {
 		this.m_sampleUrl = sampleUrl == null? null : createURL(sampleUrl);
 	}
 
-	private Feed(int freshTime, int maxDelay, int maxDisplay,
-			Class<? extends BaseFeedHandler<? extends BaseFeed>> handler, String sampleUrl, String url) {
+	private Feed(int freshTime, int maxDelay, int maxDisplay, Class<? extends FeedHandler<? extends BaseFeed>> handler,
+			String sampleUrl, String url) {
 		this(Other, freshTime, maxDelay, maxDisplay, handler, sampleUrl);
 		m_url = url != null? createURL(url) : null;
 	}
 	private Feed(int feedId, int freshTime, int maxDelay, int maxDisplay,
-			Class<? extends BaseFeedHandler<? extends BaseFeed>> handler, String sampleUrl) {
+			Class<? extends FeedHandler<? extends BaseFeed>> handler, String sampleUrl) {
 		this(Syndication, freshTime, maxDelay, maxDisplay, handler, sampleUrl);
 		m_feedId = feedId;
 	}
@@ -428,7 +429,7 @@ public enum Feed {
 			return m_baseUrl;
 		}
 	}
-	public BaseFeedHandler<? extends BaseFeed> getHandler() {
+	public FeedHandler<? extends BaseFeed> getHandler() {
 		try {
 			if (m_handler == null) {
 				throw new IllegalArgumentException(this + " does not have a handler registered");
@@ -453,6 +454,6 @@ public enum Feed {
 		int N_A = 0;
 		String MISSING_URL = null;
 		String MISSING_SAMPLE = null;
-		Class<? extends BaseFeedHandler<? extends BaseFeed>> MISSING_HANDLER = null;
+		Class<? extends FeedHandler<? extends BaseFeed>> MISSING_HANDLER = null;
 	}
 }

@@ -2,6 +2,7 @@ package net.twisterrob.blt.android.db;
 
 import java.util.*;
 
+import net.twisterrob.blt.android.db.model.Station;
 import net.twisterrob.blt.model.*;
 import net.twisterrob.java.model.Location;
 import android.database.*;

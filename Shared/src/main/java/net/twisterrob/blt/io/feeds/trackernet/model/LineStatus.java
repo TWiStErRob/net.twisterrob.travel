@@ -1,4 +1,7 @@
-package net.twisterrob.blt.model;
+package net.twisterrob.blt.io.feeds.trackernet.model;
+
+import net.twisterrob.blt.model.Line;
+
 public class LineStatus {
 	private Line m_line;
 	private DelayType m_type;

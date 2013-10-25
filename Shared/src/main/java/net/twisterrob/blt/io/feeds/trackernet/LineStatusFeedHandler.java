@@ -9,7 +9,7 @@ import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.Line;
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.LineStatus;
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.Root;
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.Status;
-import net.twisterrob.blt.model.DelayType;
+import net.twisterrob.blt.io.feeds.trackernet.model.DelayType;
 
 import org.xml.sax.*;
 
@@ -19,7 +19,7 @@ import android.util.Xml;
 @NotThreadSafe
 public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 	LineStatusFeed m_root = new LineStatusFeed();
-	net.twisterrob.blt.model.LineStatus m_lineStatus;
+	net.twisterrob.blt.io.feeds.trackernet.model.LineStatus m_lineStatus;
 
 	@Override
 	public LineStatusFeed parse(InputStream is) throws IOException, SAXException {
@@ -38,7 +38,7 @@ public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 			@Override
 			public void start(Attributes attributes) {
 				String attrStatusDetails = attributes.getValue(LineStatus.statusDetails);
-				m_lineStatus = new net.twisterrob.blt.model.LineStatus();
+				m_lineStatus = new net.twisterrob.blt.io.feeds.trackernet.model.LineStatus();
 				m_lineStatus.setDescription(attrStatusDetails);
 			}
 			@Override

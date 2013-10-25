@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 
 import net.twisterrob.android.adapter.BaseListAdapter;
 import net.twisterrob.blt.android.*;
+import net.twisterrob.blt.android.db.model.Station;
 import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder;
 import net.twisterrob.blt.model.*;
 import android.content.Context;
@@ -54,7 +55,7 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 
 	@Override
 	protected void bindView(final ViewHolder holder, final Station currentItem, final View convertView) {
-		List<Line> lines = App.getInstance().getDataBaseHelper().getLines(currentItem);
+		List<Line> lines = App.getInstance().getDataBaseHelper().getLines(currentItem.getId());
 		String title = currentItem.getName();
 		String description = String.format("%s: %s", currentItem.getType(), lines);
 		Drawable icon = bitmapCache.get(currentItem.getType());

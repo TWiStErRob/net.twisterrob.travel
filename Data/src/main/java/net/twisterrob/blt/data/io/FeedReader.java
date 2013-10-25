@@ -22,6 +22,7 @@ public class FeedReader {
 		return feed;
 	}
 
+	@SuppressWarnings("static-method")
 	public JourneyPlannerTimetableFeed readFeed(File file) throws IOException, SAXException {
 		JourneyPlannerTimetableHandler handler = new JourneyPlannerTimetableHandler();
 		try (FileInputStream stream = new FileInputStream(file)) {

@@ -1,8 +1,9 @@
-package net.twisterrob.blt.io.feeds;
+package net.twisterrob.blt.io.feeds.facilities;
 
 import java.util.*;
 
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.io.feeds.BaseFeed;
+import net.twisterrob.blt.model.Line;
 
 public class FacilitiesFeed extends BaseFeed {
 	private List<Station> m_stations;

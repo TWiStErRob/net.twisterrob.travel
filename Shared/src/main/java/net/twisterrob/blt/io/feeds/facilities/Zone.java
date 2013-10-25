@@ -1,4 +1,4 @@
-package net.twisterrob.blt.model;
+package net.twisterrob.blt.io.feeds.facilities;
 public class Zone {
 	private int m_zone;
 

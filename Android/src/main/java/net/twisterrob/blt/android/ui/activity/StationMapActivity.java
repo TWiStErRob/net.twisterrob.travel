@@ -7,7 +7,7 @@ import net.twisterrob.android.map.BaseItemizedOverlay;
 import net.twisterrob.android.utils.model.LocationUtils;
 import net.twisterrob.android.utils.tools.IOTools;
 import net.twisterrob.blt.android.*;
-import net.twisterrob.blt.model.Station;
+import net.twisterrob.blt.android.db.model.Station;
 import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.drawable.*;

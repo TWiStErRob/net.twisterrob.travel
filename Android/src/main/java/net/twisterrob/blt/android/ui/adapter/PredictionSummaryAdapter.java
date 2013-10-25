@@ -7,6 +7,7 @@ import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.ChildViewHolder;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.GroupViewHolder;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.TrainViewHolder;
+import net.twisterrob.blt.io.feeds.trackernet.model.*;
 import net.twisterrob.blt.model.*;
 import android.content.Context;
 import android.graphics.Color;
@@ -42,7 +43,7 @@ public class PredictionSummaryAdapter
 		return new TreeMap<Station, List<Platform>>(new Comparator<Station>() {
 			public int compare(Station lhs, Station rhs) {
 				int first = Station.COMPARATOR_NAME.compare(lhs, rhs);
-				return first != 0? first : lhs.getLines().get(0).compareTo(rhs.getLines().get(0));
+				return first != 0? first : lhs.getLine().compareTo(rhs.getLine());
 			}
 		});
 	}
@@ -63,8 +64,8 @@ public class PredictionSummaryAdapter
 			View level1ConvertView) {
 		String title = String.format("[%s] %s", currentLevel1.getTrackerNetCode(), currentLevel1.getName());
 		level1Holder.title.setText(title);
-		level1Holder.title.setBackgroundColor(currentLevel1.getLines().get(0).getBackground(colors));
-		level1Holder.title.setTextColor(currentLevel1.getLines().get(0).getForeground(colors));
+		level1Holder.title.setBackgroundColor(currentLevel1.getLine().getBackground(colors));
+		level1Holder.title.setTextColor(currentLevel1.getLine().getForeground(colors));
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package net.twisterrob.blt.model;
+package net.twisterrob.blt.io.feeds.facilities;
 
 import net.twisterrob.android.utils.log.*;
 

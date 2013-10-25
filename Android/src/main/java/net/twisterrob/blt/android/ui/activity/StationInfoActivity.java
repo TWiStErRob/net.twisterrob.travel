@@ -10,6 +10,7 @@ import net.twisterrob.blt.android.ui.*;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter;
 import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeed;
+import net.twisterrob.blt.io.feeds.trackernet.model.*;
 import net.twisterrob.blt.model.*;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 import android.content.Intent;
@@ -46,7 +47,7 @@ public class StationInfoActivity extends ActionBarActivity
 			new Comparator<Station>() {
 				public int compare(Station lhs, Station rhs) {
 					int first = Station.COMPARATOR_NAME.compare(lhs, rhs);
-					return first != 0? first : lhs.getLines().get(0).compareTo(rhs.getLines().get(0));
+					return first != 0? first : lhs.getLine().compareTo(rhs.getLine());
 				}
 			});
 
@@ -140,7 +141,7 @@ public class StationInfoActivity extends ActionBarActivity
 		Map<Station, Map<Platform, List<Train>>> data = new TreeMap<Station, Map<Platform, List<Train>>>(
 				Station.COMPARATOR_NAME);
 
-		for (Station station: root.getStationPlatform().keySet()) {
+		for (net.twisterrob.blt.io.feeds.trackernet.model.Station station: root.getStationPlatform().keySet()) {
 			data.put(station, root.collectTrains(station));
 		}
 		return data;

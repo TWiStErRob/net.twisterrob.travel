@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
-import net.twisterrob.blt.io.feeds.*;
+import net.twisterrob.blt.io.feeds.facilities.*;
 import net.twisterrob.java.io.IOTools;
 
 import org.xml.sax.SAXException;

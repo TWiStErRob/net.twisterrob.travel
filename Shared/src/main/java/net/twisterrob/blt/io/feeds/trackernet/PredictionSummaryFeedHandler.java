@@ -7,7 +7,11 @@ import java.util.*;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import net.twisterrob.blt.io.feeds.BaseFeedHandler;
-import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeedXml.*;
+import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeedXml.Platform;
+import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeedXml.Root;
+import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeedXml.Station;
+import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeedXml.Time;
+import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeedXml.Train;
 
 import org.xml.sax.*;
 
@@ -17,9 +21,9 @@ import android.util.Xml;
 @NotThreadSafe
 public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSummaryFeed> {
 	PredictionSummaryFeed m_root = new PredictionSummaryFeed();
-	net.twisterrob.blt.model.Station m_station;
-	net.twisterrob.blt.model.Platform m_platform;
-	net.twisterrob.blt.model.Train m_train;
+	net.twisterrob.blt.io.feeds.trackernet.model.Station m_station;
+	net.twisterrob.blt.io.feeds.trackernet.model.Platform m_platform;
+	net.twisterrob.blt.io.feeds.trackernet.model.Train m_train;
 
 	@Override
 	public PredictionSummaryFeed parse(InputStream is) throws IOException, SAXException {
@@ -57,7 +61,7 @@ public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSumm
 				String attrCode = attributes.getValue(Station.code);
 				String attrName = attributes.getValue(Station.name);
 				String name = attrName.replaceAll("\\.+$", ""); // remove trailing .
-				m_station = new net.twisterrob.blt.model.Station();
+				m_station = new net.twisterrob.blt.io.feeds.trackernet.model.Station();
 				m_station.setName(name);
 				m_station.setTrackerNetCode(attrCode);
 			}
@@ -74,7 +78,7 @@ public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSumm
 				int code = Integer.parseInt(attrCode);
 				String attrName = attributes.getValue(Platform.name);
 
-				m_platform = new net.twisterrob.blt.model.Platform();
+				m_platform = new net.twisterrob.blt.io.feeds.trackernet.model.Platform();
 				m_platform.setName(attrName);
 				m_platform.setCode(code);
 			}
@@ -109,7 +113,7 @@ public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSumm
 							+ " format");
 				}
 
-				m_train = new net.twisterrob.blt.model.Train();
+				m_train = new net.twisterrob.blt.io.feeds.trackernet.model.Train();
 				m_train.setLocation(attrLocation);
 				m_train.setDestinationCode(destinationCode);
 				m_train.setDestinationName(attrDestinationName);

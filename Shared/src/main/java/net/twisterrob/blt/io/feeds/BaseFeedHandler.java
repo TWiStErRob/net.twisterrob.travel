@@ -1,17 +1,12 @@
 package net.twisterrob.blt.io.feeds;
 
-import java.io.*;
-
 import net.twisterrob.android.mail.MailSender;
 import net.twisterrob.android.utils.log.*;
 
-import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public abstract class BaseFeedHandler<T extends BaseFeed> extends DefaultHandler {
-	protected static final Log LOG = LogFactory.getLog(Tag.IO);
-
-	public abstract T parse(InputStream is) throws IOException, SAXException;
+public abstract class BaseFeedHandler<T extends BaseFeed> extends DefaultHandler implements FeedHandler<T> {
+	public static final Log LOG = LogFactory.getLog(Tag.IO);
 
 	protected static void sendMail(String body) {
 		MailSender sender = new MailSender("*********@********.****", "*********");

@@ -3,8 +3,8 @@ package net.twisterrob.blt.android.ui.activity;
 import java.util.*;
 
 import net.twisterrob.blt.android.App;
+import net.twisterrob.blt.android.db.model.Station;
 import net.twisterrob.blt.android.ui.adapter.StationAdapter;
-import net.twisterrob.blt.model.Station;
 import android.app.ListActivity;
 import android.os.Bundle;
 

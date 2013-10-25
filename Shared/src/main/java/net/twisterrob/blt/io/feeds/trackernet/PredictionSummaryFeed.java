@@ -3,7 +3,8 @@ package net.twisterrob.blt.io.feeds.trackernet;
 import java.util.*;
 
 import net.twisterrob.blt.io.feeds.BaseFeed;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.io.feeds.trackernet.model.*;
+import net.twisterrob.blt.model.Line;
 import net.twisterrob.java.collections.MultiKey;
 
 public class PredictionSummaryFeed extends BaseFeed {
@@ -28,7 +29,7 @@ public class PredictionSummaryFeed extends BaseFeed {
 	}
 	public void setLine(Line line) {
 		for (Station station: m_stations) {
-			station.setLines(Collections.singletonList(line));
+			station.setLine(line);
 		}
 		this.m_line = line;
 	}
@@ -53,7 +54,7 @@ public class PredictionSummaryFeed extends BaseFeed {
 		super.postProcess();
 		if (m_line != null) {
 			for (Station station: m_stations) {
-				station.setLines(Collections.singletonList(m_line));
+				station.setLine(m_line);
 			}
 		}
 	}

@@ -1,7 +1,8 @@
-package net.twisterrob.blt.model;
+package net.twisterrob.blt.android.db.model;
 
-import java.util.*;
+import java.util.Comparator;
 
+import net.twisterrob.blt.model.StopType;
 import net.twisterrob.java.model.Location;
 
 public class Station {
@@ -16,11 +17,7 @@ public class Station {
 	private String m_address;
 	private String m_telephone;
 	private Location m_location;
-	private List<Zone> m_zones;
-	private List<Facility> m_facilities;
-	private List<Line> m_lines;
 	private StopType m_type = StopType.unknown;
-	private String m_trackerNetCode;
 
 	@Override
 	public String toString() {
@@ -67,30 +64,6 @@ public class Station {
 		m_location = location;
 	}
 
-	public List<Zone> getZones() {
-		return m_zones;
-	}
-
-	public void setZones(List<Zone> zones) {
-		m_zones = zones;
-	}
-
-	public List<Facility> getFacilities() {
-		return m_facilities;
-	}
-
-	public void setFacilities(List<Facility> facilities) {
-		m_facilities = facilities;
-	}
-
-	public List<Line> getLines() {
-		return m_lines;
-	}
-
-	public void setLines(List<Line> lines) {
-		m_lines = lines;
-	}
-
 	public StopType getType() {
 		return m_type;
 	}
@@ -102,18 +75,11 @@ public class Station {
 		m_type = type;
 	}
 
-	public String getTrackerNetCode() {
-		return m_trackerNetCode;
-	}
-	public void setTrackerNetCode(String code) {
-		this.m_trackerNetCode = code;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((m_trackerNetCode == null)? 0 : m_trackerNetCode.hashCode());
+		result = prime * result + m_id;
 		return result;
 	}
 
@@ -129,11 +95,7 @@ public class Station {
 			return false;
 		}
 		Station other = (Station)obj;
-		if (m_trackerNetCode == null) {
-			if (other.m_trackerNetCode != null) {
-				return false;
-			}
-		} else if (!m_trackerNetCode.equals(other.m_trackerNetCode)) {
+		if (m_id != other.m_id) {
 			return false;
 		}
 		return true;
