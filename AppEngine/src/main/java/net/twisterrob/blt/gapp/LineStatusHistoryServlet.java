@@ -9,7 +9,7 @@ import javax.servlet.http.*;
 
 import name.fraser.neil.plaintext.*;
 import name.fraser.neil.plaintext.diff_match_patch.Diff;
-import net.twisterrob.blt.io.feeds.*;
+import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
 import net.twisterrob.blt.model.*;
 import net.twisterrob.java.utils.ObjectTools;
@@ -66,7 +66,7 @@ public class LineStatusHistoryServlet extends HttpServlet {
 
 		// display them
 		req.setAttribute("feedChanges", differences);
-		req.setAttribute("colors", new TubeStatusPresentationLineColors());
+		req.setAttribute("colors", FeedConsts.STATIC_DATA.getLineColors());
 		req.setAttribute("call", new InvokerMap());
 		RequestDispatcher view = req.getRequestDispatcher("/LineStatus.jsp");
 		view.forward(req, resp);

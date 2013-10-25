@@ -1,11 +1,11 @@
 package net.twisterrob.blt.android;
 
 import java.net.URL;
-import java.util.*;
 
+import net.twisterrob.android.app.AppCaches;
 import net.twisterrob.android.mail.MailSenderAsyncTask;
 import net.twisterrob.android.utils.LibContextProvider;
-import net.twisterrob.android.utils.cache.*;
+import net.twisterrob.android.utils.cache.Cache;
 import net.twisterrob.blt.android.data.*;
 import net.twisterrob.blt.android.db.DataBaseHelper;
 import net.twisterrob.blt.io.feeds.*;
@@ -15,10 +15,9 @@ import android.widget.Toast;
 public class App extends android.app.Application {
 	private static/* final */App s_instance;
 	private static final boolean DEBUG = true;
-	private static final String CACHE_IMAGE = ImageSDNetCache.class.getName();
-	private static final Map<String, Cache<?, ?>> s_caches = new HashMap<String, Cache<?, ?>>();
 
-	private StaticData m_static = new JavaStaticData();
+	private AndroidStaticData m_static;
+	private AppCaches m_caches;
 
 	public App() {
 		s_instance = this;
@@ -32,7 +31,9 @@ public class App extends android.app.Application {
 	public void onCreate() {
 		super.onCreate();
 		LibContextProvider.setApplicationContext(this);
-		getDataBaseHelper().openDB();
+		DataBaseHelper db = getDataBaseHelper();
+		db.openDB();
+		m_static = new AndroidDBStaticData(db);
 	}
 
 	private volatile DataBaseHelper m_dataBaseHelper = null;
@@ -51,7 +52,7 @@ public class App extends android.app.Application {
 		return m_urlBuilder;
 	}
 
-	public StaticData getStaticData() {
+	public AndroidStaticData getStaticData() {
 		return m_static;
 	}
 
@@ -67,30 +68,8 @@ public class App extends android.app.Application {
 		return helper;
 	}
 
-	public static Cache<URL, Bitmap> getPosterCache() {
-		return getCache(CACHE_IMAGE);
-	}
-
-	private static <K, V> Cache<K, V> getCache(final String cacheName) {
-		Cache<K, V> cache = (Cache<K, V>)s_caches.get(cacheName);
-		if (cache == null) {
-			cache = createCache(cacheName);
-			s_caches.put(cacheName, cache);
-		}
-		return cache;
-	}
-
-	private static <T> T createCache(final String cacheClass) {
-		try {
-			return (T)Class.forName(cacheClass).newInstance();
-		} catch (IllegalAccessException ex) {
-			ex.printStackTrace();
-		} catch (InstantiationException ex) {
-			ex.printStackTrace();
-		} catch (ClassNotFoundException ex) {
-			ex.printStackTrace();
-		}
-		return null;
+	public Cache<URL, Bitmap> getPosterCache() {
+		return m_caches.getCache(AppCaches.CACHE_IMAGE);
 	}
 
 	public static void sendMail(String body) {

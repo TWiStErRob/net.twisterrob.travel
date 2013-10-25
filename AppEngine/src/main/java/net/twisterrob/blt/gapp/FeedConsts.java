@@ -1,6 +1,6 @@
 package net.twisterrob.blt.gapp;
+import net.twisterrob.blt.data.*;
 import net.twisterrob.blt.io.feeds.*;
-import net.twisterrob.blt.model.*;
 
 public interface FeedConsts {
 	String EMAIL = "papp.robert.s@gmail.com";
@@ -8,7 +8,7 @@ public interface FeedConsts {
 	//URLBuilder URL_BUILDER = new LocalhostUrlBuilder(); // debug
 	URLBuilder URL_BUILDER = new TFLUrlBuilder(EMAIL);
 
-	LineColors LINE_COLORS = new TubeStatusPresentationLineColors();
+	StaticData STATIC_DATA = new SharedStaticData();
 
 	String ENCODING = "UTF-8";
 

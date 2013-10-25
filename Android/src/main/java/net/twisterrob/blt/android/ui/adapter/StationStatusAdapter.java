@@ -3,7 +3,7 @@ package net.twisterrob.blt.android.ui.adapter;
 import java.util.Collection;
 
 import net.twisterrob.android.adapter.BaseListAdapter;
-import net.twisterrob.blt.android.R;
+import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.model.*;
 import android.content.Context;
 import android.graphics.*;
@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 public class StationStatusAdapter extends BaseListAdapter<LineStatus, StationStatusAdapter.ViewHolder> {
-	private static final LineColors colors = new TubeStatusPresentationLineColors();
+	private final LineColors colors = App.getInstance().getStaticData().getLineColors();
 
 	public StationStatusAdapter(final Context context, final Collection<LineStatus> lines) {
 		super(context, lines, false);

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import net.twisterrob.blt.data.apps.DesktopStaticData;
 import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.model.*;
 
@@ -15,7 +16,7 @@ public abstract class RouteComponent extends JPanel {
 	private Route route;
 	private List<String> highlights;
 
-	private LineColors colors = new TubeStatusPresentationLineColors();
+	private LineColors colors = DesktopStaticData.INSTANCE.getLineColors();
 	protected Color lineColor;
 	protected Color lineHighlight;
 

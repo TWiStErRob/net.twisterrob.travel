@@ -3,13 +3,13 @@ package net.twisterrob.blt.android.data;
 import java.util.*;
 
 import net.twisterrob.blt.android.R;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.data.SharedStaticData;
+import net.twisterrob.blt.model.StopType;
 
-public class JavaStaticData implements StaticData {
+public class AndroidHardcodedStaticData extends SharedStaticData implements AndroidStaticData {
 	private Map<StopType, Integer> stopTypeLogos = new EnumMap<StopType, Integer>(StopType.class);
-	private LineColors colors = new TubeStatusPresentationLineColors();
 
-	public JavaStaticData() {
+	public AndroidHardcodedStaticData() {
 		initStopTypeDrawables();
 	}
 
@@ -29,9 +29,5 @@ public class JavaStaticData implements StaticData {
 
 	public Map<StopType, Integer> getStopTypeLogos() {
 		return stopTypeLogos;
-	}
-
-	public LineColors getLineColors() {
-		return colors;
 	}
 }

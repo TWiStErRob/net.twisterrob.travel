@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import net.twisterrob.blt.data.apps.DesktopStaticData;
 import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.model.*;
 
@@ -68,7 +69,7 @@ public class LineDisplay extends JFrame {
 		private final Color bg;
 
 		LineRouteCellRenderer(Line line) {
-			LineColors colors = new TubeStatusPresentationLineColors();
+			LineColors colors = DesktopStaticData.INSTANCE.getLineColors();
 			fg = new Color(line.getForeground(colors));
 			bg = new Color(line.getBackground(colors));
 		}
