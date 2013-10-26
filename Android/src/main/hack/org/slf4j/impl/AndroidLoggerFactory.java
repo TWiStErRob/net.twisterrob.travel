@@ -95,7 +95,7 @@ public class AndroidLoggerFactory implements ILoggerFactory
 				do
 				{
 					token = st.nextToken();
-					if (token.length() == 1) // token of one character appended as is
+					if (token.length() <= 2) // token of one character appended as is
 					{
 						sb.append(token);
 						sb.append('.');
