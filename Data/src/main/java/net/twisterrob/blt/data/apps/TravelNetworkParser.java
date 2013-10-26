@@ -23,8 +23,7 @@ public class TravelNetworkParser {
 		for (Line line: lines) {
 			List<String> files = STATIC_DATA.getTimetableFilenames().get(line);
 			JourneyPlannerTimetableFeed feed = reader.readFeed(root, files);
-			System.out.printf("\033[1;35m%s\033[0m (\033[35m%s\033[0m)\n", feed.getLine(), feed.getOperator()
-					.getTradingName());
+			System.out.printf("%s (%s)\n", feed.getLine(), feed.getOperator().getTradingName());
 
 			for (StopPoint stop: JourneyPlannerTimetableFeed.getStopPoints(feed.getRoutes())) {
 				Set<Line> stopLines = stops.get(stop);
