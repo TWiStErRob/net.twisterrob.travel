@@ -8,7 +8,6 @@ import net.twisterrob.android.utils.model.LocationUtils;
 import net.twisterrob.android.utils.tools.IOTools;
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.db.model.Station;
-import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.drawable.*;
 import android.os.*;
@@ -81,15 +80,21 @@ public class StationMapActivity extends MapActivity {
 
 	private final class BaseItemizedOverlayExtension extends BaseItemizedOverlay<Item> {
 		private final List<Station> m_stations;
+		private Drawable m_drawable;
 
 		protected BaseItemizedOverlayExtension(Drawable defaultMarker, List<Station> stations) {
 			super(defaultMarker);
 			m_stations = stations;
+			Drawable drawable = getResources().getDrawable(R.drawable.tfl_roundel_lul_map);
+			drawable.setLevel(1); // TODO based on map level
+			m_drawable = BaseItemizedOverlay.bindCenter(drawable);
 			populate();
 		}
 		@Override
 		protected Item createItem(int arg0) {
-			return new Item(getResources(), m_stations.get(arg0));
+			Item item = new Item(m_stations.get(arg0));
+			item.setMarker(m_drawable);
+			return item;
 		}
 		@Override
 		public int size() {
@@ -104,26 +109,8 @@ public class StationMapActivity extends MapActivity {
 	}
 
 	public static class Item extends OverlayItem {
-		private Resources m_res;
-		@SuppressWarnings("unused") private Station m_station;
-		public Item(Resources res, Station station) {
+		public Item(Station station) {
 			super(LocationUtils.toGeoPoint(station.getLocation()), station.getName(), station.getAddress());
-			m_res = res;
-			m_station = station;
-		}
-		@Override
-		public Drawable getMarker(int arg0) {
-			Bitmap result;
-			try {
-				// TODO from type
-				result = IOTools.getImage("http://www.tfl.gov.uk/tfl-global/images/syndication/roundel-tube.png", true);
-				Drawable drawable = new BitmapDrawable(m_res, result);
-				BaseItemizedOverlay.bindCenter(drawable);
-				return drawable;
-			} catch (IOException ex) {
-				// TODO store Type in DB: ex.printStackTrace();
-			}
-			return super.getMarker(arg0);
 		}
 	}
 }

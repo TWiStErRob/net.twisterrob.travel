@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scale
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:drawable="@drawable/tfl_roundel_lul_mini"
+	android:scaleGravity="center_vertical|center_horizontal"
+	android:scaleWidth="33%"
+	android:scaleHeight="33%" />

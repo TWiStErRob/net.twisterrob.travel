@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 	<string name="app_name">Better London Travel</string>
 	<string name="launcher_station_list">Station List</string>
 	<string name="launcher_station_map">Station Map</string>
