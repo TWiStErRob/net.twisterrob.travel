@@ -82,6 +82,9 @@ public class AndroidLoggerFactory implements ILoggerFactory
 	 */
 	private final String forceValidName(String name)
 	{
+		name = name == null? name : name.replaceFirst("^net\\.twisterrob\\.blt\\.android\\.", "");
+		name = name == null? name : name.replaceFirst("^net\\.twisterrob\\.", "");
+
 		if (name != null && name.length() > TAG_MAX_LENGTH)
 		{
 			final StringTokenizer st = new StringTokenizer(name, ".");

@@ -1,5 +1,6 @@
 /*
  * Created 21.10.2009
+ * Modified 26.10.2013
  *
  * Copyright (c) 2009 SLF4J.ORG
  *
@@ -27,8 +28,7 @@
 package org.slf4j.impl;
 
 import org.slf4j.Marker;
-import org.slf4j.helpers.MarkerIgnoringBase;
-import org.slf4j.helpers.MessageFormatter;
+import org.slf4j.helpers.*;
 
 import android.util.Log;
 
@@ -50,223 +50,156 @@ import android.util.Log;
  * 	<tr><td>WARN</td><td>{@link Log#WARN}</td></tr>
  * 	<tr><td>ERROR</td><td>{@link Log#ERROR}</td></tr>
  * </table>
+ * 
+ * Note: this class has been modified to incorporate the 1.7.x features, like varargs and throwable as last argument.
  *
  * @author Thorsten M&ouml;ller
+ * @author papp.robert.s@gmail.com
  * @version $Rev:$; $Author:$; $Date:$
  */
-public class AndroidLogger extends MarkerIgnoringBase
-{
+public class AndroidLogger extends MarkerIgnoringBase {
 	private static final long serialVersionUID = -1227274521521287937L;
 
 	/**
 	 * Package access allows only {@link AndroidLoggerFactory} to instantiate
 	 * SimpleLogger instances.
 	 */
-	AndroidLogger(final String name)
-	{
+	AndroidLogger(final String name) {
 		this.name = name;
 	}
 
-	/* @see org.slf4j.Logger#isTraceEnabled() */
-	public boolean isTraceEnabled()
-	{
+	public boolean isTraceEnabled() {
 		return Log.isLoggable(name, Log.VERBOSE);
 	}
 
-	/* @see org.slf4j.Logger#trace(java.lang.String) */
-	public void trace(final String msg)
-	{
+	public void trace(final String msg) {
 		Log.v(name, msg);
 	}
 
-	/* @see org.slf4j.Logger#trace(java.lang.String, java.lang.Object) */
-	public void trace(final String format, final Object param1)
-	{
-		Log.v(name, format(format, param1, null));
+	public void trace(final String format, final Object arg) {
+		FormattingTuple ft = MessageFormatter.format(format, arg);
+		Log.v(name, ft.getMessage(), ft.getThrowable());
 	}
 
-	/* @see org.slf4j.Logger#trace(java.lang.String, java.lang.Object, java.lang.Object) */
-	public void trace(final String format, final Object param1, final Object param2)
-	{
-		Log.v(name, format(format, param1, param2));
+	public void trace(final String format, final Object arg1, final Object arg2) {
+		FormattingTuple ft = MessageFormatter.format(format, arg1, arg2);
+		Log.v(name, ft.getMessage(), ft.getThrowable());
 	}
 
-	/* @see org.slf4j.Logger#trace(java.lang.String, java.lang.Object[]) */
-	public void trace(final String format, final Object[] argArray)
-	{
-		Log.v(name, format(format, argArray));
+	public void trace(final String format, final Object... argArray) {
+		FormattingTuple ft = MessageFormatter.format(format, argArray);
+		Log.v(name, ft.getMessage(), ft.getThrowable());
 	}
 
-	/* @see org.slf4j.Logger#trace(java.lang.String, java.lang.Throwable) */
-	public void trace(final String msg, final Throwable t)
-	{
+	public void trace(final String msg, final Throwable t) {
 		Log.v(name, msg, t);
 	}
 
-	/* @see org.slf4j.Logger#isDebugEnabled() */
-	public boolean isDebugEnabled()
-	{
+	public boolean isDebugEnabled() {
 		return Log.isLoggable(name, Log.DEBUG);
 	}
 
-	/* @see org.slf4j.Logger#debug(java.lang.String) */
-	public void debug(final String msg)
-	{
+	public void debug(final String msg) {
 		Log.d(name, msg);
 	}
 
-	/* @see org.slf4j.Logger#debug(java.lang.String, java.lang.Object) */
-	public void debug(final String format, final Object arg1)
-	{
-		Log.d(name, format(format, arg1, null));
+	public void debug(final String format, final Object arg) {
+		FormattingTuple ft = MessageFormatter.format(format, arg);
+		Log.d(name, ft.getMessage(), ft.getThrowable());
 	}
 
-	/* @see org.slf4j.Logger#debug(java.lang.String, java.lang.Object, java.lang.Object) */
-	public void debug(final String format, final Object param1, final Object param2)
-	{
-		Log.d(name, format(format, param1, param2));
+	public void debug(final String format, final Object arg1, final Object arg2) {
+		FormattingTuple ft = MessageFormatter.format(format, arg1, arg2);
+		Log.d(name, ft.getMessage(), ft.getThrowable());
 	}
 
-	/* @see org.slf4j.Logger#debug(java.lang.String, java.lang.Object[]) */
-	public void debug(final String format, final Object[] argArray)
-	{
-		Log.d(name, format(format, argArray));
+	public void debug(final String format, final Object... argArray) {
+		FormattingTuple ft = MessageFormatter.format(format, argArray);
+		Log.d(name, ft.getMessage(), ft.getThrowable());
 	}
 
-	/* @see org.slf4j.Logger#debug(java.lang.String, java.lang.Throwable) */
-	public void debug(final String msg, final Throwable t)
-	{
+	public void debug(final String msg, final Throwable t) {
 		Log.d(name, msg, t);
 	}
 
-	/* @see org.slf4j.Logger#isInfoEnabled() */
-	public boolean isInfoEnabled()
-	{
+	public boolean isInfoEnabled() {
 		return Log.isLoggable(name, Log.INFO);
 	}
 
-	/* @see org.slf4j.Logger#info(java.lang.String) */
-	public void info(final String msg)
-	{
+	public void info(final String msg) {
 		Log.i(name, msg);
 	}
 
-	/* @see org.slf4j.Logger#info(java.lang.String, java.lang.Object) */
-	public void info(final String format, final Object arg)
-	{
-		Log.i(name, format(format, arg, null));
+	public void info(final String format, final Object arg) {
+		FormattingTuple ft = MessageFormatter.format(format, arg);
+		Log.i(name, ft.getMessage(), ft.getThrowable());
 	}
 
-	/* @see org.slf4j.Logger#info(java.lang.String, java.lang.Object, java.lang.Object) */
-	public void info(final String format, final Object arg1, final Object arg2)
-	{
-		Log.i(name, format(format, arg1, arg2));
+	public void info(final String format, final Object arg1, final Object arg2) {
+		FormattingTuple ft = MessageFormatter.format(format, arg1, arg2);
+		Log.i(name, ft.getMessage(), ft.getThrowable());
 	}
 
-	/* @see org.slf4j.Logger#info(java.lang.String, java.lang.Object[]) */
-	public void info(final String format, final Object[] argArray)
-	{
-		Log.i(name, format(format, argArray));
+	public void info(final String format, final Object... argArray) {
+		FormattingTuple ft = MessageFormatter.format(format, argArray);
+		Log.i(name, ft.getMessage(), ft.getThrowable());
 	}
 
-	/* @see org.slf4j.Logger#info(java.lang.String, java.lang.Throwable) */
-	public void info(final String msg, final Throwable t)
-	{
+	public void info(final String msg, final Throwable t) {
 		Log.i(name, msg, t);
 	}
 
-	/* @see org.slf4j.Logger#isWarnEnabled() */
-	public boolean isWarnEnabled()
-	{
+	public boolean isWarnEnabled() {
 		return Log.isLoggable(name, Log.WARN);
 	}
 
-	/* @see org.slf4j.Logger#warn(java.lang.String) */
-	public void warn(final String msg)
-	{
+	public void warn(final String msg) {
 		Log.w(name, msg);
 	}
 
-	/* @see org.slf4j.Logger#warn(java.lang.String, java.lang.Object) */
-	public void warn(final String format, final Object arg)
-	{
-		Log.w(name, format(format, arg, null));
+	public void warn(final String format, final Object arg) {
+		FormattingTuple ft = MessageFormatter.format(format, arg);
+		Log.w(name, ft.getMessage(), ft.getThrowable());
 	}
 
-	/* @see org.slf4j.Logger#warn(java.lang.String, java.lang.Object, java.lang.Object) */
-	public void warn(final String format, final Object arg1, final Object arg2)
-	{
-		Log.w(name, format(format, arg1, arg2));
+	public void warn(final String format, final Object arg1, final Object arg2) {
+		FormattingTuple ft = MessageFormatter.format(format, arg1, arg2);
+		Log.w(name, ft.getMessage(), ft.getThrowable());
 	}
 
-	/* @see org.slf4j.Logger#warn(java.lang.String, java.lang.Object[]) */
-	public void warn(final String format, final Object[] argArray)
-	{
-		Log.w(name, format(format, argArray));
+	public void warn(final String format, final Object... argArray) {
+		FormattingTuple ft = MessageFormatter.format(format, argArray);
+		Log.w(name, ft.getMessage(), ft.getThrowable());
 	}
 
-	/* @see org.slf4j.Logger#warn(java.lang.String, java.lang.Throwable) */
-	public void warn(final String msg, final Throwable t)
-	{
+	public void warn(final String msg, final Throwable t) {
 		Log.w(name, msg, t);
 	}
 
-	/* @see org.slf4j.Logger#isErrorEnabled() */
-	public boolean isErrorEnabled()
-	{
+	public boolean isErrorEnabled() {
 		return Log.isLoggable(name, Log.ERROR);
 	}
 
-	/* @see org.slf4j.Logger#error(java.lang.String) */
-	public void error(final String msg)
-	{
+	public void error(final String msg) {
 		Log.e(name, msg);
 	}
 
-	/* @see org.slf4j.Logger#error(java.lang.String, java.lang.Object) */
-	public void error(final String format, final Object arg)
-	{
-		Log.e(name, format(format, arg, null));
+	public void error(final String format, final Object arg) {
+		FormattingTuple ft = MessageFormatter.format(format, arg);
+		Log.e(name, ft.getMessage(), ft.getThrowable());
 	}
 
-	/* @see org.slf4j.Logger#error(java.lang.String, java.lang.Object, java.lang.Object) */
-	public void error(final String format, final Object arg1, final Object arg2)
-	{
-		Log.e(name, format(format, arg1, arg2));
+	public void error(final String format, final Object arg1, final Object arg2) {
+		FormattingTuple ft = MessageFormatter.format(format, arg1, arg2);
+		Log.e(name, ft.getMessage(), ft.getThrowable());
 	}
 
-	/* @see org.slf4j.Logger#error(java.lang.String, java.lang.Object[]) */
-	public void error(final String format, final Object[] argArray)
-	{
-		Log.e(name, format(format, argArray));
+	public void error(final String format, final Object... argArray) {
+		FormattingTuple ft = MessageFormatter.format(format, argArray);
+		Log.e(name, ft.getMessage(), ft.getThrowable());
 	}
 
-	/* @see org.slf4j.Logger#error(java.lang.String, java.lang.Throwable) */
-	public void error(final String msg, final Throwable t)
-	{
+	public void error(final String msg, final Throwable t) {
 		Log.e(name, msg, t);
-	}
-
-	/**
-	 * For formatted messages substitute arguments.
-	 *
-	 * @param format
-	 * @param arg1
-	 * @param arg2
-	 */
-	private String format(final String format, final Object arg1, final Object arg2)
-	{
-		return MessageFormatter.format(format, arg1, arg2).getMessage();
-	}
-
-	/**
-	 * For formatted messages substitute arguments.
-	 *
-	 * @param format
-	 * @param args
-	 */
-	private String format(final String format, final Object[] args)
-	{
-		return MessageFormatter.arrayFormat(format, args).getMessage();
 	}
 }
