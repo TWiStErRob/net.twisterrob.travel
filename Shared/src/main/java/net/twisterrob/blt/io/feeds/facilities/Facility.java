@@ -1,9 +1,10 @@
 package net.twisterrob.blt.io.feeds.facilities;
 
-import net.twisterrob.android.utils.log.*;
+import org.slf4j.*;
 
 public class Facility {
-	private static final Log LOG = LogFactory.getLog(Tag.ACCESS);
+	private static final Logger LOG = LoggerFactory.getLogger(Facility.class);
+
 	private String m_name;
 	private String m_value;
 

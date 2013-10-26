@@ -2,11 +2,13 @@ package net.twisterrob.blt.android.db;
 
 import java.util.Map;
 
-import net.twisterrob.android.utils.log.*;
 import net.twisterrob.android.utils.tools.DBTools;
 import net.twisterrob.blt.android.db.model.Station;
 import net.twisterrob.java.io.IOTools;
 import net.twisterrob.java.model.Location;
+
+import org.slf4j.*;
+
 import android.content.ContentValues;
 import android.database.DatabaseUtils;
 import android.database.sqlite.*;
@@ -14,7 +16,7 @@ import android.database.sqlite.*;
 @SuppressWarnings("resource")
 //TODO fix resource leaks
 class DataBaseWriter extends DataBaseAccess {
-	private static final Log LOG = LogFactory.getLog(Tag.DB);
+	private static final Logger LOG = LoggerFactory.getLogger(DataBaseWriter.class);
 
 	/* Queries at the end */
 
@@ -37,7 +39,7 @@ class DataBaseWriter extends DataBaseAccess {
 
 	private void prepareStatements(final SQLiteDatabase database) {
 		if (m_database != database) {
-			LOG.info("Preparing statements %s -> %s", DBTools.toString(m_database), DBTools.toString(database));
+			LOG.info("Preparing statements {} -> {}", DBTools.toString(m_database), DBTools.toString(database));
 			m_database = database;
 
 			if (m_insertStation != null) {
@@ -72,7 +74,7 @@ class DataBaseWriter extends DataBaseAccess {
 	public void insertStation(final Station station) {
 		SQLiteDatabase database = null;
 		try {
-			LOG.debug("Inserting station: %d, %s, %s", station.getId(), station.getName(), station.getLocation());
+			LOG.debug("Inserting station: {}, {}, {}", station.getId(), station.getName(), station.getLocation());
 			database = prepareDB();
 			int column = 0;
 			bindObjectToProgram(m_insertStation, ++column, station.getId());
@@ -91,7 +93,7 @@ class DataBaseWriter extends DataBaseAccess {
 			try {
 				stationID = m_insertStation.executeInsert();
 			} catch (SQLiteConstraintException ex) {
-				LOG.warn("Cannot insert station, getting existing (%s)", ex, station.getName());
+				LOG.warn("Cannot insert station, getting existing ({})", station.getName(), ex);
 				stationID = getStationID(station.getName());
 			}
 			station.setId((int)stationID);
@@ -114,7 +116,7 @@ class DataBaseWriter extends DataBaseAccess {
 	}
 
 	public void updateStation(final Station station) {
-		LOG.debug("Updating station: %d, %s, %s", station.getId(), station.getName(), station.getLocation());
+		LOG.debug("Updating station: {}, {}, {}", station.getId(), station.getName(), station.getLocation());
 		SQLiteDatabase database = prepareDB();
 		if (m_dataBaseHelper.getReader().getStation(station.getId()) != null) {
 			LOG.debug("Already existing, skipping (TODO: implement update)");
@@ -139,7 +141,7 @@ class DataBaseWriter extends DataBaseAccess {
 		try {
 			stationID = m_insertStation.executeInsert();
 		} catch (SQLiteConstraintException ex) {
-			LOG.warn("Cannot insert station, getting existing (%s)", ex, station.getName());
+			LOG.warn("Cannot insert station, getting existing ({})", station.getName(), ex);
 			stationID = getStationID(station.getName());
 		}
 		station.setId((int)stationID);
@@ -166,7 +168,7 @@ class DataBaseWriter extends DataBaseAccess {
 		}
 	}
 	private void insertType(String name, String url) {
-		LOG.debug("Inserting type: %s: %s", name, url);
+		LOG.debug("Inserting type: {}: {}", name, url);
 
 		int column = 0;
 		bindObjectToProgram(m_insertStationType, ++column, name);
@@ -174,9 +176,9 @@ class DataBaseWriter extends DataBaseAccess {
 		long typeId;
 		try {
 			typeId = m_insertStationType.executeInsert();
-			LOG.debug("Inserted type: [%d] %s: %s", typeId, name, url);
+			LOG.debug("Inserted type: [{}] {}: {}", typeId, name, url);
 		} catch (SQLiteConstraintException ex) {
-			LOG.warn("Cannot insert station type, getting existing (%s)", ex, name);
+			LOG.warn("Cannot insert station type, getting existing ({})", ex, name);
 			// typeId = getStationTypeID(name);
 			updateType(name, url);
 		}
@@ -204,7 +206,7 @@ class DataBaseWriter extends DataBaseAccess {
 	}
 	public void updateType(String name, String url) {
 		SQLiteDatabase database = prepareDB();
-		LOG.debug("Updating type: %s: %s", name, url);
+		LOG.debug("Updating type: {}: {}", name, url);
 		try {
 			ContentValues values = new ContentValues(2);
 			values.put("url", url);
@@ -212,7 +214,7 @@ class DataBaseWriter extends DataBaseAccess {
 			if (rows == 0) {
 				insertType(name, url);
 			}
-			LOG.debug("Updated type: %s: %s", name, url);
+			LOG.debug("Updated type: {}: {}", name, url);
 		} catch (SQLiteConstraintException ex) {
 			LOG.warn("Cannot update location, ignoring", ex);
 		}

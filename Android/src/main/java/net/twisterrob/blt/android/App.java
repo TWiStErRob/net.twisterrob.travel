@@ -9,10 +9,14 @@ import net.twisterrob.android.utils.cache.Cache;
 import net.twisterrob.blt.android.data.*;
 import net.twisterrob.blt.android.db.DataBaseHelper;
 import net.twisterrob.blt.io.feeds.*;
+
+import org.slf4j.*;
+
 import android.graphics.Bitmap;
 import android.widget.Toast;
 
 public class App extends android.app.Application {
+	private static final Logger LOG = LoggerFactory.getLogger(App.class);
 	private static/* final */App s_instance;
 	private static final boolean DEBUG = true;
 
@@ -20,6 +24,7 @@ public class App extends android.app.Application {
 	private AppCaches m_caches;
 
 	public App() {
+		LOG.trace("App()");
 		s_instance = this;
 	}
 
@@ -29,6 +34,7 @@ public class App extends android.app.Application {
 
 	@Override
 	public void onCreate() {
+		LOG.trace("App.onCreate()");
 		super.onCreate();
 		LibContextProvider.setApplicationContext(this);
 		DataBaseHelper db = getDataBaseHelper();

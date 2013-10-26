@@ -5,17 +5,18 @@ import java.net.*;
 import java.util.*;
 
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
-import net.twisterrob.android.utils.log.*;
 import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.java.io.IOTools;
 
+import org.slf4j.*;
 import org.xml.sax.SAXException;
 
 import android.os.AsyncTask;
 
 public class DownloadFeedTask<T extends BaseFeed> extends AsyncTask<Feed, Integer, AsyncTaskResult<T>> {
-	protected static final Log LOG = LogFactory.getLog(Tag.IO);
+	protected final Logger LOG = LoggerFactory.getLogger(getClass());
+
 	private Map<String, ?> m_args;
 	public DownloadFeedTask() {
 		this(null);
@@ -36,7 +37,7 @@ public class DownloadFeedTask<T extends BaseFeed> extends AsyncTask<Feed, Intege
 
 			Feed feed = feeds[0];
 			URL url = App.getInstance().getUrls().getFeedUrl(feed, m_args);
-			LOG.debug("%s", url);
+			LOG.debug("{}", url);
 
 			connection = (HttpURLConnection)url.openConnection();
 			connection.setConnectTimeout(1000);

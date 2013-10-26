@@ -2,16 +2,22 @@ package net.twisterrob.blt.android.db;
 
 import java.io.*;
 
-import net.twisterrob.android.utils.log.*;
 import net.twisterrob.android.utils.tools.*;
 import net.twisterrob.blt.android.*;
+
+import org.slf4j.*;
+
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.*;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
-import android.os.Environment;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
+import android.os.*;
 
 class DataBaseOpenHelper extends SQLiteOpenHelper {
+	private static final Logger LOG = LoggerFactory.getLogger(DataBaseOpenHelper.class);
+
 	private static final String DB_SCHEMA_FILE = "LondonTravel.v1.schema.sql";
 	private static final String[] DB_DATA_FILES = {"LondonTravel.v1.data.sql", "LondonTravel.v1.data-Stop.sql",
 			"LondonTravel.v1.data-Line_Stop.sql"};
@@ -19,8 +25,9 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 	private static final String DB_DEVELOPMENT_FILE = "LondonTravel.v1.development.sql";
 	private static final String DB_NAME = "LondonTravel";
 	private static final int DB_VERSION = 1;
-	private static final Log LOG = LogFactory.getLog(Tag.DB);
-	private static final CursorFactory s_factory = new LoggingCursorFactory(BuildConfig.DEBUG);
+	private static final CursorFactory s_factory = VERSION_CODES.HONEYCOMB <= VERSION.SDK_INT
+			? new LoggingCursorFactory(BuildConfig.DEBUG)
+			: null;
 
 	public DataBaseOpenHelper(final Context context) {
 		super(context, DB_NAME, s_factory, DB_VERSION);
@@ -29,12 +36,12 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 	@Override
 	public void onOpen(final SQLiteDatabase db) {
 		super.onOpen(db);
-		LOG.debug("Opening database: %s", DBTools.toString(db));
+		LOG.debug("Opening database: {}", DBTools.toString(db));
 		backupDB(db, DB_NAME + ".onOpen_BeforeDev.sqlite");
 		DataBaseOpenHelper.execFile(db, DB_DEVELOPMENT_FILE);
 		backupDB(db, DB_NAME + ".onOpen_AfterDev.sqlite");
 		// onCreate(db); // FIXME for DB development, always clear and initialize
-		LOG.info("Opened database: %s", DBTools.toString(db));
+		LOG.info("Opened database: {}", DBTools.toString(db));
 	}
 
 	private static void backupDB(final SQLiteDatabase db, final String fileName) {
@@ -42,7 +49,7 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 			try {
 				String target = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + fileName;
 				IOTools.copyFile(db.getPath(), target);
-				LOG.info("DB backed up to %s", target);
+				LOG.info("DB backed up to {}", target);
 			} catch (IOException ex) {
 				LOG.error("Cannot back up DB on open", ex);
 			}
@@ -52,24 +59,25 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(final SQLiteDatabase db) {
 		backupDB(db, DB_NAME + ".onCreate.sqlite");
-		LOG.debug("Creating database: %s", DBTools.toString(db));
+		LOG.debug("Creating database: {}", DBTools.toString(db));
 		DataBaseOpenHelper.execFile(db, DB_CLEAN_FILE);
 		DataBaseOpenHelper.execFile(db, DB_SCHEMA_FILE);
 		for (String dataFile: DB_DATA_FILES) {
 			DataBaseOpenHelper.execFile(db, dataFile);
 		}
-		LOG.info("Created database: %s", DBTools.toString(db));
+		LOG.info("Created database: {}", DBTools.toString(db));
 	}
 
 	private static void execFile(final SQLiteDatabase db, final String dbSchemaFile) {
-		LOG.debug("Executing file %s into database: %s", dbSchemaFile, DBTools.toString(db));
+		LOG.debug("Executing file {} into database: {}", dbSchemaFile, DBTools.toString(db));
 		long time = System.nanoTime();
 
 		DataBaseOpenHelper.realExecuteFile(db, dbSchemaFile);
 
 		long end = System.nanoTime();
-		LOG.debug("Finished (%3$d ms) executed file %1$s into database: %2$s", dbSchemaFile, DBTools.toString(db),
-				(end - time) / 1000 / 1000);
+		long executionTime = (end - time) / 1000 / 1000;
+		LOG.debug("Finished ({} ms) executed file {} into database: {}", executionTime, dbSchemaFile,
+				DBTools.toString(db));
 	}
 
 	private static void realExecuteFile(final SQLiteDatabase db, final String dbSchemaFile) {
@@ -83,9 +91,9 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 				db.execSQL(statement);
 			}
 		} catch (SQLException ex) {
-			LOG.error("Error creating database from file: %s while executing\n%s", ex, dbSchemaFile, statement);
+			LOG.error("Error creating database from file: {} while executing\n{}", dbSchemaFile, statement, ex);
 		} catch (IOException ex) {
-			LOG.error("Error creating database from file: ", ex, dbSchemaFile);
+			LOG.error("Error creating database from file: {}", dbSchemaFile, ex);
 		} finally {
 			IOTools.ignorantClose(s, reader);
 		}

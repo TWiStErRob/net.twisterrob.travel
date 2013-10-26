@@ -93,7 +93,7 @@ public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
 				if (existingName == null) {
 					m_station.setName(newName);
 				} else if (!existingName.equals(newName)) {
-					LOG.warn("Different station names received: %s VS %s", existingName, newName);
+					LOG.warn("Different station names received: {} VS {}", existingName, newName);
 				}
 			}
 		};
