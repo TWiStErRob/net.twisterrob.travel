@@ -55,8 +55,11 @@ public class AndroidLoggerFactory implements ILoggerFactory
 	}
 
 	/* @see org.slf4j.ILoggerFactory#getLogger(java.lang.String) */
-	public AndroidLogger getLogger(final String name)
+	public AndroidLogger getLogger(String name)
 	{
+		name = name == null? name : name.replaceFirst("^net\\.twisterrob\\.blt\\.android\\.", "");
+		name = name == null? name : name.replaceFirst("^net\\.twisterrob\\.", "");
+
 		final String actualName = forceValidName(name); // fix for bug #173
 
 		AndroidLogger slogger = null;
@@ -82,9 +85,6 @@ public class AndroidLoggerFactory implements ILoggerFactory
 	 */
 	private final String forceValidName(String name)
 	{
-		name = name == null? name : name.replaceFirst("^net\\.twisterrob\\.blt\\.android\\.", "");
-		name = name == null? name : name.replaceFirst("^net\\.twisterrob\\.", "");
-
 		if (name != null && name.length() > TAG_MAX_LENGTH)
 		{
 			final StringTokenizer st = new StringTokenizer(name, ".");

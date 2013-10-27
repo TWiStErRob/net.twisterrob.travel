@@ -28,9 +28,11 @@ class DataBaseReader {
 	public List<Station> getStations() {
 		List<Station> stations = new ArrayList<Station>();
 		SQLiteDatabase database = m_dataBaseHelper.getReadableDatabase();
-		Cursor cursor = database.query("Stop", STATION_DETAILS, null, null, null, null, null);
+		Cursor cursor = database.query("Stop", STATION_DETAILS, null, null, null, null, "name ASC");
+		Map<Integer, List<Line>> stopLines = getLines();
 		while (cursor.moveToNext()) {
 			Station station = readStation(cursor);
+			station.setLines(stopLines.get(station.getId()));
 			stations.add(station);
 		}
 		cursor.close();
@@ -89,19 +91,25 @@ class DataBaseReader {
 		return types;
 	}
 
-	public List<Line> getLines(int id) {
-		List<Line> lines = new LinkedList<Line>();
+	public Map<Integer, List<Line>> getLines() {
 		SQLiteDatabase database = m_dataBaseHelper.getReadableDatabase();
 		Cursor cursor = database.rawQuery(
-				"select l.name from line_stop ls join line l on ls.line = l._id where ls.stop = ?;",
-				new String[]{String.valueOf(id)});
+				"select ls.stop as stopID, l.name as lineName from line_stop ls join line l on ls.line = l._id;",
+				new String[0]);
+		Map<Integer, List<Line>> stopLines = new TreeMap<Integer, List<Line>>();
 		while (cursor.moveToNext()) {
-			String lineString = cursor.getString(0);
+			int stopID = cursor.getInt(cursor.getColumnIndex("stopID"));
+			String lineString = cursor.getString(cursor.getColumnIndex("lineName"));
 			Line line = Line.valueOf(lineString);
+			List<Line> lines = stopLines.get(stopID);
+			if (lines == null) {
+				lines = new LinkedList<Line>();
+				stopLines.put(stopID, lines);
+			}
 			lines.add(line);
 		}
 		cursor.close();
-		return lines;
+		return stopLines;
 	}
 
 	// #endregion

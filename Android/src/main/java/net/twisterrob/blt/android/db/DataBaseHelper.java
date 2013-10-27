@@ -3,7 +3,6 @@ package net.twisterrob.blt.android.db;
 import java.util.*;
 
 import net.twisterrob.blt.android.db.model.Station;
-import net.twisterrob.blt.model.Line;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -54,9 +53,5 @@ public class DataBaseHelper {
 
 	public void updateTypes(Map<String, String> styles) {
 		m_writer.updateTypes(styles);
-	}
-
-	public List<Line> getLines(int stationId) {
-		return m_reader.getLines(stationId);
 	}
 }

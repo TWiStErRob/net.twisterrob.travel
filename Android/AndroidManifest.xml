@@ -53,15 +53,20 @@
 		<!-- Station List -->
 		<activity
 			android:name=".ui.activity.StationListActivity"
-			android:label="@string/launcher_station_list">
+			android:label="@string/launcher_station_list"
+			android:launchMode="singleTop">
 			<intent-filter>
 				<category android:name="android.intent.category.LAUNCHER" />
+				<action android:name="android.intent.action.SEARCH" />
 			</intent-filter>
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value=".ui.activity.MainActivity" />
+			<meta-data
+				android:name="android.app.searchable"
+				android:resource="@xml/searchable_stations_list" />
 		</activity>
-		
+
 		<!-- Station Info -->
 		<activity
 			android:name=".ui.activity.StationInfoActivity"
@@ -83,5 +88,9 @@
 				android:value=".ui.activity.MainActivity" />
 		</activity>
 
+		<provider
+			android:name=".ui.StationSuggestProvider"
+			android:authorities="net.twisterrob.blt.suggest_station"
+			android:syncable="false" />
 	</application>
 </manifest>

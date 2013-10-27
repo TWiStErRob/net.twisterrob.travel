@@ -55,15 +55,14 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 
 	@Override
 	protected void bindView(final ViewHolder holder, final Station currentItem, final View convertView) {
-		List<Line> lines = App.getInstance().getDataBaseHelper().getLines(currentItem.getId());
 		String title = currentItem.getName();
-		String description = String.format("%s: %s", currentItem.getType(), lines);
+		String description = String.format("%s: %s", currentItem.getType(), currentItem.getLines());
 		Drawable icon = bitmapCache.get(currentItem.getType());
 
 		holder.title.setText(title);
 		holder.description.setText(description);
 		holder.icon.setImageDrawable(icon);
-		updateLineColors(holder.lines, lines);
+		updateLineColors(holder.lines, currentItem.getLines());
 	}
 
 	private static void updateLineColors(View[] views, List<Line> lines) {
@@ -74,6 +73,16 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 				bg = lines.get(i).getBackground(colors);
 			}
 			views[i].setBackgroundColor(bg);
+		}
+	}
+
+	@Override
+	protected void filter(List<? extends Station> fullList, String filter, List<? super Station> resultList) {
+		filter = filter.toLowerCase();
+		for (Station station: fullList) {
+			if (station.getName().toLowerCase().contains(filter)) {
+				resultList.add(station);
+			}
 		}
 	}
 }

@@ -1,8 +1,8 @@
 package net.twisterrob.blt.android.db.model;
 
-import java.util.Comparator;
+import java.util.*;
 
-import net.twisterrob.blt.model.StopType;
+import net.twisterrob.blt.model.*;
 import net.twisterrob.java.model.Location;
 
 public class Station {
@@ -18,6 +18,7 @@ public class Station {
 	private String m_telephone;
 	private Location m_location;
 	private StopType m_type = StopType.unknown;
+	private List<Line> m_lines;
 
 	@Override
 	public String toString() {
@@ -73,6 +74,14 @@ public class Station {
 			throw new IllegalArgumentException("Type must be set, use Type." + StopType.unknown + " if not sure");
 		}
 		m_type = type;
+	}
+
+	public List<Line> getLines() {
+		return m_lines;
+	}
+
+	public void setLines(List<Line> lines) {
+		m_lines = lines;
 	}
 
 	@Override
