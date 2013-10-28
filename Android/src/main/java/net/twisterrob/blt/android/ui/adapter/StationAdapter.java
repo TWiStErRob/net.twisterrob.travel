@@ -77,12 +77,13 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 	}
 
 	@Override
-	protected void filter(List<? extends Station> fullList, String filter, List<? super Station> resultList) {
+	protected List<Station> filter(List<? extends Station> fullList, String filter, List<Station> resultList) {
 		filter = filter.toLowerCase();
 		for (Station station: fullList) {
 			if (station.getName().toLowerCase().contains(filter)) {
 				resultList.add(station);
 			}
 		}
+		return resultList;
 	}
 }

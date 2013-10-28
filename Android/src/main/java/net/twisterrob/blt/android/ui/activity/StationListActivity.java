@@ -10,11 +10,14 @@ import org.slf4j.*;
 
 import android.app.SearchManager;
 import android.content.Intent;
-import android.os.Bundle;
+import android.os.*;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.SearchViewCompat;
 import android.support.v7.app.ActionBarActivity;
-import android.view.*;
+import android.support.v7.widget.*;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.support.v7.widget.SearchView;
+import android.text.SpannableString;
+import android.view.Menu;
 import android.widget.Filter.FilterListener;
 import android.widget.*;
 
@@ -25,6 +28,8 @@ public class StationListActivity extends ActionBarActivity {
 
 	private StationAdapter m_adapter;
 
+	private String m_lastFilter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,50 +38,69 @@ public class StationListActivity extends ActionBarActivity {
 
 		m_list = (ListView)findViewById(android.R.id.list);
 
-		List<Station> stations = App.getInstance().getDataBaseHelper().getStations();
-		setListData(stations);
+		new AsyncTask<Void, Void, List<Station>>() {
+			@Override
+			protected List<Station> doInBackground(Void... params) {
+				return App.getInstance().getDataBaseHelper().getStations();
+			}
+			@Override
+			protected void onPostExecute(List<Station> result) {
+				populateListData(result);
+			}
+		}.execute();
 
 		handleIntent(getIntent());
-	}
-
-	@Override
-	protected void onNewIntent(Intent intent) {
-		handleIntent(intent);
 	}
 
 	private void handleIntent(Intent intent) {
 		LOG.debug("handleIntent: {}", intent);
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
+			if (query == null) {
+				query = ((SpannableString)intent.getExtras().get(SearchManager.USER_QUERY)).toString();
+			}
 			filter(query);
 		}
-	}
-
-	protected void filter(String query) {
-		LOG.debug("filter/query: {}", query);
-		m_adapter.getFilter().filter(query, new FilterListener() {
-			@SuppressWarnings("hiding") private final Logger LOG = LoggerFactory.getLogger(getClass());
-
-			public void onFilterComplete(int count) {
-				LOG.debug("Filtered: {}", count);
-				// TODO clear search UI?
-			}
-		});
-	}
-	protected void setListData(List<Station> stations) {
-		Collections.sort(stations, Station.COMPARATOR_NAME);
-		m_list.setAdapter(m_adapter = new StationAdapter(this, stations));
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.options_stations_list, menu);
 
-		View searchView = MenuItemCompat.getActionView(menu.findItem(R.id.menu$options$search));
-		LOG.debug("Got view: {} / {}", searchView != null? searchView.getClass() : null, searchView);
-		SearchViewCompat.setSearchableInfo(searchView, getComponentName());
-		// SearchViewCompat.setIconified(searchView, false);
+		SearchView searchView = (SearchView)MenuItemCompat.getActionView(menu.findItem(R.id.menu$options$search));
+		searchView.setOnQueryTextListener(new OnQueryTextListener() {
+			public boolean onQueryTextSubmit(String query) {
+				filter(query);
+				return true;
+			}
 
-		return true;
+			public boolean onQueryTextChange(String newText) {
+				filter(newText);
+				return true;
+			}
+		});
+
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	protected void filter(String query) {
+		m_lastFilter = query;
+		LOG.debug("filter/query: {}", query);
+		if (m_adapter == null) {
+			return;
+		}
+		m_adapter.getFilter().filter(query, new FilterListener() {
+			@SuppressWarnings("hiding") private final Logger LOG = LoggerFactory.getLogger(getClass());
+			public void onFilterComplete(int count) {
+				LOG.debug("Filtered: {}", count);
+			}
+		});
+	}
+
+	protected void populateListData(List<Station> stations) {
+		Collections.sort(stations, Station.COMPARATOR_NAME);
+		m_adapter = new StationAdapter(this, stations);
+		filter(m_lastFilter);
+		m_list.setAdapter(m_adapter);
 	}
 }
