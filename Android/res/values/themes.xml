@@ -1,0 +1,29 @@
+<!-- Themes
+     https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/res/res/values/themes.xml-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<!-- Default theme for ActionBar compatibility
+	     http://developer.android.com/guide/topics/ui/actionbar.html#Adding	-->
+	<style
+		name="Theme.Default"
+		parent="@style/Theme.AppCompat.Light">
+		<!-- empty contents -->
+	</style>
+
+	<!-- Variant of {@link #Theme} with no title bar -->
+	<style
+		name="Theme.NoTitle"
+		parent="@style/Theme.AppCompat.Light">
+		<item name="android:windowNoTitle">true</item>
+	</style>
+
+	<!-- Variant of {@link #Theme} that has no title bar and no status bar.
+	     This theme sets {@link android.R.attr#windowFullscreen} to true.	-->
+	<style
+		name="Theme.FullScreen"
+		parent="@style/Theme.AppCompat.Light">
+		<item name="android:windowFullscreen">true</item>
+		<item name="android:windowContentOverlay">@null</item>
+	</style>
+
+</resources>

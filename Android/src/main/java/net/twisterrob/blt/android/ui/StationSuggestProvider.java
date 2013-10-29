@@ -133,8 +133,8 @@ public class StationSuggestProvider extends ContentProvider {
 				String query = uri.getLastPathSegment();
 				if (SearchManager.SUGGEST_URI_PATH_QUERY.equals(query)) {
 					MatrixCursor cursor = new MatrixCursor(SEARCH_SUGGEST_COLUMNS, 1);
-					cursor.addRow(new String[]{null, "Search for station name or serving line",
-							"Station name will be matched against initials as well.", null});
+					cursor.addRow(new String[]{null, "Search London transport stations",
+							"Search for station name or serving line.", null});
 					return cursor;
 				}
 				query = query.toLowerCase();

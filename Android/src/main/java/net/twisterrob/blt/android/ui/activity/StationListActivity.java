@@ -18,10 +18,11 @@ import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.support.v7.widget.SearchView;
 import android.text.SpannableString;
 import android.view.Menu;
-import android.widget.Filter.FilterListener;
 import android.widget.*;
+import android.widget.Filter.Delayer;
+import android.widget.Filter.FilterListener;
 
-public class StationListActivity extends ActionBarActivity {
+public class StationListActivity extends ActionBarActivity implements FilterListener, Delayer {
 	private static final Logger LOG = LoggerFactory.getLogger(StationListActivity.class);
 
 	private ListView m_list;
@@ -56,9 +57,9 @@ public class StationListActivity extends ActionBarActivity {
 		LOG.debug("handleIntent: {}", intent);
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
-			if (query == null) {
-				query = ((SpannableString)intent.getExtras().get(SearchManager.USER_QUERY)).toString();
-			}
+			filter(query);
+		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+			String query = ((SpannableString)intent.getExtras().get(SearchManager.USER_QUERY)).toString();
 			filter(query);
 		}
 	}
@@ -89,12 +90,19 @@ public class StationListActivity extends ActionBarActivity {
 		if (m_adapter == null) {
 			return;
 		}
-		m_adapter.getFilter().filter(query, new FilterListener() {
-			@SuppressWarnings("hiding") private final Logger LOG = LoggerFactory.getLogger(getClass());
-			public void onFilterComplete(int count) {
-				LOG.debug("Filtered: {}", count);
-			}
-		});
+		Filter filter = m_adapter.getFilter();
+		filter.setDelayer(this);
+		filter.filter(query, this);
+	}
+
+	public long getPostingDelay(CharSequence constraint) {
+		return 500;
+	}
+
+	public void onFilterComplete(int count) {
+		LOG.debug("Filtered: {}", count);
+		m_adapter.notifyDataSetChanged();
+		m_list.setSelection(0);
 	}
 
 	protected void populateListData(List<Station> stations) {

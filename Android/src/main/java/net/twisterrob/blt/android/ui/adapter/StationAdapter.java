@@ -12,8 +12,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.text.*;
+import android.text.style.TextAppearanceSpan;
 import android.view.View;
 import android.widget.*;
+import android.widget.TextView.BufferType;
 
 public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 	private Map<StopType, Drawable> bitmapCache = new EnumMap<StopType, Drawable>(StopType.class);
@@ -55,14 +58,27 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 
 	@Override
 	protected void bindView(final ViewHolder holder, final Station currentItem, final View convertView) {
-		String title = currentItem.getName();
-		String description = String.format("%s: %s", currentItem.getType(), currentItem.getLines());
 		Drawable icon = bitmapCache.get(currentItem.getType());
+		SpannableString title = highlight(currentItem.getName());
+		SpannableString description = highlight(String.format("%s: %s", currentItem.getType(), currentItem.getLines()));
 
-		holder.title.setText(title);
-		holder.description.setText(description);
+		holder.title.setText(title, BufferType.SPANNABLE);
+		holder.description.setText(description, BufferType.SPANNABLE);
 		holder.icon.setImageDrawable(icon);
 		updateLineColors(holder.lines, currentItem.getLines());
+	}
+
+	private SpannableString highlight(String title) {
+		SpannableString text = new SpannableString(title);
+		String lastFilter = getLastFilter();
+		if (lastFilter != null) {
+			int matchIndex = title.toLowerCase().indexOf(lastFilter.toLowerCase());
+			if (0 <= matchIndex) {
+				TextAppearanceSpan style = new TextAppearanceSpan(m_context, R.style.search_highlight);
+				text.setSpan(style, matchIndex, matchIndex + lastFilter.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+			}
+		}
+		return text;
 	}
 
 	private static void updateLineColors(View[] views, List<Line> lines) {
@@ -79,11 +95,40 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 	@Override
 	protected List<Station> filter(List<? extends Station> fullList, String filter, List<Station> resultList) {
 		filter = filter.toLowerCase();
+		List<Station> nameMatches = new LinkedList<Station>();
+		List<Station> typeMatches = new LinkedList<Station>();
+		List<Station> lineMatches = new LinkedList<Station>();
 		for (Station station: fullList) {
-			if (station.getName().toLowerCase().contains(filter)) {
-				resultList.add(station);
+			if (matchName(station, filter)) {
+				nameMatches.add(station);
+			} else if (matchStopType(station, filter)) {
+				typeMatches.add(station);
+			} else if (matchLines(station, filter)) {
+				lineMatches.add(station);
+			} else {
+				// no match
 			}
 		}
+		resultList.addAll(nameMatches);
+		resultList.addAll(typeMatches);
+		resultList.addAll(lineMatches);
 		return resultList;
+	}
+
+	private static boolean matchName(Station station, String filter) {
+		return station.getName().toLowerCase().contains(filter);
+	}
+
+	private static boolean matchStopType(Station station, String filter) {
+		return station.getType().toString().toLowerCase().contains(filter);
+	}
+
+	private static boolean matchLines(Station station, String filter) {
+		for (Line line: station.getLines()) {
+			if (line.getTitle().toLowerCase().contains(filter)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

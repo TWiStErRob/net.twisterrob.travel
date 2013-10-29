@@ -7,5 +7,5 @@
 		android:title="@string/label_search"
 		android:icon="@drawable/abc_ic_search"
 		app:showAsAction="always|collapseActionView"
-		app:actionViewClass="android.widget.SearchView" />
+		app:actionViewClass="android.support.v7.widget.SearchView" />
 </menu>
