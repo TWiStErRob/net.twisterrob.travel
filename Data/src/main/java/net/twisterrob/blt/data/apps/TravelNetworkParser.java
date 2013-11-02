@@ -7,9 +7,12 @@ import net.twisterrob.blt.data.io.FeedReader;
 import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.model.*;
 
+import org.slf4j.*;
 import org.xml.sax.SAXException;
 
 public class TravelNetworkParser {
+	private static final Logger LOG = LoggerFactory.getLogger(TravelNetworkParser.class);
+
 	private static final DesktopStaticData STATIC_DATA = DesktopStaticData.INSTANCE;
 
 	public static void main(String[] args) throws Throwable {
@@ -23,7 +26,7 @@ public class TravelNetworkParser {
 		for (Line line: lines) {
 			List<String> files = STATIC_DATA.getTimetableFilenames().get(line);
 			JourneyPlannerTimetableFeed feed = reader.readFeed(root, files);
-			System.out.printf("%s (%s)\n", feed.getLine(), feed.getOperator().getTradingName());
+			LOG.info("Processing {} ({})", feed.getLine(), feed.getOperator().getTradingName());
 
 			for (StopPoint stop: JourneyPlannerTimetableFeed.getStopPoints(feed.getRoutes())) {
 				Set<Line> stopLines = stops.get(stop);
@@ -42,6 +45,7 @@ public class TravelNetworkParser {
 		try (
 				PrintWriter outStop = new PrintWriter("LondonTravel.v1.data-Stop.sql", "utf-8");
 				PrintWriter outLineStop = new PrintWriter("LondonTravel.v1.data-Line_Stop.sql", "utf-8");) {
+			LOG.debug("Writing Stop and Line_Stop table contents.");
 			for (Entry<StopPoint, Set<Line>> entry: stops.entrySet()) {
 				StopPoint stop = entry.getKey();
 				Set<Line> stopLines = entry.getValue();
@@ -65,3 +69,4 @@ public class TravelNetworkParser {
 				stop.getPrecision(), stop.getLocality().getName().replaceAll("'", "''"), stopType.ordinal());
 	}
 }
+
