@@ -5,16 +5,18 @@ import java.util.Map.Entry;
 import net.twisterrob.blt.data.algo.*;
 import net.twisterrob.blt.data.io.FeedReader;
 import net.twisterrob.blt.data.ui.LineDisplay;
+import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.model.Line;
 
 public class DisplayLine {
 	private static final DesktopStaticData STATIC_DATA = DesktopStaticData.INSTANCE;
 	public static void main(String[] args) throws Throwable {
-		FeedReader reader = new FeedReader();
+		FeedReader<JourneyPlannerTimetableFeed> reader = new FeedReader<>();
 		Map<Line, List<String>> fileNames = STATIC_DATA.getTimetableFilenames();
-		List<String> lineFileNames = fileNames.get(Line.Central);
-		JourneyPlannerTimetableFeed feed = reader.readFeed(STATIC_DATA.getTimetableRoot(), lineFileNames);
+		List<String> lineFileNames = fileNames.get(Line.Circle);
+		JourneyPlannerTimetableFeed feed = reader.readFeed(Feed.JourneyPlannerTimetables,
+				STATIC_DATA.getTimetableRoot(), lineFileNames);
 		System.out.printf("\033[1;35m%s\033[0m (\033[35m%s\033[0m)\n", feed.getLine(), feed.getOperator()
 				.getTradingName());
 		List<Route> routes = FeedProcessor.reconstruct(feed);

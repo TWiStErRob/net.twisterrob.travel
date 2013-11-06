@@ -14,7 +14,7 @@ import org.xml.sax.SAXException;
 
 import android.os.AsyncTask;
 
-public class DownloadFeedTask<T extends BaseFeed> extends AsyncTask<Feed, Integer, AsyncTaskResult<T>> {
+public class DownloadFeedTask<T extends BaseFeed<T>> extends AsyncTask<Feed, Integer, AsyncTaskResult<T>> {
 	protected final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	private Map<String, ?> m_args;
@@ -37,6 +37,9 @@ public class DownloadFeedTask<T extends BaseFeed> extends AsyncTask<Feed, Intege
 
 			Feed feed = feeds[0];
 			URL url = App.getInstance().getUrls().getFeedUrl(feed, m_args);
+			if (url == null) {
+				return new AsyncTaskResult<T>((T)null); // no result
+			}
 			LOG.debug("{}", url);
 
 			connection = (HttpURLConnection)url.openConnection();
@@ -45,7 +48,7 @@ public class DownloadFeedTask<T extends BaseFeed> extends AsyncTask<Feed, Intege
 			connection.connect();
 			input = connection.getInputStream();
 
-			T root = (T)feed.getHandler().parse(input);
+			T root = feed.<T> getHandler().parse(input);
 			return new AsyncTaskResult<T>(root);
 		} catch (IOException ex) {
 			return new AsyncTaskResult<T>(ex);

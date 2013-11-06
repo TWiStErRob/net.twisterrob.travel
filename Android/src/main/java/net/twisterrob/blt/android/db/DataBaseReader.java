@@ -27,11 +27,11 @@ class DataBaseReader {
 
 	public List<Station> getStations() {
 		List<Station> stations = new ArrayList<Station>();
-		SQLiteDatabase database = m_dataBaseHelper.getReadableDatabase();
-		Cursor cursor = database.query("Stop", STATION_DETAILS, null, null, null, null, "name ASC");
+		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
+		Cursor cursor = db.query("Stop", STATION_DETAILS, null, null, null, null, "name ASC");
 		Map<Integer, List<Line>> stopLines = getLines();
 		while (cursor.moveToNext()) {
-			Station station = readStation(cursor);
+			Station station = readStation(cursor, false);
 			station.setLines(stopLines.get(station.getId()));
 			stations.add(station);
 		}
@@ -39,7 +39,7 @@ class DataBaseReader {
 		return stations;
 	}
 
-	private static Station readStation(final Cursor cursor) {
+	private Station readStation(final Cursor cursor, boolean readLines) {
 		int id = cursor.getInt(cursor.getColumnIndex("_id"));
 		String name = cursor.getString(cursor.getColumnIndex("name"));
 		StopType type = StopType.values()[cursor.getInt(cursor.getColumnIndex("type"))];
@@ -55,6 +55,12 @@ class DataBaseReader {
 		station.setAddress(address);
 		station.setTelephone(telephone);
 		station.setLocation(new Location(latitude, longitude));
+
+		if (readLines) {
+			Map<Line, String> codes = getCodes(station.getId());
+			station.setLines(new ArrayList<Line>(codes.keySet()));
+			station.setTrackerNetCodes(codes);
+		}
 		return station;
 	}
 
@@ -65,12 +71,24 @@ class DataBaseReader {
 	}
 
 	public Station getStation(final int stationId) {
-		SQLiteDatabase database = m_dataBaseHelper.getReadableDatabase();
-		Cursor cursor = database.query("Stop", STATION_DETAILS, "_id = ?", new String[]{String.valueOf(stationId)},
-				null, null, null);
+		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
+		Cursor cursor = db.query("Stop", STATION_DETAILS, "_id = ?", new String[]{String.valueOf(stationId)}, null,
+				null, null);
 		Station station = null;
 		if (cursor.moveToNext()) {
-			station = readStation(cursor);
+			station = readStation(cursor, true);
+		}
+		cursor.close();
+		return station;
+	}
+
+	public Station getStation(String name) {
+		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
+		Cursor cursor = db.query("Stop", STATION_DETAILS, "name = ?", new String[]{String.valueOf(name)}, null, null,
+				null);
+		Station station = null;
+		if (cursor.moveToNext()) {
+			station = readStation(cursor, true);
 		}
 		cursor.close();
 		return station;
@@ -79,8 +97,8 @@ class DataBaseReader {
 	@SuppressWarnings("unused")
 	private Map<String, String> getTypes() {
 		Map<String, String> types = new HashMap<String, String>();
-		SQLiteDatabase database = m_dataBaseHelper.getReadableDatabase();
-		Cursor cursor = database.query("StationType", TYPE_DETAILS, null, null, null, null, null);
+		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
+		Cursor cursor = db.query("StationType", TYPE_DETAILS, null, null, null, null, null);
 		while (cursor.moveToNext()) {
 			int id = cursor.getInt(cursor.getColumnIndex("_id"));
 			String name = cursor.getString(cursor.getColumnIndex("name"));
@@ -92,8 +110,8 @@ class DataBaseReader {
 	}
 
 	public Map<Integer, List<Line>> getLines() {
-		SQLiteDatabase database = m_dataBaseHelper.getReadableDatabase();
-		Cursor cursor = database.rawQuery(
+		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
+		Cursor cursor = db.rawQuery(
 				"select ls.stop as stopID, l.name as lineName from line_stop ls join line l on ls.line = l._id;",
 				new String[0]);
 		Map<Integer, List<Line>> stopLines = new TreeMap<Integer, List<Line>>();
@@ -110,6 +128,21 @@ class DataBaseReader {
 		}
 		cursor.close();
 		return stopLines;
+	}
+
+	public Map<Line, String> getCodes(int stopID) {
+		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
+		Cursor cursor = db.rawQuery("select ls.line as lineID, ls.code as code from line_stop ls where ls.stop = ?;",
+				new String[]{String.valueOf(stopID)});
+		Map<Line, String> lines = new EnumMap<Line, String>(Line.class);
+		while (cursor.moveToNext()) {
+			int lineID = cursor.getInt(cursor.getColumnIndex("lineID"));
+			String code = cursor.getString(cursor.getColumnIndex("code"));
+			Line line = Line.values()[lineID];
+			lines.put(line, code);
+		}
+		cursor.close();
+		return lines;
 	}
 
 	// #endregion

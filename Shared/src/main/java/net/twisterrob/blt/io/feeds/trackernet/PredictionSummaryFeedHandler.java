@@ -103,14 +103,15 @@ public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSumm
 				String attrTimeToStation = attributes.getValue(Train.timeToStation);
 				Date timeToStation;
 				try {
-					if (Train.timeToStation$atPlatform.equals(attrTimeToStation)) {
+					if (Train.timeToStation$atPlatform.equals(attrTimeToStation)
+							|| Train.timeToStation$due.equals(attrTimeToStation)) {
 						timeToStation = new Date(0);
 					} else {
 						timeToStation = TIME_TO_FORMAT.parse(attrTimeToStation);
 					}
 				} catch (ParseException e) {
-					throw new IllegalArgumentException(attrTimeToStation + " is not in " + Train.timeToStation$format
-							+ " format");
+					throw new IllegalArgumentException("\"" + attrTimeToStation + "\" is not in "
+							+ Train.timeToStation$format + " format");
 				}
 
 				m_train = new net.twisterrob.blt.io.feeds.trackernet.model.Train();

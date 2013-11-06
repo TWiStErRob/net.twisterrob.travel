@@ -5,6 +5,7 @@ import static net.twisterrob.blt.io.feeds.Feed.Type.*;
 import java.net.*;
 
 import net.twisterrob.blt.io.feeds.facilities.FacilitiesFeedHandler;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableHandler;
 import net.twisterrob.blt.io.feeds.trackernet.*;
 /**
  * Feeds provided by Transport for London<br>
@@ -167,7 +168,8 @@ public enum Feed {
 	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17289">link</a><br>
 	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=15">link</a><br>
 	 */
-	JourneyPlannerTimetables(15, 1 * DAY/* 1440 mins */, 10 * MINUTE, 1 * DAY/* 1440 mins */, MISSING_HANDLER,
+	JourneyPlannerTimetables(15, 1 * DAY/* 1440 mins */, 10 * MINUTE, 1 * DAY/* 1440 mins */,
+			JourneyPlannerTimetableHandler.class,
 			"http://www.tfl.gov.uk/tfl/businessandpartners/syndication/example-feeds"
 					+ "/journeyplannertimetables/journey-planner-timetables.zip"),
 
@@ -352,7 +354,7 @@ public enum Feed {
 	 */
 	private int m_maxDisplay;
 	private URL m_url = null;
-	private Class<? extends FeedHandler<? extends BaseFeed>> m_handler;
+	private Class<? extends FeedHandler<? extends BaseFeed<?>>> m_handler;
 	private final URL m_sampleUrl;
 
 	/**
@@ -361,7 +363,7 @@ public enum Feed {
 	private int m_feedId = -1;
 
 	private Feed(Type type, int freshTime, int maxDelay, int maxDisplay,
-			Class<? extends FeedHandler<? extends BaseFeed>> handler, String sampleUrl) {
+			Class<? extends FeedHandler<? extends BaseFeed<?>>> handler, String sampleUrl) {
 		this.m_type = type;
 		this.m_freshTime = freshTime;
 		this.m_maxDelay = maxDelay;
@@ -370,13 +372,13 @@ public enum Feed {
 		this.m_sampleUrl = sampleUrl == null? null : createURL(sampleUrl);
 	}
 
-	private Feed(int freshTime, int maxDelay, int maxDisplay, Class<? extends FeedHandler<? extends BaseFeed>> handler,
-			String sampleUrl, String url) {
+	private Feed(int freshTime, int maxDelay, int maxDisplay,
+			Class<? extends FeedHandler<? extends BaseFeed<?>>> handler, String sampleUrl, String url) {
 		this(Other, freshTime, maxDelay, maxDisplay, handler, sampleUrl);
 		m_url = url != null? createURL(url) : null;
 	}
 	private Feed(int feedId, int freshTime, int maxDelay, int maxDisplay,
-			Class<? extends FeedHandler<? extends BaseFeed>> handler, String sampleUrl) {
+			Class<? extends FeedHandler<? extends BaseFeed<?>>> handler, String sampleUrl) {
 		this(Syndication, freshTime, maxDelay, maxDisplay, handler, sampleUrl);
 		m_feedId = feedId;
 	}
@@ -429,12 +431,12 @@ public enum Feed {
 			return m_baseUrl;
 		}
 	}
-	public FeedHandler<? extends BaseFeed> getHandler() {
+	public <T extends BaseFeed<T>> FeedHandler<T> getHandler() {
 		try {
 			if (m_handler == null) {
 				throw new IllegalArgumentException(this + " does not have a handler registered");
 			}
-			return m_handler.newInstance();
+			return (FeedHandler<T>)m_handler.newInstance();
 		} catch (InstantiationException ex) {
 			throw new RuntimeException(ex);
 		} catch (IllegalAccessException ex) {
@@ -454,6 +456,6 @@ public enum Feed {
 		int N_A = 0;
 		String MISSING_URL = null;
 		String MISSING_SAMPLE = null;
-		Class<? extends FeedHandler<? extends BaseFeed>> MISSING_HANDLER = null;
+		Class<? extends FeedHandler<? extends BaseFeed<?>>> MISSING_HANDLER = null;
 	}
 }

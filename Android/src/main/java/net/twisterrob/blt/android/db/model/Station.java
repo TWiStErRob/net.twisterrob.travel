@@ -19,6 +19,7 @@ public class Station {
 	private Location m_location;
 	private StopType m_type = StopType.unknown;
 	private List<Line> m_lines;
+	private Map<Line, String> m_trackerNetCodes;
 
 	@Override
 	public String toString() {
@@ -82,6 +83,14 @@ public class Station {
 
 	public void setLines(List<Line> lines) {
 		m_lines = lines;
+	}
+
+	public String getTrackerNetCode(Line line) {
+		return m_trackerNetCodes != null? m_trackerNetCodes.get(line) : null;
+	}
+
+	public void setTrackerNetCodes(Map<Line, String> codes) {
+		m_trackerNetCodes = codes;
 	}
 
 	@Override

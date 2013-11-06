@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
-import net.twisterrob.blt.android.R;
+import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
 import net.twisterrob.blt.android.ui.*;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter;
@@ -31,7 +31,7 @@ public class StationInfoActivity extends ActionBarActivity
 	/**
 	 * @see #EXTRA_STATION_NAME
 	 */
-	protected String m_name;
+	protected net.twisterrob.blt.android.db.model.Station m_station;
 
 	protected final SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	protected Calendar m_lastUpdated;
@@ -51,7 +51,6 @@ public class StationInfoActivity extends ActionBarActivity
 				}
 			});
 
-	private List<Line> m_lines;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,9 +71,11 @@ public class StationInfoActivity extends ActionBarActivity
 
 		// gather params
 		Intent intent = getIntent();
-		m_name = (String)intent.getSerializableExtra(EXTRA_STATION_NAME);
-		getSupportActionBar().setSubtitle(m_name);
-		((TextView)findViewById(R.id.text_station)).setText(m_name);
+		String name = (String)intent.getSerializableExtra(EXTRA_STATION_NAME);
+		m_station = App.getInstance().getDataBaseHelper().getStation(name);
+
+		getSupportActionBar().setSubtitle(name);
+		((TextView)findViewById(R.id.text_station)).setText(name);
 	}
 
 	@Override
@@ -92,26 +93,24 @@ public class StationInfoActivity extends ActionBarActivity
 	}
 
 	private void delayedGetRoot() {
-		List<Line> lines = Arrays.asList(Line.Piccadilly, Line.Northern, Line.Metropolitan, Line.Victoria,
-				Line.HammersmithAndCity);
-		m_lines = lines;
 		m_doneLines.clear();
-		for (Line line: lines) {
+		for (final Line line: m_station.getLines()) {
 			Map<String, Object> args = new HashMap<String, Object>();
 			args.put("line", line);
-			args.put("station", "KXX");
+			args.put("station", m_station.getTrackerNetCode(line));
 			new DownloadFeedTask<PredictionSummaryFeed>(args) {
 				@Override
 				protected void onPostExecute(AsyncTaskResult<PredictionSummaryFeed> result) {
 					if (result.getError() != null) {
-						LOG.error("Cannot load line prediction summary", result.getError());
+						LOG.warn("Cannot load line prediction summary", result.getError());
 						m_listHandler.empty("Cannot load line prediction summary: " + result.getError());
 					} else if (result.getResult() == null) {
-						LOG.error("No line prediction summary returned", result.getError());
-						m_listHandler.empty("No line prediction summary returned");
+						LOG.warn("No line prediction summary returned", result.getError());
+						// TODO m_listHandler.empty("No line prediction summary returned");
+						addResult(null, line);
 					} else {
 						PredictionSummaryFeed root = result.getResult();
-						addResult(root);
+						addResult(root, root.getLine());
 					}
 					m_ptrAttacher.setRefreshComplete();
 				}
@@ -121,24 +120,25 @@ public class StationInfoActivity extends ActionBarActivity
 
 	List<Line> m_doneLines = new ArrayList<Line>();
 
-	protected synchronized void addResult(PredictionSummaryFeed root) {
+	protected synchronized void addResult(PredictionSummaryFeed root, Line line) {
 		m_lastUpdated = Calendar.getInstance();
 		m_ptrAttacher.setLastUpdated("Last updated at " + fmt.format(m_lastUpdated.getTime()));
-		m_doneLines.add(root.getLine());
-		Map<Station, Map<Platform, List<Train>>> map = map(root);
-		m_map.putAll(map);
-		if (m_lines.size() == m_doneLines.size()) {
+		m_doneLines.add(line);
+		if (root != null) {
+			Map<Station, Map<Platform, List<Train>>> map = map(root);
+			m_map.putAll(map);
+		}
+		if (m_station.getLines().size() == m_doneLines.size()) {
 			m_adapter.notifyDataSetChanged();
-			m_listHandler.update("Done " + m_lines + " vs " + m_doneLines, m_adapter);
+			m_listHandler.update("Done " + m_station.getLines() + " vs " + m_doneLines, m_adapter);
 		} else {
-			m_listHandler.empty("Pending " + m_lines + " vs " + m_doneLines);
+			m_listHandler.empty("Pending " + m_station.getLines() + " vs " + m_doneLines);
 		}
 	}
 
 	private static Map<Station, Map<Platform, List<Train>>> map(PredictionSummaryFeed root) {
 		Map<Station, Map<Platform, List<Train>>> data = new TreeMap<Station, Map<Platform, List<Train>>>(
 				Station.COMPARATOR_NAME);
-
 		for (net.twisterrob.blt.io.feeds.trackernet.model.Station station: root.getStationPlatform().keySet()) {
 			data.put(station, root.collectTrains(station));
 		}

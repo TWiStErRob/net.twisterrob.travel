@@ -14,7 +14,7 @@ insert into Stop(_id, name, type, latitude, longitude, precision, locality) valu
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1425384052, 'Arnos Grove', 1, 51.6162818517, -0.1330836136, 1, 'Arnos Grove');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(931242966, 'Arsenal', 1, 51.5586599991, -0.1079042047, 1, 'Arsenal');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(500554288, 'Avenue Road Tramlink Stop', 4, 51.4067977671, -0.0494613111, 1, 'Penge');
-insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1936593034, 'Baker Street', 1, 51.5222642537, -0.1568382083, 1, 'Marylebone (London)');
+insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1936593034, 'Baker Street', 1, 51.5232009780, -0.1575067274, 1, 'Marylebone (London)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1982425991, 'Balham', 1, 51.4439755183, -0.1522646076, 1, 'Balham');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(2062940, 'Bank', 1, 51.5135328202, -0.0883149584, 1, 'City of London');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1687636458, 'Barbican', 1, 51.5202814425, -0.0979782624, 1, 'Barbican (London)');
@@ -37,7 +37,7 @@ insert into Stop(_id, name, type, latitude, longitude, precision, locality) valu
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1671063916, 'Blackhorse Lane Tramlink Stop', 4, 51.3848481762, -0.0707452190, 1, 'Woodside (Croydon)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1149869762, 'Blackhorse Road', 1, 51.5868456059, -0.0412397673, 1, 'Blackhorse Road');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-957666775, 'Blackwall', 3, 51.5079529113, -0.0070136998, 1, 'South Bromley');
-insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-919797760, 'Bond Street', 1, 51.5147245436, -0.1491580595, 1, 'Bond Street');
+insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-919797760, 'Bond Street', 1, 51.5144143267, -0.1494444692, 1, 'Bond Street');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(642051424, 'Borough Station', 1, 51.5009738563, -0.0935088394, 1, 'The Borough (London)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(2005669034, 'Boston Manor', 1, 51.4956278562, -0.3246369511, 1, 'Boston Manor');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(2013897176, 'Bounds Green', 1, 51.6069008855, -0.1245001651, 1, 'Wood Green (Hornsey)');
@@ -97,12 +97,12 @@ insert into Stop(_id, name, type, latitude, longitude, precision, locality) valu
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1976534602, 'East Putney', 1, 51.4587296117, -0.2112343951, 1, 'East Putney');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-709086854, 'Eastcote', 1, 51.5765909918, -0.3965188146, 1, 'Eastcote (London)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-225075707, 'Edgware', 1, 51.6135345469, -0.2750188794, 1, 'Edgware');
-insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(179257467, 'Edgware Road', 1, 51.5199138510, -0.1675274696, 1, 'Edgware Road');
+insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(179257467, 'Edgware Road', 1, 51.5204513015, -0.1702734343, 1, 'Edgware Road');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1348107679, 'Elephant & Castle', 1, 51.4958082473, -0.1010285391, 1, 'Elephant & Castle');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(213588836, 'Elm Park', 1, 51.5496304517, 0.1975799651, 1, 'Elm Park (London)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1196191675, 'Elmers End', 4, 51.3979473901, -0.0499097179, 1, 'Elmers End');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-390477174, 'Elverson Road', 3, 51.4687110827, -0.0166864833, 1, 'Elverson Road');
-insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1976934814, 'Embankment', 1, 51.5070315851, -0.1222924048, 1, 'Embankment');
+insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1976934814, 'Embankment', 1, 51.5066718948, -0.1228547720, 1, 'Embankment');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1384993313, 'Emirates Greenwich Peninsula', 10, 51.4998640807, 0.0080068087, 1, 'North Greenwich');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1940297095, 'Emirates Royal Docks', 10, 51.5075221415, 0.0176526997, 1, 'Royal Victoria');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(2082286781, 'Epping', 1, 51.6934970052, 0.1137733313, 1, 'Epping');
@@ -183,7 +183,7 @@ insert into Stop(_id, name, type, latitude, longitude, precision, locality) valu
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-2022156461, 'Leyton', 1, 51.5569289330, -0.0050320526, 1, 'Leyton');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1834171634, 'Leytonstone', 1, 51.5683304530, 0.0082084998, 1, 'Leytonstone');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-671427509, 'Limehouse', 3, 51.5122645573, -0.0403477070, 1, 'Limehouse');
-insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-756577279, 'Liverpool Street', 1, 51.5172575142, -0.0823648130, 1, 'Liverpool Street');
+insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-756577279, 'Liverpool Street', 1, 51.5180901844, -0.0821424603, 1, 'Liverpool Street');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1959427410, 'Lloyd Park Tramlink Stop', 4, 51.3643171429, -0.0822097792, 1, 'South Croydon');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-266791291, 'London Bridge Station', 1, 51.5058277793, -0.0878593397, 1, 'London Bridge');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-489912322, 'London City Airport', 3, 51.5033501788, 0.0487364672, 1, 'Silvertown');
@@ -194,7 +194,7 @@ insert into Stop(_id, name, type, latitude, longitude, precision, locality) valu
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(581363545, 'Marble Arch', 1, 51.5135893907, -0.1575919252, 1, 'Marble Arch');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1457129864, 'Marylebone', 1, 51.5221163389, -0.1634605748, 1, 'Marylebone (London)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-704469745, 'Merton Park Tramlink Stop', 4, 51.4137972950, -0.2014555087, 1, 'Merton (London)');
-insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1357704624, 'Mile End', 1, 51.5253578850, -0.0333704367, 1, 'Mile End (London)');
+insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1357704624, 'Mile End', 1, 51.5253158528, -0.0335452404, 1, 'Mile End (London)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1241945192, 'Mill Hill East', 1, 51.6081795082, -0.2098433129, 1, 'Mill Hill East');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1971942881, 'Mitcham Junction Station', 4, 51.3928623019, -0.1580188289, 1, 'Mitcham');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1981647399, 'Mitcham Tramlink Stop', 4, 51.3976465684, -0.1723891362, 1, 'Mitcham');
@@ -218,13 +218,13 @@ insert into Stop(_id, name, type, latitude, longitude, precision, locality) valu
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(329848427, 'Northwick Park', 1, 51.5783810331, -0.3175546139, 1, 'Northwick Park');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1847188206, 'Northwood', 1, 51.6109888560, -0.4239755087, 1, 'Northwood (London)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1189715364, 'Northwood Hills', 1, 51.6003933234, -0.4090945897, 1, 'Northwood Hills');
-insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1595725323, 'Notting Hill Gate', 1, 51.5087375255, -0.1960332506, 1, 'Notting Hill');
+insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1595725323, 'Notting Hill Gate', 1, 51.5089097900, -0.1972945762, 1, 'Notting Hill');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-22153498, 'Oakwood', 1, 51.6473150661, -0.1314331569, 1, 'Oakwood (London)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1266685860, 'Old Street', 1, 51.5249677989, -0.0875477424, 1, 'Old Street');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1650435741, 'Osterley', 1, 51.4814813893, -0.3518128901, 1, 'Osterley');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(2470002, 'Oval', 1, 51.4815619456, -0.1125947891, 1, 'Oval');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(607376241, 'Oxford Circus', 1, 51.5157190081, -0.1420987109, 1, 'Oxford Circus');
-insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(2083625922, 'Paddington', 1, 51.5153803817, -0.1755210743, 1, 'Paddington (London)');
+insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(2083625922, 'Paddington', 1, 51.5162972639, -0.1754988499, 1, 'Paddington (London)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(149402064, 'Paddington (H&C Line)', 1, 51.5181888189, -0.1785942372, 1, 'Paddington (London)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(515181393, 'Park Royal', 1, 51.5265682500, -0.2840594960, 1, 'Park Royal');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1755977317, 'Parsons Green', 1, 51.4750925297, -0.2016088555, 1, 'Parsons Green');
@@ -285,7 +285,7 @@ insert into Stop(_id, name, type, latitude, longitude, precision, locality) valu
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1545562489, 'Stepney Green', 1, 51.5217349486, -0.0468891480, 1, 'Stepney Green');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1021887292, 'Stockwell', 1, 51.4718176415, -0.1229035044, 1, 'Stockwell (London)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1903197404, 'Stonebridge Park', 1, 51.5440118942, -0.2759907341, 1, 'Stonebridge Park');
-insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1591180479, 'Stratford', 1, 51.5409350758, -0.0031502552, 1, 'Stratford (London)');
+insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1591180479, 'Stratford', 1, 51.5417217550, -0.0034042424, 1, 'Stratford (London)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1407858272, 'Stratford High Street', 3, 51.5379886964, -0.0006980242, 1, 'Stratford (London)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(630979319, 'Stratford International DLR', 3, 51.5454544395, -0.0092694319, 1, 'Stratford (London)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1831827195, 'Sudbury Hill', 1, 51.5570216953, -0.3369085696, 1, 'Sudbury Hill');
@@ -317,7 +317,7 @@ insert into Stop(_id, name, type, latitude, longitude, precision, locality) valu
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(453155075, 'Wanstead', 1, 51.5756602410, 0.0290684500, 1, 'Wanstead');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1646628880, 'Warren Street', 1, 51.5243103411, -0.1377847654, 1, 'Warren Street');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-880500948, 'Warwick Avenue', 1, 51.5229530167, -0.1831178615, 1, 'Warwick Avenue');
-insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(611948277, 'Waterloo', 1, 51.5033217515, -0.1130214572, 1, 'Waterloo (London)');
+insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(611948277, 'Waterloo', 1, 51.5030947170, -0.1151201234, 1, 'Waterloo (London)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-33289704, 'Watford Underground Station', 1, 51.6573154586, -0.4186101190, 1, 'Watford (Herts)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1810725748, 'Wellesley Road Tram Stop', 4, 51.3754122910, -0.0975374046, 1, 'Croydon (London)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-223388046, 'Wembley Central', 1, 51.5517183445, -0.2963112204, 1, 'Wembley');

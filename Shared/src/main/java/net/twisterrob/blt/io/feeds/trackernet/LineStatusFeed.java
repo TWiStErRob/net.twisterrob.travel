@@ -6,7 +6,7 @@ import net.twisterrob.blt.io.feeds.BaseFeed;
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus;
 import net.twisterrob.blt.model.Line;
 
-public class LineStatusFeed extends BaseFeed {
+public class LineStatusFeed extends BaseFeed<LineStatusFeed> {
 	private List<LineStatus> m_lineStatuses;
 	private Map<Line, LineStatus> m_statusMap;
 

@@ -5,7 +5,7 @@ import java.util.*;
 import net.twisterrob.blt.io.feeds.BaseFeed;
 import net.twisterrob.blt.model.Line;
 
-public class FacilitiesFeed extends BaseFeed {
+public class FacilitiesFeed extends BaseFeed<FacilitiesFeed> {
 	private List<Station> m_stations;
 	private Map<Line, List<Station>> m_lines;
 	private Map<String, List<Station>> m_facilities;

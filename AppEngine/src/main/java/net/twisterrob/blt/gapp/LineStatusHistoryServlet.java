@@ -82,7 +82,7 @@ public class LineStatusHistoryServlet extends HttpServlet {
 			try {
 				Feed feed = Feed.valueOf(entry.getKind());
 				InputStream stream = new StringInputStream(content.getValue(), ENCODING);
-				LineStatusFeed feedContents = (LineStatusFeed)feed.getHandler().parse(stream);
+				LineStatusFeed feedContents = feed.<LineStatusFeed> getHandler().parse(stream);
 				stream.close();
 				result = new Result(date, feedContents);
 			} catch (Exception ex) {

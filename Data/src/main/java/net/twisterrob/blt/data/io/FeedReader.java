@@ -2,32 +2,31 @@ package net.twisterrob.blt.data.io;
 
 import java.io.*;
 
-import net.twisterrob.blt.io.feeds.timetable.*;
+import net.twisterrob.blt.io.feeds.*;
 
 import org.xml.sax.SAXException;
 
-public class FeedReader {
-	public JourneyPlannerTimetableFeed readFeed(String root, Iterable<String> fileNames) throws IOException,
-			SAXException {
-		JourneyPlannerTimetableFeed feed = null;
+// TODO move to the shared and use it from DownloadFeed
+public class FeedReader<T extends BaseFeed<T>> {
+	public T readFeed(Feed feed, String root, Iterable<String> fileNames) throws IOException, SAXException {
+		T feedData = null;
 		for (String fileName: fileNames) {
 			File file = new File(root, fileName);
-			JourneyPlannerTimetableFeed newFeed = readFeed(file);
-			if (feed == null) {
-				feed = newFeed;
+			T newFeed = readFeed(feed, file);
+			if (feedData == null) {
+				feedData = newFeed;
 			} else {
-				feed.merge(newFeed);
+				feedData = feedData.merge(newFeed);
 			}
 		}
-		return feed;
+		return feedData;
 	}
 
-	@SuppressWarnings("static-method")
-	public JourneyPlannerTimetableFeed readFeed(File file) throws IOException, SAXException {
-		JourneyPlannerTimetableHandler handler = new JourneyPlannerTimetableHandler();
+	public T readFeed(Feed feed, File file) throws IOException, SAXException {
+		FeedHandler<T> handler = feed.getHandler();
 		try (FileInputStream stream = new FileInputStream(file)) {
-			JourneyPlannerTimetableFeed feed = handler.parse(stream);
-			return feed;
+			T feedData = handler.parse(stream);
+			return feedData;
 		}
 	}
 }

@@ -5,7 +5,7 @@ import java.util.*;
 import net.twisterrob.blt.io.feeds.BaseFeed;
 import net.twisterrob.blt.model.*;
 
-public class JourneyPlannerTimetableFeed extends BaseFeed {
+public class JourneyPlannerTimetableFeed extends BaseFeed<JourneyPlannerTimetableFeed> {
 	Line line;
 	Operator operator;
 	List<Route> routes = new ArrayList<Route>();
@@ -26,6 +26,7 @@ public class JourneyPlannerTimetableFeed extends BaseFeed {
 		this.operator = operator;
 	}
 
+	@Override
 	public JourneyPlannerTimetableFeed merge(JourneyPlannerTimetableFeed other) {
 		if (this.line != other.line) {
 			throw new IllegalArgumentException("Can't merge different lines.");

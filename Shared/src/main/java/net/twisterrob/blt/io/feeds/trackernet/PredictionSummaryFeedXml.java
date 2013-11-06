@@ -98,6 +98,10 @@ interface PredictionSummaryFeedXml extends FeedXmlDescriptor {
 		 */
 		@ValueConstraint String timeToStation$atPlatform = "-";
 		/**
+		 * @see #timeToStation
+		 */
+		@ValueConstraint String timeToStation$due = "due";
+		/**
 		 * <code>L(ocation)</code>: The current location of the train.
 		 */
 		@Attribute String Location = "L";

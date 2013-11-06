@@ -54,4 +54,8 @@ public class DataBaseHelper {
 	public void updateTypes(Map<String, String> styles) {
 		m_writer.updateTypes(styles);
 	}
+
+	public Station getStation(String name) {
+		return m_reader.getStation(name);
+	}
 }

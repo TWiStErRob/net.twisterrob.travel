@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS Line_Stop (
 	                                       CONSTRAINT "fk-Line_Stop-Line" REFERENCES Line(_id),
 	stop                INTEGER            NOT NULL
 	                                       CONSTRAINT "fk-Line_Stop-Stop" REFERENCES Stop(_id),
+	code                NVARCHAR(4)        NULL,
 	PRIMARY KEY(line, stop)
 );
 

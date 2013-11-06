@@ -1,5 +1,7 @@
 package net.twisterrob.blt.io.feeds.trackernet;
 
+import static java.util.Collections.*;
+
 import java.util.*;
 
 import net.twisterrob.blt.io.feeds.BaseFeed;
@@ -7,31 +9,22 @@ import net.twisterrob.blt.io.feeds.trackernet.model.*;
 import net.twisterrob.blt.model.Line;
 import net.twisterrob.java.collections.MultiKey;
 
-public class PredictionSummaryFeed extends BaseFeed {
-	private Date m_timeStamp;
-	private Line m_line;
-	private List<Station> m_stations;
-	private List<Platform> m_platforms;
-	private List<Train> m_trains;
-	private Map<Station, List<Platform>> m_stationPlatform;
-	private Map<MultiKey, List<Train>> m_stationPlatformTrain;
-
-	public PredictionSummaryFeed() {
-		m_stations = new ArrayList<Station>();
-		m_platforms = new ArrayList<Platform>();
-		m_trains = new ArrayList<Train>();
-		m_stationPlatform = new HashMap<Station, List<Platform>>();
-		m_stationPlatformTrain = new HashMap<MultiKey, List<Train>>();
-	}
+public class PredictionSummaryFeed extends BaseFeed<PredictionSummaryFeed> {
+	private Date m_timeStamp = new Date();
+	private Line m_line = Line.unknown;
+	private final List<Station> m_stations = new ArrayList<Station>();
+	private final List<Station> m_alienStations = new ArrayList<Station>();
+	private final List<Platform> m_platforms = new ArrayList<Platform>();
+	private final List<Train> m_trains = new ArrayList<Train>();
+	private final Map<Station, List<Platform>> m_stationPlatform = new HashMap<Station, List<Platform>>();
+	private final Map<MultiKey, List<Train>> m_stationPlatformTrain = new HashMap<MultiKey, List<Train>>();
 
 	public Line getLine() {
 		return m_line;
 	}
 	public void setLine(Line line) {
-		for (Station station: m_stations) {
-			station.setLine(line);
-		}
 		this.m_line = line;
+		postProcess();
 	}
 
 	public Date getTimeStamp() {
@@ -42,7 +35,11 @@ public class PredictionSummaryFeed extends BaseFeed {
 	}
 
 	public List<Station> getStations() {
-		return Collections.unmodifiableList(m_stations);
+		return unmodifiableList(m_stations);
+	}
+
+	public List<Station> getAlienStations() {
+		return unmodifiableList(m_alienStations);
 	}
 
 	public Map<Station, List<Platform>> getStationPlatform() {
@@ -53,10 +50,36 @@ public class PredictionSummaryFeed extends BaseFeed {
 	protected void postProcess() {
 		super.postProcess();
 		if (m_line != null) {
+			Map<String, Line> alienLines = StationIncosistencies.EXTAS.get(m_line);
 			for (Station station: m_stations) {
-				station.setLine(m_line);
+				Line line = alienLines.get(station.getName());
+				if (line == null) {
+					line = m_line;
+				}
+				station.setLine(line);
 			}
 		}
+	}
+
+	public void applyAliases() {
+		Map<String, String> map = StationIncosistencies.TRACKERNET_TO_TIMETABLE_ALIASES.get(m_line);
+		for (Station station: m_stations) {
+			String newName = map.get(station.getName());
+			if (newName != null) {
+				station.setName(newName);
+			}
+		}
+	}
+
+	public List<Station> segregateAlienStations() {
+		for (Iterator<Station> iterator = m_stations.iterator(); iterator.hasNext();) {
+			Station station = iterator.next();
+			if (station.getLine() != m_line) {
+				iterator.remove();
+				m_alienStations.add(station);
+			}
+		}
+		return getAlienStations();
 	}
 
 	void addStation(Station station) {
@@ -110,6 +133,6 @@ public class PredictionSummaryFeed extends BaseFeed {
 	}
 
 	public List<Train> collectTrains(Station station, Platform platform) {
-		return Collections.unmodifiableList(m_stationPlatformTrain.get(new MultiKey(station, platform)));
+		return unmodifiableList(m_stationPlatformTrain.get(new MultiKey(station, platform)));
 	}
 }

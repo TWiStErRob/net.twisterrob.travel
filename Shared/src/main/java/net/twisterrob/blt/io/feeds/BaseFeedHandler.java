@@ -5,7 +5,7 @@ import net.twisterrob.android.mail.MailSender;
 import org.slf4j.*;
 import org.xml.sax.helpers.DefaultHandler;
 
-public abstract class BaseFeedHandler<T extends BaseFeed> extends DefaultHandler implements FeedHandler<T> {
+public abstract class BaseFeedHandler<T extends BaseFeed<T>> extends DefaultHandler implements FeedHandler<T> {
 	public final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	protected static void sendMail(String body) {
