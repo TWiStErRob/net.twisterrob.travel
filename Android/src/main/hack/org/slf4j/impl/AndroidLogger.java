@@ -87,7 +87,7 @@ public class AndroidLogger extends MarkerIgnoringBase {
 	}
 
 	public void trace(final String format, final Object... argArray) {
-		FormattingTuple ft = MessageFormatter.format(format, argArray);
+		FormattingTuple ft = MessageFormatter.arrayFormat(format, argArray);
 		Log.v(name, ft.getMessage(), ft.getThrowable());
 	}
 
@@ -114,7 +114,7 @@ public class AndroidLogger extends MarkerIgnoringBase {
 	}
 
 	public void debug(final String format, final Object... argArray) {
-		FormattingTuple ft = MessageFormatter.format(format, argArray);
+		FormattingTuple ft = MessageFormatter.arrayFormat(format, argArray);
 		Log.d(name, ft.getMessage(), ft.getThrowable());
 	}
 
@@ -141,7 +141,7 @@ public class AndroidLogger extends MarkerIgnoringBase {
 	}
 
 	public void info(final String format, final Object... argArray) {
-		FormattingTuple ft = MessageFormatter.format(format, argArray);
+		FormattingTuple ft = MessageFormatter.arrayFormat(format, argArray);
 		Log.i(name, ft.getMessage(), ft.getThrowable());
 	}
 
@@ -168,7 +168,7 @@ public class AndroidLogger extends MarkerIgnoringBase {
 	}
 
 	public void warn(final String format, final Object... argArray) {
-		FormattingTuple ft = MessageFormatter.format(format, argArray);
+		FormattingTuple ft = MessageFormatter.arrayFormat(format, argArray);
 		Log.w(name, ft.getMessage(), ft.getThrowable());
 	}
 
@@ -195,7 +195,7 @@ public class AndroidLogger extends MarkerIgnoringBase {
 	}
 
 	public void error(final String format, final Object... argArray) {
-		FormattingTuple ft = MessageFormatter.format(format, argArray);
+		FormattingTuple ft = MessageFormatter.arrayFormat(format, argArray);
 		Log.e(name, ft.getMessage(), ft.getThrowable());
 	}
 

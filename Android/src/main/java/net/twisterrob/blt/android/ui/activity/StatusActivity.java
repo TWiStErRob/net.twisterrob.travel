@@ -69,10 +69,10 @@ public class StatusActivity extends ActionBarActivity implements OnRefreshListen
 			@Override
 			protected void onPostExecute(AsyncTaskResult<LineStatusFeed> result) {
 				if (result.getError() != null) {
-					LOG.error("Cannot load line statuses", result.getError());
+					LOG.warn("Cannot load line statuses", result.getError());
 					m_listHandler.empty("Cannot load line statuses: " + result.getError());
 				} else if (result.getResult() == null) {
-					LOG.error("No line statuses returned", result.getError());
+					LOG.warn("No line statuses returned", result.getError());
 					m_listHandler.empty("No line statuses returned");
 				} else {
 					LineStatusFeed root = result.getResult();

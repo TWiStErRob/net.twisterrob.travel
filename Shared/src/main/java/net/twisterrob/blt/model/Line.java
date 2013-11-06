@@ -205,4 +205,33 @@ public enum Line {
 		}
 		return Line.unknown;
 	}
+
+	public static final Set<Line> UNDERGROUND = Collections.unmodifiableSet(EnumSet.of(Bakerloo, Central, Circle,
+			District, HammersmithAndCity, Jubilee, Metropolitan, Northern, Piccadilly, Victoria, WaterlooAndCity));
+
+	public static <T, L extends List<? extends T>, M extends Map<Line, ? super L>> M fixMapList(M map, L empty) {
+		for (Line line: values()) {
+			if (!map.containsKey(line)) {
+				map.put(line, empty);
+			}
+		}
+		return map;
+	}
+	public static <T, S extends Set<? extends T>, M extends Map<Line, ? super S>> M fixMapSet(M map, S empty) {
+		for (Line line: values()) {
+			if (!map.containsKey(line)) {
+				map.put(line, empty);
+			}
+		}
+		return map;
+	}
+	public static <K, V, MM extends Map<? extends K, ? extends V>, M extends Map<Line, ? super MM>> M fixMapMap(M map,
+			MM empty) {
+		for (Line line: values()) {
+			if (!map.containsKey(line)) {
+				map.put(line, empty);
+			}
+		}
+		return map;
+	}
 }

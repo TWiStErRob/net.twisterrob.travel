@@ -27,7 +27,7 @@ public class MainActivity extends ActionBarActivity {
 				@Override
 				void addIntentParams(Intent intent) {
 					super.addIntentParams(intent);
-					intent.putExtra(PredictionSummaryActivity.EXTRA_LINE, Line.Central);
+					intent.putExtra(PredictionSummaryActivity.EXTRA_LINE, Line.District);
 				}
 			}, //
 			new LauncherItem(R.string.launcher_station_map, StationMapActivity.class), //
@@ -35,7 +35,7 @@ public class MainActivity extends ActionBarActivity {
 				@Override
 				void addIntentParams(Intent intent) {
 					super.addIntentParams(intent);
-					intent.putExtra(StationInfoActivity.EXTRA_STATION_NAME, "King's Cross St. Pancras");
+					intent.putExtra(StationInfoActivity.EXTRA_STATION_NAME, "King's Cross St.Pancras");
 				}
 			} //
 			);

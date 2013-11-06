@@ -18,7 +18,7 @@ import android.widget.Toast;
 public class App extends android.app.Application {
 	private static final Logger LOG = LoggerFactory.getLogger(App.class);
 	private static/* final */App s_instance;
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 
 	private AndroidStaticData m_static;
 	private AppCaches m_caches;

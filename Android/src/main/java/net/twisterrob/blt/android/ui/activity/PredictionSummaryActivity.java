@@ -148,10 +148,10 @@ public class PredictionSummaryActivity extends ActionBarActivity
 			@Override
 			protected void onPostExecute(AsyncTaskResult<PredictionSummaryFeed> result) {
 				if (result.getError() != null) {
-					LOG.error("Cannot load line prediction summary", result.getError());
+					LOG.warn("Cannot load line prediction summary", result.getError());
 					m_listHandler.empty("Cannot load line prediction summary: " + result.getError());
 				} else if (result.getResult() == null) {
-					LOG.error("No line prediction summary returned", result.getError());
+					LOG.warn("No line prediction summary returned", result.getError());
 					m_listHandler.empty("No line prediction summary returned");
 				} else {
 					PredictionSummaryFeed root = result.getResult();

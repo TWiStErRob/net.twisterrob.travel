@@ -14,3 +14,8 @@ PredictionSummary-V.xml http://cloud.tfl.gov.uk/TrackerNet/PredictionSummary/V
 PredictionSummary-W.xml http://cloud.tfl.gov.uk/TrackerNet/PredictionSummary/W
 feed.aspx_email=papp.robert.s@gmail.com&feedId=16.xml http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=16
 PredictionDetailed-C-BNK.xml http://cloud.tfl.gov.uk/TrackerNet/PredictionDetailed/C/BNK
+PredictionDetailed-H-KXX.xml http://cloud.tfl.gov.uk/TrackerNet/PredictionDetailed/H/KXX
+PredictionDetailed-M-KXX.xml http://cloud.tfl.gov.uk/TrackerNet/PredictionDetailed/M/KXX
+PredictionDetailed-N-KXX.xml http://cloud.tfl.gov.uk/TrackerNet/PredictionDetailed/N/KXX
+PredictionDetailed-P-KXX.xml http://cloud.tfl.gov.uk/TrackerNet/PredictionDetailed/P/KXX
+PredictionDetailed-V-KXX.xml http://cloud.tfl.gov.uk/TrackerNet/PredictionDetailed/V/KXX

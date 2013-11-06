@@ -17,11 +17,13 @@ import android.support.v7.widget.*;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.support.v7.widget.SearchView;
 import android.text.SpannableString;
-import android.view.Menu;
+import android.view.*;
 import android.widget.*;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Filter.Delayer;
 import android.widget.Filter.FilterListener;
 
+@SuppressWarnings("unused" /* eclipse keeps importing android.support.v7.widget.* howerer it is not used */)
 public class StationListActivity extends ActionBarActivity implements FilterListener, Delayer {
 	private static final Logger LOG = LoggerFactory.getLogger(StationListActivity.class);
 
@@ -38,6 +40,17 @@ public class StationListActivity extends ActionBarActivity implements FilterList
 		setContentView(R.layout.activity_stations);
 
 		m_list = (ListView)findViewById(android.R.id.list);
+		m_list.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Station station = (Station)parent.getItemAtPosition(position);
+				Intent intent = new Intent(StationListActivity.this, StationInfoActivity.class);
+				{
+					String stationName = station.getName();
+					intent.putExtra(StationInfoActivity.EXTRA_STATION_NAME, stationName);
+				}
+				startActivity(intent);
+			}
+		});
 
 		new AsyncTask<Void, Void, List<Station>>() {
 			@Override
