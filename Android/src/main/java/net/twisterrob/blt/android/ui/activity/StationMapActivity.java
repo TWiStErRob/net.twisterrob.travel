@@ -22,7 +22,7 @@ public class StationMapActivity extends MapActivity {
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stations_map);
-		m_map = (MapView)findViewById(R.id.mapview);
+		m_map = (MapView)findViewById(R.id.map);
 		m_map.displayZoomControls(true);
 		m_map.setBuiltInZoomControls(true);
 	}

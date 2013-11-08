@@ -38,7 +38,7 @@ public class MainActivity extends ActionBarActivity {
 					intent.putExtra(StationInfoActivity.EXTRA_STATION_NAME, "King's Cross St.Pancras");
 				}
 			}, //
-			new LauncherItem(R.string.launcher_station_map, MapsV2Activity.class) //
+			new LauncherItem(R.string.launcher_station_map, StationMapsV2Activity.class) //
 			);
 
 	@Override
