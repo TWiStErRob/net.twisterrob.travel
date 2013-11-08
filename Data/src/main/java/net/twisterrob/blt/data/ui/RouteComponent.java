@@ -62,7 +62,6 @@ public abstract class RouteComponent extends JPanel {
 		return highlights.contains(stop.getName());
 	}
 
-	@SuppressWarnings("static-method")
 	protected void drawStart(Graphics2D g, int stopX, int stopY) {
 		g.setColor(Color.BLACK);
 		g.fillOval(stopX - outerRadius / 2, stopY - outerRadius / 2, outerRadius, outerRadius);
