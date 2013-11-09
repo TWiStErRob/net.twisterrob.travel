@@ -138,5 +138,14 @@
 				android:value=".ui.activity.MainActivity" />
 		</activity>
 
+		<!-- Distance Map -->
+		<activity
+			android:name=".ui.activity.DistanceMapActivity"
+			android:label="@string/launcher_distance_map">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".ui.activity.MainActivity" />
+		</activity>
+
 	</application>
 </manifest>

@@ -39,7 +39,8 @@ public class MainActivity extends ActionBarActivity {
 				}
 			}, //
 			new LauncherItem(R.string.launcher_station_map_v2, StationMapsV2Activity.class),//
-			new LauncherItem(R.string.launcher_postcode_map, PostCodesActivity.class) //
+			new LauncherItem(R.string.launcher_postcode_map, PostCodesActivity.class), //
+			new LauncherItem(R.string.launcher_distance_map, DistanceMapActivity.class) //
 			);
 
 	@Override

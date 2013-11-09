@@ -5,6 +5,7 @@
 	<string name="launcher_station_map_v2">Station Map V2</string>
 	<string name="launcher_station_info">Station Info</string>
 	<string name="launcher_postcode_map">PostCode Map</string>
+	<string name="launcher_distance_map">Distance Map</string>
 	<string name="launcher_line_status">Line Status</string>
 	<string name="launcher_prediction_summary">Train Predictions</string>
 	<string name="demo_time">12:34</string>
