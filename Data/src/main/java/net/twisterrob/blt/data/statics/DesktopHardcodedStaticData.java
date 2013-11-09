@@ -10,7 +10,7 @@ import net.twisterrob.blt.model.Line;
 
 public class DesktopHardcodedStaticData extends SharedStaticData implements DesktopStaticData {
 	private static final String TIMETABLE_ROOT = "../temp/feed15/lultramdlrcablecarriver";
-	private static final String DATA_ROOT = "./src/data";
+	private static final String DATA_ROOT = "./src/data/PredictionSummary/";
 
 	private final Map<Line, List<String>> m_timetableFilenames = new TimetableFilenames().init();
 	private final Map<Line, String> m_predictionSummaryFilenames = new PredictionSummaryFilenames().init();

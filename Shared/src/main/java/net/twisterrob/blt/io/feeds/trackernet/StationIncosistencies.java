@@ -114,7 +114,7 @@ class StationIncosistencies {
 			stationNames.put("King's Cross St.Pancras", "King's Cross St. Pancras");
 			stationNames.put("Wood Green Station", "Wood Green");
 		}
-		return Line.fixMapMap(aliases, Collections.<String, String> emptyMap());
+		return Line.fixMap(aliases, Collections.<String, String> emptyMap());
 	}
 
 	private static Map<Line, Map<String, String>> reverseAliases(
@@ -124,7 +124,7 @@ class StationIncosistencies {
 			Map<String, String> reverse = CollectionTools.reverseMap(entry.getValue(), new HashMap<String, String>());
 			extras.put(entry.getKey(), reverse);
 		}
-		return Line.fixMapMap(extras, Collections.<String, String> emptyMap());
+		return Line.fixMap(extras, Collections.<String, String> emptyMap());
 	}
 	private static Map<Line, Map<String, Line>> initExtras() {
 		Map<Line, Map<String, Line>> extras = new EnumMap<Line, Map<String, Line>>(Line.class);
@@ -199,6 +199,6 @@ class StationIncosistencies {
 			stationNames.put("Barking", Line.District);
 			stationNames.put("Colliers Wood", Line.Northern);
 		}
-		return Line.fixMapMap(extras, Collections.<String, Line> emptyMap());
+		return Line.fixMap(extras, Collections.<String, Line> emptyMap());
 	}
 }

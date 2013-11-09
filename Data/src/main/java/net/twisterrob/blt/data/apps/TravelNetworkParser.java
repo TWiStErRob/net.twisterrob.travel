@@ -68,17 +68,13 @@ public class TravelNetworkParser {
 				stationMap.put(station.getName(), station.getTrackerNetCode());
 			}
 		}
-		return stopCodes;
+		return Line.fixMap(stopCodes, Collections.<String, String> emptyMap());
 	}
 
 	protected static void writeDBScripts(Collection<Line> lines) throws Throwable {
 		Map<StopPoint, Set<Line>> stops = getStopsAndLines(lines);
 		Map<Line, Map<String, String>> stationCodes = getStationCodes(lines);
-		for (Line line: Line.values()) {
-			if (!stationCodes.containsKey(line)) {
-				stationCodes.put(line, Collections.<String, String> emptyMap());
-			}
-		}
+
 		try (
 				PrintWriter outStop = new PrintWriter("LondonTravel.v1.data-Stop.sql", "utf-8");
 				PrintWriter outLineStop = new PrintWriter("LondonTravel.v1.data-Line_Stop.sql", "utf-8");) {
