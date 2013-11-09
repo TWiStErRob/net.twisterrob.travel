@@ -2,7 +2,7 @@ package net.twisterrob.blt.android.db;
 
 import java.util.*;
 
-import net.twisterrob.blt.android.db.model.Station;
+import net.twisterrob.blt.android.db.model.*;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -57,5 +57,9 @@ public class DataBaseHelper {
 
 	public Station getStation(String name) {
 		return m_reader.getStation(name);
+	}
+
+	public Map<String, List<AreaHullPoint>> getAreas() {
+		return m_reader.getAreas();
 	}
 }

@@ -2,7 +2,7 @@ package net.twisterrob.blt.android.db;
 
 import java.util.*;
 
-import net.twisterrob.blt.android.db.model.Station;
+import net.twisterrob.blt.android.db.model.*;
 import net.twisterrob.blt.model.*;
 import net.twisterrob.java.model.Location;
 import android.database.*;
@@ -145,5 +145,24 @@ class DataBaseReader {
 		return lines;
 	}
 
+	public Map<String, List<AreaHullPoint>> getAreas() {
+		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
+		Cursor cursor = db.rawQuery(
+				"select area_code, latitude, longitude from AreaHull order by area_code, hull_index;", new String[0]);
+		Map<String, List<AreaHullPoint>> areas = new TreeMap<String, List<AreaHullPoint>>();
+		while (cursor.moveToNext()) {
+			String area = cursor.getString(cursor.getColumnIndex("area_code"));
+			double latitude = cursor.getDouble(cursor.getColumnIndex("latitude"));
+			double longitude = cursor.getDouble(cursor.getColumnIndex("longitude"));
+			List<AreaHullPoint> list = areas.get(area);
+			if (list == null) {
+				list = new ArrayList<AreaHullPoint>();
+				areas.put(area, list);
+			}
+			list.add(new AreaHullPoint(latitude, longitude));
+		}
+		cursor.close();
+		return areas;
+	}
 	// #endregion
 }

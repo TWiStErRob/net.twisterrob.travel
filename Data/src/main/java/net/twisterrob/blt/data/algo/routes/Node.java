@@ -1,4 +1,4 @@
-package net.twisterrob.blt.data.algo;
+package net.twisterrob.blt.data.algo.routes;
 
 import java.util.*;
 

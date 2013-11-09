@@ -123,7 +123,16 @@
 		<!-- Station Map V2 -->
 		<activity
 			android:name=".ui.activity.StationMapsV2Activity"
-			android:label="@string/launcher_station_map">
+			android:label="@string/launcher_station_map_v2">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".ui.activity.MainActivity" />
+		</activity>
+
+		<!-- PostCodes Map -->
+		<activity
+			android:name=".ui.activity.PostCodesActivity"
+			android:label="@string/launcher_postcode_map">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value=".ui.activity.MainActivity" />

@@ -2,7 +2,7 @@ package net.twisterrob.blt.data.apps;
 import java.util.*;
 import java.util.Map.Entry;
 
-import net.twisterrob.blt.data.algo.*;
+import net.twisterrob.blt.data.algo.routes.*;
 import net.twisterrob.blt.data.io.FeedReader;
 import net.twisterrob.blt.data.ui.LineDisplay;
 import net.twisterrob.blt.io.feeds.Feed;

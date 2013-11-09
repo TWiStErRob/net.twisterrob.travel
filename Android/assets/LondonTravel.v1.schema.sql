@@ -36,4 +36,12 @@ CREATE TABLE IF NOT EXISTS Line_Stop (
 	PRIMARY KEY(line, stop)
 );
 
+CREATE TABLE IF NOT EXISTS AreaHull (
+	area_code           VARCHAR(4)         NOT NULL,
+	hull_index          INTEGER            NOT NULL,
+	latitude            REAL               NOT NULL,
+	longitude           REAL               NOT NULL,
+	PRIMARY KEY(area_code, hull_index)
+);
+
 END TRANSACTION;

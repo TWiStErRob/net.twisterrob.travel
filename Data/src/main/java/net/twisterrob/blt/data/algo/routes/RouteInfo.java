@@ -1,10 +1,10 @@
-package net.twisterrob.blt.data.algo;
+package net.twisterrob.blt.data.algo.routes;
 import java.util.*;
 import java.util.Map.Entry;
 
 import javax.annotation.CheckForNull;
 
-import net.twisterrob.blt.data.algo.Node.State;
+import net.twisterrob.blt.data.algo.routes.Node.State;
 import net.twisterrob.blt.io.feeds.timetable.*;
 
 public class RouteInfo {
