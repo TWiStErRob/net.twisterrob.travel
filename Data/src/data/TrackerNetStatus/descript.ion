@@ -1,0 +1,4 @@
+LineStatus.xml http://cloud.tfl.gov.uk/TrackerNet/LineStatus
+LineStatus.IncidentsOnly.xml http://cloud.tfl.gov.uk/TrackerNet/LineStatus/IncidentsOnly
+LineStatus.IncidentsOnly_empty.xml http://cloud.tfl.gov.uk/TrackerNet/LineStatus/IncidentsOnly
+LineStatus.IncidentsOnly_night.xml http://cloud.tfl.gov.uk/TrackerNet/LineStatus/IncidentsOnly

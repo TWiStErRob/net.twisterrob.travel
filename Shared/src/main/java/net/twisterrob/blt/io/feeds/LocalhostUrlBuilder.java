@@ -16,17 +16,18 @@ public class LocalhostUrlBuilder implements URLBuilder {
 		}
 		switch (feed) {
 			case TubeDepartureBoardsLineStatus:
-				spec = "LineStatus.xml";
+				spec = "TrackerNetStatus/LineStatus.xml";
 				break;
 			case TubeDepartureBoardsLineStatusIncidents:
-				spec = "LineStatus_IncidentsOnly.xml";
+				spec = "TrackerNetStatus/LineStatus_IncidentsOnly.xml";
 				break;
 			case TubeDepartureBoardsPredictionSummary:
-				spec = String.format("PredictionSummary-%s.xml", ((Line)args.get("line")).getTrackerNetCode());
+				spec = String.format("PredictionSummary/PredictionSummary-%s.xml",
+						((Line)args.get("line")).getTrackerNetCode());
 				break;
 			case TubeDepartureBoardsPredictionDetailed:
-				spec = String.format("PredictionDetailed-%s-%s.xml", ((Line)args.get("line")).getTrackerNetCode(),
-						args.get("station"));
+				spec = String.format("PredictionDetailed/PredictionDetailed-%s-%s.xml",
+						((Line)args.get("line")).getTrackerNetCode(), args.get("station"));
 				break;
 			//$CASES-OMITTED$
 			default:
