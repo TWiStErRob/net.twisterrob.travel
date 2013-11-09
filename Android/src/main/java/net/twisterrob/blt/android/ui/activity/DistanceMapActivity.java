@@ -39,10 +39,10 @@ public class DistanceMapActivity extends FragmentActivity {
 
 				@SuppressWarnings("synthetic-access")
 				GoogleMap map = m_map;
-				for (NetworkNode node: nodes.values()) {
-					LatLng ll = LocationUtils.toLatLng(node.getPos());
-					map.addMarker(new MarkerOptions().title(String.valueOf(node.getID())).position(ll));
-				}
+				//for (NetworkNode node: nodes.values()) {
+				//	LatLng ll = LocationUtils.toLatLng(node.getPos());
+				//	map.addMarker(new MarkerOptions().title(String.valueOf(node.getID())).position(ll));
+				//}
 				LatLngBounds bounds = getBounds(nodes.values());
 				CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 50);
 				map.moveCamera(cu);
@@ -51,7 +51,7 @@ public class DistanceMapActivity extends FragmentActivity {
 						.title("Hammersmith") //
 						.position(LocationUtils.toLatLng(startNode.getPos())) //
 						.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-				Bitmap overlay = new DistanceMapGenerator(nodes, startNode).generate(3);
+				Bitmap overlay = new DistanceMapGenerator(nodes, startNode).generate(0);
 				map.addGroundOverlay(new GroundOverlayOptions() //
 						.positionFromBounds(bounds) //
 						.transparency(0.0f) //
