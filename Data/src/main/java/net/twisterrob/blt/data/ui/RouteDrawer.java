@@ -36,7 +36,7 @@ class RouteDrawer extends RouteComponent {
 		int width = getWidth() - getInsets().left - getInsets().right - internalPadding * 2;
 		int height = getHeight() - getInsets().top - getInsets().bottom;
 
-		List<RouteLink> links = getRoute().getRouteLinks();
+		List<RouteLink> links = getRoute().getLinks();
 		int linkWidth = width / links.size();
 		left += (width - linkWidth * links.size()) / 2; // center align based on rounding error
 		int midHeight = top + height / 2;
