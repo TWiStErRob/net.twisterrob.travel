@@ -13,7 +13,7 @@ public class RouteSection implements Iterable<StopPoint> {
 		this.id = id;
 	}
 
-	public List<RouteLink> getRouteLinks() {
+	public List<RouteLink> getLinks() {
 		return Collections.unmodifiableList(routeLinks);
 	}
 	protected void addLink(RouteLink routeLink) {

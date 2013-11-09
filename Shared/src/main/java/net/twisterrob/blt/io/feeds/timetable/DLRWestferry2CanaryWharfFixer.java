@@ -14,8 +14,8 @@ public class DLRWestferry2CanaryWharfFixer implements RouteFixer {
 	}
 	public void fix(JourneyPlannerTimetableFeed feed) {
 		for (Route route: feed.getRoutes()) {
-			section : for (RouteSection section: route.getRouteSections()) {
-				for (RouteLink link: section.getRouteLinks()) {
+			section : for (RouteSection section: route.getSections()) {
+				for (RouteLink link: section.getLinks()) {
 					if ("Westferry".equals(link.getFrom().getName())
 							&& "Canary Wharf DLR Station".equals(link.getTo().getName())) {
 						fix(section, link, feed.getRoutes());
@@ -28,10 +28,10 @@ public class DLRWestferry2CanaryWharfFixer implements RouteFixer {
 
 	private static void fix(RouteSection badSection, RouteLink badLink, Iterable<Route> routes) {
 		for (Route route: routes) {
-			for (RouteSection section: route.getRouteSections()) {
+			for (RouteSection section: route.getSections()) {
 				RouteLink link1 = null;
 				RouteLink link2 = null;
-				for (RouteLink link: section.getRouteLinks()) {
+				for (RouteLink link: section.getLinks()) {
 					link1 = link2;
 					link2 = link;
 					if (isWestferry2CanaryWharf(link1, link2)) {

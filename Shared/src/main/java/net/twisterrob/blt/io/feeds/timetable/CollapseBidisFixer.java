@@ -26,9 +26,9 @@ public class CollapseBidisFixer implements RouteFixer {
 	}
 
 	private static boolean exactOpposite(Route route1, Route route2) {
-		List<StopPoint> stopList1 = route1.getStopPoints();
+		List<StopPoint> stopList1 = route1.getStops();
 		ListIterator<StopPoint> stops1 = stopList1.listIterator(0); // front
-		List<StopPoint> stopList2 = route2.getStopPoints();
+		List<StopPoint> stopList2 = route2.getStops();
 		ListIterator<StopPoint> stops2 = stopList2.listIterator(stopList2.size()); // back
 		while (stops1.hasNext() && stops2.hasPrevious()) {
 			StopPoint stop1 = stops1.next();

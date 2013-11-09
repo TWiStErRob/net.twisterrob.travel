@@ -19,8 +19,17 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 	private static final Logger LOG = LoggerFactory.getLogger(DataBaseOpenHelper.class);
 
 	private static final String DB_SCHEMA_FILE = "LondonTravel.v1.schema.sql";
-	private static final String[] DB_DATA_FILES = {"LondonTravel.v1.data.sql", "LondonTravel.v1.data-Stop.sql",
-			"LondonTravel.v1.data-Line_Stop.sql", "LondonTravel.v1.data-AreaHull.sql"};
+	private static final String[] DB_DATA_FILES = { //
+	"LondonTravel.v1.data.sql", //
+			"LondonTravel.v1.data-Stop.sql", //
+			"LondonTravel.v1.data-Line_Stop.sql", //
+			"LondonTravel.v1.data-AreaHull.sql", //
+			"LondonTravel.v1.data-Route.sql", //
+			"LondonTravel.v1.data-Section.sql", //
+			"LondonTravel.v1.data-Route_Section.sql", //
+			"LondonTravel.v1.data-Link.sql", //
+			"LondonTravel.v1.data-Section_Link.sql" //
+	};
 	private static final String DB_CLEAN_FILE = "LondonTravel.v1.clean.sql";
 	private static final String DB_DEVELOPMENT_FILE = "LondonTravel.v1.development.sql";
 	private static final String DB_NAME = "LondonTravel";

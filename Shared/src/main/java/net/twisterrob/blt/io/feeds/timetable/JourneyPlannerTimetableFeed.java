@@ -55,8 +55,8 @@ public class JourneyPlannerTimetableFeed extends BaseFeed<JourneyPlannerTimetabl
 			}
 		});
 		for (Route route: routes) {
-			for (RouteSection section: route.getRouteSections()) {
-				for (RouteLink link: section.getRouteLinks()) {
+			for (RouteSection section: route.getSections()) {
+				for (RouteLink link: section.getLinks()) {
 					stopPoints.add(link.getFrom());
 					stopPoints.add(link.getTo());
 				}

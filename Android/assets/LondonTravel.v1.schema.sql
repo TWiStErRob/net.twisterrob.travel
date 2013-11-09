@@ -36,6 +36,49 @@ CREATE TABLE IF NOT EXISTS Line_Stop (
 	PRIMARY KEY(line, stop)
 );
 
+CREATE TABLE IF NOT EXISTS Route (
+	_id                 NVARCHAR           NOT NULL,
+	name                NVARCHAR           NOT NULL,
+	line                INTEGER            NOT NULL
+	                                       CONSTRAINT "fk-Route-Line" REFERENCES Line(_id),
+	PRIMARY KEY(_id)
+);
+
+CREATE TABLE IF NOT EXISTS Section (
+	_id                 NVARCHAR           NOT NULL,
+	name                NVARCHAR           NOT NULL,
+	PRIMARY KEY(_id)
+);
+
+CREATE TABLE IF NOT EXISTS Link (
+	_id                 NVARCHAR           NOT NULL,
+	name                NVARCHAR           NOT NULL,
+	stopFrom            INTEGER            NOT NULL
+	                                       CONSTRAINT "fk-Link_from-Stop" REFERENCES Stop(_id),
+	stopTo              INTEGER            NOT NULL
+	                                       CONSTRAINT "fk-Link_to-Stop" REFERENCES Stop(_id),
+	distance            INTEGER            NOT NULL,
+	PRIMARY KEY(_id)
+);
+
+CREATE TABLE IF NOT EXISTS Route_Section (
+	route               NVARCHAR           NOT NULL
+	                                       CONSTRAINT "fk-Route_Section-Route" REFERENCES Route(_id),
+	section             NVARCHAR           NOT NULL
+	                                       CONSTRAINT "fk-Route_Section-Section" REFERENCES Section(_id),
+	seq                 INTEGER            NOT NULL,
+	PRIMARY KEY(route, section)
+);
+
+CREATE TABLE IF NOT EXISTS Section_Link (
+	section             NVARCHAR           NOT NULL
+	                                       CONSTRAINT "fk-Section_Link-Section" REFERENCES Section(_id),
+	link                NVARCHAR           NOT NULL
+	                                       CONSTRAINT "fk-Section_Link-Link" REFERENCES Link(_id),
+	seq                 INTEGER            NOT NULL,
+	PRIMARY KEY(section, link)
+);
+
 CREATE TABLE IF NOT EXISTS AreaHull (
 	area_code           VARCHAR(4)         NOT NULL,
 	hull_index          INTEGER            NOT NULL,

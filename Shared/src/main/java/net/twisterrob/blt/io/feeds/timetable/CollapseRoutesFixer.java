@@ -22,8 +22,8 @@ public class CollapseRoutesFixer implements RouteFixer {
 	}
 
 	private static boolean contains(Route route1, Route route2) {
-		Iterator<StopPoint> stops1 = route1.getStopPoints().iterator();
-		Iterator<StopPoint> stops2 = route2.getStopPoints().iterator();
+		Iterator<StopPoint> stops1 = route1.getStops().iterator();
+		Iterator<StopPoint> stops2 = route2.getStops().iterator();
 		if (!stops2.hasNext()) {
 			return true; // empty route is in everything
 		}

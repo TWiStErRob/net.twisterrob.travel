@@ -56,9 +56,9 @@ class RouteMapDrawer extends RouteComponent {
 
 		Set<StopPoint> drawn = new TreeSet<>(StopPoint.BY_ID);
 		if (getRoute() != null) {
-			for (RouteSection section: getRoute().getRouteSections()) {
+			for (RouteSection section: getRoute().getSections()) {
 				StopPoint last = null;
-				for (RouteLink link: section.getRouteLinks()) {
+				for (RouteLink link: section.getLinks()) {
 					paintLink(g2, link, left, top);
 					paintStop(g2, link.getFrom(), left, top, last == null? StopType.START : StopType.ROUTE);
 					drawn.add(link.getFrom());

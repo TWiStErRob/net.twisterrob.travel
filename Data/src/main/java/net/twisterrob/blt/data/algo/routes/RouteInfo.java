@@ -90,8 +90,8 @@ public class RouteInfo {
 		for (Route route: routes) {
 			Node first = null;
 			Node last = null;
-			for (RouteSection section: route.getRouteSections()) {
-				for (RouteLink link: section.getRouteLinks()) {
+			for (RouteSection section: route.getSections()) {
+				for (RouteLink link: section.getLinks()) {
 					StopPoint from = link.getFrom();
 					StopPoint to = link.getTo();
 					Node fromNode = nodes.get(from);

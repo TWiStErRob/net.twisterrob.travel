@@ -15,11 +15,11 @@ public class DLRPuddingMillLane2StratfordFixer implements RouteFixer {
 	}
 	public void fix(JourneyPlannerTimetableFeed feed) {
 		for (Route route: feed.getRoutes()) {
-			for (RouteSection section: route.getRouteSections()) {
+			for (RouteSection section: route.getSections()) {
 				RouteLink link1 = null;
 				RouteLink link2 = null;
 				RouteLink link3 = null;
-				for (RouteLink link: section.getRouteLinks()) {
+				for (RouteLink link: section.getLinks()) {
 					link1 = link2;
 					link2 = link3;
 					link3 = link;

@@ -17,7 +17,7 @@ public class Route implements Iterable<StopPoint> {
 	protected void addSection(RouteSection routeSection) {
 		routeSections.add(routeSection);
 	}
-	public List<RouteSection> getRouteSections() {
+	public List<RouteSection> getSections() {
 		return Collections.unmodifiableList(routeSections);
 	}
 	public Iterator<StopPoint> iterator() {
@@ -30,11 +30,11 @@ public class Route implements Iterable<StopPoint> {
 		this.description = description;
 	}
 
-	public List<StopPoint> getStopPoints() {
+	public List<StopPoint> getStops() {
 		List<StopPoint> stopPoints = new ArrayList<StopPoint>();
-		for (RouteSection section: getRouteSections()) {
+		for (RouteSection section: getSections()) {
 			RouteLink last = null;
-			for (RouteLink link: section.getRouteLinks()) {
+			for (RouteLink link: section.getLinks()) {
 				stopPoints.add(link.getFrom());
 				last = link;
 			}
@@ -45,10 +45,10 @@ public class Route implements Iterable<StopPoint> {
 		return stopPoints;
 	}
 
-	public List<RouteLink> getRouteLinks() {
+	public List<RouteLink> getLinks() {
 		List<RouteLink> links = new ArrayList<RouteLink>();
-		for (RouteSection section: getRouteSections()) {
-			for (RouteLink link: section.getRouteLinks()) {
+		for (RouteSection section: getSections()) {
+			for (RouteLink link: section.getLinks()) {
 				links.add(link);
 			}
 		}
@@ -66,7 +66,7 @@ public class Route implements Iterable<StopPoint> {
 	@SuppressWarnings("unused")
 	@Deprecated
 	public Route reconstruct() {
-		List<StopPoint> stops = getStopPoints();
+		List<StopPoint> stops = getStops();
 		StopPoint first = firstStop();
 		StopPoint last = lastStop();
 		int sectionNum = 0;
