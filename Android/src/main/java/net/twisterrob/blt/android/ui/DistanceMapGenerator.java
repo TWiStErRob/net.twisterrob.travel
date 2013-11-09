@@ -60,7 +60,7 @@ public class DistanceMapGenerator {
 			border(pixels, pixelWidth, pixelHeight, borderWidth);
 		}
 		Bitmap bitmap = Bitmap.createBitmap(pixelWidth, pixelHeight, Bitmap.Config.ARGB_8888);
-		bitmap.setPixels(pixels, 0, pixelWidth, 0, 0, pixelWidth, pixelHeight);
+		bitmap.setPixels(pixels, (pixelHeight - 1) * pixelWidth, -pixelWidth, 0, 0, pixelWidth, pixelHeight);
 		return bitmap;
 	}
 
@@ -69,7 +69,7 @@ public class DistanceMapGenerator {
 				geoWidth, geoHeight, pixelWidth, pixelHeight);
 		int[] pixels = new int[pixelHeight * pixelWidth];
 		double nodeXOffset = startNode.getPos().getLongitude() - minLon;
-		double nodeYOffset = maxLat - startNode.getPos().getLatitude(); // reverse coordinate system for bitmap
+		double nodeYOffset = startNode.getPos().getLatitude() - minLat;
 		int nodeX = (int)(nodeXOffset / geoWidth * pixelWidth);
 		int nodeY = (int)(nodeYOffset / geoHeight * pixelHeight);
 		int r = pixelWidth / 7;
