@@ -16,11 +16,17 @@ public class DataBaseHelper {
 	private final DataBaseOpenHelper m_helper;
 	private final DataBaseWriter m_writer;
 	private final DataBaseReader m_reader;
+	private Context m_context;
 
 	public DataBaseHelper(final Context context) {
+		m_context = context;
 		m_helper = new DataBaseOpenHelper(context);
 		m_reader = new DataBaseReader(this);
 		m_writer = new DataBaseWriter(this);
+	}
+
+	public Context getContext() {
+		return m_context;
 	}
 
 	SQLiteDatabase getReadableDatabase() {
@@ -61,5 +67,9 @@ public class DataBaseHelper {
 
 	public Map<String, List<AreaHullPoint>> getAreas() {
 		return m_reader.getAreas();
+	}
+
+	public Map<Integer, NetworkNode> getTubeNetwork() {
+		return m_reader.getTubeNetwork();
 	}
 }

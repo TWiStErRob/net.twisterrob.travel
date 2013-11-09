@@ -2,6 +2,7 @@ package net.twisterrob.blt.android.db;
 
 import java.util.*;
 
+import net.twisterrob.android.utils.tools.IOTools;
 import net.twisterrob.blt.android.db.model.*;
 import net.twisterrob.blt.model.*;
 import net.twisterrob.java.model.Location;
@@ -165,4 +166,35 @@ class DataBaseReader {
 		return areas;
 	}
 	// #endregion
+
+	public Map<Integer, NetworkNode> getTubeNetwork() {
+		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
+		String query = IOTools.getAssetAsString(m_dataBaseHelper.getContext(), "getNetwork.sql");
+		Cursor cursor = db.rawQuery(query, new String[0]);
+		Map<Integer, NetworkNode> nodes = new TreeMap<Integer, NetworkNode>();
+		while (cursor.moveToNext()) {
+			int fromID = cursor.getInt(cursor.getColumnIndex("fromID"));
+			double fromLat = cursor.getDouble(cursor.getColumnIndex("fromLat"));
+			double fromLon = cursor.getDouble(cursor.getColumnIndex("fromLon"));
+			int toID = cursor.getInt(cursor.getColumnIndex("toID"));
+			double toLat = cursor.getDouble(cursor.getColumnIndex("toLat"));
+			double toLon = cursor.getDouble(cursor.getColumnIndex("toLon"));
+			int distance = cursor.getInt(cursor.getColumnIndex("distance"));
+			int lineID = cursor.getInt(cursor.getColumnIndex("lineID"));
+			NetworkNode fromNode = nodes.get(fromID);
+			if (fromNode == null) {
+				fromNode = new NetworkNode(fromID, new Location(fromLat, fromLon));
+				nodes.put(fromID, fromNode);
+			}
+			NetworkNode toNode = nodes.get(toID);
+			if (toNode == null) {
+				toNode = new NetworkNode(toID, new Location(toLat, toLon));
+				nodes.put(toID, toNode);
+			}
+			Line line = Line.values()[lineID];
+			fromNode.out.add(new NetworkLink(toNode, line, distance));
+			toNode.in.add(new NetworkLink(fromNode, line, distance));
+		}
+		return nodes;
+	}
 }
