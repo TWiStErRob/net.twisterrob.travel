@@ -5,9 +5,8 @@ import java.util.Map;
 import net.twisterrob.android.utils.model.LocationUtils;
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.db.model.NetworkNode;
-
-import org.slf4j.*;
-
+import net.twisterrob.blt.android.ui.DistanceMapGenerator;
+import android.graphics.Bitmap;
 import android.os.*;
 import android.support.v4.app.FragmentActivity;
 
@@ -15,8 +14,6 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
 public class DistanceMapActivity extends FragmentActivity {
-	private static final Logger LOG = LoggerFactory.getLogger(DistanceMapActivity.class);
-
 	private GoogleMap m_map;
 
 	@Override
@@ -54,6 +51,12 @@ public class DistanceMapActivity extends FragmentActivity {
 						.title("Hammersmith") //
 						.position(LocationUtils.toLatLng(startNode.getPos())) //
 						.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+				Bitmap overlay = new DistanceMapGenerator(nodes, startNode).generate(3);
+				map.addGroundOverlay(new GroundOverlayOptions() //
+						.positionFromBounds(bounds) //
+						.transparency(0.0f) //
+						.image(BitmapDescriptorFactory.fromBitmap(overlay)));
+
 			}
 
 			protected LatLngBounds getBounds(Iterable<NetworkNode> nodes) {
