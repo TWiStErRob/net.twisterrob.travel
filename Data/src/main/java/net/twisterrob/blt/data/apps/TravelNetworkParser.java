@@ -22,13 +22,24 @@ public class TravelNetworkParser {
 		writeDBScripts(STATIC_DATA.getTimetableFilenames().keySet());
 	}
 
-	protected static Map<StopPoint, Set<Line>> getStopsAndLines(Iterable<Line> lines) throws IOException, SAXException {
-		Map<StopPoint, Set<Line>> stops = new TreeMap<>(StopPoint.BY_NAME);
+	protected static Map<Line, JourneyPlannerTimetableFeed> getFeeds(Iterable<Line> lines) throws IOException,
+			SAXException {
+		Map<Line, JourneyPlannerTimetableFeed> feeds = new EnumMap<>(Line.class);
 		FeedReader<JourneyPlannerTimetableFeed> reader = new FeedReader<>();
 		String root = STATIC_DATA.getTimetableRoot();
 		for (Line line: lines) {
 			List<String> files = STATIC_DATA.getTimetableFilenames().get(line);
 			JourneyPlannerTimetableFeed feed = reader.readFeed(Feed.JourneyPlannerTimetables, root, files);
+			LOG.info("Read {} ({})", feed.getLine(), feed.getOperator().getTradingName());
+			feeds.put(line, feed);
+		}
+		return feeds;
+	}
+	protected static Map<StopPoint, Set<Line>> getStopsAndLines(Map<Line, JourneyPlannerTimetableFeed> feeds) {
+		Map<StopPoint, Set<Line>> stops = new TreeMap<>(StopPoint.BY_NAME);
+		for (Entry<Line, JourneyPlannerTimetableFeed> entry: feeds.entrySet()) {
+			Line line = entry.getKey();
+			JourneyPlannerTimetableFeed feed = entry.getValue();
 			LOG.info("Processing {} ({})", feed.getLine(), feed.getOperator().getTradingName());
 
 			for (StopPoint stop: JourneyPlannerTimetableFeed.getStopPoints(feed.getRoutes())) {
@@ -49,16 +60,17 @@ public class TravelNetworkParser {
 		FeedReader<PredictionSummaryFeed> reader = new FeedReader<>();
 		String root = STATIC_DATA.getPredictionSummaryRoot();
 		for (Line line: lines) {
-			String file = STATIC_DATA.getPredictionSummaryFilenames().get(line);
-			if (file == null) {
+			String fileName = STATIC_DATA.getPredictionSummaryFilenames().get(line);
+			if (fileName == null) {
 				continue;
 			}
-			PredictionSummaryFeed feed = reader.readFeed(Feed.TubeDepartureBoardsPredictionSummary,
-					new File(root, file));
+			File file = new File(root, fileName);
+			LOG.info("Reading prediction feed for {} from {}", line, file);
+			PredictionSummaryFeed feed = reader.readFeed(Feed.TubeDepartureBoardsPredictionSummary, file);
 			feed.setLine(line);
 			feed.applyAliases();
 			feed.segregateAlienStations();
-			System.out.printf("%s (%s)\n", feed.getLine(), feed.getTimeStamp());
+			LOG.info("Processing codes for {} ({})", feed.getLine(), feed.getTimeStamp());
 			Map<String, String> stationMap = stopCodes.get(feed.getLine());
 			if (stationMap == null) {
 				stationMap = new TreeMap<>();
@@ -72,7 +84,8 @@ public class TravelNetworkParser {
 	}
 
 	protected static void writeDBScripts(Collection<Line> lines) throws Throwable {
-		Map<StopPoint, Set<Line>> stops = getStopsAndLines(lines);
+		Map<Line, JourneyPlannerTimetableFeed> feeds = getFeeds(lines);
+		Map<StopPoint, Set<Line>> stops = getStopsAndLines(feeds);
 		Map<Line, Map<String, String>> stationCodes = getStationCodes(lines);
 
 		try (
