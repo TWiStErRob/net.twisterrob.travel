@@ -1,8 +1,8 @@
 package net.twisterrob.blt.android.ui;
 
-import java.util.Map;
+import java.util.*;
 
-import net.twisterrob.blt.android.db.model.NetworkNode;
+import net.twisterrob.blt.android.db.model.*;
 import net.twisterrob.java.model.Location;
 
 import org.slf4j.*;
@@ -68,16 +68,25 @@ public class DistanceMapGenerator {
 		return bitmap;
 	}
 
+	Set<Integer> finished;
 	private int[] calcPixels() {
 		LOG.debug("Mapping area w={}, h={} to pixels w={}, h={}", //
 				geoWidth, geoHeight, pixelWidth, pixelHeight);
 		int[] pixels = new int[pixelHeight * pixelWidth];
 		//flag(pixels, pixelWidth, pixelHeight);
-		int r = pixelWidth / 10;
-		for (NetworkNode node: nodes.values()) {
-			drawCircle(pixels, node.getPos(), r);
-		}
+		finished = new TreeSet<Integer>();
+		draw(pixels, startNode, pixelWidth / 7);
 		return pixels;
+	}
+
+	private void draw(int[] pixels, NetworkNode node, int remaining) {
+		finished.add(node.getID());
+		drawCircle(pixels, node.getPos(), remaining);
+		for (NetworkLink link: node.out) {
+			if (!finished.contains(link.m_target.getID())) {
+				draw(pixels, link.m_target, (int)(remaining * 0.6));
+			}
+		}
 	}
 
 	protected void drawCircle(int[] pixels, Location pos, int r) {
