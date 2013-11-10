@@ -94,6 +94,7 @@ public class DistanceMapGenerator {
 	 * @param remainingMinutes minutes remaining from the possible trips
 	 * @return 
 	 */
+	int circle = 0;
 	private boolean draw(NetworkLink startLink, double remainingMinutes) {
 		if (remainingMinutes < 0) {
 			return false;
@@ -104,6 +105,8 @@ public class DistanceMapGenerator {
 		double phi = Math.toRadians(node.getPos().getLatitude());
 		double meters_per_lat_degree = LocationConverter.metersPerDegreeLat(phi);
 		double meters_per_lon_degree = LocationConverter.metersPerDegreeLon(phi);
+		LOG.debug("Drawing {} for {} / {} remaining: {}", circle++, startLink.getLine(), startLink.getTarget()
+				.getName(), (int)(remainingMinutes * 10) / 10.0);
 		drawCircle(node.getPos(), startLink.getLine(), remainingWalk / meters_per_lon_degree, remainingWalk
 				/ meters_per_lat_degree);
 		for (NetworkLink link: node.out) {
@@ -115,7 +118,23 @@ public class DistanceMapGenerator {
 				finishedNodes.put(link, newRemaining);
 			}
 		}
+		//if (0 < remainingWalk) {
+		//	walkFromStation(node, remainingWalk);
+		//}
 		return true;
+	}
+
+	@SuppressWarnings("unused")
+	// TODO too slow
+	private void walkFromStation(NetworkNode start, double remainingWalk) {
+		for (NetworkNode node: nodes.values()) {
+			double dist = LocationUtils.distance(start.getPos(), node.getPos());
+			if (10 < dist && dist < remainingWalk) {
+				double remainingMeters = remainingWalk - dist;
+				double remainingMinutes = remainingMeters / 1000.0 / config.speedOnFoot * 60;
+				draw(new NetworkLink(node, Line.unknown, 0), remainingMinutes - config.timePlatformToStreet);
+			}
+		}
 	}
 
 	/**
@@ -132,6 +151,8 @@ public class DistanceMapGenerator {
 		int nodeY = (int)(nodeYOffset / geoHeight * pixelHeight);
 		int rX = (int)(widthDegrees / geoWidth * pixelWidth);
 		int rY = (int)(heightDegrees / geoHeight * pixelHeight);
+		//LOG.debug("Drawing a circle at {},{} for {} (pixels: {},{}, radii: {},{})", //
+		//		pos.getLongitude(), pos.getLatitude(), line, nodeX, nodeY, rX, rY);
 		drawEllipse(nodeX, nodeY, rX, rY, config.getColor(line));
 	}
 
@@ -173,8 +194,8 @@ public class DistanceMapGenerator {
 		int endX = Math.min(nodeX + a, pixelWidth);
 		int startY = Math.max(nodeY - b, 0);
 		int endY = Math.min(nodeY + b, pixelHeight);
-		LOG.debug("Drawing a circle at {},{} spanning from {},{} to {},{}", //
-				nodeX, nodeY, startX, startY, endX, endY);
+		//LOG.debug("Drawing a circle at {},{} spanning from {},{} to {},{}", //
+		//		nodeX, nodeY, startX, startY, endX, endY);
 		for (int x = startX; x < endX; ++x) {
 			for (int y = startY; y < endY; ++y) {
 				// ellipse: (x - x_0)^2 / (a^2) + (y - y_0)^2 / (b^2) = 1
