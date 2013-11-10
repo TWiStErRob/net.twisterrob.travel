@@ -1,4 +1,4 @@
-select
+select distinct
 	l.stopFrom        as fromID,
 	stFrom.latitude   as fromLat,
 	stFrom.longitude  as fromLon,
@@ -20,6 +20,6 @@ join Stop stTo         ON stTo._id = l.stopTo
 where 1=1
 --and line.name = 'Central'
 --and stFrom.name = 'Liverpool Street'
-order by
-	r._id, rs.seq, sl.seq
+--order by r._id, rs.seq, sl.seq
+--order by fromName, toName
 ;

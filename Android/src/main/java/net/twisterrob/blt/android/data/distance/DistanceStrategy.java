@@ -1,7 +1,7 @@
 package net.twisterrob.blt.android.data.distance;
 
-import net.twisterrob.blt.android.db.model.*;
+import net.twisterrob.blt.android.db.model.NetworkLink;
 
 public interface DistanceStrategy {
-	double distance(NetworkNode node, NetworkLink link);
+	double distance(NetworkLink from, NetworkLink to);
 }

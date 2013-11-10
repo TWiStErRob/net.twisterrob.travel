@@ -106,10 +106,9 @@ public class DistanceMapGenerator {
 		double meters_per_lon_degree = LocationConverter.metersPerDegreeLon(phi);
 		drawCircle(node.getPos(), startLink.getLine(), remainingWalk / meters_per_lon_degree, remainingWalk
 				/ meters_per_lat_degree);
-
 		for (NetworkLink link: node.out) {
 			Double oldRemaining = finishedNodes.get(link);
-			double travelWithTube = config.tubingStrategy.distance(node, link);
+			double travelWithTube = config.tubingStrategy.distance(startLink, link);
 			double newRemaining = remainingMinutes - travelWithTube;
 			if (oldRemaining == null || oldRemaining < newRemaining) {
 				draw(link, newRemaining);
