@@ -198,6 +198,27 @@ class DataBaseReader {
 				nodes.put(toKey, toNode);
 			}
 			fromNode.out.add(new NetworkLink(fromNode, toNode, distance));
+			// TODO efficiency with some cache or DB
+			for (Line neighborLine: Line.values()) {
+				if (neighborLine != line) {
+					{
+						MultiKey neighborKey = new MultiKey(neighborLine, fromID);
+						NetworkNode neighbor = nodes.get(neighborKey);
+						if (neighbor != null) {
+							fromNode.neighbors.add(neighbor);
+							neighbor.neighbors.add(fromNode);
+						}
+					}
+					{
+						MultiKey neighborKey = new MultiKey(neighborLine, toID);
+						NetworkNode neighbor = nodes.get(neighborKey);
+						if (neighbor != null) {
+							toNode.neighbors.add(neighbor);
+							neighbor.neighbors.add(toNode);
+						}
+					}
+				}
+			}
 		}
 		return new HashSet<NetworkNode>(nodes.values());
 	}

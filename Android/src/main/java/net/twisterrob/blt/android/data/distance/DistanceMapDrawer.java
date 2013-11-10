@@ -75,8 +75,8 @@ public class DistanceMapDrawer {
 	}
 
 	private int[] calcPixels(Map<NetworkNode, Double> nodes) {
-		LOG.debug("Mapping area w={}, h={} to pixels w={}, h={}", //
-				geoWidth, geoHeight, pixelWidth, pixelHeight);
+		//LOG.debug("Mapping area w={}, h={} to pixels w={}, h={}", //
+		//		geoWidth, geoHeight, pixelWidth, pixelHeight);
 		pixels = new int[pixelHeight * pixelWidth];
 		for (Entry<NetworkNode, Double> circle: nodes.entrySet()) {
 			drawCircle(circle.getKey(), circle.getValue());
@@ -88,7 +88,7 @@ public class DistanceMapDrawer {
 		double phi = Math.toRadians(node.getLocation().getLatitude());
 		double meters_per_lat_degree = LocationConverter.metersPerDegreeLat(phi);
 		double meters_per_lon_degree = LocationConverter.metersPerDegreeLon(phi);
-		LOG.debug("Drawing for {} / {} remaining: {}", node.getLine(), node.getName(), (int)remainingWalk);
+		//LOG.debug("Drawing for {} / {} remaining: {}", node.getLine(), node.getName(), (int)remainingWalk);
 		drawCircle(node.getLocation(), node.getLine(), remainingWalk / meters_per_lon_degree, remainingWalk
 				/ meters_per_lat_degree);
 	}
@@ -123,8 +123,8 @@ public class DistanceMapDrawer {
 		int endX = Math.min(nodeX + r, pixelWidth);
 		int startY = Math.max(nodeY - r, 0);
 		int endY = Math.min(nodeY + r, pixelHeight);
-		LOG.debug("Drawing a circle at {},{} spanning from {},{} to {},{}", //
-				nodeX, nodeY, startX, startY, endX, endY);
+		//LOG.debug("Drawing a circle at {},{} spanning from {},{} to {},{}", //
+		//		nodeX, nodeY, startX, startY, endX, endY);
 		for (int x = startX; x < endX; ++x) {
 			for (int y = startY; y < endY; ++y) {
 				// circle: (x - x_0)^2 + (y - y_0)^2 = r^2

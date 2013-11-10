@@ -19,6 +19,7 @@ public class NetworkNode {
 	}
 
 	public final Set<NetworkLink> out = new HashSet<NetworkLink>();
+	public final Set<NetworkNode> neighbors = new HashSet<NetworkNode>();
 
 	public int getID() {
 		return m_id;
@@ -38,6 +39,10 @@ public class NetworkNode {
 
 	public Set<NetworkLink> getOut() {
 		return out;
+	}
+
+	public Set<NetworkNode> getNeighbors() {
+		return neighbors;
 	}
 
 	@Override

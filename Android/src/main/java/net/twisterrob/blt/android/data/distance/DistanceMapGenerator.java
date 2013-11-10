@@ -56,8 +56,8 @@ public class DistanceMapGenerator {
 			double remainingWalk = (remainingMinutes - config.timePlatformToStreet) / 60.0 /* to hours */
 					* config.speedOnFoot * 1000.0 /* to meters */;
 			NetworkNode node = circle.getKey();
-			LOG.debug("Converting result for {}/{}: {} min -> {} m", //
-					node.getLine(), node.getName(), remainingMinutes, remainingWalk);
+			//LOG.debug("Converting result for {}/{}: {} min -> {} m", //
+			//		node.getLine(), node.getName(), remainingMinutes, remainingWalk);
 			circle.setValue(remainingWalk);
 
 		}
@@ -80,6 +80,13 @@ public class DistanceMapGenerator {
 			Double oldRemaining = finishedNodes.get(to);
 			double travelWithTube = config.tubingStrategy.distance(link);
 			double newRemaining = remainingMinutes - travelWithTube;
+			if (oldRemaining == null || oldRemaining < newRemaining) {
+				traverse(to, newRemaining);
+			}
+		}
+		for (NetworkNode to: from.getNeighbors()) {
+			Double oldRemaining = finishedNodes.get(to);
+			double newRemaining = remainingMinutes - config.timeTransfer;
 			if (oldRemaining == null || oldRemaining < newRemaining) {
 				traverse(to, newRemaining);
 			}
