@@ -217,11 +217,24 @@ public class DistanceMapGenerator {
 	 * @param color 
 	 */
 	private void magicColor(int x, int y, double height, int color) {
-		int oldAlpha = Color.alpha(pixels[y * pixelWidth + x]);
+		int originalColor = pixels[y * pixelWidth + x];
+		int oldAlpha = Color.alpha(originalColor);
 		int newAlpha = (int)(height * 255);
-		if (newAlpha > oldAlpha) {
+		if (config.blendColors && originalColor != 0) {
+			pixels[y * pixelWidth + x] = Color.argb( //
+					Math.min(oldAlpha + newAlpha, 255), //
+					blend(newAlpha, Color.red(originalColor), Color.red(color)), //
+					blend(newAlpha, Color.green(originalColor), Color.green(color)), //
+					blend(newAlpha, Color.blue(originalColor), Color.blue(color)) //
+					);
+		} else if (newAlpha > oldAlpha) {
 			pixels[y * pixelWidth + x] = color | (newAlpha << 24);
 		}
+	}
+
+	public static int blend(int newAlpha, int bottom, int top) {
+		// return (int)(newAlpha/255.0 * top + (1 - newAlpha/255.0) * bottom);
+		return (newAlpha * top + (255 - newAlpha) * bottom) / 255;
 	}
 
 	private void border(int borderSize, int borderColor) {
