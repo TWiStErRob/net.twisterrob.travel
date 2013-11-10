@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import net.twisterrob.blt.android.db.model.*;
+import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.model.Line;
 import net.twisterrob.java.model.*;
 
@@ -30,13 +30,13 @@ public class DistanceMapDrawer {
 	private final int pixelHeight;
 	private int[] pixels;
 
-	public DistanceMapDrawer(Map<Integer, NetworkNode> nodes, DistanceMapDrawerConfig config) {
+	public DistanceMapDrawer(Iterable<NetworkNode> nodes, DistanceMapDrawerConfig config) {
 		this.config = config;
 		double minX = Double.POSITIVE_INFINITY, maxX = Double.NEGATIVE_INFINITY;
 		double minY = Double.POSITIVE_INFINITY, maxY = Double.NEGATIVE_INFINITY;
-		for (NetworkNode node: nodes.values()) {
-			double lat = node.getPos().getLatitude();
-			double lon = node.getPos().getLongitude();
+		for (NetworkNode node: nodes) {
+			double lat = node.getLocation().getLatitude();
+			double lon = node.getLocation().getLongitude();
 			if (lon < minX) {
 				minX = lon;
 			} else if (maxX < lon) {
@@ -63,7 +63,7 @@ public class DistanceMapDrawer {
 		return config;
 	}
 
-	public Bitmap draw(Map<NetworkLink, Double> nodes) {
+	public Bitmap draw(Map<NetworkNode, Double> nodes) {
 		calcPixels(nodes);
 		if (0 < config.borderSize) {
 			border(config.borderSize, config.borderColor);
@@ -74,23 +74,22 @@ public class DistanceMapDrawer {
 		return bitmap;
 	}
 
-	private int[] calcPixels(Map<NetworkLink, Double> nodes) {
+	private int[] calcPixels(Map<NetworkNode, Double> nodes) {
 		LOG.debug("Mapping area w={}, h={} to pixels w={}, h={}", //
 				geoWidth, geoHeight, pixelWidth, pixelHeight);
 		pixels = new int[pixelHeight * pixelWidth];
-		for (Entry<NetworkLink, Double> circle: nodes.entrySet()) {
+		for (Entry<NetworkNode, Double> circle: nodes.entrySet()) {
 			drawCircle(circle.getKey(), circle.getValue());
 		}
 		return pixels;
 	}
 
-	private void drawCircle(NetworkLink link, double remainingWalk) {
-		NetworkNode node = link.getTarget();
-		double phi = Math.toRadians(node.getPos().getLatitude());
+	private void drawCircle(NetworkNode node, double remainingWalk) {
+		double phi = Math.toRadians(node.getLocation().getLatitude());
 		double meters_per_lat_degree = LocationConverter.metersPerDegreeLat(phi);
 		double meters_per_lon_degree = LocationConverter.metersPerDegreeLon(phi);
-		LOG.debug("Drawing for {} / {} remaining: {}", link.getLine(), link.getTarget().getName(), (int)remainingWalk);
-		drawCircle(node.getPos(), link.getLine(), remainingWalk / meters_per_lon_degree, remainingWalk
+		LOG.debug("Drawing for {} / {} remaining: {}", node.getLine(), node.getName(), (int)remainingWalk);
+		drawCircle(node.getLocation(), node.getLine(), remainingWalk / meters_per_lon_degree, remainingWalk
 				/ meters_per_lat_degree);
 	}
 

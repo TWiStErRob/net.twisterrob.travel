@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import net.twisterrob.blt.android.db.model.*;
-import net.twisterrob.blt.model.Line;
 import net.twisterrob.java.model.LocationUtils;
 
 import org.slf4j.*;
@@ -15,22 +14,21 @@ import org.slf4j.*;
 public class DistanceMapGenerator {
 	private static final Logger LOG = LoggerFactory.getLogger(DistanceMapGenerator.class);
 
-	private Map<Integer, NetworkNode> nodes;
-	private NetworkLink startLink;
-	private Map<NetworkLink, Double> finishedNodes;
+	private Set<NetworkNode> nodes;
+	private NetworkNode startNode;
+	private Map<NetworkNode, Double> finishedNodes;
 
 	private final DistanceMapGeneratorConfig config;
 
-	public DistanceMapGenerator(Map<Integer, NetworkNode> networkNodes, NetworkLink startLink,
-			DistanceMapGeneratorConfig config) {
+	public DistanceMapGenerator(Set<NetworkNode> networkNodes, NetworkNode startNode, DistanceMapGeneratorConfig config) {
 		this.nodes = networkNodes;
-		this.startLink = startLink;
+		this.startNode = startNode;
 		this.config = config;
 		double minX = Double.POSITIVE_INFINITY, maxX = Double.NEGATIVE_INFINITY;
 		double minY = Double.POSITIVE_INFINITY, maxY = Double.NEGATIVE_INFINITY;
-		for (NetworkNode node: nodes.values()) {
-			double lat = node.getPos().getLatitude();
-			double lon = node.getPos().getLongitude();
+		for (NetworkNode node: nodes) {
+			double lat = node.getLocation().getLatitude();
+			double lon = node.getLocation().getLongitude();
 			if (lon < minX) {
 				minX = lon;
 			} else if (maxX < lon) {
@@ -49,14 +47,17 @@ public class DistanceMapGenerator {
 		return config;
 	}
 
-	public Map<NetworkLink, Double> generate() {
-		finishedNodes = new TreeMap<NetworkLink, Double>();
-		finishedNodes.put(startLink, config.minutes);
-		traverse(startLink, config.minutes);
-		for (Entry<NetworkLink, Double> circle: finishedNodes.entrySet()) {
+	public Map<NetworkNode, Double> generate() {
+		finishedNodes = new HashMap<NetworkNode, Double>();
+		finishedNodes.put(startNode, config.minutes);
+		traverse(startNode, config.minutes);
+		for (Entry<NetworkNode, Double> circle: finishedNodes.entrySet()) {
 			double remainingMinutes = circle.getValue();
 			double remainingWalk = (remainingMinutes - config.timePlatformToStreet) / 60.0 /* to hours */
 					* config.speedOnFoot * 1000.0 /* to meters */;
+			NetworkNode node = circle.getKey();
+			LOG.debug("Converting result for {}/{}: {} min -> {} m", //
+					node.getLine(), node.getName(), remainingMinutes, remainingWalk);
 			circle.setValue(remainingWalk);
 
 		}
@@ -64,20 +65,20 @@ public class DistanceMapGenerator {
 	}
 
 	/**
-	 * @param node current tube station
+	 * @param from current tube station
 	 * @param remainingMinutes minutes remaining from the possible trips
 	 * @return 
 	 */
-	private boolean traverse(NetworkLink from, double remainingMinutes) {
+	private boolean traverse(NetworkNode from, double remainingMinutes) {
 		if (remainingMinutes < 0) {
 			return false;
 		} else {
 			finishedNodes.put(from, remainingMinutes);
 		}
-		NetworkNode node = from.m_target;
-		for (NetworkLink to: node.out) {
+		for (NetworkLink link: from.getOut()) {
+			NetworkNode to = link.getTarget();
 			Double oldRemaining = finishedNodes.get(to);
-			double travelWithTube = config.tubingStrategy.distance(from, to);
+			double travelWithTube = config.tubingStrategy.distance(link);
 			double newRemaining = remainingMinutes - travelWithTube;
 			if (oldRemaining == null || oldRemaining < newRemaining) {
 				traverse(to, newRemaining);
@@ -92,12 +93,12 @@ public class DistanceMapGenerator {
 	@SuppressWarnings("unused")
 	// TODO too slow
 	private void walkFromStation(NetworkNode start, double remainingWalk) {
-		for (NetworkNode node: nodes.values()) {
-			double dist = LocationUtils.distance(start.getPos(), node.getPos());
+		for (NetworkNode node: nodes) {
+			double dist = LocationUtils.distance(start.getLocation(), node.getLocation());
 			if (10 < dist && dist < remainingWalk) {
 				double remainingMeters = remainingWalk - dist;
 				double remainingMinutes = remainingMeters / 1000.0 / config.speedOnFoot * 60;
-				traverse(new NetworkLink(node, Line.unknown, 0), remainingMinutes - config.timePlatformToStreet);
+				traverse(node, remainingMinutes - config.timePlatformToStreet);
 			}
 		}
 	}

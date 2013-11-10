@@ -69,7 +69,7 @@ public class DataBaseHelper {
 		return m_reader.getAreas();
 	}
 
-	public Map<Integer, NetworkNode> getTubeNetwork() {
+	public Set<NetworkNode> getTubeNetwork() {
 		return m_reader.getTubeNetwork();
 	}
 }

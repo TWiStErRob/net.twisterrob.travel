@@ -2,21 +2,23 @@ package net.twisterrob.blt.android.db.model;
 
 import java.util.*;
 
+import net.twisterrob.blt.model.Line;
 import net.twisterrob.java.model.Location;
 
-public class NetworkNode implements Comparable<NetworkNode> {
-	private int m_id;
-	private Location m_pos;
-	private String m_name;
+public class NetworkNode {
+	private final int m_id;
+	private final String m_name;
+	private final Line m_line;
+	private final Location m_pos;
 
-	public NetworkNode(int id, String name, Location pos) {
+	public NetworkNode(int id, String name, Line line, Location location) {
 		m_id = id;
 		m_name = name;
-		m_pos = pos;
+		m_line = line;
+		m_pos = location;
 	}
 
-	public final Set<NetworkLink> in = new TreeSet<NetworkLink>();
-	public final Set<NetworkLink> out = new TreeSet<NetworkLink>();
+	public final Set<NetworkLink> out = new HashSet<NetworkLink>();
 
 	public int getID() {
 		return m_id;
@@ -26,16 +28,59 @@ public class NetworkNode implements Comparable<NetworkNode> {
 		return m_name;
 	}
 
-	public Location getPos() {
+	public Line getLine() {
+		return m_line;
+	}
+
+	public Location getLocation() {
 		return m_pos;
 	}
 
-	public int compareTo(NetworkNode another) {
-		return Integer.valueOf(m_id).compareTo(another.m_id);
+	public Set<NetworkLink> getOut() {
+		return out;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("%s (%d)", m_name, m_id);
+		return String.format("%s (%s/%d)", m_name, m_line, m_id);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + m_id;
+		result = prime * result + ((m_line == null)? 0 : m_line.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof NetworkNode)) {
+			return false;
+		}
+		NetworkNode other = (NetworkNode)obj;
+		if (m_id != other.m_id) {
+			return false;
+		}
+		if (m_line != other.m_line) {
+			return false;
+		}
+		return true;
+	}
+
+	public static NetworkNode find(Iterable<NetworkNode> nodes, String name, Line line) {
+		for (NetworkNode node: nodes) {
+			if (node.getName().equals(name) && node.getLine() == line) {
+				return node;
+			}
+		}
+		return null;
 	}
 }

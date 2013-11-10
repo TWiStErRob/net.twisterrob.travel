@@ -1,11 +1,11 @@
 package net.twisterrob.blt.android.ui.activity;
 
-import java.util.Map;
+import java.util.*;
 
 import net.twisterrob.android.utils.model.LocationUtils;
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.data.distance.*;
-import net.twisterrob.blt.android.db.model.*;
+import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.model.Line;
 import android.graphics.Bitmap;
 import android.os.*;
@@ -29,13 +29,13 @@ public class DistanceMapActivity extends FragmentActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		new AsyncTask<Void, Void, Map<Integer, NetworkNode>>() {
+		new AsyncTask<Void, Void, Set<NetworkNode>>() {
 			@Override
-			protected Map<Integer, NetworkNode> doInBackground(Void... params) {
+			protected Set<NetworkNode> doInBackground(Void... params) {
 				return App.getInstance().getDataBaseHelper().getTubeNetwork();
 			}
 			@Override
-			protected void onPostExecute(Map<Integer, NetworkNode> nodes) {
+			protected void onPostExecute(Set<NetworkNode> nodes) {
 				super.onPostExecute(nodes);
 
 				@SuppressWarnings("synthetic-access")
@@ -44,23 +44,22 @@ public class DistanceMapActivity extends FragmentActivity {
 				//	LatLng ll = LocationUtils.toLatLng(node.getPos());
 				//	map.addMarker(new MarkerOptions().title(String.valueOf(node.getID())).position(ll));
 				//}
-				LatLngBounds bounds = getBounds(nodes.values());
+				LatLngBounds bounds = getBounds(nodes);
 				CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 50);
 				map.moveCamera(cu);
-				NetworkNode startNode = nodes.get("Liverpool Street".hashCode());
+				NetworkNode startNode = NetworkNode.find(nodes, "Liverpool Street", Line.Central);
 				map.addMarker(new MarkerOptions() //
 						.title("Liverpool Street") //
-						.position(LocationUtils.toLatLng(startNode.getPos())) //
+						.position(LocationUtils.toLatLng(startNode.getLocation())) //
 						.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 				DistanceMapGeneratorConfig distanceConfig = new DistanceMapGeneratorConfig() //
 						.minutes(25);
 				DistanceMapDrawerConfig drawConfig = new DistanceMapDrawerConfig() //
 						.dynamicColor(true);
-				DistanceMapGenerator distanceMapGenerator = new DistanceMapGenerator(nodes, new NetworkLink(startNode,
-						Line.Central, 0), distanceConfig);
+				DistanceMapGenerator distanceMapGenerator = new DistanceMapGenerator(nodes, startNode, distanceConfig);
 				DistanceMapDrawer distanceMapDrawer = new DistanceMapDrawer(nodes, drawConfig);
 
-				Map<NetworkLink, Double> distanceMap = distanceMapGenerator.generate();
+				Map<NetworkNode, Double> distanceMap = distanceMapGenerator.generate();
 				Bitmap overlay = distanceMapDrawer.draw(distanceMap);
 
 				map.addGroundOverlay(new GroundOverlayOptions() //
@@ -73,7 +72,7 @@ public class DistanceMapActivity extends FragmentActivity {
 			protected LatLngBounds getBounds(Iterable<NetworkNode> nodes) {
 				LatLngBounds.Builder builder = new LatLngBounds.Builder();
 				for (NetworkNode node: nodes) {
-					LatLng ll = LocationUtils.toLatLng(node.getPos());
+					LatLng ll = LocationUtils.toLatLng(node.getLocation());
 					builder.include(ll);
 				}
 				LatLngBounds bounds = builder.build();

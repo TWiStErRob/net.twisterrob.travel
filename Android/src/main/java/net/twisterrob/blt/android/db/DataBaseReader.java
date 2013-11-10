@@ -5,6 +5,7 @@ import java.util.*;
 import net.twisterrob.android.utils.tools.IOTools;
 import net.twisterrob.blt.android.db.model.*;
 import net.twisterrob.blt.model.*;
+import net.twisterrob.java.collections.MultiKey;
 import net.twisterrob.java.model.Location;
 import android.database.*;
 import android.database.sqlite.SQLiteDatabase;
@@ -167,11 +168,11 @@ class DataBaseReader {
 	}
 	// #endregion
 
-	public Map<Integer, NetworkNode> getTubeNetwork() {
+	public Set<NetworkNode> getTubeNetwork() {
 		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
 		String query = IOTools.getAssetAsString(m_dataBaseHelper.getContext(), "getNetwork.sql");
 		Cursor cursor = db.rawQuery(query, new String[0]);
-		Map<Integer, NetworkNode> nodes = new TreeMap<Integer, NetworkNode>();
+		Map<MultiKey, NetworkNode> nodes = new HashMap<MultiKey, NetworkNode>();
 		while (cursor.moveToNext()) {
 			int fromID = cursor.getInt(cursor.getColumnIndex("fromID"));
 			String fromName = cursor.getString(cursor.getColumnIndex("fromName"));
@@ -183,20 +184,21 @@ class DataBaseReader {
 			double toLon = cursor.getDouble(cursor.getColumnIndex("toLon"));
 			int distance = cursor.getInt(cursor.getColumnIndex("distance"));
 			String lineString = cursor.getString(cursor.getColumnIndex("line"));
-			NetworkNode fromNode = nodes.get(fromID);
-			if (fromNode == null) {
-				fromNode = new NetworkNode(fromID, fromName, new Location(fromLat, fromLon));
-				nodes.put(fromID, fromNode);
-			}
-			NetworkNode toNode = nodes.get(toID);
-			if (toNode == null) {
-				toNode = new NetworkNode(toID, toName, new Location(toLat, toLon));
-				nodes.put(toID, toNode);
-			}
 			Line line = Line.valueOf(lineString);
-			fromNode.out.add(new NetworkLink(toNode, line, distance));
-			toNode.in.add(new NetworkLink(fromNode, line, distance));
+			MultiKey fromKey = new MultiKey(line, fromID);
+			NetworkNode fromNode = nodes.get(fromKey);
+			if (fromNode == null) {
+				fromNode = new NetworkNode(fromID, fromName, line, new Location(fromLat, fromLon));
+				nodes.put(fromKey, fromNode);
+			}
+			MultiKey toKey = new MultiKey(line, toID);
+			NetworkNode toNode = nodes.get(toKey);
+			if (toNode == null) {
+				toNode = new NetworkNode(toID, toName, line, new Location(toLat, toLon));
+				nodes.put(toKey, toNode);
+			}
+			fromNode.out.add(new NetworkLink(fromNode, toNode, distance));
 		}
-		return nodes;
+		return new HashSet<NetworkNode>(nodes.values());
 	}
 }

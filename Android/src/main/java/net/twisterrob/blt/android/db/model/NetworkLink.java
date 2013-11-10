@@ -1,20 +1,18 @@
 package net.twisterrob.blt.android.db.model;
 
-import net.twisterrob.blt.model.Line;
+public class NetworkLink {
+	private final NetworkNode m_source;
+	private final NetworkNode m_target;
+	private final int m_distance;
 
-public class NetworkLink implements Comparable<NetworkLink> {
-	public final NetworkNode m_target;
-	public final int m_distance;
-	private Line m_line;
-
-	public NetworkLink(NetworkNode target, Line line, int distance) {
-		m_target = target;
-		m_line = line;
+	public NetworkLink(NetworkNode source, NetworkNode destination, int distance) {
+		m_source = source;
+		m_target = destination;
 		m_distance = distance;
 	}
 
-	public Line getLine() {
-		return m_line;
+	public NetworkNode getSource() {
+		return m_source;
 	}
 
 	public NetworkNode getTarget() {
@@ -25,13 +23,47 @@ public class NetworkLink implements Comparable<NetworkLink> {
 		return m_distance;
 	}
 
-	public int compareTo(NetworkLink another) {
-		int target = m_target.compareTo(another.m_target);
-		return target != 0? target : m_line.compareTo(another.m_line);
+	@Override
+	public String toString() {
+		return String.format("%s to %s (%s: %dm)", //
+				m_source.getName(), m_target.getName(), m_source.getLine(), m_distance);
 	}
 
 	@Override
-	public String toString() {
-		return String.format("to %s (%s/%d)", m_target, m_line, m_distance);
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((m_source == null)? 0 : m_source.hashCode());
+		result = prime * result + ((m_target == null)? 0 : m_target.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof NetworkLink)) {
+			return false;
+		}
+		NetworkLink other = (NetworkLink)obj;
+		if (m_source == null) {
+			if (other.m_source != null) {
+				return false;
+			}
+		} else if (!m_source.equals(other.m_source)) {
+			return false;
+		}
+		if (m_target == null) {
+			if (other.m_target != null) {
+				return false;
+			}
+		} else if (!m_target.equals(other.m_target)) {
+			return false;
+		}
+		return true;
 	}
 }
