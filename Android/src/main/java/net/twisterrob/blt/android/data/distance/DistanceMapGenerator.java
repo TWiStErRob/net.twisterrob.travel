@@ -175,8 +175,8 @@ public class DistanceMapGenerator {
 				// circle: (x - x_0)^2 + (y - y_0)^2 = r^2
 				double height = r * r - ((x - nodeX) * (x - nodeX) + (y - nodeY) * (y - nodeY)); // r^2 - ( (x - x_0)^2 + (y - y_0)^2 )
 				if (height >= 0) {
-					// max height is r^2, scale down
-					magicColor(x, y, height / (r * r), color);
+					// max height is r^2, scale down, and scale up to [0, 256) alpha range
+					magicColor(x, y, (int)(height / (r * r) * 255), color);
 				}
 			}
 		}
@@ -203,7 +203,7 @@ public class DistanceMapGenerator {
 				double height = 1 - ((x - nodeX) * (x - nodeX) / (double)(a * a) + (y - nodeY) * (y - nodeY)
 						/ (double)(b * b));
 				if (height >= 0) {
-					magicColor(x, y, height, color);
+					magicColor(x, y, (int)(height * 255), color);
 				}
 			}
 		}
@@ -214,21 +214,19 @@ public class DistanceMapGenerator {
 	 * @param x coordinate
 	 * @param y coordinate
 	 * @param height 0..1
-	 * @param color 
+	 * @param color new color to blend without alpha value
 	 */
-	private void magicColor(int x, int y, double height, int color) {
+	private void magicColor(int x, int y, int newAlpha, int color) {
 		int originalColor = pixels[y * pixelWidth + x];
-		int oldAlpha = Color.alpha(originalColor);
-		int newAlpha = (int)(height * 255);
-		if (config.blendColors && originalColor != 0) {
-			pixels[y * pixelWidth + x] = Color.argb( //
-					Math.min(oldAlpha + newAlpha, 255), //
-					blend(newAlpha, Color.red(originalColor), Color.red(color)), //
-					blend(newAlpha, Color.green(originalColor), Color.green(color)), //
-					blend(newAlpha, Color.blue(originalColor), Color.blue(color)) //
-					);
-		} else if (newAlpha > oldAlpha) {
+		if (originalColor == 0) {
 			pixels[y * pixelWidth + x] = color | (newAlpha << 24);
+		} else {
+			int a = Math.max(Color.alpha(originalColor), newAlpha);
+			//int a = Math.min(Color.alpha(originalColor) + newAlpha, 255); // stronger lines
+			int r = blend(newAlpha, Color.red(originalColor), Color.red(color));
+			int b = blend(newAlpha, Color.blue(originalColor), Color.blue(color));
+			int g = blend(newAlpha, Color.green(originalColor), Color.green(color));
+			pixels[y * pixelWidth + x] = Color.argb(a, r, g, b);
 		}
 	}
 

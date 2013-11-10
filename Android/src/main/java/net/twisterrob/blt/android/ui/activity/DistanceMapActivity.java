@@ -55,7 +55,7 @@ public class DistanceMapActivity extends FragmentActivity {
 				Bitmap overlay = new DistanceMapGenerator(nodes, new NetworkLink(startNode, Line.Central, 0),
 						new DistanceMapConfig() //
 								.dynamicColor(true) //
-								.blendColors(true)).generate(35);
+				).generate(35);
 				map.addGroundOverlay(new GroundOverlayOptions() //
 						.positionFromBounds(bounds) //
 						.transparency(0.0f) //

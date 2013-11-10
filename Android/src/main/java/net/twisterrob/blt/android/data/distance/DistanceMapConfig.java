@@ -19,7 +19,6 @@ public class DistanceMapConfig {
 	boolean dynamicColor = false;
 	int distanceColor = Color.RED;
 	LineColors colors = App.getInstance().getStaticData().getLineColors();
-	boolean blendColors = false;
 
 	public int getColor(Line line) {
 		int color = dynamicColor? line.getBackground(colors) : distanceColor;
@@ -63,11 +62,6 @@ public class DistanceMapConfig {
 
 	public DistanceMapConfig distanceColor(int distanceColor) {
 		this.distanceColor = distanceColor;
-		return this;
-	}
-
-	public DistanceMapConfig blendColors(boolean blend) {
-		blendColors = blend;
 		return this;
 	}
 }
