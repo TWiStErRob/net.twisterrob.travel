@@ -18,7 +18,7 @@ public class DistanceMapGenerator {
 
 	private Map<Integer, NetworkNode> nodes;
 	private NetworkLink startLink;
-	private Set<NetworkLink> finishedNodes;
+	private Map<NetworkLink, Double> finishedNodes;
 
 	private final DistanceMapConfig config;
 
@@ -84,7 +84,7 @@ public class DistanceMapGenerator {
 				geoWidth, geoHeight, pixelWidth, pixelHeight);
 		pixels = new int[pixelHeight * pixelWidth];
 		//flag(pixels, pixelWidth, pixelHeight);
-		finishedNodes = new TreeSet<NetworkLink>();
+		finishedNodes = new TreeMap<NetworkLink, Double>();
 		draw(startLink, minutes);
 		return pixels;
 	}
@@ -92,10 +92,11 @@ public class DistanceMapGenerator {
 	/**
 	 * @param node current tube station
 	 * @param remainingMinutes minutes remaining from the possible trips
+	 * @return 
 	 */
-	private void draw(NetworkLink startLink, double remainingMinutes) {
+	private boolean draw(NetworkLink startLink, double remainingMinutes) {
 		if (remainingMinutes < 0) {
-			return;
+			return false;
 		}
 		NetworkNode node = startLink.m_target;
 		double remainingWalk = (remainingMinutes - config.timePlatformToStreet) / 60.0 /* to hours */
@@ -106,38 +107,16 @@ public class DistanceMapGenerator {
 		drawCircle(node.getPos(), startLink.getLine(), remainingWalk / meters_per_lon_degree, remainingWalk
 				/ meters_per_lat_degree);
 
-		for (NetworkLink link: priorityOuts(startLink)) {
-			if (finishedNodes.add(link)) {
-				double travelWithTube = config.tubingStrategy.distance(node, link);
-				draw(link, remainingMinutes - travelWithTube);
+		for (NetworkLink link: node.out) {
+			Double oldRemaining = finishedNodes.get(link);
+			double travelWithTube = config.tubingStrategy.distance(node, link);
+			double newRemaining = remainingMinutes - travelWithTube;
+			if (oldRemaining == null || oldRemaining < newRemaining) {
+				draw(link, newRemaining);
+				finishedNodes.put(link, newRemaining);
 			}
 		}
-	}
-
-	private Iterable<NetworkLink> priorityOuts(final NetworkLink startLink) {
-		TreeSet<NetworkLink> newOuts = new TreeSet<NetworkLink>(new Comparator<NetworkLink>() {
-			public int compare(NetworkLink lhs, NetworkLink rhs) {
-				int line = lhs.getLine().compareTo(rhs.getLine());
-				int target = lhs.m_target.compareTo(rhs.m_target);
-				boolean lhsSame = lhs.getLine() == startLink.getLine();
-				boolean rhsSame = rhs.getLine() == startLink.getLine();
-				if (lhsSame && line != 0) {
-					return -1;
-				} else if (rhsSame && line != 0) {
-					return 1;
-				} else if (rhsSame && line == 0) {
-					return target;
-				} else if (lhsSame && line == 0) {
-					return target;
-				} else if (line == 0) {
-					return target;
-				} else {
-					return line;
-				}
-			}
-		});
-		newOuts.addAll(startLink.getTarget().out);
-		return newOuts;
+		return true;
 	}
 
 	/**

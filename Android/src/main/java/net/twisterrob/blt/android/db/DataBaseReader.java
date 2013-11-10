@@ -174,24 +174,26 @@ class DataBaseReader {
 		Map<Integer, NetworkNode> nodes = new TreeMap<Integer, NetworkNode>();
 		while (cursor.moveToNext()) {
 			int fromID = cursor.getInt(cursor.getColumnIndex("fromID"));
+			String fromName = cursor.getString(cursor.getColumnIndex("fromName"));
 			double fromLat = cursor.getDouble(cursor.getColumnIndex("fromLat"));
 			double fromLon = cursor.getDouble(cursor.getColumnIndex("fromLon"));
 			int toID = cursor.getInt(cursor.getColumnIndex("toID"));
+			String toName = cursor.getString(cursor.getColumnIndex("toName"));
 			double toLat = cursor.getDouble(cursor.getColumnIndex("toLat"));
 			double toLon = cursor.getDouble(cursor.getColumnIndex("toLon"));
 			int distance = cursor.getInt(cursor.getColumnIndex("distance"));
-			int lineID = cursor.getInt(cursor.getColumnIndex("lineID"));
+			String lineString = cursor.getString(cursor.getColumnIndex("line"));
 			NetworkNode fromNode = nodes.get(fromID);
 			if (fromNode == null) {
-				fromNode = new NetworkNode(fromID, new Location(fromLat, fromLon));
+				fromNode = new NetworkNode(fromID, fromName, new Location(fromLat, fromLon));
 				nodes.put(fromID, fromNode);
 			}
 			NetworkNode toNode = nodes.get(toID);
 			if (toNode == null) {
-				toNode = new NetworkNode(toID, new Location(toLat, toLon));
+				toNode = new NetworkNode(toID, toName, new Location(toLat, toLon));
 				nodes.put(toID, toNode);
 			}
-			Line line = Line.values()[lineID];
+			Line line = Line.valueOf(lineString);
 			fromNode.out.add(new NetworkLink(toNode, line, distance));
 			toNode.in.add(new NetworkLink(fromNode, line, distance));
 		}

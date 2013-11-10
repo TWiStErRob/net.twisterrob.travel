@@ -1,7 +1,5 @@
 package net.twisterrob.blt.android.db.model;
 
-import java.util.Comparator;
-
 import net.twisterrob.blt.model.Line;
 
 public class NetworkLink implements Comparable<NetworkLink> {
@@ -32,10 +30,8 @@ public class NetworkLink implements Comparable<NetworkLink> {
 		return target != 0? target : m_line.compareTo(another.m_line);
 	}
 
-	public static final Comparator<NetworkLink> LINES_FIRST = new Comparator<NetworkLink>() {
-		public int compare(NetworkLink lhs, NetworkLink rhs) {
-			int line = lhs.m_line.compareTo(rhs.m_line);
-			return line != 0? line : lhs.m_target.compareTo(rhs.m_target);
-		}
-	};
+	@Override
+	public String toString() {
+		return String.format("to %s (%s/%d)", m_target, m_line, m_distance);
+	}
 }
