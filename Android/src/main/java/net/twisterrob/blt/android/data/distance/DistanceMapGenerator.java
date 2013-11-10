@@ -5,6 +5,7 @@ import java.util.*;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import net.twisterrob.blt.android.db.model.*;
+import net.twisterrob.blt.model.Line;
 import net.twisterrob.java.model.*;
 
 import org.slf4j.*;
@@ -16,7 +17,7 @@ public class DistanceMapGenerator {
 	private static final Logger LOG = LoggerFactory.getLogger(DistanceMapGenerator.class);
 
 	private Map<Integer, NetworkNode> nodes;
-	private NetworkNode startNode;
+	private NetworkLink startLink;
 	private Set<NetworkLink> finishedNodes;
 
 	private final DistanceMapConfig config;
@@ -32,9 +33,9 @@ public class DistanceMapGenerator {
 	private final int pixelHeight;
 	private int[] pixels;
 
-	public DistanceMapGenerator(Map<Integer, NetworkNode> networkNodes, NetworkNode startNode, DistanceMapConfig config) {
+	public DistanceMapGenerator(Map<Integer, NetworkNode> networkNodes, NetworkLink startLink, DistanceMapConfig config) {
 		this.nodes = networkNodes;
-		this.startNode = startNode;
+		this.startLink = startLink;
 		this.config = config;
 		double minX = Double.POSITIVE_INFINITY, maxX = Double.NEGATIVE_INFINITY;
 		double minY = Double.POSITIVE_INFINITY, maxY = Double.NEGATIVE_INFINITY;
@@ -84,7 +85,7 @@ public class DistanceMapGenerator {
 		pixels = new int[pixelHeight * pixelWidth];
 		//flag(pixels, pixelWidth, pixelHeight);
 		finishedNodes = new TreeSet<NetworkLink>();
-		draw(startNode, minutes);
+		draw(startLink, minutes);
 		return pixels;
 	}
 
@@ -92,38 +93,68 @@ public class DistanceMapGenerator {
 	 * @param node current tube station
 	 * @param remainingMinutes minutes remaining from the possible trips
 	 */
-	private void draw(NetworkNode node, double remainingMinutes) {
+	private void draw(NetworkLink startLink, double remainingMinutes) {
 		if (remainingMinutes < 0) {
 			return;
 		}
+		NetworkNode node = startLink.m_target;
 		double remainingWalk = (remainingMinutes - config.timePlatformToStreet) / 60.0 /* to hours */
 				* config.speedOnFoot * 1000.0 /* to meters */;
 		double phi = Math.toRadians(node.getPos().getLatitude());
 		double meters_per_lat_degree = LocationConverter.metersPerDegreeLat(phi);
 		double meters_per_lon_degree = LocationConverter.metersPerDegreeLon(phi);
-		drawCircle(node.getPos(), remainingWalk / meters_per_lon_degree, remainingWalk / meters_per_lat_degree);
-		for (NetworkLink link: node.out) {
+		drawCircle(node.getPos(), startLink.getLine(), remainingWalk / meters_per_lon_degree, remainingWalk
+				/ meters_per_lat_degree);
+
+		for (NetworkLink link: priorityOuts(startLink)) {
 			if (finishedNodes.add(link)) {
 				double travelWithTube = config.tubingStrategy.distance(node, link);
-				draw(link.m_target, remainingMinutes - travelWithTube);
+				draw(link, remainingMinutes - travelWithTube);
 			}
 		}
+	}
+
+	private Iterable<NetworkLink> priorityOuts(final NetworkLink startLink) {
+		TreeSet<NetworkLink> newOuts = new TreeSet<NetworkLink>(new Comparator<NetworkLink>() {
+			public int compare(NetworkLink lhs, NetworkLink rhs) {
+				int line = lhs.getLine().compareTo(rhs.getLine());
+				int target = lhs.m_target.compareTo(rhs.m_target);
+				boolean lhsSame = lhs.getLine() == startLink.getLine();
+				boolean rhsSame = rhs.getLine() == startLink.getLine();
+				if (lhsSame && line != 0) {
+					return -1;
+				} else if (rhsSame && line != 0) {
+					return 1;
+				} else if (rhsSame && line == 0) {
+					return target;
+				} else if (lhsSame && line == 0) {
+					return target;
+				} else if (line == 0) {
+					return target;
+				} else {
+					return line;
+				}
+			}
+		});
+		newOuts.addAll(startLink.getTarget().out);
+		return newOuts;
 	}
 
 	/**
 	 * @param pixels canvas
 	 * @param pos center of the "circle"
+	 * @param line 
 	 * @param widthDegrees width of the circle in geo-degrees (longitude)
 	 * @param heightDegrees width of the circle in geo-degrees (latitude)
 	 */
-	protected void drawCircle(Location pos, double widthDegrees, double heightDegrees) {
+	protected void drawCircle(Location pos, Line line, double widthDegrees, double heightDegrees) {
 		double nodeXOffset = pos.getLongitude() - minLon;
 		double nodeYOffset = pos.getLatitude() - minLat;
 		int nodeX = (int)(nodeXOffset / geoWidth * pixelWidth);
 		int nodeY = (int)(nodeYOffset / geoHeight * pixelHeight);
 		int rX = (int)(widthDegrees / geoWidth * pixelWidth);
 		int rY = (int)(heightDegrees / geoHeight * pixelHeight);
-		drawEllipse(nodeX, nodeY, rX, rY);
+		drawEllipse(nodeX, nodeY, rX, rY, config.getColor(line));
 	}
 
 	/**
@@ -132,7 +163,7 @@ public class DistanceMapGenerator {
 	 * @param nodeY center y
 	 * @param r radius around center
 	 */
-	protected void drawCircle(int nodeX, int nodeY, int r) {
+	protected void drawCircle(int nodeX, int nodeY, int r, int color) {
 		int startX = Math.max(nodeX - r, 0);
 		int endX = Math.min(nodeX + r, pixelWidth);
 		int startY = Math.max(nodeY - r, 0);
@@ -145,7 +176,7 @@ public class DistanceMapGenerator {
 				double height = r * r - ((x - nodeX) * (x - nodeX) + (y - nodeY) * (y - nodeY)); // r^2 - ( (x - x_0)^2 + (y - y_0)^2 )
 				if (height >= 0) {
 					// max height is r^2, scale down
-					magicColor(x, y, height / (r * r));
+					magicColor(x, y, height / (r * r), color);
 				}
 			}
 		}
@@ -157,8 +188,9 @@ public class DistanceMapGenerator {
 	 * @param nodeY center y
 	 * @param a radius x
 	 * @param b radius y
+	 * @param color 
 	 */
-	protected void drawEllipse(int nodeX, int nodeY, int a, int b) {
+	protected void drawEllipse(int nodeX, int nodeY, int a, int b, int color) {
 		int startX = Math.max(nodeX - a, 0);
 		int endX = Math.min(nodeX + a, pixelWidth);
 		int startY = Math.max(nodeY - b, 0);
@@ -171,7 +203,7 @@ public class DistanceMapGenerator {
 				double height = 1 - ((x - nodeX) * (x - nodeX) / (double)(a * a) + (y - nodeY) * (y - nodeY)
 						/ (double)(b * b));
 				if (height >= 0) {
-					magicColor(x, y, height);
+					magicColor(x, y, height, color);
 				}
 			}
 		}
@@ -182,11 +214,14 @@ public class DistanceMapGenerator {
 	 * @param x coordinate
 	 * @param y coordinate
 	 * @param height 0..1
+	 * @param color 
 	 */
-	private void magicColor(int x, int y, double height) {
+	private void magicColor(int x, int y, double height, int color) {
 		int oldAlpha = Color.alpha(pixels[y * pixelWidth + x]);
 		int newAlpha = (int)(height * 255);
-		pixels[y * pixelWidth + x] = Color.argb(Math.max(oldAlpha, newAlpha), 255, 0, 0);
+		if (newAlpha > oldAlpha) {
+			pixels[y * pixelWidth + x] = color | (newAlpha << 24);
+		}
 	}
 
 	private void border(int borderSize, int borderColor) {

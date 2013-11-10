@@ -1,5 +1,7 @@
 package net.twisterrob.blt.android.data.distance;
 
+import net.twisterrob.blt.android.App;
+import net.twisterrob.blt.model.*;
 import android.graphics.Color;
 
 public class DistanceMapConfig {
@@ -13,6 +15,10 @@ public class DistanceMapConfig {
 	int borderColor = Color.BLACK;
 
 	double pixelDensity = 1000;
+
+	boolean dynamicColor = false;
+	int distanceColor = Color.RED;
+	LineColors colors = App.getInstance().getStaticData().getLineColors();
 
 	public DistanceMapConfig timePlatformToStreet(double platformToStreet) {
 		this.timePlatformToStreet = platformToStreet;
@@ -44,4 +50,18 @@ public class DistanceMapConfig {
 		return this;
 	}
 
+	public DistanceMapConfig dynamicColor(boolean dynamicColor) {
+		this.dynamicColor = dynamicColor;
+		return this;
+	}
+
+	public DistanceMapConfig distanceColor(int distanceColor) {
+		this.distanceColor = distanceColor;
+		return this;
+	}
+
+	public int getColor(Line line) {
+		int color = dynamicColor? line.getBackground(colors) : distanceColor;
+		return color & 0x00FFFFFF; // remove alpha
+	}
 }

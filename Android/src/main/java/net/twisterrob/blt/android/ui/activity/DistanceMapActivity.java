@@ -5,7 +5,8 @@ import java.util.Map;
 import net.twisterrob.android.utils.model.LocationUtils;
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.data.distance.*;
-import net.twisterrob.blt.android.db.model.NetworkNode;
+import net.twisterrob.blt.android.db.model.*;
+import net.twisterrob.blt.model.Line;
 import android.graphics.Bitmap;
 import android.os.*;
 import android.support.v4.app.FragmentActivity;
@@ -46,12 +47,15 @@ public class DistanceMapActivity extends FragmentActivity {
 				LatLngBounds bounds = getBounds(nodes.values());
 				CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 50);
 				map.moveCamera(cu);
-				NetworkNode startNode = nodes.get("Hammersmith".hashCode());
+				NetworkNode startNode = nodes.get("Liverpool Street".hashCode());
 				map.addMarker(new MarkerOptions() //
-						.title("Hammersmith") //
+						.title("Liverpool Street") //
 						.position(LocationUtils.toLatLng(startNode.getPos())) //
 						.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-				Bitmap overlay = new DistanceMapGenerator(nodes, startNode, new DistanceMapConfig()).generate(20);
+				Bitmap overlay = new DistanceMapGenerator(nodes, new NetworkLink(startNode, Line.Central, 0),
+						new DistanceMapConfig() //
+								.dynamicColor(true) //
+				).generate(35);
 				map.addGroundOverlay(new GroundOverlayOptions() //
 						.positionFromBounds(bounds) //
 						.transparency(0.0f) //

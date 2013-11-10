@@ -19,6 +19,7 @@ join Link l            ON sl.link = l._id
 join Stop stFrom       ON stFrom._id = l.stopFrom
 join Stop stTo         ON stTo._id = l.stopTo
 --where line.name = 'Piccadilly'
+--where stFrom.name = 'Liverpool Street'
 order by
 	r._id, rs.seq, sl.seq
 ;
