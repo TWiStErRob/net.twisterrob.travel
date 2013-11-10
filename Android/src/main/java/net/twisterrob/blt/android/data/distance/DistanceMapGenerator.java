@@ -2,6 +2,8 @@ package net.twisterrob.blt.android.data.distance;
 
 import java.util.*;
 
+import javax.annotation.concurrent.NotThreadSafe;
+
 import net.twisterrob.blt.android.db.model.*;
 import net.twisterrob.java.model.*;
 
@@ -9,21 +11,15 @@ import org.slf4j.*;
 
 import android.graphics.*;
 
+@NotThreadSafe
 public class DistanceMapGenerator {
 	private static final Logger LOG = LoggerFactory.getLogger(DistanceMapGenerator.class);
 
-	private static final double TIME_PLATFORM_TO_STREET = 1;
-	private static final double SPEED_ON_FOOT = 4.5 /* km/h */;
-
-	private static final boolean SIMPLE_TUBE = true;
-	private static final DistanceStrategy tubingStrategy = SIMPLE_TUBE
-			? new AverageSpeedTubingStrategy()
-			: new SmartTubingStrategy();
-
-	private static final double PIXEL_DENSITY = 1000;
-
 	private Map<Integer, NetworkNode> nodes;
 	private NetworkNode startNode;
+	private Set<NetworkLink> finishedNodes;
+
+	private final DistanceMapConfig config;
 
 	private final double minLon;
 	private final double maxLon;
@@ -31,12 +27,15 @@ public class DistanceMapGenerator {
 	private final double maxLat;
 	private final double geoWidth;
 	private final double geoHeight;
+
 	private final int pixelWidth;
 	private final int pixelHeight;
+	private int[] pixels;
 
-	public DistanceMapGenerator(Map<Integer, NetworkNode> networkNodes, NetworkNode startNode) {
+	public DistanceMapGenerator(Map<Integer, NetworkNode> networkNodes, NetworkNode startNode, DistanceMapConfig config) {
 		this.nodes = networkNodes;
 		this.startNode = startNode;
+		this.config = config;
 		double minX = Double.POSITIVE_INFINITY, maxX = Double.NEGATIVE_INFINITY;
 		double minY = Double.POSITIVE_INFINITY, maxY = Double.NEGATIVE_INFINITY;
 		for (NetworkNode node: nodes.values()) {
@@ -60,29 +59,32 @@ public class DistanceMapGenerator {
 		this.geoWidth = maxLon - minLon;
 		this.geoHeight = maxLat - minLat;
 		// *2 makes the pixels square, because the geo coordinate system is twice as wide as tall
-		this.pixelWidth = (int)(geoWidth * PIXEL_DENSITY);
-		this.pixelHeight = (int)(geoHeight * PIXEL_DENSITY) * 2;
-
+		this.pixelWidth = (int)(geoWidth * config.pixelDensity);
+		this.pixelHeight = (int)(geoHeight * config.pixelDensity) * 2;
 	}
 
-	public Bitmap generate(int borderWidth) {
-		int[] pixels = calcPixels();
-		if (0 < borderWidth) {
-			border(pixels, borderWidth, Color.BLACK);
+	public DistanceMapConfig getConfig() {
+		return config;
+	}
+
+	public Bitmap generate(double minutes) {
+		calcPixels(minutes);
+		if (0 < config.borderSize) {
+			border(config.borderSize, config.borderColor);
 		}
 		Bitmap bitmap = Bitmap.createBitmap(pixelWidth, pixelHeight, Bitmap.Config.ARGB_8888);
 		bitmap.setPixels(pixels, (pixelHeight - 1) * pixelWidth, -pixelWidth, 0, 0, pixelWidth, pixelHeight);
+		pixels = null;
 		return bitmap;
 	}
 
-	Set<NetworkLink> finished;
-	private int[] calcPixels() {
+	private int[] calcPixels(double minutes) {
 		LOG.debug("Mapping area w={}, h={} to pixels w={}, h={}", //
 				geoWidth, geoHeight, pixelWidth, pixelHeight);
-		int[] pixels = new int[pixelHeight * pixelWidth];
+		pixels = new int[pixelHeight * pixelWidth];
 		//flag(pixels, pixelWidth, pixelHeight);
-		finished = new TreeSet<NetworkLink>();
-		draw(pixels, startNode, 35);
+		finishedNodes = new TreeSet<NetworkLink>();
+		draw(startNode, minutes);
 		return pixels;
 	}
 
@@ -90,20 +92,20 @@ public class DistanceMapGenerator {
 	 * @param node current tube station
 	 * @param remainingMinutes minutes remaining from the possible trips
 	 */
-	private void draw(int[] pixels, NetworkNode node, double remainingMinutes) {
+	private void draw(NetworkNode node, double remainingMinutes) {
 		if (remainingMinutes < 0) {
 			return;
 		}
-		double remainingWalk = (remainingMinutes - TIME_PLATFORM_TO_STREET) / 60.0 /* to hours */* SPEED_ON_FOOT
-				* 1000.0 /* to meters */;
+		double remainingWalk = (remainingMinutes - config.timePlatformToStreet) / 60.0 /* to hours */
+				* config.speedOnFoot * 1000.0 /* to meters */;
 		double phi = Math.toRadians(node.getPos().getLatitude());
 		double meters_per_lat_degree = LocationConverter.metersPerDegreeLat(phi);
 		double meters_per_lon_degree = LocationConverter.metersPerDegreeLon(phi);
-		drawCircle(pixels, node.getPos(), remainingWalk / meters_per_lon_degree, remainingWalk / meters_per_lat_degree);
+		drawCircle(node.getPos(), remainingWalk / meters_per_lon_degree, remainingWalk / meters_per_lat_degree);
 		for (NetworkLink link: node.out) {
-			if (finished.add(link)) {
-				double travelWithTube = tubingStrategy.distance(node, link);
-				draw(pixels, link.m_target, remainingMinutes - travelWithTube);
+			if (finishedNodes.add(link)) {
+				double travelWithTube = config.tubingStrategy.distance(node, link);
+				draw(link.m_target, remainingMinutes - travelWithTube);
 			}
 		}
 	}
@@ -114,14 +116,14 @@ public class DistanceMapGenerator {
 	 * @param widthDegrees width of the circle in geo-degrees (longitude)
 	 * @param heightDegrees width of the circle in geo-degrees (latitude)
 	 */
-	protected void drawCircle(int[] pixels, Location pos, double widthDegrees, double heightDegrees) {
+	protected void drawCircle(Location pos, double widthDegrees, double heightDegrees) {
 		double nodeXOffset = pos.getLongitude() - minLon;
 		double nodeYOffset = pos.getLatitude() - minLat;
 		int nodeX = (int)(nodeXOffset / geoWidth * pixelWidth);
 		int nodeY = (int)(nodeYOffset / geoHeight * pixelHeight);
 		int rX = (int)(widthDegrees / geoWidth * pixelWidth);
 		int rY = (int)(heightDegrees / geoHeight * pixelHeight);
-		drawEllipse(pixels, nodeX, nodeY, rX, rY);
+		drawEllipse(nodeX, nodeY, rX, rY);
 	}
 
 	/**
@@ -130,7 +132,7 @@ public class DistanceMapGenerator {
 	 * @param nodeY center y
 	 * @param r radius around center
 	 */
-	protected void drawCircle(int[] pixels, int nodeX, int nodeY, int r) {
+	protected void drawCircle(int nodeX, int nodeY, int r) {
 		int startX = Math.max(nodeX - r, 0);
 		int endX = Math.min(nodeX + r, pixelWidth);
 		int startY = Math.max(nodeY - r, 0);
@@ -143,7 +145,7 @@ public class DistanceMapGenerator {
 				double height = r * r - ((x - nodeX) * (x - nodeX) + (y - nodeY) * (y - nodeY)); // r^2 - ( (x - x_0)^2 + (y - y_0)^2 )
 				if (height >= 0) {
 					// max height is r^2, scale down
-					magicColor(pixels, x, y, height / (r * r));
+					magicColor(x, y, height / (r * r));
 				}
 			}
 		}
@@ -156,7 +158,7 @@ public class DistanceMapGenerator {
 	 * @param a radius x
 	 * @param b radius y
 	 */
-	protected void drawEllipse(int[] pixels, int nodeX, int nodeY, int a, int b) {
+	protected void drawEllipse(int nodeX, int nodeY, int a, int b) {
 		int startX = Math.max(nodeX - a, 0);
 		int endX = Math.min(nodeX + a, pixelWidth);
 		int startY = Math.max(nodeY - b, 0);
@@ -169,7 +171,7 @@ public class DistanceMapGenerator {
 				double height = 1 - ((x - nodeX) * (x - nodeX) / (double)(a * a) + (y - nodeY) * (y - nodeY)
 						/ (double)(b * b));
 				if (height >= 0) {
-					magicColor(pixels, x, y, height);
+					magicColor(x, y, height);
 				}
 			}
 		}
@@ -181,13 +183,13 @@ public class DistanceMapGenerator {
 	 * @param y coordinate
 	 * @param height 0..1
 	 */
-	private void magicColor(int[] pixels, int x, int y, double height) {
+	private void magicColor(int x, int y, double height) {
 		int oldAlpha = Color.alpha(pixels[y * pixelWidth + x]);
 		int newAlpha = (int)(height * 255);
 		pixels[y * pixelWidth + x] = Color.argb(Math.max(oldAlpha, newAlpha), 255, 0, 0);
 	}
 
-	private void border(int[] pixels, int borderSize, int borderColor) {
+	private void border(int borderSize, int borderColor) {
 		for (int x = 0; x < borderSize; ++x) {
 			for (int y = 0; y < pixelHeight; ++y) {
 				pixels[y * pixelWidth + x] = pixels[y * pixelWidth + (pixelWidth - x - 1)] = borderColor;
@@ -201,7 +203,7 @@ public class DistanceMapGenerator {
 	}
 
 	@SuppressWarnings("unused")
-	private void flag(int[] pixels) {
+	private void flag() {
 		for (int x = 0; x < pixelWidth; ++x) {
 			for (int y = 0; y < pixelHeight / 3; ++y) {
 				pixels[y * pixelWidth + x] = 0xFFFF0000;
