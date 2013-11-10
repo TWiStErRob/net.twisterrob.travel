@@ -4,8 +4,8 @@ import java.util.Map;
 
 import net.twisterrob.android.utils.model.LocationUtils;
 import net.twisterrob.blt.android.*;
+import net.twisterrob.blt.android.data.distance.DistanceMapGenerator;
 import net.twisterrob.blt.android.db.model.NetworkNode;
-import net.twisterrob.blt.android.ui.DistanceMapGenerator;
 import android.graphics.Bitmap;
 import android.os.*;
 import android.support.v4.app.FragmentActivity;
