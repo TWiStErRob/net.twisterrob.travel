@@ -52,10 +52,17 @@ public class DistanceMapActivity extends FragmentActivity {
 						.title("Liverpool Street") //
 						.position(LocationUtils.toLatLng(startNode.getPos())) //
 						.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-				Bitmap overlay = new DistanceMapGenerator(nodes, new NetworkLink(startNode, Line.Central, 0),
-						new DistanceMapConfig() //
-								.dynamicColor(true) //
-				).generate(25);
+				DistanceMapGeneratorConfig distanceConfig = new DistanceMapGeneratorConfig() //
+						.minutes(25);
+				DistanceMapDrawerConfig drawConfig = new DistanceMapDrawerConfig() //
+						.dynamicColor(true);
+				DistanceMapGenerator distanceMapGenerator = new DistanceMapGenerator(nodes, new NetworkLink(startNode,
+						Line.Central, 0), distanceConfig);
+				DistanceMapDrawer distanceMapDrawer = new DistanceMapDrawer(nodes, drawConfig);
+
+				Map<NetworkLink, Double> distanceMap = distanceMapGenerator.generate();
+				Bitmap overlay = distanceMapDrawer.draw(distanceMap);
+
 				map.addGroundOverlay(new GroundOverlayOptions() //
 						.positionFromBounds(bounds) //
 						.transparency(0.0f) //

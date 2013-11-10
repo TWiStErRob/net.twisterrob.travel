@@ -1,16 +1,15 @@
 package net.twisterrob.blt.android.data.distance;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
 import net.twisterrob.blt.android.db.model.*;
 import net.twisterrob.blt.model.Line;
-import net.twisterrob.java.model.*;
+import net.twisterrob.java.model.LocationUtils;
 
 import org.slf4j.*;
-
-import android.graphics.*;
 
 @NotThreadSafe
 public class DistanceMapGenerator {
@@ -20,20 +19,10 @@ public class DistanceMapGenerator {
 	private NetworkLink startLink;
 	private Map<NetworkLink, Double> finishedNodes;
 
-	private final DistanceMapConfig config;
+	private final DistanceMapGeneratorConfig config;
 
-	private final double minLon;
-	private final double maxLon;
-	private final double minLat;
-	private final double maxLat;
-	private final double geoWidth;
-	private final double geoHeight;
-
-	private final int pixelWidth;
-	private final int pixelHeight;
-	private int[] pixels;
-
-	public DistanceMapGenerator(Map<Integer, NetworkNode> networkNodes, NetworkLink startLink, DistanceMapConfig config) {
+	public DistanceMapGenerator(Map<Integer, NetworkNode> networkNodes, NetworkLink startLink,
+			DistanceMapGeneratorConfig config) {
 		this.nodes = networkNodes;
 		this.startLink = startLink;
 		this.config = config;
@@ -53,40 +42,25 @@ public class DistanceMapGenerator {
 				maxY = lat;
 			}
 		}
-		this.minLon = minX;
-		this.maxLon = maxX;
-		this.minLat = minY;
-		this.maxLat = maxY;
-		this.geoWidth = maxLon - minLon;
-		this.geoHeight = maxLat - minLat;
 		// *2 makes the pixels square, because the geo coordinate system is twice as wide as tall
-		this.pixelWidth = (int)(geoWidth * config.pixelDensity);
-		this.pixelHeight = (int)(geoHeight * config.pixelDensity) * 2;
 	}
 
-	public DistanceMapConfig getConfig() {
+	public DistanceMapGeneratorConfig getConfig() {
 		return config;
 	}
 
-	public Bitmap generate(double minutes) {
-		calcPixels(minutes);
-		if (0 < config.borderSize) {
-			border(config.borderSize, config.borderColor);
-		}
-		Bitmap bitmap = Bitmap.createBitmap(pixelWidth, pixelHeight, Bitmap.Config.ARGB_8888);
-		bitmap.setPixels(pixels, (pixelHeight - 1) * pixelWidth, -pixelWidth, 0, 0, pixelWidth, pixelHeight);
-		pixels = null;
-		return bitmap;
-	}
-
-	private int[] calcPixels(double minutes) {
-		LOG.debug("Mapping area w={}, h={} to pixels w={}, h={}", //
-				geoWidth, geoHeight, pixelWidth, pixelHeight);
-		pixels = new int[pixelHeight * pixelWidth];
-		//flag(pixels, pixelWidth, pixelHeight);
+	public Map<NetworkLink, Double> generate() {
 		finishedNodes = new TreeMap<NetworkLink, Double>();
-		draw(startLink, minutes);
-		return pixels;
+		finishedNodes.put(startLink, config.minutes);
+		traverse(startLink, config.minutes);
+		for (Entry<NetworkLink, Double> circle: finishedNodes.entrySet()) {
+			double remainingMinutes = circle.getValue();
+			double remainingWalk = (remainingMinutes - config.timePlatformToStreet) / 60.0 /* to hours */
+					* config.speedOnFoot * 1000.0 /* to meters */;
+			circle.setValue(remainingWalk);
+
+		}
+		return finishedNodes;
 	}
 
 	/**
@@ -94,28 +68,19 @@ public class DistanceMapGenerator {
 	 * @param remainingMinutes minutes remaining from the possible trips
 	 * @return 
 	 */
-	int circle = 0;
-	private boolean draw(NetworkLink startLink, double remainingMinutes) {
+	private boolean traverse(NetworkLink from, double remainingMinutes) {
 		if (remainingMinutes < 0) {
 			return false;
+		} else {
+			finishedNodes.put(from, remainingMinutes);
 		}
-		NetworkNode node = startLink.m_target;
-		double remainingWalk = (remainingMinutes - config.timePlatformToStreet) / 60.0 /* to hours */
-				* config.speedOnFoot * 1000.0 /* to meters */;
-		double phi = Math.toRadians(node.getPos().getLatitude());
-		double meters_per_lat_degree = LocationConverter.metersPerDegreeLat(phi);
-		double meters_per_lon_degree = LocationConverter.metersPerDegreeLon(phi);
-		LOG.debug("Drawing {} for {} / {} remaining: {}", circle++, startLink.getLine(), startLink.getTarget()
-				.getName(), (int)(remainingMinutes * 10) / 10.0);
-		drawCircle(node.getPos(), startLink.getLine(), remainingWalk / meters_per_lon_degree, remainingWalk
-				/ meters_per_lat_degree);
-		for (NetworkLink link: node.out) {
-			Double oldRemaining = finishedNodes.get(link);
-			double travelWithTube = config.tubingStrategy.distance(startLink, link);
+		NetworkNode node = from.m_target;
+		for (NetworkLink to: node.out) {
+			Double oldRemaining = finishedNodes.get(to);
+			double travelWithTube = config.tubingStrategy.distance(from, to);
 			double newRemaining = remainingMinutes - travelWithTube;
 			if (oldRemaining == null || oldRemaining < newRemaining) {
-				draw(link, newRemaining);
-				finishedNodes.put(link, newRemaining);
+				traverse(to, newRemaining);
 			}
 		}
 		//if (0 < remainingWalk) {
@@ -132,132 +97,7 @@ public class DistanceMapGenerator {
 			if (10 < dist && dist < remainingWalk) {
 				double remainingMeters = remainingWalk - dist;
 				double remainingMinutes = remainingMeters / 1000.0 / config.speedOnFoot * 60;
-				draw(new NetworkLink(node, Line.unknown, 0), remainingMinutes - config.timePlatformToStreet);
-			}
-		}
-	}
-
-	/**
-	 * @param pixels canvas
-	 * @param pos center of the "circle"
-	 * @param line 
-	 * @param widthDegrees width of the circle in geo-degrees (longitude)
-	 * @param heightDegrees width of the circle in geo-degrees (latitude)
-	 */
-	protected void drawCircle(Location pos, Line line, double widthDegrees, double heightDegrees) {
-		double nodeXOffset = pos.getLongitude() - minLon;
-		double nodeYOffset = pos.getLatitude() - minLat;
-		int nodeX = (int)(nodeXOffset / geoWidth * pixelWidth);
-		int nodeY = (int)(nodeYOffset / geoHeight * pixelHeight);
-		int rX = (int)(widthDegrees / geoWidth * pixelWidth);
-		int rY = (int)(heightDegrees / geoHeight * pixelHeight);
-		//LOG.debug("Drawing a circle at {},{} for {} (pixels: {},{}, radii: {},{})", //
-		//		pos.getLongitude(), pos.getLatitude(), line, nodeX, nodeY, rX, rY);
-		drawEllipse(nodeX, nodeY, rX, rY, config.getColor(line));
-	}
-
-	/**
-	 * @param pixels canvas
-	 * @param nodeX center x
-	 * @param nodeY center y
-	 * @param r radius around center
-	 */
-	protected void drawCircle(int nodeX, int nodeY, int r, int color) {
-		int startX = Math.max(nodeX - r, 0);
-		int endX = Math.min(nodeX + r, pixelWidth);
-		int startY = Math.max(nodeY - r, 0);
-		int endY = Math.min(nodeY + r, pixelHeight);
-		LOG.debug("Drawing a circle at {},{} spanning from {},{} to {},{}", //
-				nodeX, nodeY, startX, startY, endX, endY);
-		for (int x = startX; x < endX; ++x) {
-			for (int y = startY; y < endY; ++y) {
-				// circle: (x - x_0)^2 + (y - y_0)^2 = r^2
-				double height = r * r - ((x - nodeX) * (x - nodeX) + (y - nodeY) * (y - nodeY)); // r^2 - ( (x - x_0)^2 + (y - y_0)^2 )
-				if (height >= 0) {
-					// max height is r^2, scale down, and scale up to [0, 256) alpha range
-					magicColor(x, y, (int)(height / (r * r) * 255), color);
-				}
-			}
-		}
-	}
-
-	/**
-	 * @param pixels canvas
-	 * @param nodeX center x
-	 * @param nodeY center y
-	 * @param a radius x
-	 * @param b radius y
-	 * @param color 
-	 */
-	protected void drawEllipse(int nodeX, int nodeY, int a, int b, int color) {
-		int startX = Math.max(nodeX - a, 0);
-		int endX = Math.min(nodeX + a, pixelWidth);
-		int startY = Math.max(nodeY - b, 0);
-		int endY = Math.min(nodeY + b, pixelHeight);
-		//LOG.debug("Drawing a circle at {},{} spanning from {},{} to {},{}", //
-		//		nodeX, nodeY, startX, startY, endX, endY);
-		for (int x = startX; x < endX; ++x) {
-			for (int y = startY; y < endY; ++y) {
-				// ellipse: (x - x_0)^2 / (a^2) + (y - y_0)^2 / (b^2) = 1
-				double height = 1 - ((x - nodeX) * (x - nodeX) / (double)(a * a) + (y - nodeY) * (y - nodeY)
-						/ (double)(b * b));
-				if (height >= 0) {
-					magicColor(x, y, (int)(height * 255), color);
-				}
-			}
-		}
-	}
-
-	/**
-	 * @param pixels canvas
-	 * @param x coordinate
-	 * @param y coordinate
-	 * @param height 0..1
-	 * @param color new color to blend without alpha value
-	 */
-	private void magicColor(int x, int y, int newAlpha, int color) {
-		int originalColor = pixels[y * pixelWidth + x];
-		if (originalColor == 0) {
-			pixels[y * pixelWidth + x] = color | (newAlpha << 24);
-		} else {
-			int a = Math.max(Color.alpha(originalColor), newAlpha);
-			//int a = Math.min(Color.alpha(originalColor) + newAlpha, 255); // stronger lines
-			int r = blend(newAlpha, Color.red(originalColor), Color.red(color));
-			int b = blend(newAlpha, Color.blue(originalColor), Color.blue(color));
-			int g = blend(newAlpha, Color.green(originalColor), Color.green(color));
-			pixels[y * pixelWidth + x] = Color.argb(a, r, g, b);
-		}
-	}
-
-	public static int blend(int newAlpha, int bottom, int top) {
-		// return (int)(newAlpha/255.0 * top + (1 - newAlpha/255.0) * bottom);
-		return (newAlpha * top + (255 - newAlpha) * bottom) / 255;
-	}
-
-	private void border(int borderSize, int borderColor) {
-		for (int x = 0; x < borderSize; ++x) {
-			for (int y = 0; y < pixelHeight; ++y) {
-				pixels[y * pixelWidth + x] = pixels[y * pixelWidth + (pixelWidth - x - 1)] = borderColor;
-			}
-		}
-		for (int y = 0; y < borderSize; ++y) {
-			for (int x = 0; x < pixelWidth; ++x) {
-				pixels[y * pixelWidth + x] = pixels[(pixelHeight - y - 1) * pixelWidth + x] = borderColor;
-			}
-		}
-	}
-
-	@SuppressWarnings("unused")
-	private void flag() {
-		for (int x = 0; x < pixelWidth; ++x) {
-			for (int y = 0; y < pixelHeight / 3; ++y) {
-				pixels[y * pixelWidth + x] = 0xFFFF0000;
-			}
-			for (int y = pixelHeight / 3; y < pixelHeight / 3 * 2; ++y) {
-				pixels[y * pixelWidth + x] = 0xFFFFFFFF;
-			}
-			for (int y = pixelHeight / 3 * 2; y < pixelHeight; ++y) {
-				pixels[y * pixelWidth + x] = 0xFF00FF00;
+				traverse(new NetworkLink(node, Line.unknown, 0), remainingMinutes - config.timePlatformToStreet);
 			}
 		}
 	}
