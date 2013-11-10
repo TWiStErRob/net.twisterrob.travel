@@ -81,7 +81,7 @@ public class DistanceMapGenerator {
 
 	private void draw(int[] pixels, NetworkNode node, int remaining) {
 		finished.add(node.getID());
-		drawCircle(pixels, node.getPos(), remaining);
+		drawCircle(pixels, node.getPos(), remaining, remaining / 3);
 		for (NetworkLink link: node.out) {
 			if (!finished.contains(link.m_target.getID())) {
 				draw(pixels, link.m_target, (int)(remaining * 0.6));
@@ -89,12 +89,12 @@ public class DistanceMapGenerator {
 		}
 	}
 
-	protected void drawCircle(int[] pixels, Location pos, int r) {
+	protected void drawCircle(int[] pixels, Location pos, int rX, int rY) {
 		double nodeXOffset = pos.getLongitude() - minLon;
 		double nodeYOffset = pos.getLatitude() - minLat;
 		int nodeX = (int)(nodeXOffset / geoWidth * pixelWidth);
 		int nodeY = (int)(nodeYOffset / geoHeight * pixelHeight);
-		drawCircle(pixels, nodeX, nodeY, r);
+		drawEllipse(pixels, nodeX, nodeY, rX, rY);
 	}
 
 	protected void drawCircle(int[] pixels, int nodeX, int nodeY, int r) {
@@ -106,15 +106,45 @@ public class DistanceMapGenerator {
 				nodeX, nodeY, startX, startY, endX, endY);
 		for (int x = startX; x < endX; ++x) {
 			for (int y = startY; y < endY; ++y) {
+				// circle: (x - x_0)^2 + (y - y_0)^2 = r^2
 				double height = r * r - ((x - nodeX) * (x - nodeX) + (y - nodeY) * (y - nodeY)); // r^2 - ( (x - x_0)^2 + (y - y_0)^2 )
 				if (height >= 0) {
-					// max height is r^2, scale down, and then up to [0, 256) range
-					int oldAlpha = Color.alpha(pixels[y * pixelWidth + x]);
-					int newAlpha = (int)((height / (r * r)) * (height / (r * r)) * 255);
-					pixels[y * pixelWidth + x] = Color.argb(Math.max(oldAlpha, newAlpha), 255, 0, 0);
+					// max height is r^2, scale down
+					magicColor(pixels, x, y, height / (r * r));
 				}
 			}
 		}
+	}
+
+	protected void drawEllipse(int[] pixels, int nodeX, int nodeY, int rX, int rY) {
+		int startX = Math.max(nodeX - rX, 0);
+		int endX = Math.min(nodeX + rX, pixelWidth);
+		int startY = Math.max(nodeY - rY, 0);
+		int endY = Math.min(nodeY + rY, pixelHeight);
+		LOG.debug("Drawing a circle at {},{} spanning from {},{} to {},{}", //
+				nodeX, nodeY, startX, startY, endX, endY);
+		for (int x = startX; x < endX; ++x) {
+			for (int y = startY; y < endY; ++y) {
+				// ellipse: (x - x_0)^2 / (a^2) + (y - y_0)^2 / (b^2) = 1
+				double height = 1 - ((x - nodeX) * (x - nodeX) / (double)(rX * rX) + (y - nodeY) * (y - nodeY)
+						/ (double)(rY * rY));
+				if (height >= 0) {
+					magicColor(pixels, x, y, height);
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param pixels
+	 * @param x
+	 * @param y
+	 * @param height 0..1
+	 */
+	private void magicColor(int[] pixels, int x, int y, double height) {
+		int oldAlpha = Color.alpha(pixels[y * pixelWidth + x]);
+		int newAlpha = (int)(height * height * 255); // square for more attenuation
+		pixels[y * pixelWidth + x] = Color.argb(Math.max(oldAlpha, newAlpha), 255, 0, 0);
 	}
 
 	private void border(int[] pixels, int border) {
