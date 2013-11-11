@@ -9,6 +9,7 @@ import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeed;
 import net.twisterrob.blt.io.feeds.trackernet.model.Station;
 import net.twisterrob.blt.model.*;
+import net.twisterrob.java.model.LocationUtils;
 
 import org.slf4j.*;
 import org.xml.sax.SAXException;
@@ -114,6 +115,24 @@ public class TravelNetworkParser {
 				}
 			}
 		}
+		try (PrintWriter dist = new PrintWriter("LondonTravel.v1.data-StopDistance.sql", "utf-8")) {
+			LOG.info("Writing StopDistance table contents for {}", feeds.keySet());
+			for (Entry<StopPoint, Set<Line>> fromEntry: stops.entrySet()) {
+				StopPoint from = fromEntry.getKey();
+				for (Entry<StopPoint, Set<Line>> toEntry: stops.entrySet()) {
+					StopPoint to = toEntry.getKey();
+					if (from == to) {
+						continue;
+					}
+					double distance = LocationUtils.distance(from.getLocation(), to.getLocation());
+					if (distance > 3 * 1609) {
+						continue;
+					}
+					dist.printf("insert into StopDistance(stopFrom, stopTo, distance) values(%1$d, %2$d, %3$f);\n", //
+							from.getName().hashCode(), to.getName().hashCode(), distance);
+				}
+			}
+		}
 		try (
 				PrintWriter outRoute = new PrintWriter("LondonTravel.v1.data-Route.sql", "utf-8");
 				PrintWriter outSection = new PrintWriter("LondonTravel.v1.data-Section.sql", "utf-8");
@@ -151,7 +170,6 @@ public class TravelNetworkParser {
 			}
 		}
 	}
-
 	protected static void writeStopLine(PrintWriter out, StopPoint stop, Line line, String code) {
 		LOG.trace("StopLine: Line {}, station {} ({}), code {}", line, stop.getName(), stop.getName().hashCode(), code);
 		code = code == null? "NULL" : "'" + code + "'";

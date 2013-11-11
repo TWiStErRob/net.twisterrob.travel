@@ -1,18 +1,24 @@
 package net.twisterrob.blt.android.db;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 import net.twisterrob.android.utils.tools.IOTools;
 import net.twisterrob.blt.android.db.model.*;
 import net.twisterrob.blt.model.*;
 import net.twisterrob.java.collections.MultiKey;
 import net.twisterrob.java.model.Location;
+
+import org.slf4j.*;
+
 import android.database.*;
 import android.database.sqlite.SQLiteDatabase;
 
 @SuppressWarnings("resource")
 // TODO fix resource leaks
 class DataBaseReader {
+	private static final Logger LOG = LoggerFactory.getLogger(DataBaseReader.class);
+
 	// private static final String LAST_UPDATE = "strftime('%s', __last_update) * 1000";
 
 	private static final String[] STATION_DETAILS = {"_id", "name", "type", "address", "telephone", "latitude",
@@ -168,6 +174,23 @@ class DataBaseReader {
 	}
 	// #endregion
 
+	public Map<Integer, Map<Integer, Double>> getDistances() {
+		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
+		Cursor cursor = db.rawQuery("select stopFrom, stopTo, distance from StopDistance;", new String[0]);
+		Map<Integer, Map<Integer, Double>> distances = new TreeMap<Integer, Map<Integer, Double>>();
+		while (cursor.moveToNext()) {
+			Integer fromID = cursor.getInt(cursor.getColumnIndex("stopFrom"));
+			Integer toID = cursor.getInt(cursor.getColumnIndex("stopTo"));
+			Double distance = cursor.getDouble(cursor.getColumnIndex("distance"));
+			Map<Integer, Double> dists = distances.get(fromID);
+			if (dists == null) {
+				dists = new TreeMap<Integer, Double>();
+				distances.put(fromID, dists);
+			}
+			dists.put(toID, distance);
+		}
+		return distances;
+	}
 	public Set<NetworkNode> getTubeNetwork() {
 		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
 		String query = IOTools.getAssetAsString(m_dataBaseHelper.getContext(), "getNetwork.sql");
@@ -220,6 +243,22 @@ class DataBaseReader {
 				}
 			}
 		}
+		Map<Integer, Map<Integer, Double>> distances = getDistances();
+		LOG.debug("Distances: {}", distances.size());
+		for (NetworkNode node: nodes.values()) {
+			Map<Integer, Double> dists = distances.get(node.getName().hashCode());
+			for (Entry<Integer, Double> dist: dists.entrySet()) {
+				for (Line neighborLine: Line.values()) {
+					MultiKey neighborKey = new MultiKey(neighborLine, dist.getKey());
+					NetworkNode toNode = nodes.get(neighborKey);
+					if (toNode == null) {
+						continue;
+					}
+					node.dists.put(toNode, dist.getValue());
+				}
+			}
+		}
+
 		return new HashSet<NetworkNode>(nodes.values());
 	}
 }

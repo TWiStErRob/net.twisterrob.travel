@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import net.twisterrob.blt.android.db.model.*;
-import net.twisterrob.java.model.LocationUtils;
 
 import org.slf4j.*;
 
@@ -24,23 +23,6 @@ public class DistanceMapGenerator {
 		this.nodes = networkNodes;
 		this.startNode = startNode;
 		this.config = config;
-		double minX = Double.POSITIVE_INFINITY, maxX = Double.NEGATIVE_INFINITY;
-		double minY = Double.POSITIVE_INFINITY, maxY = Double.NEGATIVE_INFINITY;
-		for (NetworkNode node: nodes) {
-			double lat = node.getLocation().getLatitude();
-			double lon = node.getLocation().getLongitude();
-			if (lon < minX) {
-				minX = lon;
-			} else if (maxX < lon) {
-				maxX = lon;
-			}
-			if (lat < minY) {
-				minY = lat;
-			} else if (maxY < lat) {
-				maxY = lat;
-			}
-		}
-		// *2 makes the pixels square, because the geo coordinate system is twice as wide as tall
 	}
 
 	public DistanceMapGeneratorConfig getConfig() {
@@ -55,9 +37,8 @@ public class DistanceMapGenerator {
 			double remainingMinutes = circle.getValue();
 			double remainingWalk = (remainingMinutes - config.timePlatformToStreet) / 60.0 /* to hours */
 					* config.speedOnFoot * 1000.0 /* to meters */;
-			NetworkNode node = circle.getKey();
 			//LOG.debug("Converting result for {}/{}: {} min -> {} m", //
-			//		node.getLine(), node.getName(), remainingMinutes, remainingWalk);
+			//		circle.getKey().getLine(), circle.getKey().getName(), remainingMinutes, remainingWalk);
 			circle.setValue(remainingWalk);
 
 		}
@@ -91,22 +72,16 @@ public class DistanceMapGenerator {
 				traverse(to, newRemaining);
 			}
 		}
-		//if (0 < remainingWalk) {
-		//	walkFromStation(node, remainingWalk);
-		//}
-		return true;
-	}
-
-	@SuppressWarnings("unused")
-	// TODO too slow
-	private void walkFromStation(NetworkNode start, double remainingWalk) {
-		for (NetworkNode node: nodes) {
-			double dist = LocationUtils.distance(start.getLocation(), node.getLocation());
-			if (10 < dist && dist < remainingWalk) {
-				double remainingMeters = remainingWalk - dist;
-				double remainingMinutes = remainingMeters / 1000.0 / config.speedOnFoot * 60;
-				traverse(node, remainingMinutes - config.timePlatformToStreet);
+		for (Entry<NetworkNode, Double> distEntry: from.getDists().entrySet()) {
+			NetworkNode to = distEntry.getKey();
+			Double oldRemaining = finishedNodes.get(to);
+			double distMinutes = config.timePlatformToStreet + distEntry.getValue() / 1000.0 / config.speedOnFoot * 60
+					+ config.timePlatformToStreet;
+			double newRemaining = remainingMinutes - distMinutes;
+			if (oldRemaining == null || oldRemaining < newRemaining) {
+				traverse(to, newRemaining);
 			}
 		}
+		return true;
 	}
 }

@@ -20,6 +20,7 @@ public class NetworkNode {
 
 	public final Set<NetworkLink> out = new HashSet<NetworkLink>();
 	public final Set<NetworkNode> neighbors = new HashSet<NetworkNode>();
+	public final Map<NetworkNode, Double> dists = new HashMap<NetworkNode, Double>();
 
 	public int getID() {
 		return m_id;
@@ -43,6 +44,10 @@ public class NetworkNode {
 
 	public Set<NetworkNode> getNeighbors() {
 		return neighbors;
+	}
+
+	public Map<NetworkNode, Double> getDists() {
+		return dists;
 	}
 
 	@Override

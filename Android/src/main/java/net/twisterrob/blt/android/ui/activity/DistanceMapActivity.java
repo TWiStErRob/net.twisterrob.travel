@@ -7,6 +7,9 @@ import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.data.distance.*;
 import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.model.Line;
+
+import org.slf4j.*;
+
 import android.graphics.Bitmap;
 import android.os.*;
 import android.support.v4.app.FragmentActivity;
@@ -15,6 +18,8 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
 public class DistanceMapActivity extends FragmentActivity {
+	private static final Logger LOG = LoggerFactory.getLogger(DistanceMapActivity.class);
+
 	private GoogleMap m_map;
 
 	@Override
@@ -59,6 +64,8 @@ public class DistanceMapActivity extends FragmentActivity {
 				DistanceMapGenerator distanceMapGenerator = new DistanceMapGenerator(nodes, startNode, distanceConfig);
 				DistanceMapDrawer distanceMapDrawer = new DistanceMapDrawer(nodes, drawConfig);
 
+				LOG.debug("Neighbors: {}", startNode.neighbors);
+				LOG.debug("Dists: {}", startNode.dists);
 				Map<NetworkNode, Double> distanceMap = distanceMapGenerator.generate();
 				Bitmap overlay = distanceMapDrawer.draw(distanceMap);
 

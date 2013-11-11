@@ -79,6 +79,15 @@ CREATE TABLE IF NOT EXISTS Section_Link (
 	PRIMARY KEY(section, link)
 );
 
+CREATE TABLE IF NOT EXISTS StopDistance (
+	stopFrom            INTEGER            NOT NULL
+	                                       CONSTRAINT "fk-StopDistance_from-Stop" REFERENCES Stop(_id),
+	stopTo              INTEGER            NOT NULL
+	                                       CONSTRAINT "fk-StopDistance_to-Stop" REFERENCES Stop(_id),
+	distance            REAL               NOT NULL,
+	PRIMARY KEY(stopFrom, stopTo)
+);
+
 CREATE TABLE IF NOT EXISTS AreaHull (
 	area_code           VARCHAR(4)         NOT NULL,
 	hull_index          INTEGER            NOT NULL,
