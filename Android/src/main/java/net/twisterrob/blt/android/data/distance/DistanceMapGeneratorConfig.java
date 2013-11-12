@@ -5,6 +5,7 @@ public class DistanceMapGeneratorConfig {
 	double timePlatformToStreet = 1 /* minutes */;
 	double speedOnFoot = 4.5 /* km/h */;
 	double minutes;
+	double startWalkMinutes = 5;
 
 	DistanceStrategy tubingStrategy = new AverageSpeedTubingStrategy();
 	//DistanceStrategy tubingStrategy = new SmartTubingStrategy();
@@ -44,6 +45,11 @@ public class DistanceMapGeneratorConfig {
 
 	public DistanceMapGeneratorConfig transferWalk(boolean transferWalk) {
 		this.transferWalk = transferWalk;
+		return this;
+	}
+
+	public DistanceMapGeneratorConfig startWalkMinutes(double startWalkMinutes) {
+		this.startWalkMinutes = startWalkMinutes;
 		return this;
 	}
 }

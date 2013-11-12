@@ -27,6 +27,7 @@ public class DistanceMapActivity extends FragmentActivity {
 
 	private GoogleMap m_map;
 	private DistanceMapGeneratorConfig distanceConfig = new DistanceMapGeneratorConfig() //
+			.startWalkMinutes(10) //
 			.minutes(25);
 	private DistanceMapDrawerConfig drawConfig = new DistanceMapDrawerConfig() //
 			.dynamicColor(true);
@@ -69,13 +70,16 @@ public class DistanceMapActivity extends FragmentActivity {
 		m_map.moveCamera(cu);
 		m_map.addGroundOverlay(new GroundOverlayOptions() //
 				.positionFromBounds(m_distanceMapDrawer.getBounds()) //
-				.transparency(0.0f) //
+				.transparency(0.3f) //
 				.image(BitmapDescriptorFactory.fromBitmap(new TubeMapDrawer(nodes).draw(nodes)) //
 				));
 	}
 
 	private AsyncTask<LatLng, Void, Bitmap> m_redrawTask;
+
+	private LatLng m_lastStartPoint;
 	protected void reDraw(LatLng latlng) {
+		m_lastStartPoint = latlng;
 		LOG.trace("reDraw({}) / task status: {}", latlng, m_redrawTask == null? null : m_redrawTask.getStatus());
 
 		if (m_redrawTask == null) {
@@ -123,6 +127,14 @@ public class DistanceMapActivity extends FragmentActivity {
 					.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 			markers.add(marker);
 		}
+		if (m_lastStartPoint != null) {
+			Marker marker = m_map.addMarker(new MarkerOptions() //
+					.title("Starting point") //
+					.position(m_lastStartPoint) //
+					.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+			markers.add(marker);
+		}
+
 	}
 
 	@SuppressWarnings("unused")

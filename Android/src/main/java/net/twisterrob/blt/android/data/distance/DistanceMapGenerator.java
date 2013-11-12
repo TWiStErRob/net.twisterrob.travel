@@ -15,7 +15,7 @@ public class DistanceMapGenerator {
 	private static final Logger LOG = LoggerFactory.getLogger(DistanceMapGenerator.class);
 
 	private final Set<NetworkNode> nodes;
-	private Set<NetworkNode> startNodes;
+	private HashMap<NetworkNode, Double> startNodes;
 	private Map<NetworkNode, Double> finishedNodes;
 
 	private final DistanceMapGeneratorConfig config;
@@ -30,16 +30,19 @@ public class DistanceMapGenerator {
 	}
 
 	public Collection<NetworkNode> getStartNodes() {
-		return startNodes;
+		return startNodes.keySet();
 	}
 
 	public Map<NetworkNode, Double> generate(Location location) {
-		startNodes = new HashSet<NetworkNode>();
+		startNodes = new HashMap<NetworkNode, Double>();
 		findStartNodes(location);
 		finishedNodes = new HashMap<NetworkNode, Double>();
-		for (NetworkNode start: startNodes) {
-			finishedNodes.put(start, config.minutes);
-			traverse(start, config.minutes);
+		for (Entry<NetworkNode, Double> start: startNodes.entrySet()) {
+			Double oldRemaining = finishedNodes.get(start.getKey());
+			double newRemaining = config.minutes - start.getValue() - config.timePlatformToStreet;
+			if (oldRemaining == null || oldRemaining < newRemaining) {
+				traverse(start.getKey(), newRemaining);
+			}
 		}
 		for (Entry<NetworkNode, Double> circle: finishedNodes.entrySet()) {
 			double remainingMinutes = circle.getValue();
@@ -54,6 +57,16 @@ public class DistanceMapGenerator {
 	}
 
 	private void findStartNodes(Location location) {
+		for (NetworkNode node: nodes) {
+			double distance = LocationUtils.distance(location, node.getLocation());
+			double minutes = distance / 1000.0 / config.speedOnFoot * 60;
+			if (minutes < config.startWalkMinutes) {
+				startNodes.put(node, minutes);
+			}
+		}
+	}
+
+	private void findClosesStartNode(Location location) {
 		double bestDistance = Double.POSITIVE_INFINITY;
 		NetworkNode closest = null;
 		for (NetworkNode node: nodes) {
@@ -63,7 +76,7 @@ public class DistanceMapGenerator {
 				closest = node;
 			}
 		}
-		startNodes.add(closest);
+		startNodes.put(closest, bestDistance / 1000.0 / config.speedOnFoot * 60);
 	}
 
 	/**

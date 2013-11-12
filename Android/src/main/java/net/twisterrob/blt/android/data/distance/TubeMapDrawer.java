@@ -77,7 +77,7 @@ public class TubeMapDrawer {
 
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		paint.setColor(link.getSource().getLine().getBackground(App.getInstance().getStaticData().getLineColors()));
-		paint.setStrokeWidth(3);
+		paint.setStrokeWidth(5);
 		canvas.drawLine((float)fromX, (float)fromY, (float)toX, (float)toY, paint);
 	}
 
