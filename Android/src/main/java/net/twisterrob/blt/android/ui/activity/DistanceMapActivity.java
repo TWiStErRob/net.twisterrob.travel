@@ -67,6 +67,11 @@ public class DistanceMapActivity extends FragmentActivity {
 		m_distanceMapDrawer = new DistanceMapDrawerAndroid(nodes, drawConfig);
 		CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(m_distanceMapDrawer.getBounds(), MAP_PADDING);
 		m_map.moveCamera(cu);
+		m_map.addGroundOverlay(new GroundOverlayOptions() //
+				.positionFromBounds(m_distanceMapDrawer.getBounds()) //
+				.transparency(0.0f) //
+				.image(BitmapDescriptorFactory.fromBitmap(new TubeMapDrawer(nodes).draw(nodes)) //
+				));
 	}
 
 	private AsyncTask<LatLng, Void, Bitmap> m_redrawTask;
@@ -97,7 +102,8 @@ public class DistanceMapActivity extends FragmentActivity {
 		if (m_groundOverlay == null) {
 			m_groundOverlay = m_map.addGroundOverlay(new GroundOverlayOptions() //
 					.positionFromBounds(m_distanceMapDrawer.getBounds()) //
-					.transparency(0.0f).image(BitmapDescriptorFactory.fromBitmap(map)));
+					.transparency(0.0f) //
+					.image(BitmapDescriptorFactory.fromBitmap(map)));
 		} else {
 			m_groundOverlay.setImage(BitmapDescriptorFactory.fromBitmap(map));
 		}
