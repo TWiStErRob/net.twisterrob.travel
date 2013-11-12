@@ -243,6 +243,11 @@ class DataBaseReader {
 				}
 			}
 		}
+		// readDistances(nodes);
+		return new HashSet<NetworkNode>(nodes.values());
+	}
+
+	protected void readDistances(Map<MultiKey, NetworkNode> nodes) {
 		Map<Integer, Map<Integer, Double>> distances = getDistances();
 		LOG.debug("Distances: {}", distances.size());
 		for (NetworkNode node: nodes.values()) {
@@ -258,7 +263,5 @@ class DataBaseReader {
 				}
 			}
 		}
-
-		return new HashSet<NetworkNode>(nodes.values());
 	}
 }

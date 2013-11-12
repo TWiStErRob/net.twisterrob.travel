@@ -6,7 +6,6 @@ import net.twisterrob.android.utils.model.LocationUtils;
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.data.distance.*;
 import net.twisterrob.blt.android.db.model.NetworkNode;
-import net.twisterrob.blt.model.Line;
 
 import org.slf4j.*;
 
@@ -57,7 +56,6 @@ public class DistanceMapActivity extends FragmentActivity {
 		}.execute((Void[])null);
 	}
 
-	@Deprecated private Set<NetworkNode> m_nodes;
 	private DistanceMapGenerator m_distanceMapGenerator;
 	private DistanceMapDrawerAndroid m_distanceMapDrawer;
 	private GroundOverlay m_groundOverlay;
@@ -65,8 +63,6 @@ public class DistanceMapActivity extends FragmentActivity {
 
 	protected void setNodes(Set<NetworkNode> nodes) {
 		LOG.trace("setNodes(nodes:{})", nodes.size());
-
-		m_nodes = nodes;
 		m_distanceMapGenerator = new DistanceMapGenerator(nodes, distanceConfig);
 		m_distanceMapDrawer = new DistanceMapDrawerAndroid(nodes, drawConfig);
 		CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(m_distanceMapDrawer.getBounds(), MAP_PADDING);
@@ -154,13 +150,7 @@ public class DistanceMapActivity extends FragmentActivity {
 		@Override
 		protected Bitmap doInBackground(LatLng... params) {
 			LOG.trace("doInBackground({})", (Object)params);
-
-			NetworkNode startNode = NetworkNode.find(m_nodes, "Liverpool Street", Line.Central);
-			LOG.debug("Start node: {}", startNode);
-			if (isCancelled()) {
-				return null;
-			}
-			Map<NetworkNode, Double> distanceMap = m_mapGenerator.generate(startNode);
+			Map<NetworkNode, Double> distanceMap = m_mapGenerator.generate(LocationUtils.fromLatLng(params[0]));
 			if (isCancelled()) {
 				return null;
 			}

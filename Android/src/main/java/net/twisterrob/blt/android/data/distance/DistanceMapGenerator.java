@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import net.twisterrob.blt.android.db.model.*;
+import net.twisterrob.java.model.*;
 
 import org.slf4j.*;
 
@@ -32,11 +33,14 @@ public class DistanceMapGenerator {
 		return startNodes;
 	}
 
-	public Map<NetworkNode, Double> generate(NetworkNode startNode) {
-		startNodes = new HashSet<NetworkNode>(Collections.singleton(startNode));
+	public Map<NetworkNode, Double> generate(Location location) {
+		startNodes = new HashSet<NetworkNode>();
+		findStartNodes(location);
 		finishedNodes = new HashMap<NetworkNode, Double>();
-		finishedNodes.put(startNode, config.minutes);
-		traverse(startNode, config.minutes);
+		for (NetworkNode start: startNodes) {
+			finishedNodes.put(start, config.minutes);
+			traverse(start, config.minutes);
+		}
 		for (Entry<NetworkNode, Double> circle: finishedNodes.entrySet()) {
 			double remainingMinutes = circle.getValue();
 			double remainingWalk = (remainingMinutes - config.timePlatformToStreet) / 60.0 /* to hours */
@@ -47,6 +51,19 @@ public class DistanceMapGenerator {
 
 		}
 		return finishedNodes;
+	}
+
+	private void findStartNodes(Location location) {
+		double bestDistance = Double.POSITIVE_INFINITY;
+		NetworkNode closest = null;
+		for (NetworkNode node: nodes) {
+			double distance = LocationUtils.distance(location, node.getLocation());
+			if (distance < bestDistance) {
+				bestDistance = distance;
+				closest = node;
+			}
+		}
+		startNodes.add(closest);
 	}
 
 	/**
