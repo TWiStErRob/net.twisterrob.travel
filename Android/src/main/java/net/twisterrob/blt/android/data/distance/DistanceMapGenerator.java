@@ -13,15 +13,14 @@ import org.slf4j.*;
 public class DistanceMapGenerator {
 	private static final Logger LOG = LoggerFactory.getLogger(DistanceMapGenerator.class);
 
-	private Set<NetworkNode> nodes;
-	private NetworkNode startNode;
+	private final Set<NetworkNode> nodes;
+	private Set<NetworkNode> startNodes;
 	private Map<NetworkNode, Double> finishedNodes;
 
 	private final DistanceMapGeneratorConfig config;
 
-	public DistanceMapGenerator(Set<NetworkNode> networkNodes, NetworkNode startNode, DistanceMapGeneratorConfig config) {
+	public DistanceMapGenerator(Set<NetworkNode> networkNodes, DistanceMapGeneratorConfig config) {
 		this.nodes = networkNodes;
-		this.startNode = startNode;
 		this.config = config;
 	}
 
@@ -29,7 +28,12 @@ public class DistanceMapGenerator {
 		return config;
 	}
 
-	public Map<NetworkNode, Double> generate() {
+	public Collection<NetworkNode> getStartNodes() {
+		return startNodes;
+	}
+
+	public Map<NetworkNode, Double> generate(NetworkNode startNode) {
+		startNodes = new HashSet<NetworkNode>(Collections.singleton(startNode));
 		finishedNodes = new HashMap<NetworkNode, Double>();
 		finishedNodes.put(startNode, config.minutes);
 		traverse(startNode, config.minutes);
@@ -65,21 +69,25 @@ public class DistanceMapGenerator {
 				traverse(to, newRemaining);
 			}
 		}
-		for (NetworkNode to: from.getNeighbors()) {
-			Double oldRemaining = finishedNodes.get(to);
-			double newRemaining = remainingMinutes - config.timeTransfer;
-			if (oldRemaining == null || oldRemaining < newRemaining) {
-				traverse(to, newRemaining);
+		if (config.transferInStation) {
+			for (NetworkNode to: from.getNeighbors()) {
+				Double oldRemaining = finishedNodes.get(to);
+				double newRemaining = remainingMinutes - config.timeTransfer;
+				if (oldRemaining == null || oldRemaining < newRemaining) {
+					traverse(to, newRemaining);
+				}
 			}
 		}
-		for (Entry<NetworkNode, Double> distEntry: from.getDists().entrySet()) {
-			NetworkNode to = distEntry.getKey();
-			Double oldRemaining = finishedNodes.get(to);
-			double distMinutes = config.timePlatformToStreet + distEntry.getValue() / 1000.0 / config.speedOnFoot * 60
-					+ config.timePlatformToStreet;
-			double newRemaining = remainingMinutes - distMinutes;
-			if (oldRemaining == null || oldRemaining < newRemaining) {
-				traverse(to, newRemaining);
+		if (config.transferWalk) {
+			for (Entry<NetworkNode, Double> distEntry: from.getDists().entrySet()) {
+				NetworkNode to = distEntry.getKey();
+				Double oldRemaining = finishedNodes.get(to);
+				double walkToOtherStation = distEntry.getValue() / 1000.0 / config.speedOnFoot * 60;
+				walkToOtherStation = config.timePlatformToStreet + walkToOtherStation + config.timePlatformToStreet;
+				double newRemaining = remainingMinutes - walkToOtherStation;
+				if (oldRemaining == null || oldRemaining < newRemaining) {
+					traverse(to, newRemaining);
+				}
 			}
 		}
 		return true;

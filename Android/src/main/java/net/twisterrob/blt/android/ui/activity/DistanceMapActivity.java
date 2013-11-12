@@ -12,15 +12,25 @@ import org.slf4j.*;
 
 import android.graphics.Bitmap;
 import android.os.*;
+import android.os.AsyncTask.Status;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.model.*;
+import com.google.android.gms.maps.model.Marker;
 
 public class DistanceMapActivity extends FragmentActivity {
 	private static final Logger LOG = LoggerFactory.getLogger(DistanceMapActivity.class);
 
+	private static final int MAP_PADDING = 50;
+
 	private GoogleMap m_map;
+	private DistanceMapGeneratorConfig distanceConfig = new DistanceMapGeneratorConfig() //
+			.minutes(25);
+	private DistanceMapDrawerConfig drawConfig = new DistanceMapDrawerConfig() //
+			.dynamicColor(true);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +39,11 @@ public class DistanceMapActivity extends FragmentActivity {
 
 		m_map = ((SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 		m_map.setMyLocationEnabled(true);
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
+		m_map.setOnMapLongClickListener(new OnMapLongClickListener() {
+			public void onMapLongClick(LatLng latlng) {
+				reDraw(latlng);
+			}
+		});
 		new AsyncTask<Void, Void, Set<NetworkNode>>() {
 			@Override
 			protected Set<NetworkNode> doInBackground(Void... params) {
@@ -42,49 +52,126 @@ public class DistanceMapActivity extends FragmentActivity {
 			@Override
 			protected void onPostExecute(Set<NetworkNode> nodes) {
 				super.onPostExecute(nodes);
-
-				@SuppressWarnings("synthetic-access")
-				GoogleMap map = m_map;
-				//for (NetworkNode node: nodes.values()) {
-				//	LatLng ll = LocationUtils.toLatLng(node.getPos());
-				//	map.addMarker(new MarkerOptions().title(String.valueOf(node.getID())).position(ll));
-				//}
-				LatLngBounds bounds = getBounds(nodes);
-				CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 50);
-				map.moveCamera(cu);
-				NetworkNode startNode = NetworkNode.find(nodes, "Liverpool Street", Line.Central);
-				map.addMarker(new MarkerOptions() //
-						.title("Liverpool Street") //
-						.position(LocationUtils.toLatLng(startNode.getLocation())) //
-						.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-				DistanceMapGeneratorConfig distanceConfig = new DistanceMapGeneratorConfig() //
-						.minutes(25);
-				DistanceMapDrawerConfig drawConfig = new DistanceMapDrawerConfig() //
-						.dynamicColor(true);
-				DistanceMapGenerator distanceMapGenerator = new DistanceMapGenerator(nodes, startNode, distanceConfig);
-				DistanceMapDrawer distanceMapDrawer = new DistanceMapDrawer(nodes, drawConfig);
-
-				LOG.debug("Neighbors: {}", startNode.neighbors);
-				LOG.debug("Dists: {}", startNode.dists);
-				Map<NetworkNode, Double> distanceMap = distanceMapGenerator.generate();
-				Bitmap overlay = distanceMapDrawer.draw(distanceMap);
-
-				map.addGroundOverlay(new GroundOverlayOptions() //
-						.positionFromBounds(bounds) //
-						.transparency(0.0f) //
-						.image(BitmapDescriptorFactory.fromBitmap(overlay)));
-
-			}
-
-			protected LatLngBounds getBounds(Iterable<NetworkNode> nodes) {
-				LatLngBounds.Builder builder = new LatLngBounds.Builder();
-				for (NetworkNode node: nodes) {
-					LatLng ll = LocationUtils.toLatLng(node.getLocation());
-					builder.include(ll);
-				}
-				LatLngBounds bounds = builder.build();
-				return bounds;
+				setNodes(nodes);
 			}
 		}.execute((Void[])null);
+	}
+
+	@Deprecated private Set<NetworkNode> m_nodes;
+	private DistanceMapGenerator m_distanceMapGenerator;
+	private DistanceMapDrawerAndroid m_distanceMapDrawer;
+	private GroundOverlay m_groundOverlay;
+	private List<Marker> m_markersStart = new LinkedList<Marker>();
+
+	protected void setNodes(Set<NetworkNode> nodes) {
+		LOG.trace("setNodes(nodes:{})", nodes.size());
+
+		m_nodes = nodes;
+		m_distanceMapGenerator = new DistanceMapGenerator(nodes, distanceConfig);
+		m_distanceMapDrawer = new DistanceMapDrawerAndroid(nodes, drawConfig);
+		CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(m_distanceMapDrawer.getBounds(), MAP_PADDING);
+		m_map.moveCamera(cu);
+	}
+
+	private AsyncTask<LatLng, Void, Bitmap> m_redrawTask;
+	protected void reDraw(LatLng latlng) {
+		LOG.trace("reDraw({}) / task status: {}", latlng, m_redrawTask == null? null : m_redrawTask.getStatus());
+
+		if (m_redrawTask == null) {
+			m_redrawTask = new RedrawAsyncTask(m_distanceMapGenerator, m_distanceMapDrawer);
+		}
+
+		if (m_redrawTask.getStatus() != Status.PENDING) {
+			m_redrawTask.cancel(true);
+			m_redrawTask = null;
+			reDraw(latlng);
+			return;
+		}
+
+		try {
+			m_redrawTask.execute(latlng);
+		} catch (Exception ex) {
+			LOG.warn("Exception while executing redraw task", ex);
+			Toast.makeText(DistanceMapActivity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	protected void updateDistanceMap(Bitmap map) {
+		LOG.trace("updateDistanceMap({})", map);
+		if (m_groundOverlay == null) {
+			m_groundOverlay = m_map.addGroundOverlay(new GroundOverlayOptions() //
+					.positionFromBounds(m_distanceMapDrawer.getBounds()) //
+					.transparency(0.0f).image(BitmapDescriptorFactory.fromBitmap(map)));
+		} else {
+			m_groundOverlay.setImage(BitmapDescriptorFactory.fromBitmap(map));
+		}
+		Collection<NetworkNode> startNodes = m_distanceMapGenerator.getStartNodes();
+		reCreateMarkers(m_markersStart, startNodes);
+	}
+
+	private void reCreateMarkers(Collection<Marker> markers, Collection<NetworkNode> startNodes) {
+		LOG.trace("reCreateMarkers");
+		for (Marker marker: markers) {
+			marker.remove();
+		}
+		for (NetworkNode startNode: startNodes) {
+			Marker marker = m_map.addMarker(new MarkerOptions() //
+					.title(startNode.getName()) //
+					.position(LocationUtils.toLatLng(startNode.getLocation())) //
+					.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+			markers.add(marker);
+		}
+	}
+
+	@SuppressWarnings("unused")
+	private void addMarkers(Iterable<NetworkNode> nodes) {
+		for (NetworkNode node: nodes) {
+			LatLng ll = LocationUtils.toLatLng(node.getLocation());
+			m_map.addMarker(new MarkerOptions().title(String.valueOf(node.getID())).position(ll));
+		}
+	}
+
+	private final class RedrawAsyncTask extends AsyncTask<LatLng, Void, Bitmap> {
+		private final Logger LOG = LoggerFactory.getLogger(RedrawAsyncTask.class);
+		private DistanceMapGenerator m_mapGenerator;
+		private DistanceMapDrawerAndroid m_mapDrawer;
+
+		public RedrawAsyncTask(DistanceMapGenerator distanceMapGenerator, DistanceMapDrawerAndroid distanceMapDrawer) {
+			m_mapGenerator = distanceMapGenerator;
+			m_mapDrawer = distanceMapDrawer;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			if (m_mapGenerator == null || m_mapDrawer == null) {
+				cancel(false);
+				throw new IllegalStateException(
+						"Someone has quick fingers, Tube network is not ready, please wait and try again.");
+			}
+		}
+
+		@Override
+		protected Bitmap doInBackground(LatLng... params) {
+			LOG.trace("doInBackground({})", (Object)params);
+
+			NetworkNode startNode = NetworkNode.find(m_nodes, "Liverpool Street", Line.Central);
+			LOG.debug("Start node: {}", startNode);
+			if (isCancelled()) {
+				return null;
+			}
+			Map<NetworkNode, Double> distanceMap = m_mapGenerator.generate(startNode);
+			if (isCancelled()) {
+				return null;
+			}
+			Bitmap overlay = m_mapDrawer.draw(distanceMap);
+			return overlay;
+		}
+
+		@Override
+		protected void onPostExecute(Bitmap map) {
+			super.onPostExecute(map);
+			updateDistanceMap(map);
+		}
 	}
 }

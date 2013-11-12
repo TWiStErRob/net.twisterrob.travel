@@ -11,23 +11,23 @@ import net.twisterrob.java.model.*;
 
 import org.slf4j.*;
 
-import android.graphics.*;
+import android.graphics.Color;
 
 @NotThreadSafe
-public class DistanceMapDrawer {
+public abstract class DistanceMapDrawer<T> {
 	private static final Logger LOG = LoggerFactory.getLogger(DistanceMapDrawer.class);
 
 	private final DistanceMapDrawerConfig config;
 
-	private final double minLon;
-	private final double maxLon;
-	private final double minLat;
-	private final double maxLat;
-	private final double geoWidth;
-	private final double geoHeight;
+	protected final double minLon;
+	protected final double maxLon;
+	protected final double minLat;
+	protected final double maxLat;
+	protected final double geoWidth;
+	protected final double geoHeight;
 
-	private final int pixelWidth;
-	private final int pixelHeight;
+	protected final int pixelWidth;
+	protected final int pixelHeight;
 	private int[] pixels;
 
 	public DistanceMapDrawer(Iterable<NetworkNode> nodes, DistanceMapDrawerConfig config) {
@@ -63,24 +63,27 @@ public class DistanceMapDrawer {
 		return config;
 	}
 
-	public Bitmap draw(Map<NetworkNode, Double> nodes) {
-		calcPixels(nodes);
-		if (0 < config.borderSize) {
-			border(config.borderSize, config.borderColor);
-		}
-		Bitmap bitmap = Bitmap.createBitmap(pixelWidth, pixelHeight, Bitmap.Config.ARGB_8888);
-		bitmap.setPixels(pixels, (pixelHeight - 1) * pixelWidth, -pixelWidth, 0, 0, pixelWidth, pixelHeight);
-		pixels = null;
-		return bitmap;
+	public T draw(Map<NetworkNode, Double> nodes) {
+		pixels = new int[pixelHeight * pixelWidth];
+		int[] pixels = calcPixels(nodes);
+		T map = createMap(pixels);
+		this.pixels = null;
+		return map;
 	}
 
-	private int[] calcPixels(Map<NetworkNode, Double> nodes) {
+	protected abstract T createMap(int[] pixels);
+
+	protected int[] calcPixels(Map<NetworkNode, Double> nodes) {
 		//LOG.debug("Mapping area w={}, h={} to pixels w={}, h={}", //
 		//		geoWidth, geoHeight, pixelWidth, pixelHeight);
-		pixels = new int[pixelHeight * pixelWidth];
 		for (Entry<NetworkNode, Double> circle: nodes.entrySet()) {
 			drawCircle(circle.getKey(), circle.getValue());
 		}
+
+		if (0 < config.borderSize) {
+			border(config.borderSize, config.borderColor);
+		}
+
 		return pixels;
 	}
 

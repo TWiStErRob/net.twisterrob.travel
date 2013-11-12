@@ -9,6 +9,9 @@ public class DistanceMapGeneratorConfig {
 	DistanceStrategy tubingStrategy = new AverageSpeedTubingStrategy();
 	//DistanceStrategy tubingStrategy = new SmartTubingStrategy();
 
+	boolean transferInStation = true;
+	boolean transferWalk = false;
+
 	public DistanceMapGeneratorConfig timeTransfer(double timeTransfer) {
 		this.timeTransfer = timeTransfer;
 		return this;
@@ -31,6 +34,16 @@ public class DistanceMapGeneratorConfig {
 
 	public DistanceMapGeneratorConfig minutes(double minutes) {
 		this.minutes = minutes;
+		return this;
+	}
+
+	public DistanceMapGeneratorConfig transferInStation(boolean transferInStation) {
+		this.transferInStation = transferInStation;
+		return this;
+	}
+
+	public DistanceMapGeneratorConfig transferWalk(boolean transferWalk) {
+		this.transferWalk = transferWalk;
 		return this;
 	}
 }
