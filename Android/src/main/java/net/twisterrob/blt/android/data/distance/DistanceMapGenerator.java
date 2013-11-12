@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import net.twisterrob.blt.android.db.model.*;
+import net.twisterrob.blt.model.Line;
 import net.twisterrob.java.model.*;
 
 import org.slf4j.*;
@@ -37,6 +38,7 @@ public class DistanceMapGenerator {
 		startNodes = new HashMap<NetworkNode, Double>();
 		findStartNodes(location);
 		finishedNodes = new HashMap<NetworkNode, Double>();
+		finishedNodes.put(new NetworkNode(0, "Walk", Line.unknown, location), config.minutes);
 		for (Entry<NetworkNode, Double> start: startNodes.entrySet()) {
 			Double oldRemaining = finishedNodes.get(start.getKey());
 			double newRemaining = config.minutes - start.getValue() - config.timePlatformToStreet;
@@ -62,6 +64,12 @@ public class DistanceMapGenerator {
 			double minutes = distance / 1000.0 / config.speedOnFoot * 60;
 			if (minutes < config.startWalkMinutes) {
 				startNodes.put(node, minutes);
+			}
+		}
+		if (startNodes.isEmpty()) {
+			findClosesStartNode(location);
+			if (startNodes.entrySet().iterator().next().getValue() > config.minutes) {
+				startNodes.clear();
 			}
 		}
 	}
