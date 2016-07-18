@@ -2,8 +2,15 @@ package net.twisterrob.blt.model;
 
 import java.util.*;
 
+/**
+ * Possible lines that may appear in line status, for example:
+ * <pre><code>&lt;Line ID="8" Name="Hammersmith and City" /&gt;</code></pre>
+ * @see net.twisterrob.blt.io.feeds.Feed#TubeDepartureBoardsLineStatus
+ * @see net.twisterrob.blt.io.feeds.Feed#TubeDepartureBoardsLineStatusIncidents
+ * @see <a href="http://cloud.tfl.gov.uk/TrackerNet/LineStatus">Current status</a>
+ */
 public enum Line {
-	unknown('?', StopType.unknown, "Unknown", "") {
+	unknown('?', Line.NO_ID, StopType.unknown, "Unknown", "") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getUnknownBackground();
@@ -13,7 +20,7 @@ public enum Line {
 			return colors.getUnknownForeground();
 		}
 	},
-	Bakerloo('B', StopType.Underground, "Bakerloo") {
+	Bakerloo('B', 1, StopType.Underground, "Bakerloo") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getBakerlooBackground();
@@ -23,7 +30,7 @@ public enum Line {
 			return colors.getBakerlooForeground();
 		}
 	},
-	Central('C', StopType.Underground, "Central") {
+	Central('C', 2, StopType.Underground, "Central") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getCentralBackground();
@@ -33,7 +40,7 @@ public enum Line {
 			return colors.getCentralForeground();
 		}
 	},
-	Circle('H', StopType.Underground, "Circle") { // Hammersmith & Circle?
+	Circle('H', 7, StopType.Underground, "Circle") { // Hammersmith & Circle?
 		// H from http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf / 5. Appendix A
 		@Override
 		public int getBackground(LineColors colors) {
@@ -44,7 +51,7 @@ public enum Line {
 			return colors.getCircleForeground();
 		}
 	},
-	District('D', StopType.Underground, "District") {
+	District('D', 9, StopType.Underground, "District") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getDistrictBackground();
@@ -54,7 +61,7 @@ public enum Line {
 			return colors.getDistrictForeground();
 		}
 	},
-	HammersmithAndCity('H', StopType.Underground, "H'smith & City", "Hammersmith & City", "Hammersmith and City") {
+	HammersmithAndCity('H', 8, StopType.Underground, "H'smith & City", "Hammersmith & City", "Hammersmith and City") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getHammersmithAndCityBackground();
@@ -64,7 +71,7 @@ public enum Line {
 			return colors.getHammersmithAndCityForeground();
 		}
 	},
-	Jubilee('J', StopType.Underground, "Jubilee") {
+	Jubilee('J', 4, StopType.Underground, "Jubilee") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getJubileeBackground();
@@ -74,7 +81,7 @@ public enum Line {
 			return colors.getJubileeForeground();
 		}
 	},
-	Metropolitan('M', StopType.Underground, "Metropolitan") {
+	Metropolitan('M', 11, StopType.Underground, "Metropolitan") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getMetropolitanBackground();
@@ -84,7 +91,7 @@ public enum Line {
 			return colors.getMetropolitanForeground();
 		}
 	},
-	Northern('N', StopType.Underground, "Northern") {
+	Northern('N', 5, StopType.Underground, "Northern") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getNorthernBackground();
@@ -94,7 +101,7 @@ public enum Line {
 			return colors.getNorthernForeground();
 		}
 	},
-	Piccadilly('P', StopType.Underground, "Piccadilly") {
+	Piccadilly('P', 6, StopType.Underground, "Piccadilly") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getPiccadillyBackground();
@@ -104,7 +111,7 @@ public enum Line {
 			return colors.getPiccadillyForeground();
 		}
 	},
-	Victoria('V', StopType.Underground, "Victoria") {
+	Victoria('V', 3, StopType.Underground, "Victoria") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getVictoriaBackground();
@@ -114,7 +121,7 @@ public enum Line {
 			return colors.getVictoriaForeground();
 		}
 	},
-	WaterlooAndCity('W', StopType.Underground, "Waterloo & City", "Waterloo and City") {
+	WaterlooAndCity('W', 12, StopType.Underground, "Waterloo & City", "Waterloo and City") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getWaterlooAndCityBackground();
@@ -124,7 +131,7 @@ public enum Line {
 			return colors.getWaterlooAndCityForeground();
 		}
 	},
-	DLR('L', StopType.DLR, "DLR", "Docklands Light Railway") {
+	DLR('L', 81, StopType.DLR, "DLR", "Docklands Light Railway") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getDLRBackground();
@@ -134,7 +141,7 @@ public enum Line {
 			return colors.getDLRForeground();
 		}
 	},
-	Overground('O', StopType.Overground, "Overground", "East London") {
+	Overground('O', 82, StopType.Overground, "Overground", "East London") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getOvergroundBackground();
@@ -144,7 +151,7 @@ public enum Line {
 			return colors.getOvergroundForeground();
 		}
 	},
-	Tram('T', StopType.Tram, "Tram", "Tramlink 1", "Tramlink 2", "Tramlink 3", "Tramlink 4") {
+	Tram('T', 90, StopType.Tram, "Trams", "Tram", "Tramlink 1", "Tramlink 2", "Tramlink 3", "Tramlink 4") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getTramBackground();
@@ -154,7 +161,7 @@ public enum Line {
 			return colors.getTramForeground();
 		}
 	},
-	EmiratesAirline('E', StopType.Air, "Emirates Air Line", "Emirates Airline") {
+	EmiratesAirline('E', Line.NO_ID, StopType.Air, "Emirates Air Line", "Emirates Airline") {
 		@Override
 		public int getBackground(LineColors colors) {
 			return colors.getEmiratesBackground();
@@ -163,27 +170,57 @@ public enum Line {
 		public int getForeground(LineColors colors) {
 			return colors.getEmiratesForeground();
 		}
+	},
+	TflRail('?', 83, StopType.Rail, "TfL Rail") {
+		@Override
+		public int getBackground(LineColors colors) {
+			return colors.getTfLRailBackground();
+		}
+		@Override
+		public int getForeground(LineColors colors) {
+			return colors.getTfLRailForeground();
+		}
 	};
-	private char m_code;
-	private List<String> m_aliases;
-	private StopType m_defaultStopType;
+	private static final int NO_ID = 0;
 
-	private Line(char code, StopType defaultStopType, String... aliases) {
-		m_code = code;
-		m_defaultStopType = defaultStopType;
-		m_aliases = Arrays.asList(aliases);
+	/**
+	 * TODO ???
+	 */
+	private final char code;
+	/**
+	 * Possible names this Line can appear as.
+	 * <ul>
+	 * <li>{@code Name} attribute of {@code <Line>} in the Line Status feed.</li>
+	 * </ul>
+	 */
+	private final List<String> aliases;
+	/**
+	 * {@code ID} attribute of {@code <Line>} in the Line Status feed.
+	 */
+	private final int lineID;
+	private final StopType defaultStopType;
+
+	Line(char code, int lineID, StopType defaultStopType, String... aliases) {
+		this.code = code;
+		this.lineID = lineID;
+		this.defaultStopType = defaultStopType;
+		this.aliases = Arrays.asList(aliases);
 	}
 
 	public String getTrackerNetCode() {
-		return "" + m_code;
+		return "" + code;
 	}
 
 	public StopType getDefaultStopType() {
-		return m_defaultStopType;
+		return defaultStopType;
 	}
 
 	public String getTitle() {
-		return m_aliases.get(0);
+		return aliases.get(0);
+	}
+
+	public int getLineStatusLineID() {
+		return lineID;
 	}
 
 	public abstract int getBackground(LineColors colors);
@@ -191,7 +228,7 @@ public enum Line {
 
 	public static Line fromAlias(String alias) {
 		for (Line line: values()) {
-			if (line.m_aliases.contains(alias)) {
+			if (line.aliases.contains(alias)) {
 				return line;
 			}
 		}
@@ -199,7 +236,7 @@ public enum Line {
 	}
 	public static Line fromTrackerNetCode(char code) {
 		for (Line line: values()) {
-			if (line.m_code == code) {
+			if (line.code == code) {
 				return line;
 			}
 		}

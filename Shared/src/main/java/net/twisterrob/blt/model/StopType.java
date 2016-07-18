@@ -7,6 +7,7 @@ public enum StopType {
 	DLR,
 	Tram,
 	Bus,
+	Rail,
 	Coach,
 	Taxi,
 	Water,

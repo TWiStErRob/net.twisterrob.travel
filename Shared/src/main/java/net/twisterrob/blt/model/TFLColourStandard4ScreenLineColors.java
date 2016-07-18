@@ -2,22 +2,23 @@ package net.twisterrob.blt.model;
 
 import java.util.*;
 
-public class TFLColourStandard3ScreenLineColors extends LineColors {
+public class TFLColourStandard4ScreenLineColors extends LineColors {
 	@Override public String getLineColorsSource() {
-		return "http://www.tfl.gov.uk/assets/downloads/corporate/tfl-colour-standard-issue03.pdf";
+		// https://tfl.gov.uk/cdn/static/cms/documents/tfl-colour-standards-issue04.pdf
+		return "http://content.tfl.gov.uk/tfl-colour-standards-issue04.pdf";
 	}
 	@Override public String getLineColorsName() {
 		return "TfL Colour Standard";
 	}
 	@Override public String getLineColorsVersion() {
-		return "Issue 3 / RGB for screen";
+		return "Issue 4 / RGB for screen";
 	}
 	@Override public Date getLineColorsDate() {
-		return new GregorianCalendar(2009, Calendar.FEBRUARY, 0x00).getTime();
+		return new GregorianCalendar(2016, Calendar.MAY, 0x00).getTime();
 	}
 
 	@Override public int getBakerlooBackground() {
-		return makeColor(137, 78, 36);
+		return makeColor(178, 99, 0);
 	}
 
 	@Override public int getCentralBackground() {
@@ -25,23 +26,23 @@ public class TFLColourStandard3ScreenLineColors extends LineColors {
 	}
 
 	@Override public int getCircleBackground() {
-		return makeColor(255, 206, 0);
+		return makeColor(255, 211, 41);
 	}
 
 	@Override public int getDistrictBackground() {
-		return makeColor(0, 114, 41);
+		return makeColor(0, 125, 50);
 	}
 
 	@Override public int getHammersmithAndCityBackground() {
-		return makeColor(215, 153, 175);
+		return makeColor(244, 169, 190);
 	}
 
 	@Override public int getJubileeBackground() {
-		return makeColor(134, 143, 152);
+		return makeColor(161, 165, 167);
 	}
 
 	@Override public int getMetropolitanBackground() {
-		return makeColor(117, 16, 86);
+		return makeColor(155, 0, 88);
 	}
 
 	@Override public int getNorthernBackground() {
@@ -53,11 +54,11 @@ public class TFLColourStandard3ScreenLineColors extends LineColors {
 	}
 
 	@Override public int getVictoriaBackground() {
-		return makeColor(0, 160, 226);
+		return makeColor(0, 152, 216);
 	}
 
 	@Override public int getWaterlooAndCityBackground() {
-		return makeColor(118, 208, 189);
+		return makeColor(147, 206, 186);
 	}
 
 	@Override public int getDLRBackground() {
@@ -65,14 +66,18 @@ public class TFLColourStandard3ScreenLineColors extends LineColors {
 	}
 
 	@Override public int getOvergroundBackground() {
-		return makeColor(232, 106, 16);
+		return makeColor(239, 123, 16);
 	}
 
 	@Override public int getTramBackground() {
-		return 0xFF7ac141; // TODO real value
+		return makeColor(0, 189, 25);
 	}
 
 	@Override public int getEmiratesBackground() {
-		return 0xFFe91e3d; // TODO real value
+		return makeColor(220, 36, 31);
+	}
+
+	@Override public int getTfLRailBackground() {
+		return makeColor(0, 25, 168);
 	}
 }

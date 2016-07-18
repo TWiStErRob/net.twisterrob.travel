@@ -2,57 +2,134 @@ package net.twisterrob.blt.model;
 
 import java.util.Date;
 
-public interface LineColors {
-	String getLineColorsSource();
-	String getLineColorsName();
-	String getLineColorsVersion();
-	Date getLineColorsDate();
+public abstract class LineColors {
+	abstract String getLineColorsSource();
+	abstract String getLineColorsName();
+	abstract String getLineColorsVersion();
+	abstract Date getLineColorsDate();
 
-	int getBakerlooBackground();
-	int getBakerlooForeground();
+	public int getBakerlooBackground() {
+		return getUnknownBackground();
+	}
+	public int getBakerlooForeground() {
+		return getUnknownForeground();
+	}
 
-	int getCentralBackground();
-	int getCentralForeground();
+	public int getCentralBackground() {
+		return getUnknownBackground();
+	}
+	public int getCentralForeground() {
+		return getUnknownForeground();
+	}
 
-	int getCircleBackground();
-	int getCircleForeground();
+	public int getCircleBackground() {
+		return getUnknownBackground();
+	}
+	public int getCircleForeground() {
+		return getUnknownForeground();
+	}
 
-	int getDistrictBackground();
-	int getDistrictForeground();
+	public int getDistrictBackground() {
+		return getUnknownBackground();
+	}
+	public int getDistrictForeground() {
+		return getUnknownForeground();
+	}
 
-	int getHammersmithAndCityBackground();
-	int getHammersmithAndCityForeground();
+	public int getHammersmithAndCityBackground() {
+		return getUnknownBackground();
+	}
+	public int getHammersmithAndCityForeground() {
+		return getUnknownForeground();
+	}
 
-	int getJubileeBackground();
-	int getJubileeForeground();
+	public int getJubileeBackground() {
+		return getUnknownBackground();
+	}
+	public int getJubileeForeground() {
+		return getUnknownForeground();
+	}
 
-	int getMetropolitanBackground();
-	int getMetropolitanForeground();
+	public int getMetropolitanBackground() {
+		return getUnknownBackground();
+	}
+	public int getMetropolitanForeground() {
+		return getUnknownForeground();
+	}
 
-	int getNorthernBackground();
-	int getNorthernForeground();
+	public int getNorthernBackground() {
+		return getUnknownBackground();
+	}
+	public int getNorthernForeground() {
+		return getUnknownForeground();
+	}
 
-	int getPiccadillyBackground();
-	int getPiccadillyForeground();
+	public int getPiccadillyBackground() {
+		return getUnknownBackground();
+	}
+	public int getPiccadillyForeground() {
+		return getUnknownForeground();
+	}
 
-	int getVictoriaBackground();
-	int getVictoriaForeground();
+	public int getVictoriaBackground() {
+		return getUnknownBackground();
+	}
+	public int getVictoriaForeground() {
+		return getUnknownForeground();
+	}
 
-	int getWaterlooAndCityBackground();
-	int getWaterlooAndCityForeground();
+	public int getWaterlooAndCityBackground() {
+		return getUnknownBackground();
+	}
+	public int getWaterlooAndCityForeground() {
+		return getUnknownForeground();
+	}
 
-	int getDLRBackground();
-	int getDLRForeground();
+	public int getDLRBackground() {
+		return getUnknownBackground();
+	}
+	public int getDLRForeground() {
+		return getUnknownForeground();
+	}
 
-	int getOvergroundBackground();
-	int getOvergroundForeground();
+	public int getOvergroundBackground() {
+		return getUnknownBackground();
+	}
+	public int getOvergroundForeground() {
+		return getUnknownForeground();
+	}
 
-	int getTramBackground();
-	int getTramForeground();
+	public int getTramBackground() {
+		return getUnknownBackground();
+	}
+	public int getTramForeground() {
+		return getUnknownForeground();
+	}
 
-	int getEmiratesBackground();
-	int getEmiratesForeground();
+	public int getEmiratesBackground() {
+		return getUnknownBackground();
+	}
+	public int getEmiratesForeground() {
+		return getUnknownForeground();
+	}
 
-	int getUnknownBackground();
-	int getUnknownForeground();
+	public int getTfLRailBackground() {
+		return getUnknownBackground();
+	}
+	public int getTfLRailForeground() {
+		return getUnknownForeground();
+	}
+	
+	public int getUnknownBackground() {
+		return makeColor(255, 255, 255);
+	}
+	public int getUnknownForeground() {
+		return makeColor(0, 0, 0);
+	}
+
+	protected int makeColor(int red, int green, int blue) {
+		final int alpha = 0xFF;
+		//noinspection NumericOverflow int is treated as unsigned
+		return (alpha << 24) | (red << 16) | (green << 8) | blue;
+	}
 }
