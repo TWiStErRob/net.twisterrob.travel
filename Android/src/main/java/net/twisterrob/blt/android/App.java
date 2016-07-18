@@ -1,27 +1,21 @@
 package net.twisterrob.blt.android;
 
-import java.net.URL;
+import org.slf4j.*;
 
-import net.twisterrob.android.app.AppCaches;
-import net.twisterrob.android.utils.concurrent.MailSenderAsyncTask;
+import android.widget.Toast;
+
 import net.twisterrob.android.utils.LibContextProvider;
-import net.twisterrob.android.utils.cache.Cache;
+import net.twisterrob.android.utils.concurrent.MailSenderAsyncTask;
 import net.twisterrob.blt.android.data.*;
 import net.twisterrob.blt.android.db.DataBaseHelper;
 import net.twisterrob.blt.io.feeds.*;
 
-import org.slf4j.*;
-
-import android.graphics.Bitmap;
-import android.widget.Toast;
-
 public class App extends android.app.Application {
 	private static final Logger LOG = LoggerFactory.getLogger(App.class);
-	private static/* final */App s_instance;
+	private static /*final*/ App s_instance;
 	private static final boolean DEBUG = false;
 
 	private AndroidStaticData m_static;
-	private AppCaches m_caches;
 
 	public App() {
 		LOG.trace("App()");
@@ -65,6 +59,7 @@ public class App extends android.app.Application {
 	public DataBaseHelper getDataBaseHelper() {
 		DataBaseHelper helper = m_dataBaseHelper;
 		if (helper == null) {
+			// TODO double-checked locking doesn't work, use pre-created instance
 			synchronized (this) {
 				if (helper == null) {
 					helper = m_dataBaseHelper = new DataBaseHelper(this);
@@ -72,10 +67,6 @@ public class App extends android.app.Application {
 			}
 		}
 		return helper;
-	}
-
-	public Cache<URL, Bitmap> getPosterCache() {
-		return m_caches.getCache(AppCaches.CACHE_IMAGE);
 	}
 
 	public static void sendMail(String body) {
