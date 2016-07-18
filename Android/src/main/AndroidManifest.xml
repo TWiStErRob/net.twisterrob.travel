@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	package="net.twisterrob.blt.android"
+	android:versionCode="1"
+	android:versionName="1.0">
+
+	<uses-sdk android:minSdkVersion="7" />
+	<uses-feature
+		android:glEsVersion="0x00020000"
+		android:required="true" />
+
+	<permission
+		android:name="net.twisterrob.blt.android.permission.MAPS_RECEIVE"
+		android:protectionLevel="signature" />
+	<uses-permission android:name="net.twisterrob.blt.android.permission.MAPS_RECEIVE" />
+	<!--  Maps API v2 required -->
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+	<!--  Maps API v2 recommended -->
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<!-- App -->
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+	<application
+		android:name="net.twisterrob.blt.android.App"
+		android:icon="@drawable/ic_launcher"
+		android:label="@string/app_name"
+		android:theme="@style/Theme.Default"
+		android:largeHeap="true">
+
+		<uses-library
+			android:name="com.google.android.maps"
+			android:required="false" />
+
+		<meta-data
+			android:name="com.google.android.gms.version"
+			android:value="@integer/google_play_services_version" />
+
+		<!-- Release 26:E3:C7:59:11:CA:5C:AE:3C:43:73:7F:D4:A9:9F:C7:59:AF:1E:7C;net.twisterrob.blt.android -->
+<!-- 		<meta-data -->
+<!-- 			android:name="com.google.android.maps.v2.API_KEY" -->
+<!-- 			android:value="AIzaSyB6qc9WlSDbaNGO-c-mnu8ajlq3jroh2E4" /> -->
+		<!-- Debug 3A:01:32:8E:53:38:57:08:8F:6C:0D:2D:2F:9C:1C:0E:5A:35:96:44;net.twisterrob.blt.android -->
+		<meta-data
+			android:name="com.google.android.maps.v2.API_KEY"
+			android:value="AIzaSyDEBLxBF4iOGFUtzAm-Z8OeDYd-sShe_LA" />
+
+		<provider
+			android:name=".ui.StationSuggestProvider"
+			android:authorities="${applicationId}.suggest_station"
+			android:syncable="false" />
+
+		<!-- Main -->
+		<activity
+			android:name=".ui.activity.main.MainActivity"
+			android:label="@string/app_name">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+			<meta-data
+				android:name="android.app.default_searchable"
+				android:value=".ui.activity.StationListActivity" />
+		</activity>
+
+		<!-- Line Status-->
+		<activity
+			android:name=".ui.activity.StatusActivity"
+			android:label="@string/launcher_line_status">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".ui.activity.MainActivity" />
+		</activity>
+
+		<!-- Prediction Summary -->
+		<activity
+			android:name=".ui.activity.PredictionSummaryActivity"
+			android:label="@string/launcher_prediction_summary">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".ui.activity.StatusActivity" />
+		</activity>
+
+		<!-- Station List -->
+		<activity
+			android:name=".ui.activity.StationListActivity"
+			android:label="@string/launcher_station_list">
+			<intent-filter>
+				<action android:name="android.intent.action.SEARCH" />
+			</intent-filter>
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".ui.activity.MainActivity" />
+			<meta-data
+				android:name="android.app.searchable"
+				android:resource="@xml/searchable_stations_list" />
+		</activity>
+
+		<!-- Station Info -->
+		<activity
+			android:name=".ui.activity.StationInfoActivity"
+			android:label="@string/launcher_station_info">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".ui.activity.StationListActivity" />
+		</activity>
+
+		<!-- Station Map -->
+		<activity
+			android:name=".ui.activity.StationMapActivity"
+			android:label="@string/launcher_station_map">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".ui.activity.MainActivity" />
+		</activity>
+
+		<!-- Station Map V2 -->
+		<activity
+			android:name=".ui.activity.StationMapsV2Activity"
+			android:label="@string/launcher_station_map_v2">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".ui.activity.MainActivity" />
+		</activity>
+
+		<!-- PostCodes Map -->
+		<activity
+			android:name=".ui.activity.PostCodesActivity"
+			android:label="@string/launcher_postcode_map">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".ui.activity.MainActivity" />
+		</activity>
+
+		<!-- Distance Map -->
+		<activity
+			android:name=".ui.activity.DistanceMapActivity"
+			android:label="@string/launcher_distance_map">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".ui.activity.MainActivity" />
+		</activity>
+
+	</application>
+</manifest>

@@ -100,7 +100,7 @@ public class StationInfoActivity extends ActionBarActivity
 			args.put("station", m_station.getTrackerNetCode(line));
 			new DownloadFeedTask<PredictionSummaryFeed>(args) {
 				@Override
-				protected void onPostExecute(AsyncTaskResult<PredictionSummaryFeed> result) {
+				protected void onPostExecute(AsyncTaskResult<Feed, PredictionSummaryFeed> result) {
 					if (result.getError() != null) {
 						LOG.warn("Cannot load line prediction summary", result.getError());
 						m_listHandler.empty("Cannot load line prediction summary: " + result.getError());

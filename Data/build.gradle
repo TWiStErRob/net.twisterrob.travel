@@ -1,0 +1,39 @@
+// name = 'twister-travel-data'
+version ='0.0.1-SNAPSHOT'
+// <name>Better London Travel Data Generation</name>
+// <description>Standalone project to handle large feeds</description>
+
+apply plugin: 'net.twisterrob.java'
+
+dependencies {
+	//configurations.compile.resolutionStrategy.cacheChangingModulesFor 0, 'seconds' // -SNAPSHOT
+	compile project(':Shared')
+	compile 'org.slf4j:slf4j-simple:1.7.5'
+	compile 'org.xerial:sqlite-jdbc:3.7.15-M1'
+}
+/* TODO figure out a way to do this in gradle
+<plugin>
+	<!-- mvn jetty:run -e -Dorg.eclipse.jetty.util.log.stderr.LONG=true %c% -->
+	<!-- mvn jetty:run -e -Dorg.eclipse.jetty.LEVEL=DEBUG -Dorg.eclipse.jetty.util.log.stderr.SOURCE=true -Dorg.eclipse.jetty.util.log.stderr.LONG=true %c% -->
+	<groupId>org.eclipse.jetty</groupId>
+	<artifactId>jetty-maven-plugin</artifactId>
+	<version>9.0.5.v20130815</version>
+	<configuration>
+		<webAppSourceDirectory>src/data</webAppSourceDirectory>
+		<reload>manual</reload>
+		<webAppConfig>
+			<defaultsDescriptor>src/data/jetty-webdefault.xml</defaultsDescriptor>
+		</webAppConfig>
+		<systemProperties>
+			<systemProperty>
+				<key>jetty.host</key>
+				<value>0.0.0.0</value>
+			</systemProperty>
+			<systemProperty>
+				<key>jetty.port</key>
+				<value>8081</value>
+			</systemProperty>
+		</systemProperties>
+	</configuration>
+</plugin>
+*/

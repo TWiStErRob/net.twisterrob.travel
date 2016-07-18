@@ -100,7 +100,7 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 	 * A NaPTAN stop definition.
 	 * The XSD Type name is: StopPointStructure
 	 */
-	@Children({Descriptor.class, Place.class, StopClassification.class})
+	@FeedXmlDescriptor.Children({Descriptor.class, Place.class, StopClassification.class})
 	interface StopPoint {
 		String ELEMENT = "StopPoint";
 		@Attribute String creationTime = "CreationDateTime";
@@ -133,7 +133,7 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 		 * Place where stop is located.
 		 * The XSD Type name is: inline element Place
 		 */
-		@Children({Location.class})
+		@FeedXmlDescriptor.Children({Location.class})
 		interface Place {
 			String ELEMENT = "Place";
 			/**
@@ -264,7 +264,7 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 	 * A piece of the network topology connection two stops.
 	 * The XSD Type name is: RouteSectionsStructure/RouteSection/RouteLink
 	 */
-	@Children({From.class, To.class})
+	@FeedXmlDescriptor.Children({From.class, To.class})
 	interface RouteLink {
 		String ELEMENT = "RouteLink";
 		@Attribute String id = "id";

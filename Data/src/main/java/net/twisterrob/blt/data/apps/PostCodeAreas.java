@@ -10,6 +10,7 @@ import net.twisterrob.blt.data.algo.postcodes.ConvexHull.ToPos;
 import net.twisterrob.java.model.*;
 
 public class PostCodeAreas {
+	private static final DesktopStaticData STATIC_DATA = DesktopStaticData.INSTANCE;
 	private static final ToPos<PostCode> POSER = new ConvexHull.ToPos<PostCode>() {
 		public double getX(PostCode obj) {
 			return obj.getLocation().getLongitude();
@@ -30,7 +31,7 @@ public class PostCodeAreas {
 
 	protected static void writeData(Map<String, List<PostCode>> clusters) throws FileNotFoundException,
 			UnsupportedEncodingException {
-		try (PrintWriter out = new PrintWriter("LondonTravel.v1.data-AreaHull.sql", "utf-8")) {
+		try (PrintWriter out = new PrintWriter(STATIC_DATA.getOut("LondonTravel.v1.data-AreaHull.sql"), "utf-8")) {
 			for (Entry<String, List<PostCode>> cluster: clusters.entrySet()) {
 				String area = cluster.getKey();
 				Location center = ConvexHull.center(cluster.getValue(), POSER);

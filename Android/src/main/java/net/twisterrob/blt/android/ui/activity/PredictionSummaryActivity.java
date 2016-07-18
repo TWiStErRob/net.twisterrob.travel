@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
-import net.twisterrob.android.utils.tools.CollectionTools;
+import net.twisterrob.java.utils.CollectionTools;
 import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
 import net.twisterrob.blt.android.ui.*;
@@ -146,7 +146,7 @@ public class PredictionSummaryActivity extends ActionBarActivity
 		args.put("line", m_line);
 		new DownloadFeedTask<PredictionSummaryFeed>(args) {
 			@Override
-			protected void onPostExecute(AsyncTaskResult<PredictionSummaryFeed> result) {
+			protected void onPostExecute(AsyncTaskResult<Feed, PredictionSummaryFeed> result) {
 				if (result.getError() != null) {
 					LOG.warn("Cannot load line prediction summary", result.getError());
 					m_listHandler.empty("Cannot load line prediction summary: " + result.getError());

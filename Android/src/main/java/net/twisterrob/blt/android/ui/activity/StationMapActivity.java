@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import net.twisterrob.android.map.BaseItemizedOverlay;
-import net.twisterrob.android.utils.model.LocationUtils;
+import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.android.utils.tools.IOTools;
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.db.model.Station;

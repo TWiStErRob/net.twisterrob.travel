@@ -14,7 +14,7 @@ import org.xml.sax.SAXException;
 
 import android.os.AsyncTask;
 
-public class DownloadFeedTask<T extends BaseFeed<T>> extends AsyncTask<Feed, Integer, AsyncTaskResult<T>> {
+public class DownloadFeedTask<T extends BaseFeed<T>> extends AsyncTask<Feed, Integer, AsyncTaskResult<Feed, T>> {
 	protected final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	private Map<String, ?> m_args;
@@ -27,7 +27,7 @@ public class DownloadFeedTask<T extends BaseFeed<T>> extends AsyncTask<Feed, Int
 
 	@SuppressWarnings("resource")
 	@Override
-	protected AsyncTaskResult<T> doInBackground(Feed... feeds) {
+	protected AsyncTaskResult<Feed, T> doInBackground(Feed... feeds) {
 		HttpURLConnection connection = null;
 		InputStream input = null;
 		try {
@@ -38,7 +38,7 @@ public class DownloadFeedTask<T extends BaseFeed<T>> extends AsyncTask<Feed, Int
 			Feed feed = feeds[0];
 			URL url = App.getInstance().getUrls().getFeedUrl(feed, m_args);
 			if (url == null) {
-				return new AsyncTaskResult<T>((T)null); // no result
+				return new AsyncTaskResult<>((T)null); // no result
 			}
 			LOG.debug("{}", url);
 
@@ -49,13 +49,13 @@ public class DownloadFeedTask<T extends BaseFeed<T>> extends AsyncTask<Feed, Int
 			input = connection.getInputStream();
 
 			T root = feed.<T> getHandler().parse(input);
-			return new AsyncTaskResult<T>(root);
+			return new AsyncTaskResult<>(root);
 		} catch (IOException ex) {
-			return new AsyncTaskResult<T>(ex);
+			return new AsyncTaskResult<>(ex);
 		} catch (SAXException ex) {
-			return new AsyncTaskResult<T>(ex);
+			return new AsyncTaskResult<>(ex);
 		} catch (Exception ex) {
-			return new AsyncTaskResult<T>(ex);
+			return new AsyncTaskResult<>(ex);
 		} finally {
 			IOTools.closeConnection(connection, input);
 		}

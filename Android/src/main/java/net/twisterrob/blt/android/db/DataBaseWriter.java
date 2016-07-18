@@ -2,7 +2,7 @@ package net.twisterrob.blt.android.db;
 
 import java.util.Map;
 
-import net.twisterrob.android.utils.tools.DBTools;
+import net.twisterrob.android.utils.tools.DatabaseTools;
 import net.twisterrob.blt.android.db.model.Station;
 import net.twisterrob.java.io.IOTools;
 import net.twisterrob.java.model.Location;
@@ -39,7 +39,8 @@ class DataBaseWriter extends DataBaseAccess {
 
 	private void prepareStatements(final SQLiteDatabase database) {
 		if (m_database != database) {
-			LOG.info("Preparing statements {} -> {}", DBTools.toString(m_database), DBTools.toString(database));
+			LOG.info("Preparing statements {} -> {}",
+					DatabaseTools.dbToString(m_database), DatabaseTools.dbToString(database));
 			m_database = database;
 
 			if (m_insertStation != null) {

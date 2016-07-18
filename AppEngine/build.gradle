@@ -1,0 +1,63 @@
+def appEngineVersion = '1.9.38'
+def slf4jVersion = '1.7.5'
+def powermockVersion = '1.5.1'
+buildscript {
+	dependencies {
+		// https://github.com/GoogleCloudPlatform/gradle-appengine-plugin
+		classpath "com.google.appengine:gradle-appengine-plugin:${appEngineVersion}"
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'appengine'
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+configurations {
+	provided
+}
+dependencies {
+	appengineSdk "com.google.appengine:appengine-java-sdk:${appEngineVersion}"
+	compile "com.google.appengine:appengine-api-1.0-sdk:${appEngineVersion}" // com.google.appengine.api.datastore
+	compile "com.google.appengine:appengine-endpoints:${appEngineVersion}" // com.google.api.server.spi.SystemServiceServlet
+	compile 'javax.servlet:servlet-api:2.5'
+
+//	compile "javax.servlet.jsp:jsp-api:2.2"
+//	compile "taglibs:standard:1.1.2"
+//	compile "jstl:jstl:1.2"
+	compile project(':Shared')
+//	compile "org.slf4j:slf4j-api:${slf4jVersion}"
+//	// Use this for readable development log, see java.util.logging.properties
+//	compile "org.slf4j:slf4j-log4j12:${slf4jVersion}" // jdk14 for PROD, log4j12 for DEV
+//	compile "log4j:log4j:1.2.17"
+//	provided "org.sl4fj:jul-to-slf4j:${slf4jVersion}" // Direct default GAE JUL logging to SLF4J
+
+	compile "ant:ant:1.6.5" // for org.apache.tools.ant.filters.StringInputStream
+//	compile "com.google.guava:guava:14.0.1"
+//	compile "joda-time:joda-time:2.3"
+
+	testCompile "junit:junit:4.11"
+//	testCompile "org.hamcrest:hamcrest-all:1.3"
+//	testCompile "org.easymock:easymock:3.2"
+//	testCompile "org.powermock:powermock-module-junit4:${powermockVersion}"
+//	testCompile "org.powermock:powermock-api-easymock:${powermockVersion}"
+//	testCompile "com.google.appengine:appengine-testing:${appEngineVersion}"
+//	testCompile "com.google.appengine:appengine-api-stubs:${appEngineVersion}"
+//	testCompile "com.google.appengine:appengine-api-labs:${appEngineVersion}"
+}
+
+sourceSets {
+	main.java.srcDir 'src/main/diff'
+	test.java.srcDir 'src/test/diff'
+}
+
+appengine {
+	httpPort = 8888
+	downloadSdk = true
+	appcfg {
+		email = 'papp.robert.s@gmail.com'
+		oauth2 = true
+	}
+}

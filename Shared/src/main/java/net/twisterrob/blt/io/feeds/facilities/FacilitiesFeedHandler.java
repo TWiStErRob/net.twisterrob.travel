@@ -6,7 +6,7 @@ import java.util.regex.*;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import net.twisterrob.android.utils.tools.PrimitiveTools;
+import net.twisterrob.java.utils.PrimitiveTools;
 import net.twisterrob.blt.io.feeds.BaseFeedHandler;
 import net.twisterrob.blt.model.*;
 import net.twisterrob.java.model.Location;

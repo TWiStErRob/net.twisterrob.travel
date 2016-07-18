@@ -5,7 +5,7 @@ import static java.util.Collections.*;
 import java.util.*;
 import java.util.Map.Entry;
 
-import net.twisterrob.android.utils.tools.CollectionTools;
+import net.twisterrob.java.utils.CollectionTools;
 import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.model.Line;
 

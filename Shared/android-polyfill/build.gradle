@@ -1,0 +1,5 @@
+apply plugin: 'net.twisterrob.java'
+
+dependencies {
+	compile 'net.sf.kxml:kxml2:2.3.0'
+}

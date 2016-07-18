@@ -2,7 +2,7 @@ package net.twisterrob.blt.android.ui;
 
 import java.util.*;
 
-import net.twisterrob.blt.android.App;
+import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.db.model.Station;
 
 import org.slf4j.*;
@@ -89,7 +89,7 @@ public class StationSuggestProvider extends ContentProvider {
 
 	private static final Logger LOG = LoggerFactory.getLogger(StationSuggestProvider.class);
 
-	public static final String AUTHORITY = "net.twisterrob.blt.suggest_station";
+	public static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".suggest_station";
 
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/search");
 

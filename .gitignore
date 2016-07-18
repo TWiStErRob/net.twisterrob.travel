@@ -1,4 +1,6 @@
-/target
+/*.ipr
+/*.iws
+/.gradle
+/.idea
 /temp
-/blt.apk
-/*.sqlite
+/build

@@ -67,7 +67,7 @@ public class StatusActivity extends ActionBarActivity implements OnRefreshListen
 	private void delayedGetRoot() {
 		new DownloadFeedTask<LineStatusFeed>() {
 			@Override
-			protected void onPostExecute(AsyncTaskResult<LineStatusFeed> result) {
+			protected void onPostExecute(AsyncTaskResult<Feed, LineStatusFeed> result) {
 				if (result.getError() != null) {
 					LOG.warn("Cannot load line statuses", result.getError());
 					m_listHandler.empty("Cannot load line statuses: " + result.getError());

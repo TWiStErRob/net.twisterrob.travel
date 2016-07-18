@@ -1,0 +1,14 @@
+allprojects {
+	//configurations.compile.resolutionStrategy.cacheChangingModulesFor 0, 'seconds' // -SNAPSHOT
+
+	group = 'net.twisterrob.travel'
+	buildscript {
+		apply from: "${rootDir}/gradle/buildscript.gradle", to: buildscript
+	}
+
+	repositories {
+		jcenter()
+		maven { name 'twisterrob'; url 'http://localhost/maven' }
+		maven { name 'glide'; url 'http://oss.sonatype.org/content/repositories/snapshots' }
+	}
+}

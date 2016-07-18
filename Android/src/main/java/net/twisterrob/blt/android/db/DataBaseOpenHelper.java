@@ -45,12 +45,12 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 	@Override
 	public void onOpen(final SQLiteDatabase db) {
 		super.onOpen(db);
-		LOG.debug("Opening database: {}", DBTools.toString(db));
+		LOG.debug("Opening database: {}", DatabaseTools.dbToString(db));
 		backupDB(db, DB_NAME + ".onOpen_BeforeDev.sqlite");
 		DataBaseOpenHelper.execFile(db, DB_DEVELOPMENT_FILE);
 		backupDB(db, DB_NAME + ".onOpen_AfterDev.sqlite");
 		// onCreate(db); // FIXME for DB development, always clear and initialize
-		LOG.info("Opened database: {}", DBTools.toString(db));
+		LOG.info("Opened database: {}", DatabaseTools.dbToString(db));
 	}
 
 	private static void backupDB(final SQLiteDatabase db, final String fileName) {
@@ -68,17 +68,17 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(final SQLiteDatabase db) {
 		backupDB(db, DB_NAME + ".onCreate.sqlite");
-		LOG.debug("Creating database: {}", DBTools.toString(db));
+		LOG.debug("Creating database: {}", DatabaseTools.dbToString(db));
 		DataBaseOpenHelper.execFile(db, DB_CLEAN_FILE);
 		DataBaseOpenHelper.execFile(db, DB_SCHEMA_FILE);
 		for (String dataFile: DB_DATA_FILES) {
 			DataBaseOpenHelper.execFile(db, dataFile);
 		}
-		LOG.info("Created database: {}", DBTools.toString(db));
+		LOG.info("Created database: {}", DatabaseTools.dbToString(db));
 	}
 
 	private static void execFile(final SQLiteDatabase db, final String dbSchemaFile) {
-		LOG.debug("Executing file {} into database: {}", dbSchemaFile, DBTools.toString(db));
+		LOG.debug("Executing file {} into database: {}", dbSchemaFile, DatabaseTools.dbToString(db));
 		long time = System.nanoTime();
 
 		DataBaseOpenHelper.realExecuteFile(db, dbSchemaFile);
@@ -86,7 +86,7 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 		long end = System.nanoTime();
 		long executionTime = (end - time) / 1000 / 1000;
 		LOG.debug("Finished ({} ms) executed file {} into database: {}", executionTime, dbSchemaFile,
-				DBTools.toString(db));
+				DatabaseTools.dbToString(db));
 	}
 
 	private static void realExecuteFile(final SQLiteDatabase db, final String dbSchemaFile) {

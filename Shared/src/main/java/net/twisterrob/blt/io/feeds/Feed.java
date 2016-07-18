@@ -431,6 +431,7 @@ public enum Feed {
 			return m_baseUrl;
 		}
 	}
+	@SuppressWarnings("unchecked")
 	public <T extends BaseFeed<T>> FeedHandler<T> getHandler() {
 		try {
 			if (m_handler == null) {

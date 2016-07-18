@@ -1,5 +1,6 @@
 package net.twisterrob.blt.data.apps;
 
+import java.io.File;
 import java.util.*;
 
 import net.twisterrob.blt.data.StaticData;
@@ -12,6 +13,8 @@ public interface DesktopStaticData extends StaticData {
 
 	String getPredictionSummaryRoot();
 	Map<Line, String> getPredictionSummaryFilenames();
+
+	File getOut(String path);
 
 	DesktopStaticData INSTANCE = new DesktopHardcodedStaticData();
 }

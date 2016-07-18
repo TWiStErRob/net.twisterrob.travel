@@ -90,8 +90,8 @@ public class TravelNetworkParser {
 		Map<Line, Map<String, String>> stationCodes = getStationCodes(lines);
 
 		try (
-				PrintWriter outStop = new PrintWriter("LondonTravel.v1.data-Stop.sql", "utf-8");
-				PrintWriter outLineStop = new PrintWriter("LondonTravel.v1.data-Line_Stop.sql", "utf-8");) {
+				PrintWriter outStop = new PrintWriter(STATIC_DATA.getOut("LondonTravel.v1.data-Stop.sql"), "utf-8");
+				PrintWriter outLineStop = new PrintWriter(STATIC_DATA.getOut("LondonTravel.v1.data-Line_Stop.sql"), "utf-8");) {
 			LOG.info("Writing Stop and Line_Stop table contents for {}", lines);
 			for (Entry<StopPoint, Set<Line>> entry: stops.entrySet()) {
 				LOG.debug("Writing {} for {}", entry.getValue(), entry.getKey());
@@ -115,7 +115,7 @@ public class TravelNetworkParser {
 				}
 			}
 		}
-		try (PrintWriter dist = new PrintWriter("LondonTravel.v1.data-StopDistance.sql", "utf-8")) {
+		try (PrintWriter dist = new PrintWriter(STATIC_DATA.getOut("LondonTravel.v1.data-StopDistance.sql"), "utf-8")) {
 			LOG.info("Writing StopDistance table contents for {}", feeds.keySet());
 			for (Entry<StopPoint, Set<Line>> fromEntry: stops.entrySet()) {
 				StopPoint from = fromEntry.getKey();
@@ -134,11 +134,11 @@ public class TravelNetworkParser {
 			}
 		}
 		try (
-				PrintWriter outRoute = new PrintWriter("LondonTravel.v1.data-Route.sql", "utf-8");
-				PrintWriter outSection = new PrintWriter("LondonTravel.v1.data-Section.sql", "utf-8");
-				PrintWriter outLink = new PrintWriter("LondonTravel.v1.data-Link.sql", "utf-8");
-				PrintWriter outRouteSection = new PrintWriter("LondonTravel.v1.data-Route_Section.sql", "utf-8");
-				PrintWriter outSectionLink = new PrintWriter("LondonTravel.v1.data-Section_Link.sql", "utf-8");) {
+				PrintWriter outRoute = new PrintWriter(STATIC_DATA.getOut("LondonTravel.v1.data-Route.sql"), "utf-8");
+				PrintWriter outSection = new PrintWriter(STATIC_DATA.getOut("LondonTravel.v1.data-Section.sql"), "utf-8");
+				PrintWriter outLink = new PrintWriter(STATIC_DATA.getOut("LondonTravel.v1.data-Link.sql"), "utf-8");
+				PrintWriter outRouteSection = new PrintWriter(STATIC_DATA.getOut("LondonTravel.v1.data-Route_Section.sql"), "utf-8");
+				PrintWriter outSectionLink = new PrintWriter(STATIC_DATA.getOut("LondonTravel.v1.data-Section_Link.sql"), "utf-8");) {
 			LOG.info("Writing Route, Section, Link table contents for {}", feeds.keySet());
 			for (Entry<Line, JourneyPlannerTimetableFeed> entry: feeds.entrySet()) {
 				Line line = entry.getKey();

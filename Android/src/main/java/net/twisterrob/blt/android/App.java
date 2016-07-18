@@ -3,7 +3,7 @@ package net.twisterrob.blt.android;
 import java.net.URL;
 
 import net.twisterrob.android.app.AppCaches;
-import net.twisterrob.android.mail.MailSenderAsyncTask;
+import net.twisterrob.android.utils.concurrent.MailSenderAsyncTask;
 import net.twisterrob.android.utils.LibContextProvider;
 import net.twisterrob.android.utils.cache.Cache;
 import net.twisterrob.blt.android.data.*;
@@ -79,9 +79,7 @@ public class App extends android.app.Application {
 	}
 
 	public static void sendMail(String body) {
-		MailSenderAsyncTask.setUsername("*********@********.****");
-		MailSenderAsyncTask.setPassword("*********");
-		MailSenderAsyncTask task = new MailSenderAsyncTask("Better London Travel",
+		new MailSenderAsyncTask("Better London Travel",
 				"better-london-travel@twisterrob.net", "papp.robert.s@gmail.com") {
 			@Override
 			protected void onPostExecute(Boolean result) {
@@ -92,8 +90,6 @@ public class App extends android.app.Application {
 					Toast.makeText(getInstance(), "Mail failed", Toast.LENGTH_SHORT).show();
 				}
 			}
-		};
-		task.setBody(body);
-		task.execute();
+		}.execute(body);
 	}
 }
