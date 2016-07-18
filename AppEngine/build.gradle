@@ -1,7 +1,9 @@
-def appEngineVersion = '1.9.38'
-def slf4jVersion = '1.7.5'
-def powermockVersion = '1.5.1'
 buildscript {
+	ext {
+		appEngineVersion = '1.9.38'
+		slf4jVersion = '1.7.5'
+		powermockVersion = '1.5.1'
+	}
 	dependencies {
 		// https://github.com/GoogleCloudPlatform/gradle-appengine-plugin
 		classpath "com.google.appengine:gradle-appengine-plugin:${appEngineVersion}"

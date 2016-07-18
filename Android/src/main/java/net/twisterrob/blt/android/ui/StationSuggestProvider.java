@@ -39,7 +39,7 @@ public class StationSuggestProvider extends ContentProvider {
 
 		@Override
 		public String getString(int column) {
-			Station station = m_stations.get(super.mPos);
+			Station station = m_stations.get(getPosition());
 			switch (column) {
 				case TEXT1:
 					return station.getName();
@@ -65,7 +65,7 @@ public class StationSuggestProvider extends ContentProvider {
 		@Override
 		public long getLong(int column) {
 			if (column == ID) {
-				return super.mPos;
+				return getPosition();
 			}
 			throw new UnsupportedOperationException("Cannot get column as long: " + column);
 		}

@@ -12,13 +12,13 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.*;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.*;
 import android.support.v7.widget.SearchView;
 import android.view.*;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
 	private static final List<LauncherItem> launcherItems = Arrays.asList( //
 			new LauncherItem(R.string.launcher_line_status, StatusActivity.class), //

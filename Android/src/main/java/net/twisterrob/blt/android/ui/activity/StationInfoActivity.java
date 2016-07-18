@@ -15,13 +15,13 @@ import net.twisterrob.blt.model.*;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.*;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 
-public class StationInfoActivity extends ActionBarActivity
+public class StationInfoActivity extends AppCompatActivity
 		implements
 			OnRefreshListener,
 			OnGroupExpandListener,

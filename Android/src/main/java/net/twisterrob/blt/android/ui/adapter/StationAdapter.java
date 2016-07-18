@@ -9,9 +9,9 @@ import net.twisterrob.blt.android.db.model.Station;
 import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder;
 import net.twisterrob.blt.model.*;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.text.*;
 import android.text.style.TextAppearanceSpan;
 import android.view.View;
@@ -20,13 +20,11 @@ import android.widget.TextView.BufferType;
 
 public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 	private Map<StopType, Drawable> bitmapCache = new EnumMap<StopType, Drawable>(StopType.class);
-	private Resources m_resources;
 
 	public StationAdapter(final Context context, final Collection<Station> items) {
 		super(context, items, false);
-		m_resources = context.getResources();
 		for (Entry<StopType, Integer> logo: App.getInstance().getStaticData().getStopTypeLogos().entrySet()) {
-			bitmapCache.put(logo.getKey(), m_resources.getDrawable(logo.getValue()));
+			bitmapCache.put(logo.getKey(), ContextCompat.getDrawable(context, logo.getValue()));
 		}
 	}
 	protected static class ViewHolder {

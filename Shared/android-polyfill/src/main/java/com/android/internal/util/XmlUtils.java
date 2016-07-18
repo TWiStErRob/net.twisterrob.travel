@@ -25,6 +25,7 @@ import org.xmlpull.v1.*;
 import android.util.Xml;
 
 /** {@hide} */
+@SuppressWarnings("all")
 public class XmlUtils {
 
     public static void skipCurrentTag(XmlPullParser parser)

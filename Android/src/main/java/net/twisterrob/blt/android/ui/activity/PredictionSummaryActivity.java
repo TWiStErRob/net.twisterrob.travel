@@ -17,7 +17,7 @@ import net.twisterrob.blt.model.*;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.*;
 import android.view.View.MeasureSpec;
 import android.widget.*;
@@ -29,7 +29,7 @@ import android.widget.ExpandableListView.OnGroupExpandListener;
  * http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf
  * @author TWiStEr
  */
-public class PredictionSummaryActivity extends ActionBarActivity
+public class PredictionSummaryActivity extends AppCompatActivity
 		implements
 			OnRefreshListener,
 			OnGroupExpandListener,

@@ -15,7 +15,7 @@ import net.twisterrob.blt.model.Line;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
@@ -24,7 +24,7 @@ import android.widget.AdapterView.OnItemClickListener;
  * http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf
  * @author TWiStEr
  */
-public class StatusActivity extends ActionBarActivity implements OnRefreshListener {
+public class StatusActivity extends AppCompatActivity implements OnRefreshListener {
 
 	protected SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	protected Calendar m_lastUpdated;

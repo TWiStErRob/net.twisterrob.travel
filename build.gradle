@@ -11,4 +11,10 @@ allprojects {
 		maven { name 'twisterrob'; url 'http://localhost/maven' }
 		maven { name 'glide'; url 'http://oss.sonatype.org/content/repositories/snapshots' }
 	}
+	
+	project.afterEvaluate {
+		tasks.withType(JavaCompile) {
+			options.encoding = 'UTF-8'
+		}
+	}
 }

@@ -12,8 +12,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.os.*;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.*;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.support.v7.widget.SearchView;
 import android.text.SpannableString;
@@ -23,8 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Filter.Delayer;
 import android.widget.Filter.FilterListener;
 
-@SuppressWarnings("unused" /* eclipse keeps importing android.support.v7.widget.* howerer it is not used */)
-public class StationListActivity extends ActionBarActivity implements FilterListener, Delayer {
+public class StationListActivity extends AppCompatActivity implements FilterListener, Delayer {
 	private static final Logger LOG = LoggerFactory.getLogger(StationListActivity.class);
 
 	private ListView m_list;
