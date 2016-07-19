@@ -5,10 +5,11 @@
 	android:id="@+id/main_launcher_title"
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
+	android:padding="@dimen/unit"
 	android:background="@android:color/transparent"
 	android:drawableTop="@drawable/ic_launcher"
 	android:gravity="center"
 	android:textIsSelectable="false"
-	android:textSize="30sp"
+	android:textSize="24sp"
 	tools:text="Launcher icon"
 	/>

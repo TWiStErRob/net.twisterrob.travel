@@ -8,7 +8,6 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.os.*;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.text.SpannableString;
@@ -21,7 +20,7 @@ import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.db.model.Station;
 import net.twisterrob.blt.android.ui.adapter.StationAdapter;
 
-public class StationListActivity extends AppCompatActivity implements FilterListener, Filter.Delayer {
+public class StationListActivity extends BaseActivity implements FilterListener, Filter.Delayer {
 	private static final Logger LOG = LoggerFactory.getLogger(StationListActivity.class);
 
 	private ListView m_list;
@@ -34,6 +33,8 @@ public class StationListActivity extends AppCompatActivity implements FilterList
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_stations);
+		resetToList();
+		findViewById(R.id.layout$wrapper).setEnabled(false);
 
 		m_list = (ListView)findViewById(android.R.id.list);
 		m_list.setOnItemClickListener(new OnItemClickListener() {

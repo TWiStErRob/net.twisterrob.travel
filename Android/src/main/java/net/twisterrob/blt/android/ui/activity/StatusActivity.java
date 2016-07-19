@@ -5,7 +5,6 @@ import java.util.*;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
@@ -23,7 +22,7 @@ import net.twisterrob.blt.model.Line;
 /**
  * http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf
  */
-public class StatusActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class StatusActivity extends BaseActivity {
 	protected Calendar m_lastUpdated;
 
 	protected SwipeRefreshLayout m_refresh;
@@ -35,13 +34,19 @@ public class StatusActivity extends AppCompatActivity implements SwipeRefreshLay
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_status);
+		resetToList();
 
 		m_status = (TextView)findViewById(R.id.text_status);
 		m_refresh = (SwipeRefreshLayout)findViewById(R.id.layout$wrapper);
-		m_refresh.setOnRefreshListener(this);
+		SwipeRefreshLayout.OnRefreshListener refresher = new SwipeRefreshLayout.OnRefreshListener() {
+			@Override public void onRefresh() {
+				startLoadingData();
+			}
+		};
+		m_refresh.setOnRefreshListener(refresher);
 
 		m_listView = (ListView)findViewById(android.R.id.list);
-		m_listHandler = new ListViewHandler(this, m_listView, android.R.id.empty);
+		m_listHandler = new ListViewHandler(this, m_listView, android.R.id.empty, refresher);
 		m_listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				LineStatus status = (LineStatus)parent.getItemAtPosition(position);
@@ -54,11 +59,10 @@ public class StatusActivity extends AppCompatActivity implements SwipeRefreshLay
 			}
 		});
 
-		// actually start loading the data
-		this.onRefresh();
+		startLoadingData();
 	}
 
-	@Override public void onRefresh() {
+	private void startLoadingData() {
 		m_refresh.setRefreshing(true);
 		m_listHandler.startTFLLoad();
 		delayedGetRoot();

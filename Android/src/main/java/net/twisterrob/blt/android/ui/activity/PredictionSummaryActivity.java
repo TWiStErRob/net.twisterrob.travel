@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.*;
 import android.view.View.MeasureSpec;
 import android.widget.*;
@@ -27,8 +26,7 @@ import net.twisterrob.java.utils.CollectionTools;
 /**
  * http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf
  */
-public class PredictionSummaryActivity extends AppCompatActivity implements
-		SwipeRefreshLayout.OnRefreshListener,
+public class PredictionSummaryActivity extends BaseActivity implements
 		OnGroupExpandListener,
 		OnGroupCollapseListener {
 	public static final String EXTRA_LINE = "line";
@@ -60,13 +58,17 @@ public class PredictionSummaryActivity extends AppCompatActivity implements
 
 		onCreate_setupCompassButtons();
 
-		m_listView = (ExpandableListView)findViewById(android.R.id.list);
-		m_listHandler = new ListViewHandler(this, m_listView, android.R.id.empty);
-
 		m_status = (TextView)findViewById(R.id.text_status);
 		m_refresh = (SwipeRefreshLayout)findViewById(R.id.layout$wrapper);
-		m_refresh.setOnRefreshListener(this);
+		SwipeRefreshLayout.OnRefreshListener refresher = new SwipeRefreshLayout.OnRefreshListener() {
+			@Override public void onRefresh() {
+				startLoadingData();
+			}
+		};
+		m_refresh.setOnRefreshListener(refresher);
 
+		m_listView = (ExpandableListView)findViewById(android.R.id.list);
+		m_listHandler = new ListViewHandler(this, m_listView, android.R.id.empty, refresher);
 		m_listView.setOnGroupExpandListener(this);
 		m_listView.setOnGroupCollapseListener(this);
 
@@ -95,8 +97,7 @@ public class PredictionSummaryActivity extends AppCompatActivity implements
 
 	@Override protected void onResume() {
 		super.onResume();
-		// actually start loading the data
-		this.onRefresh();
+		startLoadingData();
 	}
 
 	@Override protected void onSaveInstanceState(Bundle outState) {
@@ -131,7 +132,7 @@ public class PredictionSummaryActivity extends AppCompatActivity implements
 		}
 	}
 
-	@Override public void onRefresh() {
+	private void startLoadingData() {
 		m_refresh.setRefreshing(true);
 		m_listHandler.startTFLLoad();
 		delayedGetRoot();

@@ -9,13 +9,13 @@
 	<string name="launcher_line_status">Line Status</string>
 	<string name="launcher_prediction_summary">Train Predictions</string>
 	<string name="label_search">Search</string>
-	<string name="demo_error">Possible long error message detailing what went wrong.</string>
 	<!-- yyyy-MM-dd HH:mm:ss -> %tY-%<tm-%<td %<tH:%<tM:%<tS -> %tF %<tT-->
 	<string name="last_updated">Last updated at %1$tF %1$tT</string>
 	<plurals name="prediction_approach">
 		<item quantity="one">%1$s: a single train is approaching.</item>
-		<item quantity="many">%1$s: %2$d trains are approaching.</item>
+		<item quantity="other">%1$s: %2$d trains are approaching.</item>
 	</plurals>
 	<string name="prediction_approach_zero">%1$s has no trains approaching</string>
 	<string name="station_lines">%1$s: %2$s</string>
+	<string name="maps_v1_api_key">0molON3Yz76yRWjDLWokLs_ZoRoH9W9klGqXx3w</string>
 </resources>

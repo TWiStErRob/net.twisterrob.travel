@@ -5,7 +5,6 @@ import java.util.*;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.*;
 import android.widget.ExpandableListView.*;
 
@@ -19,8 +18,7 @@ import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeed;
 import net.twisterrob.blt.io.feeds.trackernet.model.*;
 import net.twisterrob.blt.model.*;
 
-public class StationInfoActivity extends AppCompatActivity implements
-		SwipeRefreshLayout.OnRefreshListener,
+public class StationInfoActivity extends BaseActivity implements
 		OnGroupExpandListener,
 		OnGroupCollapseListener {
 	public static final String EXTRA_STATION_NAME = "name";
@@ -54,14 +52,19 @@ public class StationInfoActivity extends AppCompatActivity implements
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		m_listView = (ExpandableListView)findViewById(android.R.id.list);
-		m_adapter = new PredictionSummaryAdapter(this, m_listView, m_map, Collections.<PlatformDirection>emptySet());
-		m_listHandler = new ListViewHandler(this, m_listView, android.R.id.empty);
-		m_listHandler.update("You've ruled out all stations, please loosen the filter.", m_adapter);
-
 		m_status = (TextView)findViewById(R.id.text_status);
 		m_refresh = (SwipeRefreshLayout)findViewById(R.id.layout$wrapper);
-		m_refresh.setOnRefreshListener(this);
+		SwipeRefreshLayout.OnRefreshListener refresher = new SwipeRefreshLayout.OnRefreshListener() {
+			@Override public void onRefresh() {
+				startLoadingData();
+			}
+		};
+		m_refresh.setOnRefreshListener(refresher);
+
+		m_listView = (ExpandableListView)findViewById(android.R.id.list);
+		m_adapter = new PredictionSummaryAdapter(this, m_listView, m_map, Collections.<PlatformDirection>emptySet());
+		m_listHandler = new ListViewHandler(this, m_listView, android.R.id.empty, refresher);
+		m_listHandler.update("You've ruled out all stations, please loosen the filter.", m_adapter);
 
 		m_listView.setOnGroupExpandListener(this);
 		m_listView.setOnGroupCollapseListener(this);
@@ -77,11 +80,10 @@ public class StationInfoActivity extends AppCompatActivity implements
 
 	@Override protected void onResume() {
 		super.onResume();
-		// actually start loading the data
-		this.onRefresh();
+		startLoadingData();
 	}
 
-	@Override public void onRefresh() {
+	private void startLoadingData() {
 		m_refresh.setRefreshing(true);
 		m_listHandler.startTFLLoad();
 		delayedGetRoot();
