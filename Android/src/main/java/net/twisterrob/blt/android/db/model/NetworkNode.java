@@ -51,7 +51,7 @@ public class NetworkNode {
 	}
 
 	@Override public String toString() {
-		return String.format("%s (%s/%d)", m_name, m_line, m_id);
+		return String.format(Locale.ROOT, "%s (%s/%d)", m_name, m_line, m_id);
 	}
 
 	@Override public int hashCode() {

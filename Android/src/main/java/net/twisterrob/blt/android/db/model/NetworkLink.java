@@ -1,5 +1,7 @@
 package net.twisterrob.blt.android.db.model;
 
+import java.util.Locale;
+
 public class NetworkLink {
 	private final NetworkNode m_source;
 	private final NetworkNode m_target;
@@ -24,7 +26,7 @@ public class NetworkLink {
 	}
 
 	@Override public String toString() {
-		return String.format("%s to %s (%s: %dm)",
+		return String.format(Locale.ROOT, "%s to %s (%s: %dm)",
 				m_source.getName(), m_target.getName(), m_source.getLine(), m_distance);
 	}
 

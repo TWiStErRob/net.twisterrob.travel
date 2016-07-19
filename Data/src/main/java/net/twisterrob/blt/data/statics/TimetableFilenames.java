@@ -8,6 +8,7 @@ import static java.util.Collections.*;
 import net.twisterrob.blt.model.Line;
 
 public class TimetableFilenames implements StaticDataFragment<Map<Line, List<String>>> {
+	@SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
 	public Map<Line, List<String>> init() {
 		Map<Line, List<String>> fileNames = new TreeMap<>();
 		fileNames.put(Line.Bakerloo, unmodifiableList(asList("tfl_1-BAK_-2-y05.xml")));
@@ -23,10 +24,12 @@ public class TimetableFilenames implements StaticDataFragment<Map<Line, List<Str
 		fileNames.put(Line.WaterlooAndCity, unmodifiableList(asList("tfl_1-WAC_-60102-y05.xml")));
 		fileNames.put(Line.DLR, unmodifiableList(asList("tfl_25-DLR_-6-y05.xml")));
 		fileNames.put(Line.EmiratesAirline, unmodifiableList(asList("tfl_71-CABd-1-y05.xml")));
-		fileNames.put(
-				Line.Tram,
-				unmodifiableList(asList("tfl_63-TRM1-1-y05.xml", "tfl_63-TRM2-1-y05.xml", "tfl_63-TRM3-1-y05.xml",
-						"tfl_63-TRM4-1-y05.xml")));
+		fileNames.put(Line.Tram, unmodifiableList(asList(
+				"tfl_63-TRM1-1-y05.xml",
+				"tfl_63-TRM2-1-y05.xml",
+				"tfl_63-TRM3-1-y05.xml",
+				"tfl_63-TRM4-1-y05.xml"
+		)));
 		return fileNames;
 	}
 }

@@ -77,13 +77,15 @@ public class PredictionSummaryAdapter
 	}
 	@Override protected void bindLevel2View(ChildViewHolder level2Holder,
 			Station currentLevel1, Platform currentLevel2, List<Train> currentLevel3, View level2ConvertView) {
+		String platformDesc;
 		if (currentLevel3.size() > 0) {
-			String platformDesc = String.format("%s: %d trains are approaching.", currentLevel2.getName(),
-					currentLevel3.size());
-			level2Holder.platform.setText(platformDesc);
+			platformDesc = m_context.getResources().getQuantityString(R.plurals.prediction_approach,
+					currentLevel3.size(), currentLevel2.getName(), currentLevel3.size());
 		} else {
-			level2Holder.platform.setText(String.format("%s has no trains approaching", currentLevel2.getName()));
+			platformDesc = m_context.getString(R.string.prediction_approach_zero,
+					currentLevel2.getName());
 		}
+		level2Holder.platform.setText(platformDesc);
 		level2Holder.description.setVisibility(View.GONE);
 	}
 

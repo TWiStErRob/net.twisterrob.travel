@@ -1,6 +1,5 @@
 package net.twisterrob.blt.android.ui.activity;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -39,7 +38,6 @@ public class PredictionSummaryActivity extends AppCompatActivity implements
 	 */
 	protected Line m_line;
 
-	protected final SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	protected Calendar m_lastUpdated;
 
 	protected final Set<String> m_expandedStationNames = new LinkedHashSet<>();
@@ -157,7 +155,7 @@ public class PredictionSummaryActivity extends AppCompatActivity implements
 					m_adapter = new PredictionSummaryAdapter(PredictionSummaryActivity.this, m_listView, map(root),
 							m_directionsEnabled);
 					m_listHandler.update("You've ruled out all stations, please loosen the filter.", m_adapter);
-					m_status.setText("Last updated at " + fmt.format(m_lastUpdated.getTime()));
+					m_status.setText(getString(R.string.last_updated, m_lastUpdated));
 					restoreExpandedState();
 				}
 				m_refresh.setRefreshing(false);

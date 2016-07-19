@@ -15,6 +15,7 @@
 		android:paddingRight="3dip"
 		android:paddingEnd="3dip"
 		android:paddingBottom="3dip"
+		android:textIsSelectable="true"
 		android:textSize="12sp"
 		android:textStyle="bold"
 		tools:text="Somebound - Platform 0: 99 trains are approaching"
@@ -27,6 +28,7 @@
 		android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
 		android:paddingStart="?android:attr/expandableListPreferredChildPaddingLeft"
 		android:gravity="start"
+		android:textIsSelectable="true"
 		android:textSize="12sp"
 		tools:text="Description of the platform, probably disruptions go here. Most of the time this is empty."
 		/>

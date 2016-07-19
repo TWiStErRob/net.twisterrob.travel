@@ -9,10 +9,11 @@ public abstract class BaseFeed<T extends BaseFeed<?>> {
 	}
 
 	/**
-	 * @param other
-	 * @return a new instance
+	 * @param other the other feed to merge with
+	 * @return a new instance of the same class as {@code this} and {@code other}
+	 * @throws UnsupportedOperationException if merging is not possible
 	 */
-	public T merge(T other) {
+	public T merge(T other) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException(this.getClass().getSimpleName() + " does not support merging.");
 	}
 }

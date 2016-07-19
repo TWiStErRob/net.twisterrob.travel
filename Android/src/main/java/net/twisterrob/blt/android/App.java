@@ -38,12 +38,12 @@ public class App extends android.app.Application {
 		LOG.trace("App.onCreate()");
 		super.onCreate();
 		LibContextProvider.setApplicationContext(this);
-		DataBaseHelper db = getDataBaseHelper();
+		DataBaseHelper db = m_dataBaseHelper = new DataBaseHelper(this);
 		db.openDB();
 		m_static = new AndroidDBStaticData(db);
 	}
 
-	private volatile DataBaseHelper m_dataBaseHelper = null;
+	private DataBaseHelper m_dataBaseHelper = null;
 	private URLBuilder m_urlBuilder = useMockUrls()? new LocalhostUrlBuilder() : new TFLUrlBuilder(
 			"papp.robert.s@gmail.com");
 
@@ -64,16 +64,7 @@ public class App extends android.app.Application {
 	}
 
 	public DataBaseHelper getDataBaseHelper() {
-		DataBaseHelper helper = m_dataBaseHelper;
-		if (helper == null) {
-			// TODO double-checked locking doesn't work, use pre-created instance
-			synchronized (this) {
-				if (helper == null) {
-					helper = m_dataBaseHelper = new DataBaseHelper(this);
-				}
-			}
-		}
-		return helper;
+		return m_dataBaseHelper;
 	}
 
 	public static void sendMail(String body) {

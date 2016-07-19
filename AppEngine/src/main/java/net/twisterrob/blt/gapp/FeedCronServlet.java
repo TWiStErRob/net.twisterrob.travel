@@ -31,7 +31,7 @@ public class FeedCronServlet extends HttpServlet {
 		try {
 			feed = Feed.valueOf(feedString);
 		} catch (IllegalArgumentException ex) {
-			String message = String.format("No such feed: '%s'.", feedString);
+			String message = String.format(Locale.getDefault(), "No such feed: '%s'.", feedString);
 			LOG.warn(message);
 			resp.getWriter().println(message);
 			resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -42,10 +42,10 @@ public class FeedCronServlet extends HttpServlet {
 		Entity newEntry = downloadNewEntry(feed);
 		Entity oldEntry = readLatest(datastore, feed);
 		if (oldEntry != null) {
-			if (sameProp(DSPROP_CONTENT, oldEntry, newEntry)) {
+			if (sameProp(DS_PROP_CONTENT, oldEntry, newEntry)) {
 				LOG.info(marker, "They have the same content.");
 				resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-			} else if (sameProp(DSPROP_ERROR, oldEntry, newEntry)) {
+			} else if (sameProp(DS_PROP_ERROR, oldEntry, newEntry)) {
 				LOG.info(marker, "They have the same error.");
 				resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
 			} else {
@@ -60,7 +60,7 @@ public class FeedCronServlet extends HttpServlet {
 
 	private static Entity readLatest(DatastoreService datastore, Feed feed) {
 		// we're only concerned about the latest one, if any
-		Query q = new Query(feed.name()).addSort(DSPROP_RETRIEVED_DATE, SortDirection.DESCENDING);
+		Query q = new Query(feed.name()).addSort(DS_PROP_RETRIEVED_DATE, SortDirection.DESCENDING);
 		Iterator<Entity> result = datastore.prepare(q).asIterator();
 		return result.hasNext()? result.next() : null;
 	}
@@ -74,12 +74,12 @@ public class FeedCronServlet extends HttpServlet {
 		Entity newEntry = new Entity(feed.name());
 		try {
 			String feedResult = downloadFeed(feed);
-			newEntry.setProperty(DSPROP_CONTENT, new Text(feedResult));
+			newEntry.setProperty(DS_PROP_CONTENT, new Text(feedResult));
 		} catch (Exception ex) {
 			LOG.error("Cannot load '{}'!", feed, ex);
-			newEntry.setProperty(DSPROP_ERROR, new Text(ObjectTools.getFullStackTrace(ex)));
+			newEntry.setProperty(DS_PROP_ERROR, new Text(ObjectTools.getFullStackTrace(ex)));
 		}
-		newEntry.setProperty(DSPROP_RETRIEVED_DATE, new Date());
+		newEntry.setProperty(DS_PROP_RETRIEVED_DATE, new Date());
 		return newEntry;
 	}
 

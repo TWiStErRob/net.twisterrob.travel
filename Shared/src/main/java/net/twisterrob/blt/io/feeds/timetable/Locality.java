@@ -1,5 +1,7 @@
 package net.twisterrob.blt.io.feeds.timetable;
 
+import java.util.Locale;
+
 public class Locality {
 	private String id;
 	private String name;
@@ -18,6 +20,6 @@ public class Locality {
 	}
 
 	@Override public String toString() {
-		return String.format("%2$s {%1$s}", id, name);
+		return String.format(Locale.ROOT, "%2$s {%1$s}", id, name);
 	}
 }

@@ -9,6 +9,7 @@ import android.content.*;
 import android.database.*;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.support.annotation.NonNull;
 
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.db.model.Station;
@@ -22,8 +23,8 @@ public class StationSuggestProvider extends ContentProvider {
 		private List<Station> m_stations;
 		private String[] m_columns;
 
-		public StationSuggestCursor(String[] colums, List<Station> stations) {
-			m_columns = colums;
+		public StationSuggestCursor(String[] columns, List<Station> stations) {
+			m_columns = columns;
 			m_stations = stations;
 		}
 
@@ -95,7 +96,7 @@ public class StationSuggestProvider extends ContentProvider {
 			SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID
 	};
 
-	@Override public String getType(Uri uri) {
+	@Override public String getType(@NonNull Uri uri) {
 		switch (m_uriMatcher.match(uri)) {
 			case SEARCH_SUGGEST:
 				return SearchManager.SUGGEST_MIME_TYPE;
@@ -111,7 +112,7 @@ public class StationSuggestProvider extends ContentProvider {
 		return true;
 	}
 
-	@Override public Cursor query(Uri uri,
+	@Override public Cursor query(@NonNull Uri uri,
 			String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 		LOG.debug("query: {}", uri);
 
@@ -141,15 +142,15 @@ public class StationSuggestProvider extends ContentProvider {
 		}
 	}
 
-	@Override public Uri insert(Uri uri, ContentValues values) {
+	@Override public Uri insert(@NonNull Uri uri, ContentValues values) {
 		throw new UnsupportedOperationException();
 	}
 
-	@Override public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+	@Override public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
 		throw new UnsupportedOperationException();
 	}
 
-	@Override public int delete(Uri uri, String selection, String[] selectionArgs) {
+	@Override public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
 		throw new UnsupportedOperationException();
 	}
 }

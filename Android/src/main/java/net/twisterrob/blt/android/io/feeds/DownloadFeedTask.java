@@ -36,9 +36,6 @@ public class DownloadFeedTask<T extends BaseFeed<T>> extends AsyncTask<Feed, Int
 
 			Feed feed = feeds[0];
 			URL url = App.getInstance().getUrls().getFeedUrl(feed, m_args);
-			if (url == null) {
-				return new AsyncTaskResult<>((T)null); // no result
-			}
 			LOG.debug("{}", url);
 
 			connection = (HttpURLConnection)url.openConnection();

@@ -26,7 +26,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="70dp"
 			android:gravity="start"
-			tools:ignore="RtlHardcoded"
+			tools:ignore="RtlHardcoded,NegativeMargin,SpUsage"
 			tools:targetApi="HONEYCOMB"
 			>
 			<ToggleButton
@@ -51,7 +51,7 @@
 				android:textOn="N"
 				android:textOff="N"
 				android:gravity="bottom|center_horizontal"
-				android:textSize="10sp"
+				android:textSize="10dp"
 				/>
 			<ToggleButton
 				android:id="@+id/button$compass_south"
@@ -65,7 +65,7 @@
 				android:textOff="S"
 				android:gravity="bottom|center_horizontal"
 				android:rotation="180"
-				android:textSize="10sp"
+				android:textSize="10dp"
 				/>
 			<ToggleButton
 				android:id="@+id/button$compass_west"
@@ -78,7 +78,7 @@
 				android:textOff="W"
 				android:gravity="bottom|center_horizontal"
 				android:rotation="-90"
-				android:textSize="10sp"
+				android:textSize="10dp"
 				/>
 			<ToggleButton
 				android:id="@+id/button$compass_east"
@@ -91,7 +91,7 @@
 				android:textOff="E"
 				android:gravity="bottom|center_horizontal"
 				android:rotation="90"
-				android:textSize="10sp"
+				android:textSize="10dp"
 				/>
 		</RelativeLayout>
 		<TextView
@@ -101,6 +101,7 @@
 			android:layout_marginRight="@dimen/margin_activity"
 			android:layout_marginEnd="@dimen/margin_activity"
 			android:gravity="end"
+			android:textIsSelectable="true"
 			tools:text="Last updated: today"
 			/>
 		<android.support.v4.widget.SwipeRefreshLayout
@@ -125,6 +126,7 @@
 					android:layout_gravity="center_horizontal"
 					android:layout_margin="8dp"
 					android:textColor="#ff0000"
+					android:textIsSelectable="true"
 					android:textSize="16sp"
 					tools:text="@string/demo_error"
 					/>

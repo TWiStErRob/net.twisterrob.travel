@@ -10,7 +10,7 @@ public enum Operator {
 
 	private String tradingName;
 
-	private Operator(String tradingName) {
+	Operator(String tradingName) {
 		this.tradingName = tradingName;
 	}
 

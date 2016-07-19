@@ -45,7 +45,7 @@ public class PostCodeAreas {
 	}
 
 	private static void writeHullPoint(PrintWriter out, String area, int i, Location loc) {
-		out.printf("insert into AreaHull(area_code, hull_index, latitude, longitude) "
+		out.printf(Locale.ROOT, "insert into AreaHull(area_code, hull_index, latitude, longitude) "
 						+ "values('%1$s', %2$d, %3$.6f, %4$.6f);\n",
 				area, i, loc.getLatitude(), loc.getLongitude());
 	}

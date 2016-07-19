@@ -58,13 +58,9 @@ public class ConvexHull {
 		return new Location(ySum, xSum);
 	}
 
-	/**
-	 * @param a start
-	 * @param b end
-	 * @param c point
-	 */
-	public static boolean isLeftOf(double aX, double aY, double bX, double bY, double cX, double cY) {
-		return ((bX - aX) * (cY - aY) - (bY - aY) * (cX - aX)) > 0;
+	public static boolean isLeftOf(double startX, double startY, double endX, double endY,
+			double pointX, double pointY) {
+		return ((endX - startX) * (pointY - startY) - (endY - startY) * (pointX - startX)) > 0;
 	}
 
 	public static <T> T getLeftMost(final Iterable<? extends T> S, ToPos<T> poser) {
@@ -83,7 +79,7 @@ public class ConvexHull {
 		return leftMost;
 	}
 
-	public static interface ToPos<T> {
+	public interface ToPos<T> {
 		double getX(T obj);
 		double getY(T obj);
 	}

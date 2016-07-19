@@ -1,6 +1,6 @@
 package net.twisterrob.blt.io.feeds.trackernet.model;
 
-import java.util.Comparator;
+import java.util.*;
 
 import net.twisterrob.blt.model.Line;
 
@@ -15,7 +15,7 @@ public class Station {
 	private String m_trackerNetCode;
 
 	@Override public String toString() {
-		return String.format("%s", m_name);
+		return String.format(Locale.ROOT, "%s", m_name);
 	}
 
 	public String getName() {

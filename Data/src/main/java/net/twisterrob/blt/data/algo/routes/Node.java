@@ -20,10 +20,10 @@ public class Node implements Comparable<Node> {
 		return StopPoint.BY_NAME.compare(this.data, o.data);
 	}
 
-	static enum State {
+	enum State {
 		EMPTY,
 		VISIT,
-		CLOSE;
+		CLOSE
 	}
 
 	public StopPoint getStop() {

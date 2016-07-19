@@ -23,7 +23,7 @@ public class LineDisplay extends JFrame {
 	}
 	public LineDisplay(final Line line, List<Route> routes, String... highlights) {
 		super(line.getTitle());
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(1024, 800));
 
 		this.highlights = Arrays.asList(highlights);

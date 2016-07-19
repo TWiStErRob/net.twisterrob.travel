@@ -12,5 +12,5 @@ public enum StopType {
 	Taxi,
 	Water,
 	Cycle,
-	Air;
+	Air
 }

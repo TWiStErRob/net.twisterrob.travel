@@ -32,6 +32,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:gravity="center"
+				android:textIsSelectable="true"
 				android:textSize="16sp"
 				tools:text="Something Blah Station"
 				/>
@@ -43,6 +44,7 @@
 			android:layout_marginRight="@dimen/margin_activity"
 			android:layout_marginEnd="@dimen/margin_activity"
 			android:gravity="end"
+			android:textIsSelectable="true"
 			tools:text="Last updated: today"
 			/>
 		<android.support.v4.widget.SwipeRefreshLayout
@@ -67,6 +69,7 @@
 					android:layout_gravity="center_horizontal"
 					android:layout_margin="8dp"
 					android:textColor="#ff0000"
+					android:textIsSelectable="true"
 					android:textSize="16sp"
 					tools:text="@string/demo_error"
 					/>

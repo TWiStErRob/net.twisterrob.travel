@@ -76,7 +76,7 @@ class RouteMapDrawer extends RouteComponent {
 	}
 
 	/**
-	 * @param interchange <code>true</code> -> circle, <code>false</code> -> circle+cross, <code>null</code> -> dot
+	 * @param type formerly {@code interchange} {@code true} -> circle, {@code false} -> circle+cross, {@code null} -> dot
 	 */
 	protected void paintStop(Graphics2D g, StopPoint station, int offsetX, int offsetY, StopType type) {
 		Location stopLoc = station.getLocation();

@@ -166,7 +166,7 @@ import net.twisterrob.java.annotations.SimpleDateFormatString;
 					_1m(1);
 					private int meters;
 
-					private PrecisionEnum(int meters) {
+					PrecisionEnum(int meters) {
 						this.meters = meters;
 					}
 					public int getMeters() {
@@ -217,7 +217,7 @@ import net.twisterrob.java.annotations.SimpleDateFormatString;
 				private String longName;
 				private String description;
 
-				private StopTypeEnum(String longName, String description) {
+				StopTypeEnum(String longName, String description) {
 					this.longName = longName;
 					this.description = description;
 				}

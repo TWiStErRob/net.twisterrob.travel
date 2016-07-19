@@ -1,6 +1,5 @@
 package net.twisterrob.blt.android.ui.activity;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import android.content.Intent;
@@ -25,8 +24,6 @@ import net.twisterrob.blt.model.Line;
  * http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf
  */
 public class StatusActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
-
-	protected SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	protected Calendar m_lastUpdated;
 
 	protected SwipeRefreshLayout m_refresh;
@@ -82,7 +79,7 @@ public class StatusActivity extends AppCompatActivity implements SwipeRefreshLay
 					ListAdapter adapter = new StationStatusAdapter(StatusActivity.this, lines);
 					m_listHandler.update("No data present", adapter);
 					m_lastUpdated = Calendar.getInstance();
-					m_status.setText("Last updated at " + fmt.format(m_lastUpdated.getTime()));
+					m_status.setText(getString(R.string.last_updated, m_lastUpdated));
 				}
 				m_refresh.setRefreshing(false);
 			}

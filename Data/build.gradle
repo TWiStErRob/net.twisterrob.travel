@@ -23,3 +23,10 @@ jettyRun.reload = JettyPlugin.RELOAD_MANUAL
 jettyRun.webAppSourceDirectory = file('src/data')
 jettyRun.httpPort = 8081
 //jettyRun.additionalRuntimeJars = configurations.compile.findAll { it.name.contains('slf4j-simple') }
+
+apply plugin: 'idea'
+idea {
+	module {
+		excludeDirs = [ file('output'), file('src/data') ]
+	}
+}

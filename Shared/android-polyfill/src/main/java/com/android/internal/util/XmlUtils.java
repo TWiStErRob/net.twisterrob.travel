@@ -25,7 +25,7 @@ import org.xmlpull.v1.*;
 import android.util.Xml;
 
 /** {@hide} */
-@SuppressWarnings("all")
+@SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class XmlUtils {
 
     public static void skipCurrentTag(XmlPullParser parser)

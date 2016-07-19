@@ -28,6 +28,7 @@ public class FacilitiesFeed extends BaseFeed<FacilitiesFeed> {
 	}
 
 	@Override protected void postProcess() {
+		super.postProcess();
 		if (m_stations != null) {
 			m_lines = new HashMap<>();
 			m_zones = new HashMap<>();

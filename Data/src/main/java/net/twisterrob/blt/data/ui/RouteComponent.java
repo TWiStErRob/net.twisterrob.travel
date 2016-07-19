@@ -80,7 +80,7 @@ public abstract class RouteComponent extends JPanel {
 		return name.replaceAll("(Underground Station|Tram(link)? Stop)", "");
 	}
 
-	protected static enum StopType {
+	protected enum StopType {
 		START,
 		ROUTE,
 		INTERCHANGE,

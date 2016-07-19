@@ -28,7 +28,7 @@ public class JourneyPlannerTimetableFeed extends BaseFeed<JourneyPlannerTimetabl
 
 	@Override public JourneyPlannerTimetableFeed merge(JourneyPlannerTimetableFeed other) {
 		if (this.line != other.line) {
-			throw new IllegalArgumentException("Can't merge different lines.");
+			throw new UnsupportedOperationException("Can't merge different lines.");
 		}
 		JourneyPlannerTimetableFeed newFeed = new JourneyPlannerTimetableFeed();
 		newFeed.setLine(line);
@@ -70,9 +70,9 @@ public class JourneyPlannerTimetableFeed extends BaseFeed<JourneyPlannerTimetabl
 		}
 	}
 
-	static interface RouteFixer {
-		public boolean matches(JourneyPlannerTimetableFeed feed);
-		public void fix(JourneyPlannerTimetableFeed feed);
+	interface RouteFixer {
+		boolean matches(JourneyPlannerTimetableFeed feed);
+		void fix(JourneyPlannerTimetableFeed feed);
 	}
 
 	public void fix(RouteFixer fixer) {

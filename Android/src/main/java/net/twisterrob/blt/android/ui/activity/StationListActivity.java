@@ -66,7 +66,8 @@ public class StationListActivity extends AppCompatActivity implements FilterList
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			filter(query);
 		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-			String query = ((SpannableString)intent.getExtras().get(SearchManager.USER_QUERY)).toString();
+			SpannableString querySpan = (SpannableString)intent.getExtras().get(SearchManager.USER_QUERY);
+			String query = querySpan.toString();
 			filter(query);
 		}
 	}

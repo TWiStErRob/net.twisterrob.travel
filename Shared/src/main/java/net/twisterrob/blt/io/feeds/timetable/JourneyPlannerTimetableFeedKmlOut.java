@@ -1,6 +1,7 @@
 package net.twisterrob.blt.io.feeds.timetable;
 
 import java.io.*;
+import java.util.Locale;
 
 import javax.xml.stream.*;
 
@@ -25,10 +26,11 @@ public class JourneyPlannerTimetableFeedKmlOut {
 		}
 		{
 			out.writeStartElement("description");
-			StringBuilder desc = new StringBuilder(String.format("All stops for the following routes on the %s line:",
+			StringBuilder desc = new StringBuilder(String.format(Locale.getDefault(),
+					"All stops for the following routes on the %s line:",
 					feed.getLine()));
 			for (Route route : feed.getRoutes()) {
-				desc.append(String.format("\n\t%s", route.getDescription()));
+				desc.append(String.format(Locale.getDefault(), "\n\t%s", route.getDescription()));
 			}
 			out.writeCData(desc.toString());
 			out.writeEndElement();
@@ -56,7 +58,8 @@ public class JourneyPlannerTimetableFeedKmlOut {
 			}
 			{
 				out.writeStartElement("description");
-				out.writeCharacters(String.format("%s in %s", stop.getId(), stop.getLocality().getName()));
+				out.writeCharacters(String.format(Locale.getDefault(), "%s in %s",
+						stop.getId(), stop.getLocality().getName()));
 				out.writeEndElement();
 			}
 			{
@@ -67,7 +70,7 @@ public class JourneyPlannerTimetableFeedKmlOut {
 			{
 				out.writeStartElement("Point");
 				out.writeStartElement("coordinates");
-				out.writeCharacters(String.format("%f, %f",
+				out.writeCharacters(String.format(Locale.ROOT, "%f, %f",
 						stop.getLocation().getLongitude(), stop.getLocation().getLatitude()));
 				out.writeEndElement();
 				out.writeEndElement();

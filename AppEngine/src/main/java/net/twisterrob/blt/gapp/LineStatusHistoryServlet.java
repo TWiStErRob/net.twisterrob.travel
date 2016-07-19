@@ -76,9 +76,9 @@ public class LineStatusHistoryServlet extends HttpServlet {
 
 	private static Result toResult(Entity entry) {
 		Result result;
-		Text content = (Text)entry.getProperty(DSPROP_CONTENT);
-		Text error = (Text)entry.getProperty(DSPROP_ERROR);
-		Date date = (Date)entry.getProperty(DSPROP_RETRIEVED_DATE);
+		Text content = (Text)entry.getProperty(DS_PROP_CONTENT);
+		Text error = (Text)entry.getProperty(DS_PROP_ERROR);
+		Date date = (Date)entry.getProperty(DS_PROP_RETRIEVED_DATE);
 		if (content != null) {
 			try {
 				Feed feed = Feed.valueOf(entry.getKind());
@@ -98,7 +98,7 @@ public class LineStatusHistoryServlet extends HttpServlet {
 	}
 
 	protected Iterable<Entity> fetchEntries(Feed feed) {
-		Query q = new Query(feed.name()).addSort(DSPROP_RETRIEVED_DATE, SortDirection.DESCENDING);
+		Query q = new Query(feed.name()).addSort(DS_PROP_RETRIEVED_DATE, SortDirection.DESCENDING);
 		Iterable<Entity> results = datastore.prepare(q).asIterable();
 		return results;
 	}
@@ -175,14 +175,16 @@ public class LineStatusHistoryServlet extends HttpServlet {
 		}
 
 		private void diff() {
-			if (oldResult == null && newResult != null) {
-				errorChange = "new status";
-			} else if (oldResult != null && newResult == null) {
-				errorChange = "last status";
-			} else if (oldResult != null && newResult != null) {
+			if (oldResult != null && newResult != null) { // after this check fails one of them must be null
 				diffError();
 				diffContent();
-			} // else errorChange = null
+			} else if (newResult != null) {
+				errorChange = "new status";
+			} else if (oldResult != null) {
+				errorChange = "last status";
+			} else {
+				errorChange = null;
+			}
 		}
 		protected void diffContent() {
 			if (oldResult.getContent() == null || newResult.getContent() == null) {
@@ -215,17 +217,19 @@ public class LineStatusHistoryServlet extends HttpServlet {
 		protected void diffDesc(Line line, LineStatus oldStatus, LineStatus newStatus) {
 			String oldDesc = oldStatus.getDescription();
 			String newDesc = newStatus.getDescription();
-			if (oldDesc == null && newDesc != null) {
-				statusChanges.put(line, "desc added");
-			} else if (oldDesc != null && newDesc == null) {
-				statusChanges.put(line, "desc removed");
-			} else if (oldDesc != null && newDesc != null) {
+			if (oldDesc != null && newDesc != null) { // after this check fails one of them must be null
 				if (oldDesc.equals(newDesc)) {
 					statusChanges.put(line, "same");
 				} else {
 					statusChanges.put(line, "changed");
 					descChanges.put(line, diffDesc(oldDesc, newDesc));
 				}
+			} else if (newDesc != null) {
+				statusChanges.put(line, "desc added");
+			} else if (oldDesc != null) {
+				statusChanges.put(line, "desc removed");
+			} else {
+				// no op
 			}
 		}
 		private static String diffDesc(String oldDesc, String newDesc) {
@@ -237,12 +241,12 @@ public class LineStatusHistoryServlet extends HttpServlet {
 		protected void diffError() {
 			String oldErrorHeader = oldResult.getErrorHeader();
 			String newErrorHeader = newResult.getErrorHeader();
-			if (oldErrorHeader == null && newErrorHeader != null) {
-				errorChange = "errored";
-			} else if (oldErrorHeader != null && newErrorHeader == null) {
-				errorChange = "fixed";
-			} else if (oldErrorHeader != null && newErrorHeader != null) {
+			if (oldErrorHeader != null && newErrorHeader != null) { // after this check fails one of them must be null
 				errorChange = oldErrorHeader.equals(newErrorHeader)? "same" : "changed";
+			} else if (newErrorHeader != null) {
+				errorChange = "errored";
+			} else if (oldErrorHeader != null) {
+				errorChange = "fixed";
 			} else {
 				errorChange = null;
 			}

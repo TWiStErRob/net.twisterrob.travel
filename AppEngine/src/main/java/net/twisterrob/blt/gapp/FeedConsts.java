@@ -13,7 +13,7 @@ public interface FeedConsts {
 
 	String ENCODING = "UTF-8";
 
-	String DSPROP_RETRIEVED_DATE = "retrievedDate";
-	String DSPROP_CONTENT = "content";
-	String DSPROP_ERROR = "error";
+	String DS_PROP_RETRIEVED_DATE = "retrievedDate";
+	String DS_PROP_CONTENT = "content";
+	String DS_PROP_ERROR = "error";
 }

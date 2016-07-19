@@ -415,13 +415,13 @@ public enum Feed {
 			throw new RuntimeException(ex);
 		}
 	}
+
 	public enum Type {
 		Syndication("http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx"),
 		Other(null);
 
 		private final URL m_baseUrl;
 
-		@SuppressWarnings("synthetic-access")
 		Type(String baseUrl) {
 			m_baseUrl = baseUrl != null? createURL(baseUrl) : null;
 		}
@@ -430,6 +430,7 @@ public enum Feed {
 			return m_baseUrl;
 		}
 	}
+
 	@SuppressWarnings("unchecked")
 	public <T extends BaseFeed<T>> FeedHandler<T> getHandler() {
 		try {

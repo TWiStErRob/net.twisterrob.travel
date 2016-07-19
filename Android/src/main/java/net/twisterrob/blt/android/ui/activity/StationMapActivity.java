@@ -13,6 +13,7 @@ import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.maps.*;
 
+import net.twisterrob.android.graphics.DrawableBinder;
 import net.twisterrob.android.map.BaseItemizedOverlay;
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.data.LocationUtils;
@@ -50,7 +51,7 @@ public class StationMapActivity extends MapActivity {
 				super.onPostExecute(result);
 				List<Station> stations = App.getInstance().getDataBaseHelper().getStations();
 				Drawable drawable = new BitmapDrawable(getResources(), result);
-				BaseItemizedOverlay.bindCenter(drawable);
+				DrawableBinder.bindCenter(drawable);
 				BaseItemizedOverlay<Item> object = new BaseItemizedOverlayExtension(drawable, stations);
 				m_map.getOverlays().add(object);
 				GeoPoint center = new GeoPoint((int)(51.512161 * 1e6), (int)(-0.090981 * 1e6)); // City of
@@ -87,7 +88,7 @@ public class StationMapActivity extends MapActivity {
 			m_stations = stations;
 			Drawable drawable = ContextCompat.getDrawable(StationMapActivity.this, R.drawable.tfl_roundel_lul_map);
 			drawable.setLevel(1); // TODO based on map level
-			m_drawable = BaseItemizedOverlay.bindCenter(drawable);
+			m_drawable = DrawableBinder.bindCenter(drawable);
 			populate();
 		}
 		@Override protected Item createItem(int arg0) {
@@ -100,7 +101,7 @@ public class StationMapActivity extends MapActivity {
 		}
 		@Override public void draw(Canvas canvas, MapView mapView, boolean shadow) {
 			if (!shadow) {
-				super.draw(canvas, mapView, shadow);
+				super.draw(canvas, mapView, false /*shadow*/);
 			}
 		}
 	}

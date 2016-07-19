@@ -10,22 +10,18 @@ public class LocationUtils extends net.twisterrob.java.model.LocationUtils {
 
 	// Maps V1 GeoPoint
 
-	@Deprecated
 	public static GeoPoint toGeoPoint(Location loc) {
 		return new GeoPoint((int)(loc.getLatitude() * GEO), (int)(loc.getLongitude() * GEO));
 	}
 
-	@Deprecated
 	public static Location fromGeoPoint(GeoPoint geo) {
 		return new Location(geo.getLatitudeE6() / GEO, geo.getLongitudeE6() / GEO);
 	}
 
-	@Deprecated
 	public static boolean near(GeoPoint geo, Location loc) {
 		return near(loc, geo);
 	}
 
-	@Deprecated
 	public static boolean near(Location loc, GeoPoint geo) {
 		return Math.abs(geo.getLatitudeE6() / GEO - loc.getLatitude()) < DELTA
 				&& Math.abs(geo.getLongitudeE6() / GEO - loc.getLongitude()) < DELTA;

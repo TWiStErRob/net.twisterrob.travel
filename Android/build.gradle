@@ -44,6 +44,9 @@ android {
 		debug {
 			applicationIdSuffix '.android' // FIXME Update Maps API v2 Key for net.twisterrob.blt.debug
 		}
+		release {
+			minifyEnabled false
+		}
 	}
 	sourceSets {
 		// STOPSHIP figure out another way

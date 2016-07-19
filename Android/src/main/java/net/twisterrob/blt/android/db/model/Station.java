@@ -21,7 +21,7 @@ public class Station {
 	private Map<Line, String> m_trackerNetCodes;
 
 	@Override public String toString() {
-		return String.format("%s", m_name);
+		return String.format(Locale.ROOT, "%s", m_name);
 	}
 
 	public int getId() {

@@ -130,7 +130,8 @@ public class TravelNetworkParser {
 					if (distance > 3 * 1609) {
 						continue;
 					}
-					dist.printf("insert into StopDistance(stopFrom, stopTo, distance) values(%1$d, %2$d, %3$f);\n",
+					dist.printf(Locale.ROOT,
+							"insert into StopDistance(stopFrom, stopTo, distance) values(%1$d, %2$d, %3$f);\n",
 							from.getName().hashCode(), to.getName().hashCode(), distance);
 				}
 			}
@@ -140,31 +141,31 @@ public class TravelNetworkParser {
 				PrintWriter outSection = out("LondonTravel.v1.data-Section.sql");
 				PrintWriter outLink = out("LondonTravel.v1.data-Link.sql");
 				PrintWriter outRouteSection = out("LondonTravel.v1.data-Route_Section.sql");
-				PrintWriter outSectionLink = out("LondonTravel.v1.data-Section_Link.sql");
+				PrintWriter outSectionLink = out("LondonTravel.v1.data-Section_Link.sql")
 		) {
 			LOG.info("Writing Route, Section, Link table contents for {}", feeds.keySet());
 			for (Entry<Line, JourneyPlannerTimetableFeed> entry : feeds.entrySet()) {
 				Line line = entry.getKey();
 				for (Route route : entry.getValue().getRoutes()) {
-					outRoute.printf("insert into Route(_id, name, line) values('%1$s', '%2$s', %3$d);\n",
+					outRoute.printf(Locale.ROOT, "insert into Route(_id, name, line) values('%1$s', '%2$s', %3$d);\n",
 							route.getId(), esc(route.getDescription()), line.ordinal());
 					int sectionOrder = 1;
 					for (RouteSection section : route.getSections()) {
-						outSection.printf("insert into Section(_id, name) values('%1$s', '%2$s');\n",
+						outSection.printf(Locale.ROOT, "insert into Section(_id, name) values('%1$s', '%2$s');\n",
 								section.getId(), esc(section.firstStop().getName() + " - "
 										+ section.lastStop().getName()));
-						outRouteSection.printf(
+						outRouteSection.printf(Locale.ROOT,
 								"insert into Route_Section(route, section, seq) values('%1$s', '%2$s', %3$d);\n",
 								route.getId(), section.getId(), sectionOrder++);
 						int linkOrder = 1;
 						for (RouteLink link : section.getLinks()) {
-							outLink.printf(
+							outLink.printf(Locale.ROOT,
 									"insert into Link(_id, name, stopFrom, stopTo, distance) "
 											+ "values('%1$s', '%2$s', %3$d, %4$d, %5$d);\n",
 									link.getId(), esc(link.getFrom().getName() + " - " + link.getTo().getName()), link
 											.getFrom().getName().hashCode(), link.getTo().getName().hashCode(),
 									link.getDistance());
-							outSectionLink.printf(
+							outSectionLink.printf(Locale.ROOT,
 									"insert into Section_Link(section, link, seq) values('%1$s', '%2$s', %3$d);\n",
 									section.getId(), link.getId(), linkOrder++);
 						}
@@ -179,13 +180,13 @@ public class TravelNetworkParser {
 	protected static void writeStopLine(PrintWriter out, StopPoint stop, Line line, String code) {
 		LOG.trace("StopLine: Line {}, station {} ({}), code {}", line, stop.getName(), stop.getName().hashCode(), code);
 		code = code == null? "NULL" : "'" + code + "'";
-		out.printf("insert into Line_Stop(line, stop, code) values(%1$d, %2$d, %3$s);\n",
+		out.printf(Locale.ROOT, "insert into Line_Stop(line, stop, code) values(%1$d, %2$d, %3$s);\n",
 				line.ordinal(), stop.getName().hashCode(), code);
 	}
 
 	protected static void writeStop(PrintWriter out, StopPoint stop, StopType stopType) {
 		LOG.trace("Stop {} ({}): {}", stop.getName(), stop.getName().hashCode(), stop);
-		out.printf("insert into Stop(_id, name, type, latitude, longitude, precision, locality) "
+		out.printf(Locale.ROOT, "insert into Stop(_id, name, type, latitude, longitude, precision, locality) "
 						+ "values(%1$d, '%2$s', %7$d, %3$.10f, %4$.10f, %5$d, '%6$s');\n", stop.getName().hashCode(),
 				esc(stop.getName()), stop.getLocation().getLatitude(), stop.getLocation().getLongitude(),
 				stop.getPrecision(), esc(stop.getLocality().getName()), stopType.ordinal());

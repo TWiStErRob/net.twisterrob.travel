@@ -56,7 +56,7 @@ public class Route implements Iterable<StopPoint> {
 	}
 
 	@Override public String toString() {
-		return String.format("%2$s {%1$s}", id, description);
+		return String.format(Locale.ROOT, "%2$s {%1$s}", id, description);
 	}
 
 	/**

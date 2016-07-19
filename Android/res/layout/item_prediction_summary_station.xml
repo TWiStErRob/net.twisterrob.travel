@@ -16,6 +16,7 @@
 		android:paddingEnd="3dip"
 		android:paddingBottom="3dip"
 		android:text="Station Name"
+		android:textIsSelectable="true"
 		android:textSize="14sp"
 		android:textStyle="bold"
 		/>

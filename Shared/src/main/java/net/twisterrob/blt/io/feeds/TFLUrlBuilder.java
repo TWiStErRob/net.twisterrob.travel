@@ -1,7 +1,9 @@
 package net.twisterrob.blt.io.feeds;
 
 import java.net.*;
-import java.util.Map;
+import java.util.*;
+
+import javax.annotation.Nonnull;
 
 import net.twisterrob.blt.model.Line;
 
@@ -15,7 +17,8 @@ public class TFLUrlBuilder implements URLBuilder {
 	}
 
 	public URL getSyncdicationFeed(int feedId) throws MalformedURLException {
-		return new URL(Feed.Type.Syndication.getBaseUrl(), String.format("?email=%s&feedId=%d", m_email, feedId));
+		String query = String.format(Locale.ROOT, "?email=%s&feedId=%d", m_email, feedId);
+		return new URL(Feed.Type.Syndication.getBaseUrl(), query);
 	}
 
 	public URL getSyncdicationFeed(Feed feed) throws MalformedURLException {
@@ -25,7 +28,7 @@ public class TFLUrlBuilder implements URLBuilder {
 		return getSyncdicationFeed(feed.getFeedId());
 	}
 
-	public URL getFeedUrl(Feed feed, Map<String, ?> args) throws MalformedURLException {
+	@Nonnull public URL getFeedUrl(Feed feed, Map<String, ?> args) throws MalformedURLException {
 		if (feed.getType() == Feed.Type.Syndication) {
 			return getSyncdicationFeed(feed);
 		}

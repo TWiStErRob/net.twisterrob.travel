@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
-    <issue id="DefaultLocale" severity="ignore" />
-    <issue id="RtlSymmetry" severity="ignore" />
-    <issue id="HardcodedText" severity="ignore" />
-    <issue id="MissingTranslation" severity="ignore" />
-    <issue id="ShowToast" severity="ignore" />
-    <issue id="SimpleDateFormat" severity="ignore" />
-    <issue id="SmallSp">
-        <ignore path="res/layout/activity_prediction_summary.xml" />
-    </issue>
+	<!-- TODO what's this? -->
+	<issue id="RtlSymmetry" severity="ignore" />
+	<!-- Not yet, the UI is so fragile -->
+	<issue id="HardcodedText" severity="ignore" />
+	<issue id="UnusedAttribute">
+		<!-- tools:targetApi is not acceptable in <manifest>/<application> -->
+		<ignore path="src/main/AndroidManifest.xml" />
+	</issue>
+	<issue id="MissingRegistered">
+		<!-- Possibly a LINT bug, because it works in both IDEA/runtime -->
+		<ignore path="res/layout/activity_stations_map.xml" />
+	</issue>
+	<!-- Increased readability probably TODO re-check after layout is redesigned -->
+	<issue id="UnusedIds" severity="ignore" />
+	<issue id="UnusedResources">
+		<ignore regexp="R\.drawable\.tfl_roundel_.+" />
+		<!-- Not used, but can't do anything about it :) -->
+		<ignore regexp="R\.string\.app_package" />
+		<ignore regexp="R\.bool\.in_prod" />
+		<ignore regexp="R\.bool\.in_test" />
+	</issue>
+	<!-- STOPSHIP Leave me alone for now, we'll see when I'm ready to publish -->
+	<issue id="IconDensity" severity="ignore" />
+	<!-- STOPSHIP Leave me alone for now, we'll see when I'm ready to publish -->
+	<issue id="IconLocation" severity="ignore" />
+	<!-- STOPSHIP Leave me alone for now, we'll see when I'm ready to publish -->
+	<issue id="IconMissingDensityFolder" severity="ignore" />
 </lint>

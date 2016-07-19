@@ -16,10 +16,7 @@
 
 package android.widget;
 
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Looper;
-import android.os.Message;
+import android.os.*;
 import android.util.Log;
 
 /**
@@ -234,7 +231,7 @@ public abstract class Filter {
                         args.results = performFiltering(args.constraint);
                     } catch (Exception e) {
                         args.results = new FilterResults();
-                        Log.w(LOG_TAG, "An exception occured during performFiltering()!", e);
+	                    Log.w(LOG_TAG, "An exception occurred during performFiltering()!", e);
                     } finally {
                         message = mResultHandler.obtainMessage(what);
                         message.obj = args;

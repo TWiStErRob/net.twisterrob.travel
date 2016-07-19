@@ -56,7 +56,9 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 	@Override protected void bindView(final ViewHolder holder, final Station currentItem, final View convertView) {
 		Drawable icon = bitmapCache.get(currentItem.getType());
 		SpannableString title = highlight(currentItem.getName());
-		SpannableString description = highlight(String.format("%s: %s", currentItem.getType(), currentItem.getLines()));
+		String stationLines = m_context.getString(R.string.station_lines,
+				currentItem.getType(), currentItem.getLines());
+		SpannableString description = highlight(stationLines);
 
 		holder.title.setText(title, BufferType.SPANNABLE);
 		holder.description.setText(description, BufferType.SPANNABLE);

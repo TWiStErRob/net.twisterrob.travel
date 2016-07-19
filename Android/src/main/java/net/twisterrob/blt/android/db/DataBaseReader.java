@@ -177,74 +177,82 @@ class DataBaseReader {
 	public Map<Integer, Map<Integer, Double>> getDistances() {
 		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
 		Cursor cursor = db.rawQuery("select stopFrom, stopTo, distance from StopDistance;", new String[0]);
-		Map<Integer, Map<Integer, Double>> distances = new TreeMap<>();
-		while (cursor.moveToNext()) {
-			Integer fromID = cursor.getInt(cursor.getColumnIndex("stopFrom"));
-			Integer toID = cursor.getInt(cursor.getColumnIndex("stopTo"));
-			Double distance = cursor.getDouble(cursor.getColumnIndex("distance"));
-			Map<Integer, Double> dists = distances.get(fromID);
-			if (dists == null) {
-				dists = new TreeMap<>();
-				distances.put(fromID, dists);
+		try {
+			Map<Integer, Map<Integer, Double>> distances = new TreeMap<>();
+			while (cursor.moveToNext()) {
+				Integer fromID = cursor.getInt(cursor.getColumnIndex("stopFrom"));
+				Integer toID = cursor.getInt(cursor.getColumnIndex("stopTo"));
+				Double distance = cursor.getDouble(cursor.getColumnIndex("distance"));
+				Map<Integer, Double> dists = distances.get(fromID);
+				if (dists == null) {
+					dists = new TreeMap<>();
+					distances.put(fromID, dists);
+				}
+				dists.put(toID, distance);
 			}
-			dists.put(toID, distance);
+			return distances;
+		} finally {
+			cursor.close();
 		}
-		return distances;
 	}
 	public Set<NetworkNode> getTubeNetwork() {
 		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
 		String query = IOTools.getAssetAsString(m_dataBaseHelper.getContext(), "getNetwork.sql");
 		Cursor cursor = db.rawQuery(query, new String[0]);
-		Map<MultiKey, NetworkNode> nodes = new HashMap<>();
-		while (cursor.moveToNext()) {
-			int fromID = cursor.getInt(cursor.getColumnIndex("fromID"));
-			String fromName = cursor.getString(cursor.getColumnIndex("fromName"));
-			double fromLat = cursor.getDouble(cursor.getColumnIndex("fromLat"));
-			double fromLon = cursor.getDouble(cursor.getColumnIndex("fromLon"));
-			int toID = cursor.getInt(cursor.getColumnIndex("toID"));
-			String toName = cursor.getString(cursor.getColumnIndex("toName"));
-			double toLat = cursor.getDouble(cursor.getColumnIndex("toLat"));
-			double toLon = cursor.getDouble(cursor.getColumnIndex("toLon"));
-			int distance = cursor.getInt(cursor.getColumnIndex("distance"));
-			String lineString = cursor.getString(cursor.getColumnIndex("line"));
-			Line line = Line.valueOf(lineString);
-			MultiKey fromKey = new MultiKey(line, fromID);
-			NetworkNode fromNode = nodes.get(fromKey);
-			if (fromNode == null) {
-				fromNode = new NetworkNode(fromID, fromName, line, new Location(fromLat, fromLon));
-				nodes.put(fromKey, fromNode);
-			}
-			MultiKey toKey = new MultiKey(line, toID);
-			NetworkNode toNode = nodes.get(toKey);
-			if (toNode == null) {
-				toNode = new NetworkNode(toID, toName, line, new Location(toLat, toLon));
-				nodes.put(toKey, toNode);
-			}
-			fromNode.out.add(new NetworkLink(fromNode, toNode, distance));
-			// TODO efficiency with some cache or DB
-			for (Line neighborLine : Line.values()) {
-				if (neighborLine != line) {
-					{
-						MultiKey neighborKey = new MultiKey(neighborLine, fromID);
-						NetworkNode neighbor = nodes.get(neighborKey);
-						if (neighbor != null) {
-							fromNode.neighbors.add(neighbor);
-							neighbor.neighbors.add(fromNode);
+		try {
+			Map<MultiKey, NetworkNode> nodes = new HashMap<>();
+			while (cursor.moveToNext()) {
+				int fromID = cursor.getInt(cursor.getColumnIndex("fromID"));
+				String fromName = cursor.getString(cursor.getColumnIndex("fromName"));
+				double fromLat = cursor.getDouble(cursor.getColumnIndex("fromLat"));
+				double fromLon = cursor.getDouble(cursor.getColumnIndex("fromLon"));
+				int toID = cursor.getInt(cursor.getColumnIndex("toID"));
+				String toName = cursor.getString(cursor.getColumnIndex("toName"));
+				double toLat = cursor.getDouble(cursor.getColumnIndex("toLat"));
+				double toLon = cursor.getDouble(cursor.getColumnIndex("toLon"));
+				int distance = cursor.getInt(cursor.getColumnIndex("distance"));
+				String lineString = cursor.getString(cursor.getColumnIndex("line"));
+				Line line = Line.valueOf(lineString);
+				MultiKey fromKey = new MultiKey(line, fromID);
+				NetworkNode fromNode = nodes.get(fromKey);
+				if (fromNode == null) {
+					fromNode = new NetworkNode(fromID, fromName, line, new Location(fromLat, fromLon));
+					nodes.put(fromKey, fromNode);
+				}
+				MultiKey toKey = new MultiKey(line, toID);
+				NetworkNode toNode = nodes.get(toKey);
+				if (toNode == null) {
+					toNode = new NetworkNode(toID, toName, line, new Location(toLat, toLon));
+					nodes.put(toKey, toNode);
+				}
+				fromNode.out.add(new NetworkLink(fromNode, toNode, distance));
+				// TODO efficiency with some cache or DB
+				for (Line neighborLine : Line.values()) {
+					if (neighborLine != line) {
+						{
+							MultiKey neighborKey = new MultiKey(neighborLine, fromID);
+							NetworkNode neighbor = nodes.get(neighborKey);
+							if (neighbor != null) {
+								fromNode.neighbors.add(neighbor);
+								neighbor.neighbors.add(fromNode);
+							}
 						}
-					}
-					{
-						MultiKey neighborKey = new MultiKey(neighborLine, toID);
-						NetworkNode neighbor = nodes.get(neighborKey);
-						if (neighbor != null) {
-							toNode.neighbors.add(neighbor);
-							neighbor.neighbors.add(toNode);
+						{
+							MultiKey neighborKey = new MultiKey(neighborLine, toID);
+							NetworkNode neighbor = nodes.get(neighborKey);
+							if (neighbor != null) {
+								toNode.neighbors.add(neighbor);
+								neighbor.neighbors.add(toNode);
+							}
 						}
 					}
 				}
 			}
+			// readDistances(nodes);
+			return new HashSet<>(nodes.values());
+		} finally {
+			cursor.close();
 		}
-		// readDistances(nodes);
-		return new HashSet<>(nodes.values());
 	}
 
 	protected void readDistances(Map<MultiKey, NetworkNode> nodes) {

@@ -1,5 +1,7 @@
 package net.twisterrob.blt.io.feeds.facilities;
 
+import java.util.Locale;
+
 import org.slf4j.*;
 
 public class Facility {
@@ -31,9 +33,10 @@ public class Facility {
 	}
 
 	@Override public String toString() {
-		return String.format("%s=%s", m_name, m_value);
+		return String.format(Locale.ROOT, "%s=%s", m_name, m_value);
 	}
 
+	@SuppressWarnings("PointlessBooleanExpression")
 	public boolean hasValue() {
 		return m_name != null &&
 				"Ticket Halls".equals(m_name) && getIntValue() > 0

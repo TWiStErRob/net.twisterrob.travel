@@ -32,7 +32,7 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 	protected Map<String, net.twisterrob.blt.io.feeds.timetable.RouteSection> m_routeSections = new HashMap<>();
 	protected Map<String, net.twisterrob.blt.io.feeds.timetable.RouteLink> m_routeLinks = new HashMap<>();
 	protected Map<String, net.twisterrob.blt.io.feeds.timetable.Route> m_routes = new HashMap<>();
-	protected net.twisterrob.blt.io.feeds.timetable.Locality m_localilty;
+	protected net.twisterrob.blt.io.feeds.timetable.Locality m_locality;
 	protected net.twisterrob.blt.io.feeds.timetable.StopPoint m_stopPoint;
 	protected net.twisterrob.blt.io.feeds.timetable.RouteSection m_routeSection;
 	protected net.twisterrob.blt.io.feeds.timetable.RouteLink m_routeLink;
@@ -93,25 +93,25 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 	protected void setupLocalityParsing(Element locality) {
 		locality.setElementListener(new ElementListener() {
 			@Override public void start(Attributes attributes) {
-				m_localilty = new Locality();
+				m_locality = new Locality();
 			}
 			@Override public void end() {
-				m_localities.put(m_localilty.getId(), m_localilty);
-				m_localilty = null;
+				m_localities.put(m_locality.getId(), m_locality);
+				m_locality = null;
 			}
 		});
 		locality
 				.getChild(Root.NS, AnnotatedNptgLocalityRef.ID)
 				.setEndTextElementListener(new EndTextElementListener() {
 					@Override public void end(String body) {
-						m_localilty.setId(body);
+						m_locality.setId(body);
 					}
 				});
 		locality
 				.getChild(Root.NS, AnnotatedNptgLocalityRef.Name)
 				.setEndTextElementListener(new EndTextElementListener() {
 					@Override public void end(String body) {
-						m_localilty.setName(body);
+						m_locality.setName(body);
 					}
 				});
 	}

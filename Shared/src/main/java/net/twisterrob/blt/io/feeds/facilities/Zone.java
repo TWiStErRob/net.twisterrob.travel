@@ -1,5 +1,7 @@
 package net.twisterrob.blt.io.feeds.facilities;
 
+import java.util.Locale;
+
 public class Zone {
 	private int m_zone;
 
@@ -32,6 +34,6 @@ public class Zone {
 	}
 
 	@Override public String toString() {
-		return String.format("Zone %d", m_zone);
+		return String.format(Locale.ROOT, "Zone %d", m_zone);
 	}
 }

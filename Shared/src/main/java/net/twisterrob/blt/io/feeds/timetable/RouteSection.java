@@ -34,7 +34,7 @@ public class RouteSection implements Iterable<StopPoint> {
 	}
 
 	@Override public String toString() {
-		return String.format("%2$d links {%1$s}", id, routeLinks.size());
+		return String.format(Locale.ROOT, "%2$d links {%1$s}", id, routeLinks.size());
 	}
 	public Iterator<StopPoint> iterator() {
 		return new StopPointIterators(routeLinks.iterator());

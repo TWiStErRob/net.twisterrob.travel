@@ -17,6 +17,7 @@ public class ListViewHandler {
 
 	public void update(String message, ListAdapter adapter) {
 		m_emptyText.setText(message);
+		//noinspection RedundantCast AbsListView.setAdapter(ListAdapter) was added in API 11
 		((ListView)m_listView).setAdapter(adapter);
 	}
 	public void update(String message, ExpandableListAdapter adapter) {

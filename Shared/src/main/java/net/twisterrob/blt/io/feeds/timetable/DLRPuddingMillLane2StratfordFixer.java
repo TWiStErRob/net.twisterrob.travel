@@ -16,7 +16,7 @@ public class DLRPuddingMillLane2StratfordFixer implements RouteFixer {
 	public void fix(JourneyPlannerTimetableFeed feed) {
 		for (Route route : feed.getRoutes()) {
 			for (RouteSection section : route.getSections()) {
-				RouteLink link1 = null;
+				RouteLink link1;
 				RouteLink link2 = null;
 				RouteLink link3 = null;
 				for (RouteLink link : section.getLinks()) {
@@ -39,6 +39,7 @@ public class DLRPuddingMillLane2StratfordFixer implements RouteFixer {
 	}
 
 	private static boolean isPuddingMillLane2Stratford(RouteLink link1, RouteLink link2, RouteLink link3) {
+		//noinspection PointlessBooleanExpression simpler formatting
 		return true
 				&& link1 != null
 				&& "Pudding Mill Lane".equals(link1.getFrom().getName())

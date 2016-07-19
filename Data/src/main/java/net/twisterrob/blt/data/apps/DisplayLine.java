@@ -18,7 +18,7 @@ public class DisplayLine {
 		List<String> lineFileNames = fileNames.get(Line.Circle);
 		JourneyPlannerTimetableFeed feed = reader.readFeed(Feed.JourneyPlannerTimetables,
 				STATIC_DATA.getTimetableRoot(), lineFileNames);
-		System.out.printf("\033[1;35m%s\033[0m (\033[35m%s\033[0m)\n",
+		System.out.printf(Locale.ROOT, "\033[1;35m%s\033[0m (\033[35m%s\033[0m)\n",
 				feed.getLine(), feed.getOperator().getTradingName());
 		List<Route> routes = FeedProcessor.reconstruct(feed);
 		new LineDisplay(feed.getLine(), routes, "Centrale Tramlink Stop", "Reeves Corner", "Wellesley Road Tram Stop")
@@ -26,16 +26,16 @@ public class DisplayLine {
 	}
 
 	protected static void print(Node node) {
-		System.out.printf("\t\033[1;32mNode\033[0m: %s\n", node.getStop());
-		System.out.printf("\t\t\033[1;36mNode-in\033[0m: %s\n", node.getIn());
-		System.out.printf("\t\t\033[1;36mNode-out\033[0m: %s\n", node.getOut());
+		System.out.printf(Locale.ROOT, "\t\033[1;32mNode\033[0m: %s\n", node.getStop());
+		System.out.printf(Locale.ROOT, "\t\t\033[1;36mNode-in\033[0m: %s\n", node.getIn());
+		System.out.printf(Locale.ROOT, "\t\t\033[1;36mNode-out\033[0m: %s\n", node.getOut());
 	}
 
 	protected static void printNameGroups(RouteInfo info) {
 		Map<String, Set<StopPoint>> groups = info.groupByName(false);
 		for (Entry<String, Set<StopPoint>> o : groups.entrySet()) {
 			for (StopPoint stop : o.getValue()) {
-				System.out.printf("%3$s/%1$s,\"%2$s\"\n", stop.getId(), stop.getLocation(), o.getKey());
+				System.out.printf(Locale.ROOT, "%3$s/%1$s,\"%2$s\"\n", stop.getId(), stop.getLocation(), o.getKey());
 			}
 		}
 	}

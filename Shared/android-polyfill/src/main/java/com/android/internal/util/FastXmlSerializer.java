@@ -27,7 +27,7 @@ import org.xmlpull.v1.XmlSerializer;
  * painfully slow like the normal one.  It only does what is needed for the
  * specific XML files being written with it.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class FastXmlSerializer implements XmlSerializer {
     private static final String ESCAPE_TABLE[] = new String[] {
         null,     null,     null,     null,     null,     null,     null,     null,  // 0-7

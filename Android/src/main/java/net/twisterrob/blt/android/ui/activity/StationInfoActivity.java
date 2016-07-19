@@ -1,6 +1,5 @@
 package net.twisterrob.blt.android.ui.activity;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import android.content.Intent;
@@ -31,7 +30,6 @@ public class StationInfoActivity extends AppCompatActivity implements
 	 */
 	protected net.twisterrob.blt.android.db.model.Station m_station;
 
-	protected final SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	protected Calendar m_lastUpdated;
 
 	protected SwipeRefreshLayout m_refresh;
@@ -118,7 +116,7 @@ public class StationInfoActivity extends AppCompatActivity implements
 
 	protected synchronized void addResult(PredictionSummaryFeed root, Line line) {
 		m_lastUpdated = Calendar.getInstance();
-		m_status.setText("Last updated at " + fmt.format(m_lastUpdated.getTime()));
+		m_status.setText(getString(R.string.last_updated, m_lastUpdated));
 		m_doneLines.add(line);
 		if (root != null) {
 			Map<Station, Map<Platform, List<Train>>> map = map(root);

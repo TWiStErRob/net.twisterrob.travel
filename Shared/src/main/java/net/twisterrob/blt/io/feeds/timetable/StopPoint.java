@@ -65,7 +65,7 @@ public class StopPoint implements Comparable<StopPoint> {
 	}
 
 	@Override public String toString() {
-		return String.format("%2$s @ %3$s {%1$s}", id, name, locality);
+		return String.format(Locale.ROOT, "%2$s @ %3$s {%1$s}", id, name, locality);
 	}
 
 	public int compareTo(StopPoint o) {

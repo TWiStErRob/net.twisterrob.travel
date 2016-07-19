@@ -30,7 +30,7 @@ public class DLRWestferry2CanaryWharfFixer implements RouteFixer {
 	private static void fix(RouteSection badSection, RouteLink badLink, Iterable<Route> routes) {
 		for (Route route : routes) {
 			for (RouteSection section : route.getSections()) {
-				RouteLink link1 = null;
+				RouteLink link1;
 				RouteLink link2 = null;
 				for (RouteLink link : section.getLinks()) {
 					link1 = link2;
@@ -55,6 +55,7 @@ public class DLRWestferry2CanaryWharfFixer implements RouteFixer {
 	}
 
 	private static boolean isWestferry2CanaryWharf(RouteLink link1, RouteLink link2) {
+		//noinspection PointlessBooleanExpression simpler formatting
 		return true
 				&& link1 != null
 				&& "Westferry".equals(link1.getFrom().getName())
