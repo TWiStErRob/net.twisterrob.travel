@@ -2,10 +2,6 @@ package net.twisterrob.blt.android.ui.activity;
 
 import java.util.List;
 
-import net.twisterrob.android.map.BaseItemizedOverlay;
-import net.twisterrob.blt.android.data.LocationUtils;
-import net.twisterrob.blt.android.*;
-import net.twisterrob.blt.android.db.model.Station;
 import android.graphics.*;
 import android.graphics.drawable.*;
 import android.os.*;
@@ -17,11 +13,15 @@ import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.maps.*;
 
+import net.twisterrob.android.map.BaseItemizedOverlay;
+import net.twisterrob.blt.android.*;
+import net.twisterrob.blt.android.data.LocationUtils;
+import net.twisterrob.blt.android.db.model.Station;
+
 public class StationMapActivity extends MapActivity {
 	protected MapView m_map;
 
-	@Override
-	public void onCreate(final Bundle savedInstanceState) {
+	@Override public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stations_map);
 		m_map = (MapView)findViewById(R.id.map);
@@ -29,12 +29,10 @@ public class StationMapActivity extends MapActivity {
 		m_map.setBuiltInZoomControls(true);
 	}
 
-	@Override
-	protected void onStart() {
+	@Override protected void onStart() {
 		super.onStart();
 		new AsyncTask<Void, Void, Bitmap>() {
-			@Override
-			protected Bitmap doInBackground(Void... params) {
+			@Override protected Bitmap doInBackground(Void... params) {
 				try {
 					// TODO get from stop
 					FutureTarget<Bitmap> target = Glide
@@ -48,8 +46,7 @@ public class StationMapActivity extends MapActivity {
 					return null;
 				}
 			}
-			@Override
-			protected void onPostExecute(Bitmap result) {
+			@Override protected void onPostExecute(Bitmap result) {
 				super.onPostExecute(result);
 				List<Station> stations = App.getInstance().getDataBaseHelper().getStations();
 				Drawable drawable = new BitmapDrawable(getResources(), result);
@@ -57,20 +54,18 @@ public class StationMapActivity extends MapActivity {
 				BaseItemizedOverlay<Item> object = new BaseItemizedOverlayExtension(drawable, stations);
 				m_map.getOverlays().add(object);
 				GeoPoint center = new GeoPoint((int)(51.512161 * 1e6), (int)(-0.090981 * 1e6)); // City of
-																								// london
+				// london
 				m_map.getController().setCenter(center);
 				m_map.getController().setZoom(13);
 			}
 		}.execute((Void[])null);
 	}
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
+	@Override public boolean onCreateOptionsMenu(final Menu menu) {
 		// getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(final MenuItem item) {
+	@Override public boolean onOptionsItemSelected(final MenuItem item) {
 		switch (item.getItemId()) {
 			case 0:
 				return true;
@@ -79,8 +74,7 @@ public class StationMapActivity extends MapActivity {
 		}
 	}
 
-	@Override
-	protected boolean isRouteDisplayed() {
+	@Override protected boolean isRouteDisplayed() {
 		return false;
 	}
 
@@ -96,18 +90,15 @@ public class StationMapActivity extends MapActivity {
 			m_drawable = BaseItemizedOverlay.bindCenter(drawable);
 			populate();
 		}
-		@Override
-		protected Item createItem(int arg0) {
+		@Override protected Item createItem(int arg0) {
 			Item item = new Item(m_stations.get(arg0));
 			item.setMarker(m_drawable);
 			return item;
 		}
-		@Override
-		public int size() {
+		@Override public int size() {
 			return m_stations.size();
 		}
-		@Override
-		public void draw(Canvas canvas, MapView mapView, boolean shadow) {
+		@Override public void draw(Canvas canvas, MapView mapView, boolean shadow) {
 			if (!shadow) {
 				super.draw(canvas, mapView, shadow);
 			}

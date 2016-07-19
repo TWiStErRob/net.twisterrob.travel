@@ -2,15 +2,15 @@ package net.twisterrob.blt.data.io;
 
 import java.io.*;
 
-import net.twisterrob.blt.io.feeds.*;
-
 import org.xml.sax.SAXException;
+
+import net.twisterrob.blt.io.feeds.*;
 
 // TODO move to the shared and use it from DownloadFeed
 public class FeedReader<T extends BaseFeed<T>> {
 	public T readFeed(Feed feed, String root, Iterable<String> fileNames) throws IOException, SAXException {
 		T feedData = null;
-		for (String fileName: fileNames) {
+		for (String fileName : fileNames) {
 			File file = new File(root, fileName);
 			T newFeed = readFeed(feed, file);
 			if (feedData == null) {

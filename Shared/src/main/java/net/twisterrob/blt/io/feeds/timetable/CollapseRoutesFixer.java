@@ -10,9 +10,10 @@ public class CollapseRoutesFixer implements RouteFixer {
 	}
 
 	public void fix(JourneyPlannerTimetableFeed feed) {
-		routes : for (Iterator<Route> it = feed.routes.iterator(); it.hasNext();) {
+		routes:
+		for (Iterator<Route> it = feed.routes.iterator(); it.hasNext(); ) {
 			Route route = it.next();
-			for (Route other: feed.getRoutes()) {
+			for (Route other : feed.getRoutes()) {
 				if (other != route && contains(other, route)) {
 					it.remove();
 					continue routes;

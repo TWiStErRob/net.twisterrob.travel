@@ -1,4 +1,5 @@
 package net.twisterrob.blt.data.ui;
+
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -40,8 +41,7 @@ public class LineDisplay extends JFrame {
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setCellRenderer(new LineRouteCellRenderer(line));
 		list.addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
+			@Override public void valueChanged(ListSelectionEvent e) {
 				if (e.getValueIsAdjusting()) {
 					return;
 				}
@@ -73,8 +73,8 @@ public class LineDisplay extends JFrame {
 			fg = new Color(line.getForeground(colors));
 			bg = new Color(line.getBackground(colors));
 		}
-		@Override
-		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+		@Override public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+				boolean isSelected,
 				boolean cellHasFocus) {
 			JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			Route route = (Route)value;

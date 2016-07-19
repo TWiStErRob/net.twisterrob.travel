@@ -32,9 +32,9 @@ public class Route implements Iterable<StopPoint> {
 
 	public List<StopPoint> getStops() {
 		List<StopPoint> stopPoints = new ArrayList<>();
-		for (RouteSection section: getSections()) {
+		for (RouteSection section : getSections()) {
 			RouteLink last = null;
-			for (RouteLink link: section.getLinks()) {
+			for (RouteLink link : section.getLinks()) {
 				stopPoints.add(link.getFrom());
 				last = link;
 			}
@@ -47,16 +47,15 @@ public class Route implements Iterable<StopPoint> {
 
 	public List<RouteLink> getLinks() {
 		List<RouteLink> links = new ArrayList<>();
-		for (RouteSection section: getSections()) {
-			for (RouteLink link: section.getLinks()) {
+		for (RouteSection section : getSections()) {
+			for (RouteLink link : section.getLinks()) {
 				links.add(link);
 			}
 		}
 		return links;
 	}
 
-	@Override
-	public String toString() {
+	@Override public String toString() {
 		return String.format("%2$s {%1$s}", id, description);
 	}
 
@@ -72,7 +71,7 @@ public class Route implements Iterable<StopPoint> {
 		int sectionNum = 0;
 		RouteSection currentSection = new RouteSection();
 		currentSection.setId(String.valueOf(sectionNum++));
-		for (StopPoint stop: stops) {
+		for (StopPoint stop : stops) {
 			RouteLink link = new RouteLink();
 		}
 		return this;
@@ -89,5 +88,4 @@ public class Route implements Iterable<StopPoint> {
 		}
 		return routeSections.get(routeSections.size() - 1).lastStop();
 	}
-
 }

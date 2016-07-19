@@ -2,10 +2,6 @@ package net.twisterrob.blt.android.ui.activity;
 
 import java.util.*;
 
-import net.twisterrob.blt.android.*;
-import net.twisterrob.blt.android.db.model.Station;
-import net.twisterrob.blt.android.ui.adapter.StationAdapter;
-
 import org.slf4j.*;
 
 import android.app.SearchManager;
@@ -13,16 +9,19 @@ import android.content.Intent;
 import android.os.*;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.text.SpannableString;
 import android.view.*;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Filter.Delayer;
 import android.widget.Filter.FilterListener;
 
-public class StationListActivity extends AppCompatActivity implements FilterListener, Delayer {
+import net.twisterrob.blt.android.*;
+import net.twisterrob.blt.android.db.model.Station;
+import net.twisterrob.blt.android.ui.adapter.StationAdapter;
+
+public class StationListActivity extends AppCompatActivity implements FilterListener, Filter.Delayer {
 	private static final Logger LOG = LoggerFactory.getLogger(StationListActivity.class);
 
 	private ListView m_list;
@@ -31,8 +30,7 @@ public class StationListActivity extends AppCompatActivity implements FilterList
 
 	private String m_lastFilter;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_stations);
@@ -51,12 +49,10 @@ public class StationListActivity extends AppCompatActivity implements FilterList
 		});
 
 		new AsyncTask<Void, Void, List<Station>>() {
-			@Override
-			protected List<Station> doInBackground(Void... params) {
+			@Override protected List<Station> doInBackground(Void... params) {
 				return App.getInstance().getDataBaseHelper().getStations();
 			}
-			@Override
-			protected void onPostExecute(List<Station> result) {
+			@Override protected void onPostExecute(List<Station> result) {
 				populateListData(result);
 			}
 		}.execute();
@@ -75,8 +71,7 @@ public class StationListActivity extends AppCompatActivity implements FilterList
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	@Override public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.options_stations_list, menu);
 
 		SearchView searchView = (SearchView)MenuItemCompat.getActionView(menu.findItem(R.id.menu$options$search));

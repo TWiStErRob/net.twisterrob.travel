@@ -1,18 +1,20 @@
 package net.twisterrob.blt.io.feeds.trackernet;
 
-import static java.util.Collections.*;
-
 import java.util.*;
 import java.util.Map.Entry;
 
-import net.twisterrob.java.utils.CollectionTools;
+import static java.util.Collections.*;
+
 import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.model.Line;
+import net.twisterrob.java.utils.CollectionTools;
 
-class StationIncosistencies {
-	public static final Map<Line, Map<String, String>> TIMETABLE_TO_TRACKERNET_ALIASES = unmodifiableMap(initAliases());
-	public static final Map<Line, Map<String, String>> TRACKERNET_TO_TIMETABLE_ALIASES = unmodifiableMap(reverseAliases(TIMETABLE_TO_TRACKERNET_ALIASES));
-	public static final Map<Line, Map<String, Line>> EXTAS = unmodifiableMap(initExtras());
+class StationInconsistencies {
+	public static final Map<Line, Map<String, String>> TIMETABLE_TO_TRACKERNET_ALIASES =
+			unmodifiableMap(initAliases());
+	public static final Map<Line, Map<String, String>> TRACKERNET_TO_TIMETABLE_ALIASES =
+			unmodifiableMap(reverseAliases(TIMETABLE_TO_TRACKERNET_ALIASES));
+	public static final Map<Line, Map<String, Line>> EXTRAS = unmodifiableMap(initExtras());
 
 	/**
 	 * Map for each line from how a station is called in the {@link Feed#JourneyPlannerTimetables}
@@ -114,17 +116,17 @@ class StationIncosistencies {
 			stationNames.put("King's Cross St.Pancras", "King's Cross St. Pancras");
 			stationNames.put("Wood Green Station", "Wood Green");
 		}
-		return Line.fixMap(aliases, Collections.<String, String> emptyMap());
+		return Line.fixMap(aliases, Collections.<String, String>emptyMap());
 	}
 
 	private static Map<Line, Map<String, String>> reverseAliases(
 			Map<Line, ? extends Map<String, String>> timetableToTrackernetAliases) {
 		Map<Line, Map<String, String>> extras = new EnumMap<>(Line.class);
-		for (Entry<Line, ? extends Map<String, String>> entry: timetableToTrackernetAliases.entrySet()) {
+		for (Entry<Line, ? extends Map<String, String>> entry : timetableToTrackernetAliases.entrySet()) {
 			Map<String, String> reverse = CollectionTools.reverseMap(entry.getValue(), new HashMap<String, String>());
 			extras.put(entry.getKey(), reverse);
 		}
-		return Line.fixMap(extras, Collections.<String, String> emptyMap());
+		return Line.fixMap(extras, Collections.<String, String>emptyMap());
 	}
 	private static Map<Line, Map<String, Line>> initExtras() {
 		Map<Line, Map<String, Line>> extras = new EnumMap<>(Line.class);
@@ -199,6 +201,6 @@ class StationIncosistencies {
 			stationNames.put("Barking", Line.District);
 			stationNames.put("Colliers Wood", Line.Northern);
 		}
-		return Line.fixMap(extras, Collections.<String, Line> emptyMap());
+		return Line.fixMap(extras, Collections.<String, Line>emptyMap());
 	}
 }

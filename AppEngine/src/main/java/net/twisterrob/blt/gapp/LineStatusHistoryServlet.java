@@ -1,5 +1,4 @@
 package net.twisterrob.blt.gapp;
-import static net.twisterrob.blt.gapp.FeedConsts.*;
 
 import java.io.*;
 import java.util.*;
@@ -7,8 +6,14 @@ import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import name.fraser.neil.plaintext.*;
+import org.apache.tools.ant.filters.StringInputStream;
+
+import com.google.appengine.api.datastore.*;
+import com.google.appengine.api.datastore.Query.SortDirection;
+
+import name.fraser.neil.plaintext.diff_match_patch;
 import name.fraser.neil.plaintext.diff_match_patch.Diff;
+
 import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus;
@@ -16,10 +21,7 @@ import net.twisterrob.blt.model.Line;
 import net.twisterrob.java.utils.ObjectTools;
 import net.twisterrob.java.web.InvokerMap;
 
-import org.apache.tools.ant.filters.StringInputStream;
-
-import com.google.appengine.api.datastore.*;
-import com.google.appengine.api.datastore.Query.SortDirection;
+import static net.twisterrob.blt.gapp.FeedConsts.*;
 
 @SuppressWarnings("serial")
 public class LineStatusHistoryServlet extends HttpServlet {
@@ -32,8 +34,7 @@ public class LineStatusHistoryServlet extends HttpServlet {
 
 	private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@Override public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Feed feed = Feed.TubeDepartureBoardsLineStatus;
 		List<Result> results = new LinkedList<>();
 
@@ -55,7 +56,7 @@ public class LineStatusHistoryServlet extends HttpServlet {
 
 		// process them
 		Iterable<Entity> entries = fetchEntries(feed);
-		for (Entity entry: entries) {
+		for (Entity entry : entries) {
 			if (--max < 0) {
 				break; // we've had enough
 			}
@@ -82,7 +83,7 @@ public class LineStatusHistoryServlet extends HttpServlet {
 			try {
 				Feed feed = Feed.valueOf(entry.getKind());
 				InputStream stream = new StringInputStream(content.getValue(), ENCODING);
-				LineStatusFeed feedContents = feed.<LineStatusFeed> getHandler().parse(stream);
+				LineStatusFeed feedContents = feed.<LineStatusFeed>getHandler().parse(stream);
 				stream.close();
 				result = new Result(date, feedContents);
 			} catch (Exception ex) {
@@ -133,7 +134,7 @@ public class LineStatusHistoryServlet extends HttpServlet {
 	private static List<ResultChange> getDifferences(List<Result> results, boolean skipErrors) {
 		List<ResultChange> resultChanges = new ArrayList<>(results.size());
 		Result newResult = null;
-		for (Result oldResult: results) { // we're going forward, but the list is backwards
+		for (Result oldResult : results) { // we're going forward, but the list is backwards
 			if (skipErrors && oldResult.getFullError() != null) {
 				continue;
 			}
@@ -143,7 +144,6 @@ public class LineStatusHistoryServlet extends HttpServlet {
 		resultChanges.add(new ResultChange(null, newResult));
 		resultChanges.remove(0);
 		return resultChanges;
-
 	}
 	public static class ResultChange {
 		private Result oldResult;
@@ -183,7 +183,6 @@ public class LineStatusHistoryServlet extends HttpServlet {
 				diffError();
 				diffContent();
 			} // else errorChange = null
-
 		}
 		protected void diffContent() {
 			if (oldResult.getContent() == null || newResult.getContent() == null) {
@@ -194,7 +193,7 @@ public class LineStatusHistoryServlet extends HttpServlet {
 			Set<Line> allLines = new HashSet<>();
 			allLines.addAll(oldMap.keySet());
 			allLines.addAll(newMap.keySet());
-			for (Line line: allLines) {
+			for (Line line : allLines) {
 				LineStatus oldStatus = oldMap.get(line);
 				LineStatus newStatus = newMap.get(line);
 				if (oldStatus == null || newStatus == null) {

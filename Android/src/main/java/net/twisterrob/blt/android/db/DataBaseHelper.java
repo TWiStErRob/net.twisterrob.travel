@@ -2,9 +2,10 @@ package net.twisterrob.blt.android.db;
 
 import java.util.*;
 
-import net.twisterrob.blt.android.db.model.*;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+
+import net.twisterrob.blt.android.db.model.*;
 
 /**
  * See details in the docs under <SDK_DIR>/docs/guide/topics/data/data- storage.html and I think you'll find the answer

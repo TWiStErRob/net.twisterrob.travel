@@ -1,8 +1,9 @@
 package net.twisterrob.blt.android.data.distance;
 
+import android.graphics.Color;
+
 import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.model.*;
-import android.graphics.Color;
 
 public class DistanceMapDrawerConfig {
 	int borderSize = 0;

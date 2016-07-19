@@ -47,8 +47,7 @@ public class RouteLink implements Iterable<StopPoint> {
 		this.to = to;
 	}
 
-	@Override
-	public String toString() {
+	@Override public String toString() {
 		return String.format("%2$s -> %3$s {%1$s}", id, from.getName(), to.getName());
 	}
 

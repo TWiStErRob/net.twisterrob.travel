@@ -33,8 +33,7 @@ public class RouteSection implements Iterable<StopPoint> {
 		return routeLinks.get(routeLinks.size() - 1).getTo();
 	}
 
-	@Override
-	public String toString() {
+	@Override public String toString() {
 		return String.format("%2$d links {%1$s}", id, routeLinks.size());
 	}
 	public Iterator<StopPoint> iterator() {

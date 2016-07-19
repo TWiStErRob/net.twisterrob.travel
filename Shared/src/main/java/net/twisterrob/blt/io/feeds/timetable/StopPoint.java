@@ -28,7 +28,6 @@ public class StopPoint implements Comparable<StopPoint> {
 	}
 	protected void setId(String id) {
 		this.id = id;
-
 	}
 	public String getName() {
 		return name;
@@ -65,8 +64,7 @@ public class StopPoint implements Comparable<StopPoint> {
 		this.type = type;
 	}
 
-	@Override
-	public String toString() {
+	@Override public String toString() {
 		return String.format("%2$s @ %3$s {%1$s}", id, name, locality);
 	}
 

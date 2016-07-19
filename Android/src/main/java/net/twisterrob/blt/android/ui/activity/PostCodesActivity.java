@@ -3,10 +3,6 @@ package net.twisterrob.blt.android.ui.activity;
 import java.util.*;
 import java.util.Map.Entry;
 
-import net.twisterrob.blt.android.data.LocationUtils;
-import net.twisterrob.blt.android.*;
-import net.twisterrob.blt.android.db.model.AreaHullPoint;
-import net.twisterrob.java.model.Location;
 import android.graphics.Color;
 import android.os.*;
 import android.support.v4.app.FragmentActivity;
@@ -14,11 +10,15 @@ import android.support.v4.app.FragmentActivity;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
+import net.twisterrob.blt.android.*;
+import net.twisterrob.blt.android.data.LocationUtils;
+import net.twisterrob.blt.android.db.model.AreaHullPoint;
+import net.twisterrob.java.model.Location;
+
 public class PostCodesActivity extends FragmentActivity {
 	private GoogleMap m_map;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stations_map_v2);
 
@@ -27,47 +27,45 @@ public class PostCodesActivity extends FragmentActivity {
 		m_map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.512161, -0.090981), 13)); // City of london
 	}
 
-	@Override
-	protected void onStart() {
+	@Override protected void onStart() {
 		super.onStart();
 		new AsyncTask<Void, Void, Map<String, List<AreaHullPoint>>>() {
-			@Override
-			protected Map<String, List<AreaHullPoint>> doInBackground(Void... params) {
+			@Override protected Map<String, List<AreaHullPoint>> doInBackground(Void... params) {
 				return App.getInstance().getDataBaseHelper().getAreas();
 			}
-			@Override
-			protected void onPostExecute(Map<String, List<AreaHullPoint>> result) {
+			@Override protected void onPostExecute(Map<String, List<AreaHullPoint>> result) {
 				super.onPostExecute(result);
 
 				@SuppressWarnings("synthetic-access")
 				GoogleMap map = m_map;
 
 				float[] hsv = {0, 1, 1};
-				float[] hues = {BitmapDescriptorFactory.HUE_RED, //
-						BitmapDescriptorFactory.HUE_ORANGE, //
-						BitmapDescriptorFactory.HUE_YELLOW, //
-						BitmapDescriptorFactory.HUE_GREEN, //
-						BitmapDescriptorFactory.HUE_CYAN, //
-						BitmapDescriptorFactory.HUE_AZURE, //
-						BitmapDescriptorFactory.HUE_BLUE, //
-						BitmapDescriptorFactory.HUE_VIOLET, //
-						BitmapDescriptorFactory.HUE_MAGENTA, //
-						BitmapDescriptorFactory.HUE_ROSE //
+				float[] hues = {
+						BitmapDescriptorFactory.HUE_RED,
+						BitmapDescriptorFactory.HUE_ORANGE,
+						BitmapDescriptorFactory.HUE_YELLOW,
+						BitmapDescriptorFactory.HUE_GREEN,
+						BitmapDescriptorFactory.HUE_CYAN,
+						BitmapDescriptorFactory.HUE_AZURE,
+						BitmapDescriptorFactory.HUE_BLUE,
+						BitmapDescriptorFactory.HUE_VIOLET,
+						BitmapDescriptorFactory.HUE_MAGENTA,
+						BitmapDescriptorFactory.HUE_ROSE
 				};
-				for (Entry<String, List<AreaHullPoint>> area: result.entrySet()) {
+				for (Entry<String, List<AreaHullPoint>> area : result.entrySet()) {
 					PolygonOptions poly = new PolygonOptions();
 					float hue = hues[Math.abs(area.getKey().hashCode()) % hues.length];
 					hsv[0] = hue;
 					poly.fillColor(Color.HSVToColor(0x40, hsv));
 					boolean first = true;
-					for (AreaHullPoint point: area.getValue()) {
+					for (AreaHullPoint point : area.getValue()) {
 						Location loc = point.getLocation();
 						if (first) {
 							first = false;
-							map.addMarker(new MarkerOptions() //
-									.position(LocationUtils.toLatLng(loc)) //
-									.title(area.getKey()) //
-									.icon(BitmapDescriptorFactory.defaultMarker(hue)) //
+							map.addMarker(new MarkerOptions()
+									.position(LocationUtils.toLatLng(loc))
+									.title(area.getKey())
+									.icon(BitmapDescriptorFactory.defaultMarker(hue))
 							);
 						} else {
 							poly.add(LocationUtils.toLatLng(loc));

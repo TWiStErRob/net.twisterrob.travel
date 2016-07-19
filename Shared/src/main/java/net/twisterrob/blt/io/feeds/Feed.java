@@ -1,19 +1,20 @@
 package net.twisterrob.blt.io.feeds;
-import static net.twisterrob.blt.io.feeds.Feed.Const.*;
-import static net.twisterrob.blt.io.feeds.Feed.Type.*;
 
 import java.net.*;
 
 import net.twisterrob.blt.io.feeds.facilities.FacilitiesFeedHandler;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableHandler;
 import net.twisterrob.blt.io.feeds.trackernet.*;
+
+import static net.twisterrob.blt.io.feeds.Feed.Const.*;
+import static net.twisterrob.blt.io.feeds.Feed.Type.*;
+
 /**
  * Feeds provided by Transport for London<br>
  * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx">link</a><br>
  * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/syndication-developer-guidelines.pdf">link</a><br>
- * @author TWiStEr
- *
  */
+@SuppressWarnings("PointlessArithmeticExpression")
 public enum Feed {
 	/**
 	 * <h3>Step-Free Tube Guide Data</h3><br>
@@ -330,29 +331,27 @@ public enum Feed {
 	 * <h3>River services timetables</h3><br>
 	 * <b>Example</b>: <a href="http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx?email=papp.robert.s@gmail.com&feedId=22">link</a><br>
 	 */
-	RiverTimetables(22, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE)
-
-	;
+	RiverTimetables(22, MISSING_TIME, MISSING_TIME, MISSING_TIME, MISSING_HANDLER, MISSING_SAMPLE);
 
 	/**
-	 * @see Feed#Type
+	 * @see Feed.Type
 	 */
 	private final Type m_type;
 
 	/**
 	 * How often we publish a fresh copy of the feed
 	 */
-	private int m_freshTime;
+	private long m_freshTime;
 
 	/**
 	 * Maximum time allowed between capturing and displaying the feed
 	 */
-	private int m_maxDelay;
+	private long m_maxDelay;
 
 	/**
 	 * Maximum time information can be displayed before being updated
 	 */
-	private int m_maxDisplay;
+	private long m_maxDisplay;
 	private URL m_url = null;
 	private Class<? extends FeedHandler<? extends BaseFeed<?>>> m_handler;
 	private final URL m_sampleUrl;
@@ -362,7 +361,7 @@ public enum Feed {
 	 */
 	private int m_feedId = -1;
 
-	private Feed(Type type, int freshTime, int maxDelay, int maxDisplay,
+	Feed(Type type, long freshTime, long maxDelay, long maxDisplay,
 			Class<? extends FeedHandler<? extends BaseFeed<?>>> handler, String sampleUrl) {
 		this.m_type = type;
 		this.m_freshTime = freshTime;
@@ -372,12 +371,12 @@ public enum Feed {
 		this.m_sampleUrl = sampleUrl == null? null : createURL(sampleUrl);
 	}
 
-	private Feed(int freshTime, int maxDelay, int maxDisplay,
+	Feed(long freshTime, long maxDelay, long maxDisplay,
 			Class<? extends FeedHandler<? extends BaseFeed<?>>> handler, String sampleUrl, String url) {
 		this(Other, freshTime, maxDelay, maxDisplay, handler, sampleUrl);
 		m_url = url != null? createURL(url) : null;
 	}
-	private Feed(int feedId, int freshTime, int maxDelay, int maxDisplay,
+	Feed(int feedId, long freshTime, long maxDelay, long maxDisplay,
 			Class<? extends FeedHandler<? extends BaseFeed<?>>> handler, String sampleUrl) {
 		this(Syndication, freshTime, maxDelay, maxDisplay, handler, sampleUrl);
 		m_feedId = feedId;
@@ -386,13 +385,13 @@ public enum Feed {
 	public Type getType() {
 		return m_type;
 	}
-	public int getFreshTime() {
+	public long getFreshTime() {
 		return m_freshTime;
 	}
-	public int getMaxDelay() {
+	public long getMaxDelay() {
 		return m_maxDelay;
 	}
-	public int getMaxDisplay() {
+	public long getMaxDisplay() {
 		return m_maxDisplay;
 	}
 	public int getFeedId() {
@@ -416,14 +415,14 @@ public enum Feed {
 			throw new RuntimeException(ex);
 		}
 	}
-	public static enum Type {
+	public enum Type {
 		Syndication("http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx"),
 		Other(null);
 
 		private final URL m_baseUrl;
 
 		@SuppressWarnings("synthetic-access")
-		private Type(String baseUrl) {
+		Type(String baseUrl) {
 			m_baseUrl = baseUrl != null? createURL(baseUrl) : null;
 		}
 
@@ -445,16 +444,21 @@ public enum Feed {
 		}
 	}
 
-	protected static interface Const {
-		int SECOND = 1000;
-		int MINUTE = 60 * SECOND;
-		int HOUR = 60 * MINUTE;
-		int DAY = 24 * HOUR;
-		int WEEK = 7 * DAY;
-		int MONTH = 30 * DAY;
-		int YEAR = 365 * DAY;
-		int MISSING_TIME = 0;
-		int N_A = 0;
+	/**
+	 * Cannot reference {@code static final T Enum.*} from enum constructor calls without qualification,
+	 * so it's easier to have a separate class and static import everything.
+	 * Visibility can't be private to be able to import this class.
+	 */
+	interface Const {
+		long SECOND = 1000;
+		long MINUTE = 60 * SECOND;
+		long HOUR = 60 * MINUTE;
+		long DAY = 24 * HOUR;
+		long WEEK = 7 * DAY;
+		long MONTH = 30 * DAY;
+		long YEAR = 365 * DAY;
+		long MISSING_TIME = 0;
+		long N_A = 0;
 		String MISSING_URL = null;
 		String MISSING_SAMPLE = null;
 		Class<? extends FeedHandler<? extends BaseFeed<?>>> MISSING_HANDLER = null;

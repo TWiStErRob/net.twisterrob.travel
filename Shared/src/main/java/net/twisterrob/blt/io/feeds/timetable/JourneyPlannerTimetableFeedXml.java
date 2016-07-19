@@ -1,26 +1,22 @@
 package net.twisterrob.blt.io.feeds.timetable;
 
-import net.twisterrob.blt.io.feeds.*;
-import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.RouteLink.From;
-import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.RouteLink.To;
-import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Descriptor;
-import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Place;
+import net.twisterrob.blt.io.feeds.FeedXmlDescriptor;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.RouteLink.*;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.*;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Place.Location;
-import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.StopClassification;
 import net.twisterrob.java.annotations.SimpleDateFormatString;
 
 /**
- * TODO
- * @author TWiStEr
- * @see http://www.transxchange.org.uk/schema/2.1/TransXChange_general.xsd
- * @see http://www.transxchange.org.uk/schema/2.1/TransXChange_common.xsd
- * @see Feed#JourneyPlannerTimetables 
+ * TODO what to do?
+ * @see <a href="http://www.transxchange.org.uk/schema/2.1/TransXChange_general.xsd">TransXChange_general.xsd</a>
+ * @see <a href="http://www.transxchange.org.uk/schema/2.1/TransXChange_common.xsd">TransXChange_common.xsd</a>
+ * @see net.twisterrob.blt.io.feeds.Feed#JourneyPlannerTimetables
  */
-@SuppressWarnings("hiding")
-interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
+@SuppressWarnings({"hiding", "UnnecessaryInterfaceModifier"})
+/*default*/ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 	@Children({StopAreas.class, JourneyPatternSections.class, VehicleJourneys.class, Registrations.class,
-			SupportingDocuments.class})
-	interface Root {
+			          SupportingDocuments.class})
+	public interface Root {
 		String NS = "http://www.transxchange.org.uk/";
 		String ELEMENT = "TransXChange";
 		@Attribute String modificationTime = "ModificationDateTime";
@@ -69,12 +65,13 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 		 */
 		@Child @Children(Operator.class) String Operators = "Operators";
 	}
+
 	/**
 	 * A NPTG locality reference annotated by its names.
 	 * TransXChange document to support the Publishing of stop names that include the locality name eg "Barset, High Street".
 	 * The XSD Type name is: AnnotatedNptgLocalityRefStructure
 	 */
-	interface AnnotatedNptgLocalityRef {
+	public interface AnnotatedNptgLocalityRef {
 		String ELEMENT = "AnnotatedNptgLocalityRef";
 		/**
 		 * Unique identifier of the locality.
@@ -101,7 +98,7 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 	 * The XSD Type name is: StopPointStructure
 	 */
 	@FeedXmlDescriptor.Children({Descriptor.class, Place.class, StopClassification.class})
-	interface StopPoint {
+	public interface StopPoint {
 		String ELEMENT = "StopPoint";
 		@Attribute String creationTime = "CreationDateTime";
 		@ValueConstraint @SimpleDateFormatString String creationTime$format = "yyyy-MM-dd'T'HH:mm:ss";
@@ -122,19 +119,20 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 		 * Structured textual description of stop.
 		 * The XSD Type name is: DescriptorStructure
 		 */
-		interface Descriptor {
+		public interface Descriptor {
 			String ELEMENT = "Descriptor";
 			/**
 			 * Common name for the stop in a specified language.
 			 */
 			@Child String CommonName = "CommonName";
 		}
+
 		/**
 		 * Place where stop is located.
 		 * The XSD Type name is: inline element Place
 		 */
 		@FeedXmlDescriptor.Children({Location.class})
-		interface Place {
+		public interface Place {
 			String ELEMENT = "Place";
 			/**
 			 * NPTG locality within which stop lies.
@@ -180,11 +178,12 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 				}
 			}
 		}
+
 		/**
 		 * Classification, e.g. on-street bus stop; platform at a railway station.
 		 * The XSD Type name is: StopClassificationStructure
 		 */
-		interface StopClassification {
+		public interface StopClassification {
 			String ELEMENT = "StopClassification";
 			/**
 			 * Classification of the stop as one of the NaPTAN stop types.
@@ -237,15 +236,16 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 	 * A NaPTAN stop reference annotated by common name.
 	 * The XSD Type name is: AnnotatedStopPointRefStructure
 	 */
-	interface AnnotatedStopPointRef {
+	public interface AnnotatedStopPointRef {
 		String ELEMENT = "AnnotatedStopPointRef";
 	}
+
 	/**
 	 * Local StopArea definitions. Normally StopAreas will be defined as part of their NaPTAN Definition. Areas can be defined locally here.
 	 * The XSD Type name is: StopAreasStructure
 	 */
 	@Deprecated
-	interface StopAreas {
+	public interface StopAreas {
 		String ELEMENT = "StopAreas";
 	}
 
@@ -255,7 +255,7 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 	 * The XSD Type name is: RouteSectionsStructure/RouteSection
 	 */
 	@Children({RouteLink.class})
-	interface RouteSection {
+	public interface RouteSection {
 		String ELEMENT = "RouteSection";
 		@Attribute String id = "id";
 	}
@@ -265,7 +265,7 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 	 * The XSD Type name is: RouteSectionsStructure/RouteSection/RouteLink
 	 */
 	@FeedXmlDescriptor.Children({From.class, To.class})
-	interface RouteLink {
+	public interface RouteLink {
 		String ELEMENT = "RouteLink";
 		@Attribute String id = "id";
 		/**
@@ -276,26 +276,29 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 		 * Direction of the route running over the link.
 		 */
 		@Child @Value(enumeration = DirectionEnum.class) String Direction = "Direction";
+
 		enum DirectionEnum {
 			inbound,
 			outbound,
 			clockwise,
 			anticlockwise
 		}
+
 		/**
 		 * The stop at which the link begins.
 		 */
-		interface From {
+		public interface From {
 			String ELEMENT = "From";
 			/**
 			 * Reference to a NaPTAN stop.	
 			 */
 			@Child @Value(regex = "[0-9]{3}[A-Za-z0-9]{2,9}") String StopPointRef = "StopPointRef";
 		}
+
 		/**
 		 * The stop at which the link ends.
 		 */
-		interface To {
+		public interface To {
 			String ELEMENT = "To";
 			/**
 			 * Reference to a NaPTAN stop.
@@ -309,7 +312,7 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 	 * An ordered collection of links connecting NaPTAN stops; the links are grouped into sections.
 	 * The XSD Type name is: RoutesStructure/Route
 	 */
-	interface Route {
+	public interface Route {
 		String ELEMENT = "Route";
 		@Attribute String id = "id";
 		/**
@@ -326,11 +329,11 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 	 * Definitions of journey pattern sections.
 	 * The XSD Type name is: JourneyPatternSectionsStructure
 	 */
-	interface JourneyPatternSections {
+	public interface JourneyPatternSections {
 		String ELEMENT = "JourneyPatternSections";
 	}
 
-	interface Operator {
+	public interface Operator {
 		String ELEMENT = "Operator";
 		@Attribute @Value(regex = "OId_[A-Z]+") String id = "id";
 		@Child @Value(regex = "[A-Z]+") String OperatorCode = "OperatorCode";
@@ -344,7 +347,7 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 		}
 	}
 
-	interface Service {
+	public interface Service {
 		@Child String ELEMENT = "Service";
 		@Child @Children(Line.class) String Lines = "Lines";
 
@@ -359,23 +362,25 @@ interface JourneyPlannerTimetableFeedXml extends FeedXmlDescriptor {
 	 * The XSD Type name is: VehicleJourneysStructure
 	 */
 	@Deprecated
-	interface VehicleJourneys {
+	public interface VehicleJourneys {
 		String ELEMENT = "VehicleJourneys";
 	}
+
 	/**
 	 * Registration details.
 	 * The XSD Type name is: RegistrationsStructure
 	 */
 	@Deprecated
-	interface Registrations {
+	public interface Registrations {
 		String ELEMENT = "Registrations";
 	}
+
 	/**
 	 * Additional documents describing the service.
 	 * The XSD Type name is: SupportingDocumentsStructure
 	 */
 	@Deprecated
-	interface SupportingDocuments {
+	public interface SupportingDocuments {
 		String ELEMENT = "SupportingDocuments";
 	}
 }

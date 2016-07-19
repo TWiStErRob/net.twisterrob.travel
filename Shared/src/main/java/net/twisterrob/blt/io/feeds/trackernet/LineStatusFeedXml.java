@@ -1,23 +1,24 @@
 package net.twisterrob.blt.io.feeds.trackernet;
 
-import net.twisterrob.blt.io.feeds.*;
+import net.twisterrob.blt.io.feeds.FeedXmlDescriptor;
 
 /**
  * The feed structure of the TrackerNet line status API.
- * @author TWiStEr
- * @see http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf#3.4.5
- * @see Feed#TubeDepartureBoardsLineStatus 
- * @see Feed#TubeDepartureBoardsLineStatusIncidents 
+ * @see <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">
+ *     Trackernet_Data_Services_Guide_Beta_0_2.pdf > 3.4.5</a>
+ * @see net.twisterrob.blt.io.feeds.Feed#TubeDepartureBoardsLineStatus
+ * @see net.twisterrob.blt.io.feeds.Feed#TubeDepartureBoardsLineStatusIncidents
  */
-interface LineStatusFeedXml extends FeedXmlDescriptor {
+@SuppressWarnings("UnnecessaryInterfaceModifier")
+/*default*/ interface LineStatusFeedXml extends FeedXmlDescriptor {
 	@Children(LineStatus.class)
-	interface Root {
+	public interface Root {
 		String NS = "http://webservices.lul.co.uk/";
 		String ELEMENT = "ArrayOfLineStatus";
 	}
 
 	@Children({BranchDisruptions.class, Line.class, Status.class})
-	interface LineStatus {
+	public interface LineStatus {
 		String ELEMENT = "LineStatus";
 		/**
 		 * <code>LineStatus ID</code>: An identifier for the line.
@@ -30,19 +31,19 @@ interface LineStatusFeedXml extends FeedXmlDescriptor {
 	}
 
 	@Children(BranchDisruption.class)
-	interface BranchDisruptions {
+	public interface BranchDisruptions {
 		/**
 		 * <code>BranchDisruptions</code>: Not Used.
 		 */
 		String ELEMENT = "BranchDisruptions";
 	}
 
-	interface BranchDisruption {
+	public interface BranchDisruption {
 		String ELEMENT = "BranchDisruption";
 		// TODO
 	}
 
-	interface Line {
+	public interface Line {
 		String ELEMENT = "Line";
 		/**
 		 * <code>Line ID</code>: A code representing the line.
@@ -55,7 +56,7 @@ interface LineStatusFeedXml extends FeedXmlDescriptor {
 	}
 
 	@Children(StatusType.class)
-	interface Status {
+	public interface Status {
 		String ELEMENT = "Status";
 		/**
 		 * <code>Status ID</code>: A numeric code representing the status of the line.
@@ -75,7 +76,7 @@ interface LineStatusFeedXml extends FeedXmlDescriptor {
 		@Attribute String isActive = "IsActive";
 	}
 
-	interface StatusType {
+	public interface StatusType {
 		String ELEMENT = "Status";
 		/**
 		 * <code>StatusType ID</code>: A code representing the status type the service is checking. For this call it will always return the value “1”.

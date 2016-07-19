@@ -4,16 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Map.Entry;
 
-import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
-import net.twisterrob.java.utils.CollectionTools;
-import net.twisterrob.blt.android.R;
-import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
-import net.twisterrob.blt.android.ui.*;
-import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter;
-import net.twisterrob.blt.io.feeds.Feed;
-import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeed;
-import net.twisterrob.blt.io.feeds.trackernet.model.*;
-import net.twisterrob.blt.model.*;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,18 +12,26 @@ import android.view.*;
 import android.view.View.MeasureSpec;
 import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ExpandableListView.OnGroupCollapseListener;
-import android.widget.ExpandableListView.OnGroupExpandListener;
+import android.widget.ExpandableListView.*;
+
+import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
+import net.twisterrob.blt.android.R;
+import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
+import net.twisterrob.blt.android.ui.ListViewHandler;
+import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter;
+import net.twisterrob.blt.io.feeds.Feed;
+import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeed;
+import net.twisterrob.blt.io.feeds.trackernet.model.*;
+import net.twisterrob.blt.model.*;
+import net.twisterrob.java.utils.CollectionTools;
 
 /**
  * http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf
- * @author TWiStEr
  */
-public class PredictionSummaryActivity extends AppCompatActivity
-		implements
-			SwipeRefreshLayout.OnRefreshListener,
-			OnGroupExpandListener,
-			OnGroupCollapseListener {
+public class PredictionSummaryActivity extends AppCompatActivity implements
+		SwipeRefreshLayout.OnRefreshListener,
+		OnGroupExpandListener,
+		OnGroupCollapseListener {
 	public static final String EXTRA_LINE = "line";
 
 	/**
@@ -54,8 +52,7 @@ public class PredictionSummaryActivity extends AppCompatActivity
 
 	protected ListViewHandler m_listHandler;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_prediction_summary);
 
@@ -87,7 +84,7 @@ public class PredictionSummaryActivity extends AppCompatActivity
 		buttons.put(PlatformDirection.North, (ToggleButton)this.findViewById(R.id.button$compass_north));
 		buttons.put(PlatformDirection.South, (ToggleButton)this.findViewById(R.id.button$compass_south));
 		buttons.put(PlatformDirection.Other, (ToggleButton)this.findViewById(R.id.button$compass_center));
-		for (final Entry<PlatformDirection, ToggleButton> buttonMap: buttons.entrySet()) {
+		for (final Entry<PlatformDirection, ToggleButton> buttonMap : buttons.entrySet()) {
 			// restore UI state (setChecked) before attaching the handler to prevent calling it
 			buttonMap.getValue().setChecked(m_directionsEnabled.contains(buttonMap.getKey()));
 			buttonMap.getValue().setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -98,20 +95,19 @@ public class PredictionSummaryActivity extends AppCompatActivity
 		}
 	}
 
-	@Override
-	protected void onResume() {
+	@Override protected void onResume() {
 		super.onResume();
 		// actually start loading the data
 		this.onRefresh();
 	}
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
+	@Override protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
 		outState.putLong("lastUpdate", m_lastUpdated.getTimeInMillis());
 		outState.putStringArray("expanded", m_expandedStationNames.toArray(new String[m_expandedStationNames.size()]));
-		outState.putSerializable("dirs", m_directionsEnabled.toArray(new PlatformDirection[m_directionsEnabled.size()]));
+		outState.putSerializable("dirs",
+				m_directionsEnabled.toArray(new PlatformDirection[m_directionsEnabled.size()]));
 	}
 
 	protected void restoreInstanceState(Bundle state) {
@@ -137,7 +133,6 @@ public class PredictionSummaryActivity extends AppCompatActivity
 		}
 	}
 
-
 	@Override public void onRefresh() {
 		m_refresh.setRefreshing(true);
 		m_listHandler.startTFLLoad();
@@ -148,8 +143,7 @@ public class PredictionSummaryActivity extends AppCompatActivity
 		Map<String, Object> args = new HashMap<>();
 		args.put("line", m_line);
 		new DownloadFeedTask<PredictionSummaryFeed>(args) {
-			@Override
-			protected void onPostExecute(AsyncTaskResult<Feed, PredictionSummaryFeed> result) {
+			@Override protected void onPostExecute(AsyncTaskResult<Feed, PredictionSummaryFeed> result) {
 				if (result.getError() != null) {
 					LOG.warn("Cannot load line prediction summary", result.getError());
 					m_listHandler.empty("Cannot load line prediction summary: " + result.getError());
@@ -170,7 +164,7 @@ public class PredictionSummaryActivity extends AppCompatActivity
 			}
 			private Map<Station, Map<Platform, List<Train>>> map(PredictionSummaryFeed root) {
 				Map<Station, Map<Platform, List<Train>>> data = new TreeMap<>(Station.COMPARATOR_NAME);
-				for (Station station: root.getStationPlatform().keySet()) {
+				for (Station station : root.getStationPlatform().keySet()) {
 					data.put(station, root.collectTrains(station));
 				}
 				return data;
@@ -192,7 +186,7 @@ public class PredictionSummaryActivity extends AppCompatActivity
 		String lastExpanded = CollectionTools.last(m_expandedStationNames, true);
 		int lastExpandedGroupIndex = -1;
 		int groupIndex = 0;
-		for (Station station: m_adapter.getGroups()) {
+		for (Station station : m_adapter.getGroups()) {
 			if (m_expandedStationNames.contains(station.getName())) {
 				m_listView.expandGroup(groupIndex);
 			}
@@ -205,16 +199,16 @@ public class PredictionSummaryActivity extends AppCompatActivity
 			m_listView.setSelectedGroup(lastExpandedGroupIndex);
 			// FIXME doesn't work, maybe post async
 			View selectedView = m_listView.getAdapter().getView(lastExpandedGroupIndex, null, m_listView);
-			selectedView.measure( //
-					MeasureSpec.makeMeasureSpec(m_listView.getWidth(), MeasureSpec.AT_MOST), //
-					MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+			selectedView.measure(
+					MeasureSpec.makeMeasureSpec(m_listView.getWidth(), MeasureSpec.AT_MOST),
+					MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+			);
 			int height = selectedView.getMeasuredHeight();
 			m_listView.scrollBy(0, -height / 2);
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	@Override public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.options_prediction_summary, menu);
 		menuIDs.put(R.id.menu$option$compass_east, PlatformDirection.East);
 		menuIDs.put(R.id.menu$option$compass_west, PlatformDirection.West);
@@ -227,14 +221,13 @@ public class PredictionSummaryActivity extends AppCompatActivity
 		menus.put(PlatformDirection.South, menu.findItem(R.id.menu$option$compass_south));
 		menus.put(PlatformDirection.Other, menu.findItem(R.id.menu$option$compass_others));
 		// fix checkboxes
-		for (Entry<PlatformDirection, MenuItem> entry: menus.entrySet()) {
+		for (Entry<PlatformDirection, MenuItem> entry : menus.entrySet()) {
 			entry.getValue().setChecked(m_directionsEnabled.contains(entry.getKey()));
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	@Override public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu$option$compass_east:
 			case R.id.menu$option$compass_west:
@@ -255,7 +248,7 @@ public class PredictionSummaryActivity extends AppCompatActivity
 
 	protected void resetCompassState() {
 		PlatformDirection[] values = PlatformDirection.values();
-		for (PlatformDirection dir: values) {
+		for (PlatformDirection dir : values) {
 			toggleCompass(dir, m_directionsEnabled.contains(dir));
 		}
 	}

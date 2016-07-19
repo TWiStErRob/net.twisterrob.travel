@@ -2,33 +2,33 @@ package net.twisterrob.blt.android.db;
 
 import java.io.*;
 
-import net.twisterrob.android.utils.tools.*;
-import net.twisterrob.blt.android.*;
-
 import org.slf4j.*;
 
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.*;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
-import android.os.*;
+import android.os.Build.*;
+import android.os.Environment;
 
+import net.twisterrob.android.utils.tools.*;
+import net.twisterrob.blt.android.*;
+
+// FIXME merge with twister-lib-android's one
 class DataBaseOpenHelper extends SQLiteOpenHelper {
 	private static final Logger LOG = LoggerFactory.getLogger(DataBaseOpenHelper.class);
 
 	private static final String DB_SCHEMA_FILE = "LondonTravel.v1.schema.sql";
-	private static final String[] DB_DATA_FILES = { //
-	"LondonTravel.v1.data.sql", //
-			"LondonTravel.v1.data-Stop.sql", //
-			"LondonTravel.v1.data-Line_Stop.sql", //
-			"LondonTravel.v1.data-AreaHull.sql", //
-			"LondonTravel.v1.data-Route.sql", //
-			"LondonTravel.v1.data-Section.sql", //
-			"LondonTravel.v1.data-Route_Section.sql", //
-			"LondonTravel.v1.data-Link.sql", //
-			"LondonTravel.v1.data-Section_Link.sql" //
+	private static final String[] DB_DATA_FILES = {
+			"LondonTravel.v1.data.sql",
+			"LondonTravel.v1.data-Stop.sql",
+			"LondonTravel.v1.data-Line_Stop.sql",
+			"LondonTravel.v1.data-AreaHull.sql",
+			"LondonTravel.v1.data-Route.sql",
+			"LondonTravel.v1.data-Section.sql",
+			"LondonTravel.v1.data-Route_Section.sql",
+			"LondonTravel.v1.data-Link.sql",
+			"LondonTravel.v1.data-Section_Link.sql"
 	};
 	private static final String DB_CLEAN_FILE = "LondonTravel.v1.clean.sql";
 	private static final String DB_DEVELOPMENT_FILE = "LondonTravel.v1.development.sql";
@@ -42,8 +42,7 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 		super(context, DB_NAME, s_factory, DB_VERSION);
 	}
 
-	@Override
-	public void onOpen(final SQLiteDatabase db) {
+	@Override public void onOpen(final SQLiteDatabase db) {
 		super.onOpen(db);
 		LOG.debug("Opening database: {}", DatabaseTools.dbToString(db));
 		backupDB(db, DB_NAME + ".onOpen_BeforeDev.sqlite");
@@ -65,13 +64,12 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 		}
 	}
 
-	@Override
-	public void onCreate(final SQLiteDatabase db) {
+	@Override public void onCreate(final SQLiteDatabase db) {
 		backupDB(db, DB_NAME + ".onCreate.sqlite");
 		LOG.debug("Creating database: {}", DatabaseTools.dbToString(db));
 		DataBaseOpenHelper.execFile(db, DB_CLEAN_FILE);
 		DataBaseOpenHelper.execFile(db, DB_SCHEMA_FILE);
-		for (String dataFile: DB_DATA_FILES) {
+		for (String dataFile : DB_DATA_FILES) {
 			DataBaseOpenHelper.execFile(db, dataFile);
 		}
 		LOG.info("Created database: {}", DatabaseTools.dbToString(db));
@@ -124,8 +122,7 @@ class DataBaseOpenHelper extends SQLiteOpenHelper {
 		return null;
 	}
 
-	@Override
-	public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
+	@Override public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
 		backupDB(db, DB_NAME + ".onUpgrade.sqlite");
 		onCreate(db);
 	}

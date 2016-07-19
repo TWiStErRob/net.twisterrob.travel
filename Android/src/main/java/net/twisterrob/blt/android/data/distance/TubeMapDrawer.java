@@ -4,13 +4,13 @@ import java.util.*;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import net.twisterrob.blt.android.App;
-import net.twisterrob.blt.android.db.model.*;
-import net.twisterrob.java.model.Location;
-
 import org.slf4j.*;
 
 import android.graphics.*;
+
+import net.twisterrob.blt.android.App;
+import net.twisterrob.blt.android.db.model.*;
+import net.twisterrob.java.model.Location;
 
 @NotThreadSafe
 public class TubeMapDrawer {
@@ -29,7 +29,7 @@ public class TubeMapDrawer {
 	public TubeMapDrawer(Iterable<NetworkNode> nodes) {
 		double minX = Double.POSITIVE_INFINITY, maxX = Double.NEGATIVE_INFINITY;
 		double minY = Double.POSITIVE_INFINITY, maxY = Double.NEGATIVE_INFINITY;
-		for (NetworkNode node: nodes) {
+		for (NetworkNode node : nodes) {
 			double lat = node.getLocation().getLatitude();
 			double lon = node.getLocation().getLongitude();
 			if (lon < minX) {
@@ -62,7 +62,7 @@ public class TubeMapDrawer {
 	}
 
 	private void draw(Canvas canvas, Set<NetworkLink> links) {
-		for (NetworkLink link: links) {
+		for (NetworkLink link : links) {
 			draw(canvas, link);
 		}
 	}
@@ -83,7 +83,7 @@ public class TubeMapDrawer {
 
 	private static Set<NetworkLink> getLinks(Set<NetworkNode> nodes) {
 		Set<NetworkLink> links = new HashSet<>();
-		for (NetworkNode node: nodes) {
+		for (NetworkNode node : nodes) {
 			links.addAll(node.getOut());
 		}
 		return links;

@@ -5,7 +5,7 @@ import javax.annotation.OverridingMethodsMustInvokeSuper;
 public abstract class BaseFeed<T extends BaseFeed<?>> {
 	@OverridingMethodsMustInvokeSuper
 	protected void postProcess() {
-		// optional @Override
+		// optional override
 	}
 
 	/**

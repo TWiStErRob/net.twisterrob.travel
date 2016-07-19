@@ -3,16 +3,16 @@ package net.twisterrob.blt.android.db;
 import java.util.*;
 import java.util.Map.Entry;
 
+import org.slf4j.*;
+
+import android.database.*;
+import android.database.sqlite.SQLiteDatabase;
+
 import net.twisterrob.android.utils.tools.IOTools;
 import net.twisterrob.blt.android.db.model.*;
 import net.twisterrob.blt.model.*;
 import net.twisterrob.java.collections.MultiKey;
 import net.twisterrob.java.model.Location;
-
-import org.slf4j.*;
-
-import android.database.*;
-import android.database.sqlite.SQLiteDatabase;
 
 @SuppressWarnings("resource")
 // TODO fix resource leaks
@@ -80,8 +80,8 @@ class DataBaseReader {
 
 	public Station getStation(final int stationId) {
 		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
-		Cursor cursor = db.query("Stop", STATION_DETAILS, "_id = ?", new String[]{String.valueOf(stationId)}, null,
-				null, null);
+		Cursor cursor = db.query("Stop", STATION_DETAILS, "_id = ?",
+				new String[] {String.valueOf(stationId)}, null, null, null);
 		Station station = null;
 		if (cursor.moveToNext()) {
 			station = readStation(cursor, true);
@@ -92,8 +92,8 @@ class DataBaseReader {
 
 	public Station getStation(String name) {
 		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
-		Cursor cursor = db.query("Stop", STATION_DETAILS, "name = ?", new String[]{String.valueOf(name)}, null, null,
-				null);
+		Cursor cursor = db.query("Stop", STATION_DETAILS, "name = ?",
+				new String[] {String.valueOf(name)}, null, null, null);
 		Station station = null;
 		if (cursor.moveToNext()) {
 			station = readStation(cursor, true);
@@ -141,7 +141,7 @@ class DataBaseReader {
 	public Map<Line, String> getCodes(int stopID) {
 		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
 		Cursor cursor = db.rawQuery("select ls.line as lineID, ls.code as code from line_stop ls where ls.stop = ?;",
-				new String[]{String.valueOf(stopID)});
+				new String[] {String.valueOf(stopID)});
 		Map<Line, String> lines = new EnumMap<>(Line.class);
 		while (cursor.moveToNext()) {
 			int lineID = cursor.getInt(cursor.getColumnIndex("lineID"));
@@ -222,7 +222,7 @@ class DataBaseReader {
 			}
 			fromNode.out.add(new NetworkLink(fromNode, toNode, distance));
 			// TODO efficiency with some cache or DB
-			for (Line neighborLine: Line.values()) {
+			for (Line neighborLine : Line.values()) {
 				if (neighborLine != line) {
 					{
 						MultiKey neighborKey = new MultiKey(neighborLine, fromID);
@@ -250,10 +250,10 @@ class DataBaseReader {
 	protected void readDistances(Map<MultiKey, NetworkNode> nodes) {
 		Map<Integer, Map<Integer, Double>> distances = getDistances();
 		LOG.debug("Distances: {}", distances.size());
-		for (NetworkNode node: nodes.values()) {
+		for (NetworkNode node : nodes.values()) {
 			Map<Integer, Double> dists = distances.get(node.getName().hashCode());
-			for (Entry<Integer, Double> dist: dists.entrySet()) {
-				for (Line neighborLine: Line.values()) {
+			for (Entry<Integer, Double> dist : dists.entrySet()) {
+				for (Line neighborLine : Line.values()) {
 					MultiKey neighborKey = new MultiKey(neighborLine, dist.getKey());
 					NetworkNode toNode = nodes.get(neighborKey);
 					if (toNode == null) {

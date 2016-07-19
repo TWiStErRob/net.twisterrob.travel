@@ -7,8 +7,6 @@ import net.twisterrob.blt.model.Line;
 
 /**
  * From email: Thank you for registering for Transport for London (TfL) syndicated feeds.
- * 
- * @author TWiStEr
  */
 public class TFLUrlBuilder implements URLBuilder {
 	private String m_email;

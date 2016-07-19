@@ -1,9 +1,9 @@
 package net.twisterrob.blt.data.statics;
 
+import java.util.*;
+
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
-
-import java.util.*;
 
 import net.twisterrob.blt.model.Line;
 

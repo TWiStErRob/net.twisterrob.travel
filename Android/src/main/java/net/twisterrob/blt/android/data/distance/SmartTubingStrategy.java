@@ -13,6 +13,6 @@ public class SmartTubingStrategy implements DistanceStrategy {
 	public double distance(NetworkLink link) {
 		double penalty = TIME_SLOW_DOWN + TIME_AT_STATION + TIME_SPEED_UP;
 		int travellingDistance = link.getDistance() - DISTANCE_SPEED_UP - DISTANCE_SLOW_DOWN;
-		return travellingDistance / 1000.0 /* to km */* SPEED_TUBE / 60.0 /* to minutes */+ penalty;
+		return travellingDistance / 1000.0 /* to km */ * SPEED_TUBE / 60.0 /* to minutes */ + penalty;
 	}
 }

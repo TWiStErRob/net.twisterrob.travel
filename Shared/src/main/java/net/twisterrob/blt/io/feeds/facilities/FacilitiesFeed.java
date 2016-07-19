@@ -27,28 +27,27 @@ public class FacilitiesFeed extends BaseFeed<FacilitiesFeed> {
 		return m_styles;
 	}
 
-	@Override
-	protected void postProcess() {
+	@Override protected void postProcess() {
 		if (m_stations != null) {
 			m_lines = new HashMap<>();
 			m_zones = new HashMap<>();
 			m_facilities = new HashMap<>();
-			for (Station station: m_stations) {
-				for (Line line: station.getLines()) {
+			for (Station station : m_stations) {
+				for (Line line : station.getLines()) {
 					if (!m_lines.containsKey(line)) {
 						m_lines.put(line, new ArrayList<Station>());
 					}
 					List<Station> stations = m_lines.get(line);
 					stations.add(station);
 				}
-				for (Zone zone: station.getZones()) {
+				for (Zone zone : station.getZones()) {
 					if (!m_zones.containsKey(zone)) {
 						m_zones.put(zone, new ArrayList<Station>());
 					}
 					List<Station> stations = m_zones.get(zone);
 					stations.add(station);
 				}
-				for (Facility facility: station.getFacilities()) {
+				for (Facility facility : station.getFacilities()) {
 					if (facility.hasValue()) {
 						String facilityName = facility.getName();
 						if (!m_facilities.containsKey(facilityName)) {

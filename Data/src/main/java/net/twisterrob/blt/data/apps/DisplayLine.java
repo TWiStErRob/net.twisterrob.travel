@@ -1,4 +1,5 @@
 package net.twisterrob.blt.data.apps;
+
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -17,8 +18,8 @@ public class DisplayLine {
 		List<String> lineFileNames = fileNames.get(Line.Circle);
 		JourneyPlannerTimetableFeed feed = reader.readFeed(Feed.JourneyPlannerTimetables,
 				STATIC_DATA.getTimetableRoot(), lineFileNames);
-		System.out.printf("\033[1;35m%s\033[0m (\033[35m%s\033[0m)\n", feed.getLine(), feed.getOperator()
-				.getTradingName());
+		System.out.printf("\033[1;35m%s\033[0m (\033[35m%s\033[0m)\n",
+				feed.getLine(), feed.getOperator().getTradingName());
 		List<Route> routes = FeedProcessor.reconstruct(feed);
 		new LineDisplay(feed.getLine(), routes, "Centrale Tramlink Stop", "Reeves Corner", "Wellesley Road Tram Stop")
 				.setVisible(true);
@@ -32,8 +33,8 @@ public class DisplayLine {
 
 	protected static void printNameGroups(RouteInfo info) {
 		Map<String, Set<StopPoint>> groups = info.groupByName(false);
-		for (Entry<String, Set<StopPoint>> o: groups.entrySet()) {
-			for (StopPoint stop: o.getValue()) {
+		for (Entry<String, Set<StopPoint>> o : groups.entrySet()) {
+			for (StopPoint stop : o.getValue()) {
 				System.out.printf("%3$s/%1$s,\"%2$s\"\n", stop.getId(), stop.getLocation(), o.getKey());
 			}
 		}

@@ -10,7 +10,7 @@ import net.twisterrob.java.annotations.SimpleDateFormatString;
  * Tagging interface for XML descriptor interfaces.
  * Implementing this interface and adhering to the convention makes the code more readable and provides uniform look to the code.
  * Also it's a good place for documentation for the individual elements.
- * 
+ *
  * <p>
  * The format of these interfaces is as follows:
  * <ul>
@@ -68,7 +68,7 @@ import net.twisterrob.java.annotations.SimpleDateFormatString;
  *     ...
  * &lt;/RootElementName&gt;</code></pre>
  * </p>
- * 
+ *
  * <p>
  * It is recommended to import the XML descriptor's all inner interfaces, which then can be used like this:
  * <pre><code> RootElement root = new RootElement(Root.NS, Root.ELEMENT);
@@ -90,13 +90,12 @@ import net.twisterrob.java.annotations.SimpleDateFormatString;
  *     }
  *     ...</code></pre>
  * </p>
- * @author TWiStEr
  */
+@SuppressWarnings("UnnecessaryInterfaceModifier")
 public interface FeedXmlDescriptor {
 	/**
 	 * This is to be used in the <code>CHILDREN</code> array when an element has content.
 	 * It can be ignored at use site.
-	 * @author TWiStEr
 	 */
 	interface CONTENT {
 		// tag interface
@@ -105,41 +104,44 @@ public interface FeedXmlDescriptor {
 	/**
 	 * This is to be used as the <code>CHILDREN</code> array when an element has no children at all.
 	 * It can be ignored at use site.
-	 * @author TWiStEr
 	 */
 	@SuppressWarnings("rawtypes") Class[] NO_CHILDREN = {};
 
 	@Documented
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ElementType.FIELD})
-	@interface Value {
+	public @interface Value {
 		@RegEx
 		String regex() default ".*";
 		@SuppressWarnings("rawtypes")
 		Class<? extends Enum> enumeration() default Enum.class;
 	}
+
 	@Documented
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ElementType.FIELD})
-	@interface ValueConstraint {
+	public @interface ValueConstraint {
 		// no parameters
 	}
+
 	@Documented
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ElementType.TYPE, ElementType.FIELD})
-	@interface Children {
+	public @interface Children {
 		Class<?>[] value() default {};
 	}
+
 	@Documented
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ElementType.FIELD})
-	@interface Child {
+	public @interface Child {
 		Class<?>[] value() default {};
 	}
+
 	@Documented
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ElementType.FIELD})
-	@interface Attribute {
+	public @interface Attribute {
 		// no parameters
 	}
 }

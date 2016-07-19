@@ -27,9 +27,8 @@ public class LineStatusFeed extends BaseFeed<LineStatusFeed> {
 		return Collections.unmodifiableList(m_lineStatuses);
 	}
 
-	@Override
-	protected void postProcess() {
-		for (LineStatus lineStatus: m_lineStatuses) {
+	@Override protected void postProcess() {
+		for (LineStatus lineStatus : m_lineStatuses) {
 			m_statusMap.put(lineStatus.getLine(), lineStatus);
 		}
 	}

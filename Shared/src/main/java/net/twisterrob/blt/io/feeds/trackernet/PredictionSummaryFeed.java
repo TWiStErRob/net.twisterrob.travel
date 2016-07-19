@@ -1,8 +1,8 @@
 package net.twisterrob.blt.io.feeds.trackernet;
 
-import static java.util.Collections.*;
-
 import java.util.*;
+
+import static java.util.Collections.*;
 
 import net.twisterrob.blt.io.feeds.BaseFeed;
 import net.twisterrob.blt.io.feeds.trackernet.model.*;
@@ -46,12 +46,11 @@ public class PredictionSummaryFeed extends BaseFeed<PredictionSummaryFeed> {
 		return m_stationPlatform;
 	}
 
-	@Override
-	protected void postProcess() {
+	@Override protected void postProcess() {
 		super.postProcess();
 		if (m_line != null) {
-			Map<String, Line> alienLines = StationIncosistencies.EXTAS.get(m_line);
-			for (Station station: m_stations) {
+			Map<String, Line> alienLines = StationInconsistencies.EXTRAS.get(m_line);
+			for (Station station : m_stations) {
 				Line line = alienLines.get(station.getName());
 				if (line == null) {
 					line = m_line;
@@ -62,8 +61,8 @@ public class PredictionSummaryFeed extends BaseFeed<PredictionSummaryFeed> {
 	}
 
 	public void applyAliases() {
-		Map<String, String> map = StationIncosistencies.TRACKERNET_TO_TIMETABLE_ALIASES.get(m_line);
-		for (Station station: m_stations) {
+		Map<String, String> map = StationInconsistencies.TRACKERNET_TO_TIMETABLE_ALIASES.get(m_line);
+		for (Station station : m_stations) {
 			String newName = map.get(station.getName());
 			if (newName != null) {
 				station.setName(newName);
@@ -72,7 +71,7 @@ public class PredictionSummaryFeed extends BaseFeed<PredictionSummaryFeed> {
 	}
 
 	public List<Station> segregateAlienStations() {
-		for (Iterator<Station> iterator = m_stations.iterator(); iterator.hasNext();) {
+		for (Iterator<Station> iterator = m_stations.iterator(); iterator.hasNext(); ) {
 			Station station = iterator.next();
 			if (station.getLine() != m_line) {
 				iterator.remove();
@@ -116,8 +115,7 @@ public class PredictionSummaryFeed extends BaseFeed<PredictionSummaryFeed> {
 
 	public Map<Platform, List<Train>> collectTrains(Station station) {
 		Map<Platform, List<Train>> result = new TreeMap<>(new Comparator<Platform>() {
-			@Override
-			public int compare(Platform platform1, Platform platform2) {
+			@Override public int compare(Platform platform1, Platform platform2) {
 				int p1 = platform1.extractPlatformNumber();
 				int p2 = platform2.extractPlatformNumber();
 				int dirDiff = platform1.getDirection().compareTo(platform2.getDirection());
@@ -125,7 +123,7 @@ public class PredictionSummaryFeed extends BaseFeed<PredictionSummaryFeed> {
 				return (p1 < p2? -1 : (p1 == p2? (p1 != 0? 0 : dirDiff != 0? dirDiff : nameDiff) : 1));
 			}
 		});
-		for (Platform platform: m_stationPlatform.get(station)) {
+		for (Platform platform : m_stationPlatform.get(station)) {
 			List<Train> trains = m_stationPlatformTrain.get(new MultiKey(station, platform));
 			result.put(platform, trains);
 		}

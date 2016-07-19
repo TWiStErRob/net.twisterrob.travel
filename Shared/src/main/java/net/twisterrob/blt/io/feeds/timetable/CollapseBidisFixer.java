@@ -9,9 +9,10 @@ public class CollapseBidisFixer implements RouteFixer {
 		return true;
 	}
 	public void fix(JourneyPlannerTimetableFeed feed) {
-		reverseRoutes : for (Iterator<Route> it = feed.routes.iterator(); it.hasNext();) {
+		reverseRoutes:
+		for (Iterator<Route> it = feed.routes.iterator(); it.hasNext(); ) {
 			Route route = it.next();
-			for (Route other: feed.getRoutes()) {
+			for (Route other : feed.getRoutes()) {
 				if (other != route && exactOpposite(other, route)) {
 					other.setDescription(route.getDescription() + " (bidi)");
 					it.remove();

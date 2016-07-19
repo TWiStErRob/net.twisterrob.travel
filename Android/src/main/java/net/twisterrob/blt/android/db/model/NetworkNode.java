@@ -50,13 +50,11 @@ public class NetworkNode {
 		return dists;
 	}
 
-	@Override
-	public String toString() {
+	@Override public String toString() {
 		return String.format("%s (%s/%d)", m_name, m_line, m_id);
 	}
 
-	@Override
-	public int hashCode() {
+	@Override public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + m_id;
@@ -64,8 +62,7 @@ public class NetworkNode {
 		return result;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
+	@Override public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -86,7 +83,7 @@ public class NetworkNode {
 	}
 
 	public static NetworkNode find(Iterable<NetworkNode> nodes, String name, Line line) {
-		for (NetworkNode node: nodes) {
+		for (NetworkNode node : nodes) {
 			if (node.getName().equals(name) && node.getLine() == line) {
 				return node;
 			}

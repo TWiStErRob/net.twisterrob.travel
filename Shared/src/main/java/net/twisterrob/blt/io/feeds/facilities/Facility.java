@@ -30,29 +30,28 @@ public class Facility {
 		m_value = value;
 	}
 
-	@Override
-	public String toString() {
+	@Override public String toString() {
 		return String.format("%s=%s", m_name, m_value);
 	}
 
 	public boolean hasValue() {
-		return m_name != null && //
-				"Ticket Halls".equals(m_name) && getIntValue() > 0 //
-				|| "Lifts".equals(m_name) && getIntValue() > 0 //
+		return m_name != null &&
+				"Ticket Halls".equals(m_name) && getIntValue() > 0
+				|| "Lifts".equals(m_name) && getIntValue() > 0
 				// \d+ => \0, yes (disabled only) => 1
-				|| "Escalators".equals(m_name) && getIntValue() > 0 //
-				|| "Gates".equals(m_name) && getIntValue() > 0 //
-				|| "Toilets".equals(m_name) && getBoolValue() == true //
-				|| "Photo Booths".equals(m_name) && getIntValue() > 0 //
-				|| "Cash Machines".equals(m_name) && getIntValue() > 0 //
-				|| "Car park".equals(m_name) && getBoolValue() == true //
-				|| "Bridge".equals(m_name) && getBoolValue() == true //
-				|| "Waiting Room".equals(m_name) && getBoolValue() == true //
+				|| "Escalators".equals(m_name) && getIntValue() > 0
+				|| "Gates".equals(m_name) && getIntValue() > 0
+				|| "Toilets".equals(m_name) && getBoolValue() == true
+				|| "Photo Booths".equals(m_name) && getIntValue() > 0
+				|| "Cash Machines".equals(m_name) && getIntValue() > 0
+				|| "Car park".equals(m_name) && getBoolValue() == true
+				|| "Bridge".equals(m_name) && getBoolValue() == true
+				|| "Waiting Room".equals(m_name) && getBoolValue() == true
 				// Payphones=14 in ticket halls, 4 on platforms =>
 				// Payphones in ticket halls = 14
 				// Payphones on platforms = 4
-				|| m_name.startsWith("Payphones") && getIntValue() > 0 //
-		;
+				|| m_name.startsWith("Payphones") && getIntValue() > 0
+				;
 	}
 
 	public boolean getBoolValue() {

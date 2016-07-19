@@ -1,9 +1,9 @@
 package net.twisterrob.blt.data.statics;
 
-import static java.util.Collections.*;
-
 import java.io.File;
 import java.util.*;
+
+import static java.util.Collections.*;
 
 import net.twisterrob.blt.data.SharedStaticData;
 import net.twisterrob.blt.data.apps.DesktopStaticData;

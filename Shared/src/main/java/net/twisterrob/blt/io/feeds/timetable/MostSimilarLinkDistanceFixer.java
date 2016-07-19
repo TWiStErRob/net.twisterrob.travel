@@ -4,9 +4,9 @@ import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeed.RouteFi
 
 public class MostSimilarLinkDistanceFixer implements RouteFixer {
 	public boolean matches(JourneyPlannerTimetableFeed feed) {
-		for (Route route: feed.getRoutes()) {
-			for (RouteSection section: route.getSections()) {
-				for (RouteLink link: section.getLinks()) {
+		for (Route route : feed.getRoutes()) {
+			for (RouteSection section : route.getSections()) {
+				for (RouteLink link : section.getLinks()) {
 					if (link.getDistance() == 0) {
 						return true;
 					}
@@ -17,9 +17,9 @@ public class MostSimilarLinkDistanceFixer implements RouteFixer {
 	}
 
 	public void fix(JourneyPlannerTimetableFeed feed) {
-		for (Route route: feed.getRoutes()) {
-			for (RouteSection section: route.getSections()) {
-				for (RouteLink link: section.getLinks()) {
+		for (Route route : feed.getRoutes()) {
+			for (RouteSection section : route.getSections()) {
+				for (RouteLink link : section.getLinks()) {
 					if (link.getDistance() == 0) {
 						RouteLink mostSimilar = findLink(feed.getRoutes(), link);
 						if (mostSimilar != null) {
@@ -35,9 +35,9 @@ public class MostSimilarLinkDistanceFixer implements RouteFixer {
 		double badEstimated = badLink.getEstimatedDistance();
 		double minDiff = Double.POSITIVE_INFINITY;
 		RouteLink minLink = null;
-		for (Route route: routes) {
-			for (RouteSection section: route.getSections()) {
-				for (RouteLink link: section.getLinks()) {
+		for (Route route : routes) {
+			for (RouteSection section : route.getSections()) {
+				for (RouteLink link : section.getLinks()) {
 					if (link.getDistance() == 0) {
 						continue;
 					}

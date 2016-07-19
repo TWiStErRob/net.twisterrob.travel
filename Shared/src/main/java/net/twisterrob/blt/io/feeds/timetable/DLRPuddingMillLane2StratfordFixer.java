@@ -14,12 +14,12 @@ public class DLRPuddingMillLane2StratfordFixer implements RouteFixer {
 		return feed.getLine() == Line.DLR;
 	}
 	public void fix(JourneyPlannerTimetableFeed feed) {
-		for (Route route: feed.getRoutes()) {
-			for (RouteSection section: route.getSections()) {
+		for (Route route : feed.getRoutes()) {
+			for (RouteSection section : route.getSections()) {
 				RouteLink link1 = null;
 				RouteLink link2 = null;
 				RouteLink link3 = null;
-				for (RouteLink link: section.getLinks()) {
+				for (RouteLink link : section.getLinks()) {
 					link1 = link2;
 					link2 = link3;
 					link3 = link;
@@ -39,7 +39,7 @@ public class DLRPuddingMillLane2StratfordFixer implements RouteFixer {
 	}
 
 	private static boolean isPuddingMillLane2Stratford(RouteLink link1, RouteLink link2, RouteLink link3) {
-		return true //
+		return true
 				&& link1 != null
 				&& "Pudding Mill Lane".equals(link1.getFrom().getName())
 				&& "Blackwall".equals(link1.getTo().getName())

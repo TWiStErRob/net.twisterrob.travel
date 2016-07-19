@@ -4,8 +4,6 @@ import net.twisterrob.java.model.Location;
 
 /**
  * BR1 1AB,50,540194,169201,E09000006,E05000109
- * 
- * @author TWiStEr
  */
 public class PostCode {
 	private final String code;

@@ -26,8 +26,7 @@ public class JourneyPlannerTimetableFeed extends BaseFeed<JourneyPlannerTimetabl
 		this.operator = operator;
 	}
 
-	@Override
-	public JourneyPlannerTimetableFeed merge(JourneyPlannerTimetableFeed other) {
+	@Override public JourneyPlannerTimetableFeed merge(JourneyPlannerTimetableFeed other) {
 		if (this.line != other.line) {
 			throw new IllegalArgumentException("Can't merge different lines.");
 		}
@@ -49,14 +48,13 @@ public class JourneyPlannerTimetableFeed extends BaseFeed<JourneyPlannerTimetabl
 
 	public static Set<StopPoint> getStopPoints(List<Route> routes) {
 		Set<StopPoint> stopPoints = new TreeSet<>(new Comparator<StopPoint>() {
-			@Override
-			public int compare(StopPoint o1, StopPoint o2) {
+			@Override public int compare(StopPoint o1, StopPoint o2) {
 				return o1.getId().compareTo(o2.getId());
 			}
 		});
-		for (Route route: routes) {
-			for (RouteSection section: route.getSections()) {
-				for (RouteLink link: section.getLinks()) {
+		for (Route route : routes) {
+			for (RouteSection section : route.getSections()) {
+				for (RouteLink link : section.getLinks()) {
 					stopPoints.add(link.getFrom());
 					stopPoints.add(link.getTo());
 				}
@@ -65,10 +63,9 @@ public class JourneyPlannerTimetableFeed extends BaseFeed<JourneyPlannerTimetabl
 		return stopPoints;
 	}
 
-	@Override
-	protected void postProcess() {
+	@Override protected void postProcess() {
 		super.postProcess();
-		for (RouteFixer fixer: FIXERS) {
+		for (RouteFixer fixer : FIXERS) {
 			fix(fixer);
 		}
 	}

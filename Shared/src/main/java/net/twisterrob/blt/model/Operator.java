@@ -1,4 +1,5 @@
 package net.twisterrob.blt.model;
+
 public enum Operator {
 	LUL("London Underground"),
 	DLR("Dockland Light Railway"),

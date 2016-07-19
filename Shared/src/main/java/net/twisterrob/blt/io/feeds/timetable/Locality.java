@@ -1,4 +1,5 @@
 package net.twisterrob.blt.io.feeds.timetable;
+
 public class Locality {
 	private String id;
 	private String name;
@@ -16,8 +17,7 @@ public class Locality {
 		this.name = name;
 	}
 
-	@Override
-	public String toString() {
+	@Override public String toString() {
 		return String.format("%2$s {%1$s}", id, name);
 	}
 }

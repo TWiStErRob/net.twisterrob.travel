@@ -1,21 +1,23 @@
 package net.twisterrob.blt.io.feeds.trackernet;
 
-import net.twisterrob.blt.io.feeds.*;
+import net.twisterrob.blt.io.feeds.FeedXmlDescriptor;
 import net.twisterrob.java.annotations.SimpleDateFormatString;
 
 /**
  * The feed structure of the TrackerNet prediction summary API.
- * @author TWiStEr
- * @see http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf#3.1.5
- * @see Feed#TubeDepartureBoardsPredictionSummary 
+ * @see <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">
+ *     Trackernet_Data_Services_Guide_Beta_0_2.pdf > 3.1.5</a>
+ * @see net.twisterrob.blt.io.feeds.Feed#TubeDepartureBoardsPredictionSummary
  */
-interface PredictionSummaryFeedXml extends FeedXmlDescriptor {
+@SuppressWarnings("UnnecessaryInterfaceModifier")
+/*default*/ interface PredictionSummaryFeedXml extends FeedXmlDescriptor {
 	@Children({Time.class, Station.class})
-	interface Root {
+	public interface Root {
 		String NS = "";
 		String ELEMENT = "ROOT";
 	}
-	interface Time {
+
+	public interface Time {
 		String ELEMENT = "Time";
 		/**
 		 * <code>Time TimeStamp</code>: The date/time the service was run in the format YYYY/MM/DD HH:MM:SS.
@@ -27,11 +29,12 @@ interface PredictionSummaryFeedXml extends FeedXmlDescriptor {
 		 */
 		@ValueConstraint @SimpleDateFormatString String timeStamp$format = "yyyy/MM/dd HH:mm:ss";
 	}
+
 	/**
 	 * <code>S(tation)</code>: A construct representing a station on the line.
 	 */
 	@Children(Platform.class)
-	interface Station {
+	public interface Station {
 		/**
 		 * <code>S(tation)</code>: A construct representing a station on the line.
 		 */
@@ -45,11 +48,12 @@ interface PredictionSummaryFeedXml extends FeedXmlDescriptor {
 		 */
 		@Attribute String name = "N";
 	}
+
 	/**
 	 * <code>P(latform)</code>: A construct representing a platform on the station.
 	 */
 	@Children(Train.class)
-	interface Platform {
+	public interface Platform {
 		/**
 		 * <code>P(latform)</code>: A construct representing a platform on the station.
 		 */
@@ -63,10 +67,11 @@ interface PredictionSummaryFeedXml extends FeedXmlDescriptor {
 		 */
 		@Attribute String code = "Code";
 	}
+
 	/**
 	 * <code>T(rain)</code>: A construct representing a train in the prediction list.
 	 */
-	interface Train {
+	public interface Train {
 		/**
 		 * <code>T(rain)</code>: A construct representing a train in the prediction list.
 		 */

@@ -27,7 +27,7 @@ public class JourneyPlannerTimetableFeedKmlOut {
 			out.writeStartElement("description");
 			StringBuilder desc = new StringBuilder(String.format("All stops for the following routes on the %s line:",
 					feed.getLine()));
-			for (Route route: feed.getRoutes()) {
+			for (Route route : feed.getRoutes()) {
 				desc.append(String.format("\n\t%s", route.getDescription()));
 			}
 			out.writeCData(desc.toString());
@@ -47,7 +47,7 @@ public class JourneyPlannerTimetableFeedKmlOut {
 			}
 			out.writeEndElement();
 		}
-		for (StopPoint stop: JourneyPlannerTimetableFeed.getStopPoints(feed.getRoutes())) {
+		for (StopPoint stop : JourneyPlannerTimetableFeed.getStopPoints(feed.getRoutes())) {
 			out.writeStartElement("Placemark");
 			{
 				out.writeStartElement("name");
@@ -67,7 +67,7 @@ public class JourneyPlannerTimetableFeedKmlOut {
 			{
 				out.writeStartElement("Point");
 				out.writeStartElement("coordinates");
-				out.writeCharacters(String.format("%f, %f", //
+				out.writeCharacters(String.format("%f, %f",
 						stop.getLocation().getLongitude(), stop.getLocation().getLatitude()));
 				out.writeEndElement();
 				out.writeEndElement();

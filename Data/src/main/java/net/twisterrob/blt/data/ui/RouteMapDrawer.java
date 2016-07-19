@@ -1,8 +1,8 @@
 package net.twisterrob.blt.data.ui;
 
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.model.Line;
@@ -36,16 +36,14 @@ class RouteMapDrawer extends RouteComponent {
 		repaint();
 	}
 
-	@Override
-	public void setLine(Line line) {
+	@Override public void setLine(Line line) {
 		super.setLine(line);
 		stopColor = lineColor.darker();
 		stopHighlight = new Color(~lineColor.getRGB());
 		repaint();
 	}
 
-	@Override
-	public void paint(Graphics g) {
+	@Override public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D g2 = (Graphics2D)g;
 		int top = getInsets().top + stopRadius / 2;
@@ -56,9 +54,9 @@ class RouteMapDrawer extends RouteComponent {
 
 		Set<StopPoint> drawn = new TreeSet<>(StopPoint.BY_ID);
 		if (getRoute() != null) {
-			for (RouteSection section: getRoute().getSections()) {
+			for (RouteSection section : getRoute().getSections()) {
 				StopPoint last = null;
-				for (RouteLink link: section.getLinks()) {
+				for (RouteLink link : section.getLinks()) {
 					paintLink(g2, link, left, top);
 					paintStop(g2, link.getFrom(), left, top, last == null? StopType.START : StopType.ROUTE);
 					drawn.add(link.getFrom());
@@ -69,7 +67,7 @@ class RouteMapDrawer extends RouteComponent {
 			}
 		}
 
-		for (StopPoint stopPoint: stations) {
+		for (StopPoint stopPoint : stations) {
 			if (drawn.contains(stopPoint)) {
 				continue;
 			}
@@ -125,5 +123,4 @@ class RouteMapDrawer extends RouteComponent {
 		}
 		g.drawLine(fromX, fromY, toX, toY);
 	}
-
 }

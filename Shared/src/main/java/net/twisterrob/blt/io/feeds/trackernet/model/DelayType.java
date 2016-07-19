@@ -6,7 +6,6 @@ import java.util.Comparator;
  * Possible statuses of the service a tube line.<br>
  * The names also represent the <code>CssClass</code> in the TrackerNet Line Status feed, e.g.:
  * <pre><code>&lt;Status ID="GS" CssClass="GoodService" Description="Good Service" IsActive="true"&gt;</code></pre>
- * @author TWiStEr
  * @see net.twisterrob.blt.io.feeds.Feed#TubeDepartureBoardsLineStatus
  * @see net.twisterrob.blt.io.feeds.Feed#TubeDepartureBoardsLineStatusIncidents
  * @see <a href="http://cloud.tfl.gov.uk/TrackerNet/LineStatus">Current status</a>

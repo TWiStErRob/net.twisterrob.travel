@@ -1,21 +1,22 @@
 package net.twisterrob.blt.android.data.distance;
 
-import java.util.*;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.concurrent.NotThreadSafe;
-
-import net.twisterrob.blt.android.db.model.NetworkNode;
-import net.twisterrob.blt.model.Line;
-import net.twisterrob.java.model.*;
 
 import org.slf4j.*;
 
 import android.graphics.Color;
 
+import net.twisterrob.blt.android.db.model.NetworkNode;
+import net.twisterrob.blt.model.Line;
+import net.twisterrob.java.model.*;
+
 @NotThreadSafe
 public abstract class DistanceMapDrawer<T> {
 	private static final Logger LOG = LoggerFactory.getLogger(DistanceMapDrawer.class);
+	private static final boolean DEBUG = false;
 
 	private final DistanceMapDrawerConfig config;
 
@@ -34,7 +35,7 @@ public abstract class DistanceMapDrawer<T> {
 		this.config = config;
 		double minX = Double.POSITIVE_INFINITY, maxX = Double.NEGATIVE_INFINITY;
 		double minY = Double.POSITIVE_INFINITY, maxY = Double.NEGATIVE_INFINITY;
-		for (NetworkNode node: nodes) {
+		for (NetworkNode node : nodes) {
 			double lat = node.getLocation().getLatitude();
 			double lon = node.getLocation().getLongitude();
 			if (lon < minX) {
@@ -74,9 +75,11 @@ public abstract class DistanceMapDrawer<T> {
 	protected abstract T createMap(int[] pixels);
 
 	protected int[] calcPixels(Map<NetworkNode, Double> nodes) {
-		//LOG.debug("Mapping area w={}, h={} to pixels w={}, h={}", //
-		//		geoWidth, geoHeight, pixelWidth, pixelHeight);
-		for (Entry<NetworkNode, Double> circle: nodes.entrySet()) {
+		if (DEBUG) {
+			LOG.debug("Mapping area w={}, h={} to pixels w={}, h={}",
+					geoWidth, geoHeight, pixelWidth, pixelHeight);
+		}
+		for (Entry<NetworkNode, Double> circle : nodes.entrySet()) {
 			drawCircle(circle.getKey(), circle.getValue());
 		}
 
@@ -91,15 +94,15 @@ public abstract class DistanceMapDrawer<T> {
 		double phi = Math.toRadians(node.getLocation().getLatitude());
 		double meters_per_lat_degree = LocationConverter.metersPerDegreeLat(phi);
 		double meters_per_lon_degree = LocationConverter.metersPerDegreeLon(phi);
-		//LOG.debug("Drawing for {} / {} remaining: {}", node.getLine(), node.getName(), (int)remainingWalk);
+		if (DEBUG) {
+			LOG.debug("Drawing for {} / {} remaining: {}", node.getLine(), node.getName(), (int)remainingWalk);
+		}
 		drawCircle(node.getLocation(), node.getLine(), remainingWalk / meters_per_lon_degree, remainingWalk
 				/ meters_per_lat_degree);
 	}
 
 	/**
-	 * @param pixels canvas
 	 * @param pos center of the "circle"
-	 * @param line 
 	 * @param widthDegrees width of the circle in geo-degrees (longitude)
 	 * @param heightDegrees width of the circle in geo-degrees (latitude)
 	 */
@@ -110,13 +113,14 @@ public abstract class DistanceMapDrawer<T> {
 		int nodeY = (int)(nodeYOffset / geoHeight * pixelHeight);
 		int rX = (int)(widthDegrees / geoWidth * pixelWidth);
 		int rY = (int)(heightDegrees / geoHeight * pixelHeight);
-		//LOG.debug("Drawing a circle at {},{} for {} (pixels: {},{}, radii: {},{})", //
-		//		pos.getLongitude(), pos.getLatitude(), line, nodeX, nodeY, rX, rY);
+		if (DEBUG) {
+			LOG.debug("Drawing a circle at {},{} for {} (pixels: {},{}, radii: {},{})",
+					pos.getLongitude(), pos.getLatitude(), line, nodeX, nodeY, rX, rY);
+		}
 		drawEllipse(nodeX, nodeY, rX, rY, config.getColor(line));
 	}
 
 	/**
-	 * @param pixels canvas
 	 * @param nodeX center x
 	 * @param nodeY center y
 	 * @param r radius around center
@@ -126,12 +130,15 @@ public abstract class DistanceMapDrawer<T> {
 		int endX = Math.min(nodeX + r, pixelWidth);
 		int startY = Math.max(nodeY - r, 0);
 		int endY = Math.min(nodeY + r, pixelHeight);
-		//LOG.debug("Drawing a circle at {},{} spanning from {},{} to {},{}", //
-		//		nodeX, nodeY, startX, startY, endX, endY);
+		if (DEBUG) {
+			LOG.debug("Drawing a circle at {},{} spanning from {},{} to {},{}",
+					nodeX, nodeY, startX, startY, endX, endY);
+		}
 		for (int x = startX; x < endX; ++x) {
 			for (int y = startY; y < endY; ++y) {
 				// circle: (x - x_0)^2 + (y - y_0)^2 = r^2
-				double height = r * r - ((x - nodeX) * (x - nodeX) + (y - nodeY) * (y - nodeY)); // r^2 - ( (x - x_0)^2 + (y - y_0)^2 )
+				double height = r * r - ((x - nodeX) * (x - nodeX) + (y - nodeY) * (y
+						- nodeY)); // r^2 - ( (x - x_0)^2 + (y - y_0)^2 )
 				if (height >= 0) {
 					// max height is r^2, scale down, and scale up to [0, 256) alpha range
 					magicColor(x, y, (int)(height / (r * r) * 255), color);
@@ -141,20 +148,21 @@ public abstract class DistanceMapDrawer<T> {
 	}
 
 	/**
-	 * @param pixels canvas
 	 * @param nodeX center x
 	 * @param nodeY center y
 	 * @param a radius x
 	 * @param b radius y
-	 * @param color 
+	 * @param color of the ellipse to be drawn, alpha is ignored
 	 */
 	protected void drawEllipse(int nodeX, int nodeY, int a, int b, int color) {
 		int startX = Math.max(nodeX - a, 0);
 		int endX = Math.min(nodeX + a, pixelWidth);
 		int startY = Math.max(nodeY - b, 0);
 		int endY = Math.min(nodeY + b, pixelHeight);
-		//LOG.debug("Drawing a circle at {},{} spanning from {},{} to {},{}", //
-		//		nodeX, nodeY, startX, startY, endX, endY);
+		if (DEBUG) {
+			LOG.debug("Drawing a circle at {},{} spanning from {},{} to {},{}",
+					nodeX, nodeY, startX, startY, endX, endY);
+		}
 		for (int x = startX; x < endX; ++x) {
 			for (int y = startY; y < endY; ++y) {
 				// ellipse: (x - x_0)^2 / (a^2) + (y - y_0)^2 / (b^2) = 1
@@ -168,10 +176,8 @@ public abstract class DistanceMapDrawer<T> {
 	}
 
 	/**
-	 * @param pixels canvas
 	 * @param x coordinate
 	 * @param y coordinate
-	 * @param height 0..1
 	 * @param color new color to blend without alpha value
 	 */
 	private void magicColor(int x, int y, int newAlpha, int color) {

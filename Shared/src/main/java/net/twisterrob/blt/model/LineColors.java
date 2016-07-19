@@ -119,7 +119,7 @@ public abstract class LineColors {
 	public int getTfLRailForeground() {
 		return getUnknownForeground();
 	}
-	
+
 	public int getUnknownBackground() {
 		return makeColor(255, 255, 255);
 	}

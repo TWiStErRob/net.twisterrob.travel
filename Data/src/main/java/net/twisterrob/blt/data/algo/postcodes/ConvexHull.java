@@ -16,22 +16,23 @@ public class ConvexHull {
 		T endpoint;
 		do {
 			endpoint = first; // initial endpoint for a candidate edge on the hull
-			for (T SgetJ: S) {
+			for (T SgetJ : S) {
 				double endPointX = poser.getX(endpoint);
 				double endPointY = poser.getY(endpoint);
 				double pointOnHullX = poser.getX(pointOnHull);
 				double pointOnHullY = poser.getY(pointOnHull);
-				if (eq(endPointX, endPointY, pointOnHullX, pointOnHullY) //
-						|| isLeftOf( //
-								pointOnHullX, pointOnHullY, //
-								endPointX, endPointY, //
-								poser.getX(SgetJ), poser.getY(SgetJ))) {
+				if (eq(endPointX, endPointY, pointOnHullX, pointOnHullY)
+						|| isLeftOf(
+						pointOnHullX, pointOnHullY,
+						endPointX, endPointY,
+						poser.getX(SgetJ), poser.getY(SgetJ))) {
 					endpoint = SgetJ; // found greater left turn, update endpoint
 				}
 			}
 			P.add(pointOnHull);
 			pointOnHull = endpoint;
-		} while (!eq(poser.getX(endpoint), poser.getY(endpoint), poser.getX(P.get(0)), poser.getY(P.get(0)))); // wrapped around to first hull point
+			// repeat while not wrapped around to first hull point
+		} while (!eq(poser.getX(endpoint), poser.getY(endpoint), poser.getX(P.get(0)), poser.getY(P.get(0))));
 		return P;
 	}
 
@@ -47,7 +48,7 @@ public class ConvexHull {
 		int size = 0;
 		double xSum = 0;
 		double ySum = 0;
-		for (T l: S) {
+		for (T l : S) {
 			size++;
 			xSum += poser.getX(l);
 			ySum += poser.getY(l);

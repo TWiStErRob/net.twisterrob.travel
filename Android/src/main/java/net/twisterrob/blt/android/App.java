@@ -17,6 +17,7 @@ public class App extends android.app.Application {
 		AndroidLoggerFactory.addReplacement("^net\\.twisterrob\\.blt\\.(.+\\.)?", "");
 		AndroidLoggerFactory.addReplacement("^net\\.twisterrob\\.android\\.(.+\\.)?", "");
 	}
+
 	private static final Logger LOG = LoggerFactory.getLogger(App.class);
 
 	private static /*final*/ App s_instance;
@@ -33,8 +34,7 @@ public class App extends android.app.Application {
 		return s_instance;
 	}
 
-	@Override
-	public void onCreate() {
+	@Override public void onCreate() {
 		LOG.trace("App.onCreate()");
 		super.onCreate();
 		LibContextProvider.setApplicationContext(this);
@@ -79,8 +79,7 @@ public class App extends android.app.Application {
 	public static void sendMail(String body) {
 		new MailSenderAsyncTask("Better London Travel",
 				"better-london-travel@twisterrob.net", "papp.robert.s@gmail.com") {
-			@Override
-			protected void onPostExecute(Boolean result) {
+			@Override protected void onPostExecute(Boolean result) {
 				super.onPostExecute(result);
 				if (Boolean.TRUE.equals(result)) {
 					Toast.makeText(getInstance(), "Mail sent", Toast.LENGTH_SHORT).show();

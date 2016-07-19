@@ -1,4 +1,5 @@
 package net.twisterrob.blt.data.algo.routes;
+
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -35,7 +36,7 @@ public class RouteInfo {
 		return ends;
 	}
 	public Node getNode(String stopName) {
-		for (StopPoint stop: nodes.keySet()) {
+		for (StopPoint stop : nodes.keySet()) {
 			if (stop.getName().equals(stopName)) {
 				return nodes.get(stop);
 			}
@@ -51,8 +52,8 @@ public class RouteInfo {
 
 	public Map<String, Set<StopPoint>> groupByName(boolean collapseLocation) {
 		Map<String, Set<StopPoint>> grouping = new HashMap<>();
-		for (Route route: routes) {
-			for (StopPoint stop: route) {
+		for (Route route : routes) {
+			for (StopPoint stop : route) {
 				String key = stop.getName();
 				Set<StopPoint> stops = grouping.get(key);
 				if (stops == null) {
@@ -63,11 +64,10 @@ public class RouteInfo {
 			}
 		}
 		if (collapseLocation) {
-			for (Iterator<Entry<String, Set<StopPoint>>> groupIt = grouping.entrySet().iterator(); groupIt.hasNext();) {
-				Entry<String, Set<StopPoint>> group = groupIt.next();
-				for (Iterator<StopPoint> stopIt = group.getValue().iterator(); stopIt.hasNext();) {
+			for (Entry<String, Set<StopPoint>> group : grouping.entrySet()) {
+				for (Iterator<StopPoint> stopIt = group.getValue().iterator(); stopIt.hasNext(); ) {
 					StopPoint stop = stopIt.next();
-					for (StopPoint stop2: group.getValue()) {
+					for (StopPoint stop2 : group.getValue()) {
 						if (stop != stop2 && stop2.getLocation().equals(stop.getLocation())) {
 							stopIt.remove();
 						}
@@ -82,16 +82,16 @@ public class RouteInfo {
 	}
 
 	public void build() {
-		for (Route route: routes) {
-			for (StopPoint stop: route) {
+		for (Route route : routes) {
+			for (StopPoint stop : route) {
 				nodes.put(stop, new Node(stop));
 			}
 		}
-		for (Route route: routes) {
+		for (Route route : routes) {
 			Node first = null;
 			Node last = null;
-			for (RouteSection section: route.getSections()) {
-				for (RouteLink link: section.getLinks()) {
+			for (RouteSection section : route.getSections()) {
+				for (RouteLink link : section.getLinks()) {
 					StopPoint from = link.getFrom();
 					StopPoint to = link.getTo();
 					Node fromNode = nodes.get(from);
@@ -118,9 +118,9 @@ public class RouteInfo {
 		dfs(first, 0);
 	}
 	protected void printGraph() {
-		for (Node node: nodes.values()) {
+		for (Node node : nodes.values()) {
 			System.out.printf("%s(%s)\n", node, node.state);
-			for (Entry<Node, State> edge: node.out.entrySet()) {
+			for (Entry<Node, State> edge : node.out.entrySet()) {
 				System.out.printf("\t%s --%s-> %s\n", node, edge.getValue(), edge.getKey());
 			}
 		}
@@ -141,7 +141,7 @@ public class RouteInfo {
 				junctions.add(node);
 				break;
 		}
-		for (Entry<Node, State> edge: node.out.entrySet()) {
+		for (Entry<Node, State> edge : node.out.entrySet()) {
 			if (edge.getValue() == State.EMPTY) {
 				Node child = edge.getKey();
 				if (child.state == State.EMPTY) {
@@ -168,7 +168,7 @@ public class RouteInfo {
 			String padding = new String(new char[level]).replace("\0", printProgress);
 			State oldState = edge.getValue();
 			Node toNode = edge.getKey();
-			System.out.printf("%sedge (%s->%s): %s to %s\n", //
+			System.out.printf("%sedge (%s->%s): %s to %s\n",
 					padding, oldState, newState, fromNode, toNode);
 		}
 		edge.setValue(newState);

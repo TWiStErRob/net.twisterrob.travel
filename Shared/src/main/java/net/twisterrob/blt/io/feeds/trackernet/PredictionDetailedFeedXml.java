@@ -1,16 +1,17 @@
 package net.twisterrob.blt.io.feeds.trackernet;
 
-import net.twisterrob.blt.io.feeds.*;
+import net.twisterrob.blt.io.feeds.FeedXmlDescriptor;
 import net.twisterrob.java.annotations.SimpleDateFormatString;
 
 /**
  * The feed structure of the TrackerNet prediction details API.
- * @author TWiStEr
- * @see http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf#3.2.5
- * @see Feed#TubeDepartureBoardsPredictionDetailed
+ * @see <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">
+ *     Trackernet_Data_Services_Guide_Beta_0_2.pdf > 3.2.5</a>
+ * @see net.twisterrob.blt.io.feeds.Feed#TubeDepartureBoardsPredictionDetailed
  */
-interface PredictionDetailedFeedXml extends FeedXmlDescriptor {
-	interface Root {
+@SuppressWarnings("UnnecessaryInterfaceModifier")
+/*default*/ interface PredictionDetailedFeedXml extends FeedXmlDescriptor {
+	public interface Root {
 		String NS = "http://trackernet.lul.co.uk";
 		String ELEMENT = "ROOT";
 		/**
@@ -44,7 +45,7 @@ interface PredictionDetailedFeedXml extends FeedXmlDescriptor {
 	 * <code>S(tation)</code>: A construct representing a station on the line.
 	 */
 	@Children(Platform.class)
-	interface Station {
+	public interface Station {
 		/**
 		 * <code>S(tation)</code>: A construct representing a station on the line.
 		 */
@@ -67,11 +68,12 @@ interface PredictionDetailedFeedXml extends FeedXmlDescriptor {
 		@Attribute String currentTime = "CurTime";
 		String currentTime$format = "H:mm:ss";
 	}
+
 	/**
 	 * <code>P(latform)</code>: A construct representing a platform on the station.
 	 */
 	@Children(Train.class)
-	interface Platform {
+	public interface Platform {
 		/**
 		 * <code>P(latform)</code>: A construct representing a platform on the station.
 		 */
@@ -89,10 +91,11 @@ interface PredictionDetailedFeedXml extends FeedXmlDescriptor {
 		 */
 		@Attribute String trackCode = "TrackCode";
 	}
+
 	/**
 	 * <code>T(rain)</code>: A construct representing a train in the prediction list.
 	 */
-	interface Train {
+	public interface Train {
 		Class<?>[] CHILDREN = NO_CHILDREN;
 		/**
 		 * <code>T(rain)</code>: A construct representing a train in the prediction list.

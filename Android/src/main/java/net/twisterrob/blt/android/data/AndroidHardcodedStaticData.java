@@ -30,7 +30,7 @@ public class AndroidHardcodedStaticData extends SharedStaticData implements Andr
 	}
 
 	private void initStopTypeMapIcons() {
-		for (StopType type: StopType.values()) {
+		for (StopType type : StopType.values()) {
 			stopTypeMapIcons.put(type, R.drawable.tfl_roundel_lul_map);
 		}
 		stopTypeMapIcons.put(StopType.DLR, R.drawable.tfl_roundel_dlr_map);

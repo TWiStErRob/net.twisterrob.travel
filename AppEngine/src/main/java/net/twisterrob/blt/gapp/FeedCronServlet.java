@@ -1,5 +1,4 @@
 package net.twisterrob.blt.gapp;
-import static net.twisterrob.blt.gapp.FeedConsts.*;
 
 import java.io.*;
 import java.net.*;
@@ -7,14 +6,16 @@ import java.util.*;
 
 import javax.servlet.http.*;
 
-import net.twisterrob.blt.io.feeds.Feed;
-import net.twisterrob.java.io.IOTools;
-import net.twisterrob.java.utils.ObjectTools;
-
 import org.slf4j.*;
 
 import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.datastore.Query.SortDirection;
+
+import net.twisterrob.blt.io.feeds.Feed;
+import net.twisterrob.java.io.IOTools;
+import net.twisterrob.java.utils.ObjectTools;
+
+import static net.twisterrob.blt.gapp.FeedConsts.*;
 
 @SuppressWarnings("serial")
 public class FeedCronServlet extends HttpServlet {
@@ -24,8 +25,7 @@ public class FeedCronServlet extends HttpServlet {
 
 	private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	@Override public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String feedString = String.valueOf(req.getParameter(QUERY_FEED));
 		Feed feed;
 		try {
@@ -87,7 +87,7 @@ public class FeedCronServlet extends HttpServlet {
 		InputStream input = null;
 		String result;
 		try {
-			URL url = URL_BUILDER.getFeedUrl(feed, Collections.<String, Object> emptyMap());
+			URL url = URL_BUILDER.getFeedUrl(feed, Collections.<String, Object>emptyMap());
 			LOG.debug("Requesting feed '{}': '{}'...", feed, url);
 			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 			connection.connect();

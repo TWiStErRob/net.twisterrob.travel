@@ -24,8 +24,7 @@ class RouteDrawer extends RouteComponent {
 		setPreferredSize(new Dimension(-1, 100));
 		setBackground(Color.WHITE);
 	}
-	@Override
-	public void paint(Graphics g) {
+	@Override public void paint(Graphics g) {
 		super.paint(g);
 		if (getRoute() == null) {
 			return;

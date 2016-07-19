@@ -1,21 +1,21 @@
 package net.twisterrob.blt.model;
 
-import static org.junit.Assert.*;
-
 import java.util.*;
 import java.util.Map.Entry;
 
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class LineTest {
 	@Test
 	public void testFixMapList() {
 		Map<Line, List<String>> map = new TreeMap<>();
 		assertEquals(0, map.size());
-		Map<Line, List<String>> newMap = Line.fixMap(map, Collections.<String> emptyList());
+		Map<Line, List<String>> newMap = Line.fixMap(map, Collections.<String>emptyList());
 		assertSame(map, newMap);
 		assertEquals(Line.values().length, map.size());
-		for (Entry<Line, List<String>> element: map.entrySet()) {
+		for (Entry<Line, List<String>> element : map.entrySet()) {
 			assertNotNull(element.getKey());
 			List<String> value = element.getValue(); // force casting
 			assertNotNull(value);
@@ -30,7 +30,7 @@ public class LineTest {
 		Map<Line, List<String>> newMap = Line.fixMap(map, empty);
 		assertSame(map, newMap);
 		assertEquals(Line.values().length, map.size());
-		for (Entry<Line, List<String>> element: map.entrySet()) {
+		for (Entry<Line, List<String>> element : map.entrySet()) {
 			assertNotNull(element.getKey());
 			List<String> value = element.getValue(); // force casting
 			assertNotNull(value);
@@ -45,7 +45,7 @@ public class LineTest {
 		HashMap<Line, LinkedList<String>> newMap = Line.fixMap(map, empty);
 		assertSame(map, newMap);
 		assertEquals(Line.values().length, map.size());
-		for (Entry<Line, LinkedList<String>> element: map.entrySet()) {
+		for (Entry<Line, LinkedList<String>> element : map.entrySet()) {
 			assertNotNull(element.getKey());
 			LinkedList<String> value = element.getValue(); // force casting
 			assertNotNull(value);
@@ -60,7 +60,7 @@ public class LineTest {
 		Map<Line, Set<String>> newMap = Line.fixMap(map, empty);
 		assertSame(map, newMap);
 		assertEquals(Line.values().length, map.size());
-		for (Entry<Line, Set<String>> element: map.entrySet()) {
+		for (Entry<Line, Set<String>> element : map.entrySet()) {
 			assertNotNull(element.getKey());
 			Set<String> value = element.getValue(); // force casting
 			assertNotNull(value);
@@ -75,7 +75,7 @@ public class LineTest {
 		Map<Line, Set<String>> newMap = Line.fixMap(map, empty);
 		assertSame(map, newMap);
 		assertEquals(Line.values().length, map.size());
-		for (Entry<Line, Set<String>> element: map.entrySet()) {
+		for (Entry<Line, Set<String>> element : map.entrySet()) {
 			assertNotNull(element.getKey());
 			Set<String> value = element.getValue(); // force casting
 			assertNotNull(value);
@@ -90,7 +90,7 @@ public class LineTest {
 		HashMap<Line, HashSet<String>> newMap = Line.fixMap(map, empty);
 		assertSame(map, newMap);
 		assertEquals(Line.values().length, map.size());
-		for (Entry<Line, HashSet<String>> element: map.entrySet()) {
+		for (Entry<Line, HashSet<String>> element : map.entrySet()) {
 			assertNotNull(element.getKey());
 			HashSet<String> value = element.getValue(); // force casting
 			assertNotNull(value);
@@ -101,10 +101,10 @@ public class LineTest {
 	public void testFixMapMap() {
 		Map<Line, Map<String, Double>> map = new TreeMap<>();
 		assertEquals(0, map.size());
-		Map<Line, Map<String, Double>> newMap = Line.fixMap(map, Collections.<String, Double> emptyMap());
+		Map<Line, Map<String, Double>> newMap = Line.fixMap(map, Collections.<String, Double>emptyMap());
 		assertSame(map, newMap);
 		assertEquals(Line.values().length, map.size());
-		for (Entry<Line, Map<String, Double>> element: map.entrySet()) {
+		for (Entry<Line, Map<String, Double>> element : map.entrySet()) {
 			assertNotNull(element.getKey());
 			Map<String, Double> value = element.getValue(); // force casting
 			assertNotNull(value);
@@ -119,7 +119,7 @@ public class LineTest {
 		HashMap<Line, HashMap<String, Double>> newMap = Line.fixMap(map, empty);
 		assertSame(map, newMap);
 		assertEquals(Line.values().length, map.size());
-		for (Entry<Line, HashMap<String, Double>> element: map.entrySet()) {
+		for (Entry<Line, HashMap<String, Double>> element : map.entrySet()) {
 			assertNotNull(element.getKey());
 			HashMap<String, Double> value = element.getValue(); // force casting
 			assertNotNull(value);

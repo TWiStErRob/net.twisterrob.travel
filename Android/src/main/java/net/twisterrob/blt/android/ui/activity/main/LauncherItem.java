@@ -28,6 +28,6 @@ class LauncherItem {
 	 * @param intent to add params to
 	 */
 	void addIntentParams(Intent intent) {
-		// optional @Override
+		// optional override
 	}
 }

@@ -2,16 +2,16 @@ package net.twisterrob.blt.android.db;
 
 import java.util.Map;
 
-import net.twisterrob.android.utils.tools.DatabaseTools;
-import net.twisterrob.blt.android.db.model.Station;
-import net.twisterrob.java.io.IOTools;
-import net.twisterrob.java.model.Location;
-
 import org.slf4j.*;
 
 import android.content.ContentValues;
 import android.database.DatabaseUtils;
 import android.database.sqlite.*;
+
+import net.twisterrob.android.utils.tools.DatabaseTools;
+import net.twisterrob.blt.android.db.model.Station;
+import net.twisterrob.java.io.IOTools;
+import net.twisterrob.java.model.Location;
 
 @SuppressWarnings("resource")
 //TODO fix resource leaks
@@ -62,7 +62,7 @@ class DataBaseWriter extends DataBaseAccess {
 		SQLiteDatabase database = prepareDB();
 		try {
 			database.beginTransaction();
-			for (Station station: stations) {
+			for (Station station : stations) {
 				insertStation(station);
 			}
 			database.setTransactionSuccessful();
@@ -106,7 +106,7 @@ class DataBaseWriter extends DataBaseAccess {
 		SQLiteDatabase database = prepareDB();
 		try {
 			database.beginTransaction();
-			for (Station station: stations) {
+			for (Station station : stations) {
 				updateStation(station);
 			}
 			database.setTransactionSuccessful();
@@ -151,14 +151,14 @@ class DataBaseWriter extends DataBaseAccess {
 	private long getStationID(final String stationName) {
 		SQLiteDatabase database = m_dataBaseHelper.getReadableDatabase();
 		return DatabaseUtils
-				.longForQuery(database, "SELECT _id FROM Station WHERE name = ?", new String[]{stationName});
+				.longForQuery(database, "SELECT _id FROM Station WHERE name = ?", new String[] {stationName});
 	}
 
 	public void insertTypes(Map<String, String> styles) {
 		SQLiteDatabase database = prepareDB();
 		try {
 			database.beginTransaction();
-			for (Map.Entry<String, String> entry: styles.entrySet()) {
+			for (Map.Entry<String, String> entry : styles.entrySet()) {
 				String name = entry.getKey();
 				String url = entry.getValue();
 				insertType(name, url);
@@ -188,14 +188,14 @@ class DataBaseWriter extends DataBaseAccess {
 	@SuppressWarnings("unused")
 	private long getStationTypeID(final String stationTypeName) {
 		SQLiteDatabase database = m_dataBaseHelper.getReadableDatabase();
-		return longForQuery(database, "SELECT _id FROM StationType WHERE name = ?", new String[]{stationTypeName});
+		return longForQuery(database, "SELECT _id FROM StationType WHERE name = ?", new String[] {stationTypeName});
 	}
 
 	public void updateTypes(Map<String, String> styles) {
 		SQLiteDatabase database = prepareDB();
 		try {
 			database.beginTransaction();
-			for (Map.Entry<String, String> entry: styles.entrySet()) {
+			for (Map.Entry<String, String> entry : styles.entrySet()) {
 				String name = entry.getKey();
 				String url = entry.getValue();
 				updateType(name, url);
@@ -211,7 +211,7 @@ class DataBaseWriter extends DataBaseAccess {
 		try {
 			ContentValues values = new ContentValues(2);
 			values.put("url", url);
-			int rows = database.update("StationType", values, "name = ?", new String[]{name});
+			int rows = database.update("StationType", values, "name = ?", new String[] {name});
 			if (rows == 0) {
 				insertType(name, url);
 			}

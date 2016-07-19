@@ -23,14 +23,12 @@ public class NetworkLink {
 		return m_distance;
 	}
 
-	@Override
-	public String toString() {
-		return String.format("%s to %s (%s: %dm)", //
+	@Override public String toString() {
+		return String.format("%s to %s (%s: %dm)",
 				m_source.getName(), m_target.getName(), m_source.getLine(), m_distance);
 	}
 
-	@Override
-	public int hashCode() {
+	@Override public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((m_source == null)? 0 : m_source.hashCode());
@@ -38,8 +36,7 @@ public class NetworkLink {
 		return result;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
+	@Override public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}

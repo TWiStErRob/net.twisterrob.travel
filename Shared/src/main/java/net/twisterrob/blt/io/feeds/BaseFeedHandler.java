@@ -1,9 +1,9 @@
 package net.twisterrob.blt.io.feeds;
 
-import net.twisterrob.java.io.MailSender;
-
 import org.slf4j.*;
 import org.xml.sax.helpers.DefaultHandler;
+
+import net.twisterrob.java.io.MailSender;
 
 public abstract class BaseFeedHandler<T extends BaseFeed<T>> extends DefaultHandler implements FeedHandler<T> {
 	public final Logger LOG = LoggerFactory.getLogger(getClass());

@@ -2,9 +2,10 @@ package net.twisterrob.blt.android.ui.adapter;
 
 import java.util.*;
 
+import android.widget.Filter;
+
 import net.twisterrob.blt.io.feeds.trackernet.model.Platform;
 import net.twisterrob.blt.model.PlatformDirection;
-import android.widget.Filter;
 
 /**
  * @deprecated not used, just example
@@ -14,18 +15,17 @@ public abstract class PlatformPlatformDirectionFilter extends Filter {
 	private Set<PlatformDirection> m_directions;
 
 	public PlatformPlatformDirectionFilter() {
-		this(Collections.<PlatformDirection> emptySet());
+		this(Collections.<PlatformDirection>emptySet());
 	}
 	public PlatformPlatformDirectionFilter(Set<PlatformDirection> initialDirections) {
 		m_directions = initialDirections;
 	}
 
-	@Override
-	protected FilterResults performFiltering(CharSequence constraint) {
+	@Override protected FilterResults performFiltering(CharSequence constraint) {
 		List<Platform> platforms = getDataToFilter();
 		List<Platform> result = getDataToFilter();
 
-		for (Platform platform: platforms) {
+		for (Platform platform : platforms) {
 			if (m_directions.contains(platform.getDirection())) {
 				result.add(platform);
 			}
@@ -41,8 +41,7 @@ public abstract class PlatformPlatformDirectionFilter extends Filter {
 	protected abstract void publishFilteredData(List<Platform> values);
 
 	@SuppressWarnings("unchecked")
-	@Override
-	protected final void publishResults(CharSequence constraint, FilterResults results) {
+	@Override protected final void publishResults(CharSequence constraint, FilterResults results) {
 		publishFilteredData((List<Platform>)results.values);
 	}
 

@@ -4,15 +4,15 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
-import net.twisterrob.blt.android.App;
-import net.twisterrob.blt.io.feeds.*;
-import net.twisterrob.java.io.IOTools;
-
 import org.slf4j.*;
 import org.xml.sax.SAXException;
 
 import android.os.AsyncTask;
+
+import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
+import net.twisterrob.blt.android.App;
+import net.twisterrob.blt.io.feeds.*;
+import net.twisterrob.java.io.IOTools;
 
 public class DownloadFeedTask<T extends BaseFeed<T>> extends AsyncTask<Feed, Integer, AsyncTaskResult<Feed, T>> {
 	protected final Logger LOG = LoggerFactory.getLogger(getClass());
@@ -22,12 +22,11 @@ public class DownloadFeedTask<T extends BaseFeed<T>> extends AsyncTask<Feed, Int
 		this(null);
 	}
 	public DownloadFeedTask(Map<String, ?> args) {
-		m_args = args != null? args : Collections.<String, Object> emptyMap();
+		m_args = args != null? args : Collections.<String, Object>emptyMap();
 	}
 
 	@SuppressWarnings("resource")
-	@Override
-	protected AsyncTaskResult<Feed, T> doInBackground(Feed... feeds) {
+	@Override protected AsyncTaskResult<Feed, T> doInBackground(Feed... feeds) {
 		HttpURLConnection connection = null;
 		InputStream input = null;
 		try {
@@ -48,7 +47,7 @@ public class DownloadFeedTask<T extends BaseFeed<T>> extends AsyncTask<Feed, Int
 			connection.connect();
 			input = connection.getInputStream();
 
-			T root = feed.<T> getHandler().parse(input);
+			T root = feed.<T>getHandler().parse(input);
 			return new AsyncTaskResult<>(root);
 		} catch (IOException ex) {
 			return new AsyncTaskResult<>(ex);

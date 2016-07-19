@@ -25,7 +25,7 @@ public class FeedProcessor {
 
 		//print(info.getNode("West Croydon Tram Stop"));
 
-		for (Route route: feed.getRoutes()) {
+		for (Route route : feed.getRoutes()) {
 			@SuppressWarnings({"unused", "deprecation"})
 			Route newRoute = route.reconstruct();
 		}

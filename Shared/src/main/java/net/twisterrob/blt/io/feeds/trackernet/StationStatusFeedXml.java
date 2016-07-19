@@ -1,22 +1,23 @@
 package net.twisterrob.blt.io.feeds.trackernet;
 
-import net.twisterrob.blt.io.feeds.*;
+import net.twisterrob.blt.io.feeds.FeedXmlDescriptor;
 
 /**
  * The feed structure of the TrackerNet line status API.
- * @author TWiStEr
- * @see http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf#3.3.5
- * @see Feed#TubeDepartureBoardsStationStatus 
- * @see Feed#TubeDepartureBoardsStationStatusIncidents 
+ * @see <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">
+ *     Trackernet_Data_Services_Guide_Beta_0_2.pdf > 3.3.5</a>
+ * @see net.twisterrob.blt.io.feeds.Feed#TubeDepartureBoardsStationStatus
+ * @see net.twisterrob.blt.io.feeds.Feed#TubeDepartureBoardsStationStatusIncidents
  */
-interface StationStatusFeedXml extends FeedXmlDescriptor {
-	@Children(StationStatus.class)
-	interface Root {
+@SuppressWarnings("UnnecessaryInterfaceModifier") 
+/*default*/ interface StationStatusFeedXml extends FeedXmlDescriptor {
+	@Children(StationStatus.class) interface Root {
 		String NS = "http://webservices.lul.co.uk/";
 		String ELEMENT = "ArrayOfStationStatus";
 	}
+
 	@Children({Station.class, Status.class})
-	interface StationStatus {
+	public interface StationStatus {
 		String ELEMENT = "StationStatus";
 		/**
 		 * <code>StationStatus ID</code>: An identifier for the station.
@@ -39,8 +40,9 @@ interface StationStatusFeedXml extends FeedXmlDescriptor {
 		 */
 		@Attribute String name = "Name";
 	}
+
 	@Children(StatusType.class)
-	interface Status {
+	public interface Status {
 		String ELEMENT = "Status";
 		/**
 		 * <code>Status ID</code>: A numeric code representing the status of the station.
@@ -59,7 +61,8 @@ interface StationStatusFeedXml extends FeedXmlDescriptor {
 		 */
 		@Attribute String isActive = "IsActive";
 	}
-	interface StatusType {
+
+	public interface StatusType {
 		String ELEMENT = "Status";
 		/**
 		 * <code>StatusType ID</code>: A code representing the status type the service is checking. For this call it will always return the value “2”.

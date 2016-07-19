@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface URLBuilder {
 	/**
-	 * @param args 
+	 * @param args
 	 * @return never null
 	 * @throws MalformedURLException
 	 */

@@ -49,8 +49,7 @@ public abstract class BaseItemizedOverlay<T extends OverlayItem> extends Itemize
 		return m_focusedMarker;
 	}
 
-	@Override
-	public void setOnFocusChangeListener(final com.google.android.maps.ItemizedOverlay.OnFocusChangeListener l) {
+	@Override public void setOnFocusChangeListener(final ItemizedOverlay.OnFocusChangeListener l) {
 		super.setOnFocusChangeListener(new com.google.android.maps.ItemizedOverlay.OnFocusChangeListener() {
 			@SuppressWarnings({"rawtypes", "unchecked"})
 			public void onFocusChanged(ItemizedOverlay overlay, OverlayItem newFocus) {
@@ -99,12 +98,10 @@ public abstract class BaseItemizedOverlay<T extends OverlayItem> extends Itemize
 	public Boolean getShadow() {
 		return m_wantShadow;
 	}
-	@Override
-	public void draw(Canvas canvas, MapView mapView, boolean shadow) {
+	@Override public void draw(Canvas canvas, MapView mapView, boolean shadow) {
 		super.draw(canvas, mapView, m_wantShadow == null? shadow : m_wantShadow);
 	}
-	@Override
-	public boolean draw(Canvas canvas, MapView mapView, boolean shadow, long when) {
+	@Override public boolean draw(Canvas canvas, MapView mapView, boolean shadow, long when) {
 		return super.draw(canvas, mapView, m_wantShadow == null? shadow : m_wantShadow, when);
 	}
 

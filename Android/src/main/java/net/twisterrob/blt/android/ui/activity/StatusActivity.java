@@ -3,15 +3,6 @@ package net.twisterrob.blt.android.ui.activity;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
-import net.twisterrob.blt.android.R;
-import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
-import net.twisterrob.blt.android.ui.*;
-import net.twisterrob.blt.android.ui.adapter.StationStatusAdapter;
-import net.twisterrob.blt.io.feeds.Feed;
-import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
-import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus;
-import net.twisterrob.blt.model.Line;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,9 +11,18 @@ import android.view.View;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
+import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
+import net.twisterrob.blt.android.R;
+import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
+import net.twisterrob.blt.android.ui.ListViewHandler;
+import net.twisterrob.blt.android.ui.adapter.StationStatusAdapter;
+import net.twisterrob.blt.io.feeds.Feed;
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
+import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus;
+import net.twisterrob.blt.model.Line;
+
 /**
  * http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf
- * @author TWiStEr
  */
 public class StatusActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -31,12 +31,11 @@ public class StatusActivity extends AppCompatActivity implements SwipeRefreshLay
 
 	protected SwipeRefreshLayout m_refresh;
 	protected TextView m_status;
-	
+
 	protected ListView m_listView;
 	protected ListViewHandler m_listHandler;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_status);
 
@@ -70,8 +69,7 @@ public class StatusActivity extends AppCompatActivity implements SwipeRefreshLay
 
 	private void delayedGetRoot() {
 		new DownloadFeedTask<LineStatusFeed>() {
-			@Override
-			protected void onPostExecute(AsyncTaskResult<Feed, LineStatusFeed> result) {
+			@Override protected void onPostExecute(AsyncTaskResult<Feed, LineStatusFeed> result) {
 				if (result.getError() != null) {
 					LOG.warn("Cannot load line statuses", result.getError());
 					m_listHandler.empty("Cannot load line statuses: " + result.getError());

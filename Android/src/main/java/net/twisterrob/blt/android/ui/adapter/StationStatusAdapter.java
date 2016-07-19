@@ -2,14 +2,15 @@ package net.twisterrob.blt.android.ui.adapter;
 
 import java.util.Collection;
 
-import net.twisterrob.android.adapter.BaseListAdapter;
-import net.twisterrob.blt.android.*;
-import net.twisterrob.blt.io.feeds.trackernet.model.*;
-import net.twisterrob.blt.model.LineColors;
 import android.content.Context;
 import android.graphics.*;
 import android.view.View;
 import android.widget.TextView;
+
+import net.twisterrob.android.adapter.BaseListAdapter;
+import net.twisterrob.blt.android.*;
+import net.twisterrob.blt.io.feeds.trackernet.model.*;
+import net.twisterrob.blt.model.LineColors;
 
 public class StationStatusAdapter extends BaseListAdapter<LineStatus, StationStatusAdapter.ViewHolder> {
 	private final LineColors colors = App.getInstance().getStaticData().getLineColors();
@@ -24,13 +25,11 @@ public class StationStatusAdapter extends BaseListAdapter<LineStatus, StationSta
 		TextView delay;
 	}
 
-	@Override
-	protected int getItemLayoutId() {
+	@Override protected int getItemLayoutId() {
 		return R.layout.item_line_status;
 	}
 
-	@Override
-	protected ViewHolder createHolder(final View convertView) {
+	@Override protected ViewHolder createHolder(final View convertView) {
 		ViewHolder holder = new ViewHolder();
 		holder.line = (TextView)convertView.findViewById(R.id.linestatus_line);
 		holder.delay = (TextView)convertView.findViewById(R.id.linestatus_delay);
@@ -38,8 +37,7 @@ public class StationStatusAdapter extends BaseListAdapter<LineStatus, StationSta
 		return holder;
 	}
 
-	@Override
-	protected void bindView(final ViewHolder holder, final LineStatus currentItem, final View convertView) {
+	@Override protected void bindView(final ViewHolder holder, final LineStatus currentItem, final View convertView) {
 		String title = currentItem.getLine().getTitle();
 		String description = currentItem.getDescription();
 		String delay = currentItem.getType().getTitle();

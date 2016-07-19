@@ -3,11 +3,6 @@ package net.twisterrob.blt.android.ui.adapter;
 import java.util.*;
 import java.util.Map.Entry;
 
-import net.twisterrob.android.adapter.BaseListAdapter;
-import net.twisterrob.blt.android.*;
-import net.twisterrob.blt.android.db.model.Station;
-import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder;
-import net.twisterrob.blt.model.*;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -18,12 +13,18 @@ import android.view.View;
 import android.widget.*;
 import android.widget.TextView.BufferType;
 
+import net.twisterrob.android.adapter.BaseListAdapter;
+import net.twisterrob.blt.android.*;
+import net.twisterrob.blt.android.db.model.Station;
+import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder;
+import net.twisterrob.blt.model.*;
+
 public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 	private Map<StopType, Drawable> bitmapCache = new EnumMap<>(StopType.class);
 
 	public StationAdapter(final Context context, final Collection<Station> items) {
 		super(context, items, false);
-		for (Entry<StopType, Integer> logo: App.getInstance().getStaticData().getStopTypeLogos().entrySet()) {
+		for (Entry<StopType, Integer> logo : App.getInstance().getStaticData().getStopTypeLogos().entrySet()) {
 			bitmapCache.put(logo.getKey(), ContextCompat.getDrawable(context, logo.getValue()));
 		}
 	}
@@ -34,13 +35,11 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 		View[] lines = new View[6];
 	}
 
-	@Override
-	protected int getItemLayoutId() {
+	@Override protected int getItemLayoutId() {
 		return R.layout.item_station;
 	}
 
-	@Override
-	protected ViewHolder createHolder(final View convertView) {
+	@Override protected ViewHolder createHolder(final View convertView) {
 		ViewHolder holder = new ViewHolder();
 		holder.title = (TextView)convertView.findViewById(android.R.id.text1);
 		holder.description = (TextView)convertView.findViewById(android.R.id.text2);
@@ -54,8 +53,7 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 		return holder;
 	}
 
-	@Override
-	protected void bindView(final ViewHolder holder, final Station currentItem, final View convertView) {
+	@Override protected void bindView(final ViewHolder holder, final Station currentItem, final View convertView) {
 		Drawable icon = bitmapCache.get(currentItem.getType());
 		SpannableString title = highlight(currentItem.getName());
 		SpannableString description = highlight(String.format("%s: %s", currentItem.getType(), currentItem.getLines()));
@@ -90,13 +88,12 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 		}
 	}
 
-	@Override
-	protected List<Station> filter(List<? extends Station> fullList, String filter, List<Station> resultList) {
+	@Override protected List<Station> filter(List<? extends Station> fullList, String filter, List<Station> result) {
 		filter = filter.toLowerCase();
 		List<Station> nameMatches = new LinkedList<>();
 		List<Station> typeMatches = new LinkedList<>();
 		List<Station> lineMatches = new LinkedList<>();
-		for (Station station: fullList) {
+		for (Station station : fullList) {
 			if (matchName(station, filter)) {
 				nameMatches.add(station);
 			} else if (matchStopType(station, filter)) {
@@ -107,10 +104,10 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 				// no match
 			}
 		}
-		resultList.addAll(nameMatches);
-		resultList.addAll(typeMatches);
-		resultList.addAll(lineMatches);
-		return resultList;
+		result.addAll(nameMatches);
+		result.addAll(typeMatches);
+		result.addAll(lineMatches);
+		return result;
 	}
 
 	private static boolean matchName(Station station, String filter) {
@@ -122,7 +119,7 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 	}
 
 	private static boolean matchLines(Station station, String filter) {
-		for (Line line: station.getLines()) {
+		for (Line line : station.getLines()) {
 			if (line.getTitle().toLowerCase().contains(filter)) {
 				return true;
 			}

@@ -7,8 +7,7 @@ import net.twisterrob.java.model.Location;
 
 public class Station {
 	public static final Comparator<Station> COMPARATOR_NAME = new Comparator<Station>() {
-		@Override
-		public int compare(Station o1, Station o2) {
+		@Override public int compare(Station o1, Station o2) {
 			return o1.getName().compareTo(o2.getName());
 		}
 	};
@@ -21,8 +20,7 @@ public class Station {
 	private List<Line> m_lines;
 	private Map<Line, String> m_trackerNetCodes;
 
-	@Override
-	public String toString() {
+	@Override public String toString() {
 		return String.format("%s", m_name);
 	}
 
@@ -93,16 +91,14 @@ public class Station {
 		m_trackerNetCodes = codes;
 	}
 
-	@Override
-	public int hashCode() {
+	@Override public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + m_id;
 		return result;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
+	@Override public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}

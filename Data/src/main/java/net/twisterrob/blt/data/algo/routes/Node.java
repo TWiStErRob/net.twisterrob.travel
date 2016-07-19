@@ -13,8 +13,7 @@ public class Node implements Comparable<Node> {
 		this.data = data;
 	}
 
-	@Override
-	public String toString() {
+	@Override public String toString() {
 		return String.format("%s[%s]", data.getName(), state);
 	}
 	public int compareTo(Node o) {
