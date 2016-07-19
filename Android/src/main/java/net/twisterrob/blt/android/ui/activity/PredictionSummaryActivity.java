@@ -14,9 +14,9 @@ import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeed;
 import net.twisterrob.blt.io.feeds.trackernet.model.*;
 import net.twisterrob.blt.model.*;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.*;
 import android.view.View.MeasureSpec;
@@ -31,7 +31,7 @@ import android.widget.ExpandableListView.OnGroupExpandListener;
  */
 public class PredictionSummaryActivity extends AppCompatActivity
 		implements
-			OnRefreshListener,
+			SwipeRefreshLayout.OnRefreshListener,
 			OnGroupExpandListener,
 			OnGroupCollapseListener {
 	public static final String EXTRA_LINE = "line";
@@ -46,7 +46,8 @@ public class PredictionSummaryActivity extends AppCompatActivity
 
 	protected final Set<String> m_expandedStationNames = new LinkedHashSet<String>();
 
-	protected AppCompatPullToRefreshAttacher m_ptrAttacher;
+	protected SwipeRefreshLayout m_refresh;
+	protected TextView m_status;
 
 	protected ExpandableListView m_listView;
 	protected PredictionSummaryAdapter m_adapter;
@@ -67,7 +68,9 @@ public class PredictionSummaryActivity extends AppCompatActivity
 		m_listView = (ExpandableListView)findViewById(android.R.id.list);
 		m_listHandler = new ListViewHandler(this, m_listView, android.R.id.empty);
 
-		m_ptrAttacher = AppCompatPullToRefreshAttacher.get(this).init(R.id.layout$wrapper, this);
+		m_status = (TextView)findViewById(R.id.text_status);
+		m_refresh = (SwipeRefreshLayout)findViewById(R.id.layout$wrapper);
+		m_refresh.setOnRefreshListener(this);
 
 		m_listView.setOnGroupExpandListener(this);
 		m_listView.setOnGroupCollapseListener(this);
@@ -99,7 +102,7 @@ public class PredictionSummaryActivity extends AppCompatActivity
 	protected void onResume() {
 		super.onResume();
 		// actually start loading the data
-		this.onRefreshStarted(m_listView);
+		this.onRefresh();
 	}
 
 	@Override
@@ -134,10 +137,10 @@ public class PredictionSummaryActivity extends AppCompatActivity
 		}
 	}
 
-	@Override
-	public void onRefreshStarted(View view) {
+
+	@Override public void onRefresh() {
+		m_refresh.setRefreshing(true);
 		m_listHandler.startTFLLoad();
-		m_ptrAttacher.setRefreshing(true);
 		delayedGetRoot();
 	}
 
@@ -160,10 +163,10 @@ public class PredictionSummaryActivity extends AppCompatActivity
 					m_adapter = new PredictionSummaryAdapter(PredictionSummaryActivity.this, m_listView, map(root),
 							m_directionsEnabled);
 					m_listHandler.update("You've ruled out all stations, please loosen the filter.", m_adapter);
-					m_ptrAttacher.setLastUpdated("Last updated at " + fmt.format(m_lastUpdated.getTime()));
+					m_status.setText("Last updated at " + fmt.format(m_lastUpdated.getTime()));
 					restoreExpandedState();
 				}
-				m_ptrAttacher.setRefreshComplete();
+				m_refresh.setRefreshing(false);
 			}
 			private Map<Station, Map<Platform, List<Train>>> map(PredictionSummaryFeed root) {
 				Map<Station, Map<Platform, List<Train>>> data = new TreeMap<Station, Map<Platform, List<Train>>>(

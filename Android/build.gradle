@@ -16,8 +16,6 @@ dependencies {
 	}
 	// TOFIX otherwise VariantFragment descendants don't see Fragment and its methods (Cannot access FQCN errors in IDEA)
 	def supportVersion = '24.0.0'
-	compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abc:0.8'
-	compile 'com.github.chrisbanes.actionbarpulltorefresh:library:0.8'
 	compile 'com.google.android.gms:play-services:4.0.30'
 	compile "com.android.support:support-v4:${supportVersion}"
 	compile "com.android.support:appcompat-v7:${supportVersion}"

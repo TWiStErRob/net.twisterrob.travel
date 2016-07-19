@@ -12,18 +12,17 @@ import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeed;
 import net.twisterrob.blt.io.feeds.trackernet.model.*;
 import net.twisterrob.blt.model.*;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.*;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 
 public class StationInfoActivity extends AppCompatActivity
 		implements
-			OnRefreshListener,
+			SwipeRefreshLayout.OnRefreshListener,
 			OnGroupExpandListener,
 			OnGroupCollapseListener {
 	public static final String EXTRA_STATION_NAME = "name";
@@ -36,7 +35,8 @@ public class StationInfoActivity extends AppCompatActivity
 	protected final SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	protected Calendar m_lastUpdated;
 
-	protected AppCompatPullToRefreshAttacher m_ptrAttacher;
+	protected SwipeRefreshLayout m_refresh;
+	protected TextView m_status;
 
 	protected ExpandableListView m_listView;
 	protected PredictionSummaryAdapter m_adapter;
@@ -64,7 +64,9 @@ public class StationInfoActivity extends AppCompatActivity
 		m_listHandler = new ListViewHandler(this, m_listView, android.R.id.empty);
 		m_listHandler.update("You've ruled out all stations, please loosen the filter.", m_adapter);
 
-		m_ptrAttacher = AppCompatPullToRefreshAttacher.get(this).init(R.id.layout$wrapper, this);
+		m_status = (TextView)findViewById(R.id.text_status);
+		m_refresh = (SwipeRefreshLayout)findViewById(R.id.layout$wrapper);
+		m_refresh.setOnRefreshListener(this);
 
 		m_listView.setOnGroupExpandListener(this);
 		m_listView.setOnGroupCollapseListener(this);
@@ -82,13 +84,12 @@ public class StationInfoActivity extends AppCompatActivity
 	protected void onResume() {
 		super.onResume();
 		// actually start loading the data
-		this.onRefreshStarted(m_listView);
+		this.onRefresh();
 	}
 
-	@Override
-	public void onRefreshStarted(View view) {
+	@Override public void onRefresh() {
+		m_refresh.setRefreshing(true);
 		m_listHandler.startTFLLoad();
-		m_ptrAttacher.setRefreshing(true);
 		delayedGetRoot();
 	}
 
@@ -112,7 +113,7 @@ public class StationInfoActivity extends AppCompatActivity
 						PredictionSummaryFeed root = result.getResult();
 						addResult(root, root.getLine());
 					}
-					m_ptrAttacher.setRefreshComplete();
+					m_refresh.setRefreshing(false);
 				}
 			}.execute(Feed.TubeDepartureBoardsPredictionDetailed);
 		}
@@ -122,7 +123,7 @@ public class StationInfoActivity extends AppCompatActivity
 
 	protected synchronized void addResult(PredictionSummaryFeed root, Line line) {
 		m_lastUpdated = Calendar.getInstance();
-		m_ptrAttacher.setLastUpdated("Last updated at " + fmt.format(m_lastUpdated.getTime()));
+		m_status.setText("Last updated at " + fmt.format(m_lastUpdated.getTime()));
 		m_doneLines.add(line);
 		if (root != null) {
 			Map<Station, Map<Platform, List<Train>>> map = map(root);
