@@ -1,18 +1,20 @@
 package net.twisterrob.blt.android.ui.activity;
 
-import java.io.IOException;
 import java.util.List;
 
 import net.twisterrob.android.map.BaseItemizedOverlay;
 import net.twisterrob.blt.android.data.LocationUtils;
-import net.twisterrob.android.utils.tools.IOTools;
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.db.model.Station;
 import android.graphics.*;
 import android.graphics.drawable.*;
 import android.os.*;
+import android.support.v4.content.ContextCompat;
 import android.view.*;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.maps.*;
 
 public class StationMapActivity extends MapActivity {
@@ -35,9 +37,13 @@ public class StationMapActivity extends MapActivity {
 			protected Bitmap doInBackground(Void... params) {
 				try {
 					// TODO get from stop
-					return IOTools.getImage("http://www.tfl.gov.uk/tfl-global/images/syndication/roundel-tube.png",
-							true);
-				} catch (IOException ex) {
+					FutureTarget<Bitmap> target = Glide
+							.with(StationMapActivity.this)
+							.load("http://www.tfl.gov.uk/tfl-global/images/syndication/roundel-tube.png")
+							.asBitmap()
+							.into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
+					return target.get();
+				} catch (Exception ex) {
 					ex.printStackTrace();
 					return null;
 				}
@@ -85,7 +91,7 @@ public class StationMapActivity extends MapActivity {
 		protected BaseItemizedOverlayExtension(Drawable defaultMarker, List<Station> stations) {
 			super(defaultMarker);
 			m_stations = stations;
-			Drawable drawable = getResources().getDrawable(R.drawable.tfl_roundel_lul_map);
+			Drawable drawable = ContextCompat.getDrawable(StationMapActivity.this, R.drawable.tfl_roundel_lul_map);
 			drawable.setLevel(1); // TODO based on map level
 			m_drawable = BaseItemizedOverlay.bindCenter(drawable);
 			populate();

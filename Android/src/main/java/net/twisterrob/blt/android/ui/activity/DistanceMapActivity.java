@@ -9,7 +9,7 @@ import net.twisterrob.blt.android.db.model.NetworkNode;
 
 import org.slf4j.*;
 
-import android.graphics.Bitmap;
+import android.graphics.*;
 import android.os.*;
 import android.os.AsyncTask.Status;
 import android.support.v4.app.FragmentActivity;
@@ -68,11 +68,19 @@ public class DistanceMapActivity extends FragmentActivity {
 		m_distanceMapDrawer = new DistanceMapDrawerAndroid(nodes, drawConfig);
 		CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(m_distanceMapDrawer.getBounds(), MAP_PADDING);
 		m_map.moveCamera(cu);
+		// distance map below
+		Bitmap emptyMap = m_distanceMapDrawer.draw(Collections.<NetworkNode, Double>emptyMap());
+		m_groundOverlay = m_map.addGroundOverlay(new GroundOverlayOptions() //
+				.positionFromBounds(m_distanceMapDrawer.getBounds()) //
+				.transparency(0.0f) //
+				.image(BitmapDescriptorFactory.fromBitmap(emptyMap)) //
+				);
+		// tube map above
 		m_map.addGroundOverlay(new GroundOverlayOptions() //
 				.positionFromBounds(m_distanceMapDrawer.getBounds()) //
 				.transparency(0.3f) //
-				.image(BitmapDescriptorFactory.fromBitmap(new TubeMapDrawer(nodes).draw(nodes)) //
-				));
+				.image(BitmapDescriptorFactory.fromBitmap(new TubeMapDrawer(nodes).draw(nodes))) //
+				);
 	}
 
 	private AsyncTask<LatLng, Void, Bitmap> m_redrawTask;
@@ -103,14 +111,7 @@ public class DistanceMapActivity extends FragmentActivity {
 
 	protected void updateDistanceMap(Bitmap map) {
 		LOG.trace("updateDistanceMap({})", map);
-		if (m_groundOverlay == null) {
-			m_groundOverlay = m_map.addGroundOverlay(new GroundOverlayOptions() //
-					.positionFromBounds(m_distanceMapDrawer.getBounds()) //
-					.transparency(0.0f) //
-					.image(BitmapDescriptorFactory.fromBitmap(map)));
-		} else {
-			m_groundOverlay.setImage(BitmapDescriptorFactory.fromBitmap(map));
-		}
+		m_groundOverlay.setImage(BitmapDescriptorFactory.fromBitmap(map));
 		Collection<NetworkNode> startNodes = m_distanceMapGenerator.getStartNodes();
 		reCreateMarkers(m_markersStart, startNodes);
 	}

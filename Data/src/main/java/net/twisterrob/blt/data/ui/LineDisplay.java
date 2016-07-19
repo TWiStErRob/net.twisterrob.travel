@@ -45,7 +45,7 @@ public class LineDisplay extends JFrame {
 				if (e.getValueIsAdjusting()) {
 					return;
 				}
-				JList<Route> list = (JList<Route>)e.getSource();
+				@SuppressWarnings("unchecked") JList<Route> list = (JList<Route>)e.getSource();
 				Route route = list.getSelectedValue();
 				routeLine.setRoute(route);
 				routeMap.setRoute(route);
