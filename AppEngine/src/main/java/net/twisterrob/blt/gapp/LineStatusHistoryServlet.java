@@ -35,7 +35,7 @@ public class LineStatusHistoryServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Feed feed = Feed.TubeDepartureBoardsLineStatus;
-		List<Result> results = new LinkedList<Result>();
+		List<Result> results = new LinkedList<>();
 
 		// Params
 		int max;
@@ -131,7 +131,7 @@ public class LineStatusHistoryServlet extends HttpServlet {
 	}
 
 	private static List<ResultChange> getDifferences(List<Result> results, boolean skipErrors) {
-		List<ResultChange> resultChanges = new ArrayList<LineStatusHistoryServlet.ResultChange>(results.size());
+		List<ResultChange> resultChanges = new ArrayList<>(results.size());
 		Result newResult = null;
 		for (Result oldResult: results) { // we're going forward, but the list is backwards
 			if (skipErrors && oldResult.getFullError() != null) {
@@ -154,8 +154,8 @@ public class LineStatusHistoryServlet extends HttpServlet {
 		public ResultChange(Result oldResult, Result newResult) {
 			this.oldResult = oldResult;
 			this.newResult = newResult;
-			statusChanges = new EnumMap<Line, String>(Line.class);
-			descChanges = new EnumMap<Line, String>(Line.class);
+			statusChanges = new EnumMap<>(Line.class);
+			descChanges = new EnumMap<>(Line.class);
 			diff();
 		}
 		public Result getOld() {
@@ -191,7 +191,7 @@ public class LineStatusHistoryServlet extends HttpServlet {
 			}
 			Map<Line, LineStatus> oldMap = oldResult.getContent().getStatusMap();
 			Map<Line, LineStatus> newMap = newResult.getContent().getStatusMap();
-			Set<Line> allLines = new HashSet<Line>();
+			Set<Line> allLines = new HashSet<>();
 			allLines.addAll(oldMap.keySet());
 			allLines.addAll(newMap.keySet());
 			for (Line line: allLines) {

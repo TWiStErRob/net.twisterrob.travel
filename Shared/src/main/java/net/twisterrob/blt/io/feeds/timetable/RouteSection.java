@@ -4,7 +4,7 @@ import java.util.*;
 
 public class RouteSection implements Iterable<StopPoint> {
 	private String id;
-	List<RouteLink> routeLinks = new ArrayList<RouteLink>();
+	List<RouteLink> routeLinks = new ArrayList<>();
 
 	public String getId() {
 		return id;

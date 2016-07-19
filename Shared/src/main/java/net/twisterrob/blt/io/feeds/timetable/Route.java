@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Route implements Iterable<StopPoint> {
 	private String id;
-	private List<RouteSection> routeSections = new ArrayList<RouteSection>();
+	private List<RouteSection> routeSections = new ArrayList<>();
 	private String description;
 
 	public String getId() {
@@ -31,7 +31,7 @@ public class Route implements Iterable<StopPoint> {
 	}
 
 	public List<StopPoint> getStops() {
-		List<StopPoint> stopPoints = new ArrayList<StopPoint>();
+		List<StopPoint> stopPoints = new ArrayList<>();
 		for (RouteSection section: getSections()) {
 			RouteLink last = null;
 			for (RouteLink link: section.getLinks()) {
@@ -46,7 +46,7 @@ public class Route implements Iterable<StopPoint> {
 	}
 
 	public List<RouteLink> getLinks() {
-		List<RouteLink> links = new ArrayList<RouteLink>();
+		List<RouteLink> links = new ArrayList<>();
 		for (RouteSection section: getSections()) {
 			for (RouteLink link: section.getLinks()) {
 				links.add(link);

@@ -19,20 +19,20 @@ class StationIncosistencies {
 	 * to how it is called in the {@link Feed#TubeDepartureBoards*} feeds.
 	 */
 	private static Map<Line, Map<String, String>> initAliases() {
-		Map<Line, Map<String, String>> aliases = new EnumMap<Line, Map<String, String>>(Line.class);
+		Map<Line, Map<String, String>> aliases = new EnumMap<>(Line.class);
 		{
-			Map<String, String> stationNames = new HashMap<String, String>();
+			Map<String, String> stationNames = new HashMap<>();
 			aliases.put(Line.Bakerloo, unmodifiableMap(stationNames)); // has extras
 			stationNames.put("Edgware Road", "Edgware Road (Bakerloo)");
 			stationNames.put("Harrow & Wealdstone Station", "Harrow & Wealdstone");
 		}
 		{
-			Map<String, String> stationNames = new HashMap<String, String>();
+			Map<String, String> stationNames = new HashMap<>();
 			aliases.put(Line.Central, unmodifiableMap(stationNames));
 			stationNames.put("Shepherd's Bush (Central Line)", "Shepherds Bush (Central Line)");
 		}
 		{
-			Map<String, String> stationNames = new HashMap<String, String>();
+			Map<String, String> stationNames = new HashMap<>();
 			aliases.put(Line.Circle, unmodifiableMap(stationNames)); // has extras
 			stationNames.put("Bromley-By-Bow", "Bromley-by-Bow");
 			stationNames.put("Earl's Court", null);
@@ -48,7 +48,7 @@ class StationIncosistencies {
 			stationNames.put("Wood Lane", null);
 		}
 		{
-			Map<String, String> stationNames = new HashMap<String, String>();
+			Map<String, String> stationNames = new HashMap<>();
 			aliases.put(Line.District, unmodifiableMap(stationNames));
 			stationNames.put("Bayswater", null);
 			stationNames.put("Bromley-By-Bow", "Bromley-by-Bow");
@@ -62,7 +62,7 @@ class StationIncosistencies {
 			stationNames.put("St James's Park", "St. James's Park");
 		}
 		{
-			Map<String, String> stationNames = new HashMap<String, String>();
+			Map<String, String> stationNames = new HashMap<>();
 			aliases.put(Line.HammersmithAndCity, unmodifiableMap(stationNames)); // has extras
 			stationNames.put("Bromley-By-Bow", "Bromley-by-Bow");
 			stationNames.put("Edgware Road", "Edgware Road (H & C)");
@@ -75,13 +75,13 @@ class StationIncosistencies {
 			stationNames.put("Wood Lane", null);
 		}
 		{
-			Map<String, String> stationNames = new HashMap<String, String>();
+			Map<String, String> stationNames = new HashMap<>();
 			aliases.put(Line.Jubilee, unmodifiableMap(stationNames));
 			stationNames.put("London Bridge Station", "London Bridge");
 			stationNames.put("St.John's Wood", "St. John's Wood");
 		}
 		{
-			Map<String, String> stationNames = new HashMap<String, String>();
+			Map<String, String> stationNames = new HashMap<>();
 			aliases.put(Line.Metropolitan, unmodifiableMap(stationNames)); // has extras
 			stationNames.put("Harrow-on-the-Hill", "Harrow on the Hill");
 			stationNames.put("King's Cross St.Pancras", "King's Cross St. Pancras");
@@ -89,7 +89,7 @@ class StationIncosistencies {
 			stationNames.put("Watford Underground Station", "Watford");
 		}
 		{
-			Map<String, String> stationNames = new HashMap<String, String>();
+			Map<String, String> stationNames = new HashMap<>();
 			aliases.put(Line.Northern, unmodifiableMap(stationNames));
 			stationNames.put("Borough Station", "Borough");
 			stationNames.put("Brent Cross Station", "Brent Cross");
@@ -101,12 +101,12 @@ class StationIncosistencies {
 			stationNames.put("Totteridge & Whetstone", "Totteridge and Whetstone");
 		}
 		{
-			Map<String, String> stationNames = new HashMap<String, String>();
+			Map<String, String> stationNames = new HashMap<>();
 			aliases.put(Line.Victoria, unmodifiableMap(stationNames));
 			stationNames.put("King's Cross St.Pancras", "King's Cross St. Pancras");
 		}
 		{
-			Map<String, String> stationNames = new HashMap<String, String>();
+			Map<String, String> stationNames = new HashMap<>();
 			aliases.put(Line.Piccadilly, unmodifiableMap(stationNames));
 			stationNames.put("Earl's Court", "Earls Court");
 			stationNames.put("Hammersmith", "Hammersmith (District and Picc)");
@@ -119,7 +119,7 @@ class StationIncosistencies {
 
 	private static Map<Line, Map<String, String>> reverseAliases(
 			Map<Line, ? extends Map<String, String>> timetableToTrackernetAliases) {
-		Map<Line, Map<String, String>> extras = new EnumMap<Line, Map<String, String>>(Line.class);
+		Map<Line, Map<String, String>> extras = new EnumMap<>(Line.class);
 		for (Entry<Line, ? extends Map<String, String>> entry: timetableToTrackernetAliases.entrySet()) {
 			Map<String, String> reverse = CollectionTools.reverseMap(entry.getValue(), new HashMap<String, String>());
 			extras.put(entry.getKey(), reverse);
@@ -127,9 +127,9 @@ class StationIncosistencies {
 		return Line.fixMap(extras, Collections.<String, String> emptyMap());
 	}
 	private static Map<Line, Map<String, Line>> initExtras() {
-		Map<Line, Map<String, Line>> extras = new EnumMap<Line, Map<String, Line>>(Line.class);
+		Map<Line, Map<String, Line>> extras = new EnumMap<>(Line.class);
 		{
-			Map<String, Line> stationNames = new TreeMap<String, Line>();
+			Map<String, Line> stationNames = new TreeMap<>();
 			extras.put(Line.Bakerloo, unmodifiableMap(stationNames));
 			stationNames.put("Bushey", Line.Overground);
 			stationNames.put("Carpenders Park", Line.Overground);
@@ -139,7 +139,7 @@ class StationIncosistencies {
 			stationNames.put("Watford Junction", Line.Overground);
 		}
 		{
-			Map<String, Line> stationNames = new TreeMap<String, Line>();
+			Map<String, Line> stationNames = new TreeMap<>();
 			extras.put(Line.Circle, unmodifiableMap(stationNames));
 			stationNames.put("Finchley Road", Line.Metropolitan);
 			stationNames.put("Harrow on the Hill", Line.Metropolitan);
@@ -157,7 +157,7 @@ class StationIncosistencies {
 			stationNames.put("Willesden Green", Line.Jubilee); // Trains are Metropolitan
 		}
 		{
-			Map<String, Line> stationNames = new TreeMap<String, Line>();
+			Map<String, Line> stationNames = new TreeMap<>();
 			extras.put(Line.HammersmithAndCity, unmodifiableMap(stationNames));
 			stationNames.put("Aldgate", Line.Circle);
 			stationNames.put("Bayswater", Line.Circle);
@@ -194,7 +194,7 @@ class StationIncosistencies {
 			stationNames.put("Willesden Green", Line.Metropolitan);
 		}
 		{
-			Map<String, Line> stationNames = new TreeMap<String, Line>();
+			Map<String, Line> stationNames = new TreeMap<>();
 			extras.put(Line.Metropolitan, unmodifiableMap(stationNames));
 			stationNames.put("Barking", Line.District);
 			stationNames.put("Colliers Wood", Line.Northern);

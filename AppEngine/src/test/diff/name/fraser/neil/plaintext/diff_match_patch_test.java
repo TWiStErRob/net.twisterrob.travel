@@ -105,7 +105,7 @@ public class diff_match_patch_test extends TestCase {
 
   public void testDiffLinesToChars() {
     // Convert lines down to characters.
-    ArrayList<String> tmpVector = new ArrayList<String>();
+    ArrayList<String> tmpVector = new ArrayList<>();
     tmpVector.add("");
     tmpVector.add("alpha\n");
     tmpVector.add("beta\n");
@@ -150,7 +150,7 @@ public class diff_match_patch_test extends TestCase {
 
     // Convert chars up to lines.
     LinkedList<Diff> diffs = diffList(new Diff(EQUAL, "\u0001\u0002\u0001"), new Diff(INSERT, "\u0002\u0001\u0002"));
-    ArrayList<String> tmpVector = new ArrayList<String>();
+    ArrayList<String> tmpVector = new ArrayList<>();
     tmpVector.add("");
     tmpVector.add("alpha\n");
     tmpVector.add("beta\n");
@@ -541,11 +541,11 @@ public class diff_match_patch_test extends TestCase {
   public void testMatchAlphabet() {
     // Initialise the bitmasks for Bitap.
     Map<Character, Integer> bitmask;
-    bitmask = new HashMap<Character, Integer>();
+    bitmask = new HashMap<>();
     bitmask.put('a', 4); bitmask.put('b', 2); bitmask.put('c', 1);
     assertEquals("match_alphabet: Unique.", bitmask, dmp.match_alphabet("abc"));
 
-    bitmask = new HashMap<Character, Integer>();
+    bitmask = new HashMap<>();
     bitmask.put('a', 37); bitmask.put('b', 18); bitmask.put('c', 8);
     assertEquals("match_alphabet: Duplicates.", bitmask, dmp.match_alphabet("abcaba"));
   }
@@ -896,7 +896,7 @@ public class diff_match_patch_test extends TestCase {
 
   // Private function for quickly building lists of diffs.
   private static LinkedList<Diff> diffList(Diff... diffs) {
-    LinkedList<Diff> myDiffList = new LinkedList<Diff>();
+    LinkedList<Diff> myDiffList = new LinkedList<>();
     for (Diff myDiff : diffs) {
       myDiffList.add(myDiff);
     }

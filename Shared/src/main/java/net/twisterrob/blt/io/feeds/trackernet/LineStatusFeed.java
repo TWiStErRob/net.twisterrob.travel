@@ -11,8 +11,8 @@ public class LineStatusFeed extends BaseFeed<LineStatusFeed> {
 	private Map<Line, LineStatus> m_statusMap;
 
 	public LineStatusFeed() {
-		m_lineStatuses = new LinkedList<LineStatus>();
-		m_statusMap = new LinkedHashMap<Line, LineStatus>();
+		m_lineStatuses = new LinkedList<>();
+		m_statusMap = new LinkedHashMap<>();
 	}
 
 	public Map<Line, LineStatus> getStatusMap() {

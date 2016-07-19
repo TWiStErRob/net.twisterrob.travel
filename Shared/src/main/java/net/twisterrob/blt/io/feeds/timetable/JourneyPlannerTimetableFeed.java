@@ -8,7 +8,7 @@ import net.twisterrob.blt.model.*;
 public class JourneyPlannerTimetableFeed extends BaseFeed<JourneyPlannerTimetableFeed> {
 	Line line;
 	Operator operator;
-	List<Route> routes = new ArrayList<Route>();
+	List<Route> routes = new ArrayList<>();
 	private static final RouteFixer[] FIXERS = {new DLRWestferry2CanaryWharfFixer(),
 			new DLRPuddingMillLane2StratfordFixer(), new ReverseLinkDistanceFixer(),
 			new MostSimilarLinkDistanceFixer(), new CollapseRoutesFixer()};
@@ -48,7 +48,7 @@ public class JourneyPlannerTimetableFeed extends BaseFeed<JourneyPlannerTimetabl
 	}
 
 	public static Set<StopPoint> getStopPoints(List<Route> routes) {
-		Set<StopPoint> stopPoints = new TreeSet<StopPoint>(new Comparator<StopPoint>() {
+		Set<StopPoint> stopPoints = new TreeSet<>(new Comparator<StopPoint>() {
 			@Override
 			public int compare(StopPoint o1, StopPoint o2) {
 				return o1.getId().compareTo(o2.getId());

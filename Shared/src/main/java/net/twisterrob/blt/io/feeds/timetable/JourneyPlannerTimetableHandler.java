@@ -32,11 +32,11 @@ import android.util.Xml;
 @NotThreadSafe
 public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlannerTimetableFeed> {
 	protected JourneyPlannerTimetableFeed m_root = new JourneyPlannerTimetableFeed();
-	protected Map<String, net.twisterrob.blt.io.feeds.timetable.Locality> m_localities = new HashMap<String, net.twisterrob.blt.io.feeds.timetable.Locality>();
-	protected Map<String, net.twisterrob.blt.io.feeds.timetable.StopPoint> m_stopPoints = new HashMap<String, net.twisterrob.blt.io.feeds.timetable.StopPoint>();
-	protected Map<String, net.twisterrob.blt.io.feeds.timetable.RouteSection> m_routeSections = new HashMap<String, net.twisterrob.blt.io.feeds.timetable.RouteSection>();
-	protected Map<String, net.twisterrob.blt.io.feeds.timetable.RouteLink> m_routeLinks = new HashMap<String, net.twisterrob.blt.io.feeds.timetable.RouteLink>();
-	protected Map<String, net.twisterrob.blt.io.feeds.timetable.Route> m_routes = new HashMap<String, net.twisterrob.blt.io.feeds.timetable.Route>();
+	protected Map<String, net.twisterrob.blt.io.feeds.timetable.Locality> m_localities = new HashMap<>();
+	protected Map<String, net.twisterrob.blt.io.feeds.timetable.StopPoint> m_stopPoints = new HashMap<>();
+	protected Map<String, net.twisterrob.blt.io.feeds.timetable.RouteSection> m_routeSections = new HashMap<>();
+	protected Map<String, net.twisterrob.blt.io.feeds.timetable.RouteLink> m_routeLinks = new HashMap<>();
+	protected Map<String, net.twisterrob.blt.io.feeds.timetable.Route> m_routes = new HashMap<>();
 	protected net.twisterrob.blt.io.feeds.timetable.Locality m_localilty;
 	protected net.twisterrob.blt.io.feeds.timetable.StopPoint m_stopPoint;
 	protected net.twisterrob.blt.io.feeds.timetable.RouteSection m_routeSection;

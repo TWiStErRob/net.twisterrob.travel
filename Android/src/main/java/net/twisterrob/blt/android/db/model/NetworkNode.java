@@ -18,9 +18,9 @@ public class NetworkNode {
 		m_pos = location;
 	}
 
-	public final Set<NetworkLink> out = new HashSet<NetworkLink>();
-	public final Set<NetworkNode> neighbors = new HashSet<NetworkNode>();
-	public final Map<NetworkNode, Double> dists = new HashMap<NetworkNode, Double>();
+	public final Set<NetworkLink> out = new HashSet<>();
+	public final Set<NetworkNode> neighbors = new HashSet<>();
+	public final Map<NetworkNode, Double> dists = new HashMap<>();
 
 	public int getID() {
 		return m_id;

@@ -82,7 +82,7 @@ public class TubeMapDrawer {
 	}
 
 	private static Set<NetworkLink> getLinks(Set<NetworkNode> nodes) {
-		Set<NetworkLink> links = new HashSet<NetworkLink>();
+		Set<NetworkLink> links = new HashSet<>();
 		for (NetworkNode node: nodes) {
 			links.addAll(node.getOut());
 		}

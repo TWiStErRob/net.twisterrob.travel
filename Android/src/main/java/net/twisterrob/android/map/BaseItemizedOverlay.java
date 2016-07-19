@@ -52,7 +52,7 @@ public abstract class BaseItemizedOverlay<T extends OverlayItem> extends Itemize
 	@Override
 	public void setOnFocusChangeListener(final com.google.android.maps.ItemizedOverlay.OnFocusChangeListener l) {
 		super.setOnFocusChangeListener(new com.google.android.maps.ItemizedOverlay.OnFocusChangeListener() {
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings({"rawtypes", "unchecked"})
 			public void onFocusChanged(ItemizedOverlay overlay, OverlayItem newFocus) {
 				BaseItemizedOverlay.this.onFocusChanged((T)newFocus);
 				if (l != null) {
@@ -63,7 +63,7 @@ public abstract class BaseItemizedOverlay<T extends OverlayItem> extends Itemize
 	}
 	public void setOnFocusChangeListener(final OnFocusChangeListener<T> l) {
 		super.setOnFocusChangeListener(new com.google.android.maps.ItemizedOverlay.OnFocusChangeListener() {
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings({"rawtypes", "unchecked"})
 			public void onFocusChanged(ItemizedOverlay overlay, OverlayItem newFocus) {
 				BaseItemizedOverlay.this.onFocusChanged((T)newFocus);
 				if (l != null) {

@@ -10,7 +10,7 @@ import org.junit.Test;
 public class LineTest {
 	@Test
 	public void testFixMapList() {
-		Map<Line, List<String>> map = new TreeMap<Line, List<String>>();
+		Map<Line, List<String>> map = new TreeMap<>();
 		assertEquals(0, map.size());
 		Map<Line, List<String>> newMap = Line.fixMap(map, Collections.<String> emptyList());
 		assertSame(map, newMap);
@@ -24,8 +24,8 @@ public class LineTest {
 	}
 	@Test
 	public void testFixMapListInstance() {
-		Map<Line, List<String>> map = new TreeMap<Line, List<String>>();
-		LinkedList<String> empty = new LinkedList<String>();
+		Map<Line, List<String>> map = new TreeMap<>();
+		LinkedList<String> empty = new LinkedList<>();
 		assertEquals(0, map.size());
 		Map<Line, List<String>> newMap = Line.fixMap(map, empty);
 		assertSame(map, newMap);
@@ -39,8 +39,8 @@ public class LineTest {
 	}
 	@Test
 	public void testFixMapLinkedList() {
-		HashMap<Line, LinkedList<String>> map = new HashMap<Line, LinkedList<String>>();
-		LinkedList<String> empty = new LinkedList<String>();
+		HashMap<Line, LinkedList<String>> map = new HashMap<>();
+		LinkedList<String> empty = new LinkedList<>();
 		assertEquals(0, map.size());
 		HashMap<Line, LinkedList<String>> newMap = Line.fixMap(map, empty);
 		assertSame(map, newMap);
@@ -54,7 +54,7 @@ public class LineTest {
 	}
 	@Test
 	public void testFixMapSet() {
-		Map<Line, Set<String>> map = new TreeMap<Line, Set<String>>();
+		Map<Line, Set<String>> map = new TreeMap<>();
 		Set<String> empty = Collections.emptySet();
 		assertEquals(0, map.size());
 		Map<Line, Set<String>> newMap = Line.fixMap(map, empty);
@@ -69,7 +69,7 @@ public class LineTest {
 	}
 	@Test
 	public void testFixMapSetInstance() {
-		Map<Line, Set<String>> map = new TreeMap<Line, Set<String>>();
+		Map<Line, Set<String>> map = new TreeMap<>();
 		Set<String> empty = Collections.emptySet();
 		assertEquals(0, map.size());
 		Map<Line, Set<String>> newMap = Line.fixMap(map, empty);
@@ -84,8 +84,8 @@ public class LineTest {
 	}
 	@Test
 	public void testFixMapHashSet() {
-		HashMap<Line, HashSet<String>> map = new HashMap<Line, HashSet<String>>();
-		HashSet<String> empty = new HashSet<String>();
+		HashMap<Line, HashSet<String>> map = new HashMap<>();
+		HashSet<String> empty = new HashSet<>();
 		assertEquals(0, map.size());
 		HashMap<Line, HashSet<String>> newMap = Line.fixMap(map, empty);
 		assertSame(map, newMap);
@@ -99,7 +99,7 @@ public class LineTest {
 	}
 	@Test
 	public void testFixMapMap() {
-		Map<Line, Map<String, Double>> map = new TreeMap<Line, Map<String, Double>>();
+		Map<Line, Map<String, Double>> map = new TreeMap<>();
 		assertEquals(0, map.size());
 		Map<Line, Map<String, Double>> newMap = Line.fixMap(map, Collections.<String, Double> emptyMap());
 		assertSame(map, newMap);
@@ -113,8 +113,8 @@ public class LineTest {
 	}
 	@Test
 	public void testFixMapHashMap() {
-		HashMap<Line, HashMap<String, Double>> map = new HashMap<Line, HashMap<String, Double>>();
-		HashMap<String, Double> empty = new HashMap<String, Double>();
+		HashMap<Line, HashMap<String, Double>> map = new HashMap<>();
+		HashMap<String, Double> empty = new HashMap<>();
 		assertEquals(0, map.size());
 		HashMap<Line, HashMap<String, Double>> newMap = Line.fixMap(map, empty);
 		assertSame(map, newMap);

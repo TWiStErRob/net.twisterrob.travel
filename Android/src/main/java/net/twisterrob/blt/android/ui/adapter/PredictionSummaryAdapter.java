@@ -40,7 +40,7 @@ public class PredictionSummaryAdapter
 
 	@Override
 	protected Map<Station, List<Platform>> createChildrenMap() {
-		return new TreeMap<Station, List<Platform>>(new Comparator<Station>() {
+		return new TreeMap<>(new Comparator<Station>() {
 			public int compare(Station lhs, Station rhs) {
 				int first = Station.COMPARATOR_NAME.compare(lhs, rhs);
 				return first != 0? first : lhs.getLine().compareTo(rhs.getLine());
@@ -136,7 +136,7 @@ public class PredictionSummaryAdapter
 		if (m_directions.isEmpty()) {
 			return groups; // shortcut to show everything when there's nothing filtered
 		}
-		List<Station> filtered = new ArrayList<Station>();
+		List<Station> filtered = new ArrayList<>();
 		for (Station station: groups) {
 			if (matches(getChildren(station))) {
 				filtered.add(station);
@@ -150,7 +150,7 @@ public class PredictionSummaryAdapter
 		if (m_directions.isEmpty()) {
 			return children; // shortcut to show everything when there's nothing filtered
 		}
-		List<Platform> filtered = new ArrayList<Platform>();
+		List<Platform> filtered = new ArrayList<>();
 		for (Platform platform: children) {
 			if (matches(platform)) {
 				filtered.add(platform);

@@ -34,7 +34,7 @@ class DataBaseReader {
 	// #region Model::Stations
 
 	public List<Station> getStations() {
-		List<Station> stations = new ArrayList<Station>();
+		List<Station> stations = new ArrayList<>();
 		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
 		Cursor cursor = db.query("Stop", STATION_DETAILS, null, null, null, null, "name ASC");
 		Map<Integer, List<Line>> stopLines = getLines();
@@ -66,7 +66,7 @@ class DataBaseReader {
 
 		if (readLines) {
 			Map<Line, String> codes = getCodes(station.getId());
-			station.setLines(new ArrayList<Line>(codes.keySet()));
+			station.setLines(new ArrayList<>(codes.keySet()));
 			station.setTrackerNetCodes(codes);
 		}
 		return station;
@@ -104,7 +104,7 @@ class DataBaseReader {
 
 	@SuppressWarnings("unused")
 	private Map<String, String> getTypes() {
-		Map<String, String> types = new HashMap<String, String>();
+		Map<String, String> types = new HashMap<>();
 		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
 		Cursor cursor = db.query("StationType", TYPE_DETAILS, null, null, null, null, null);
 		while (cursor.moveToNext()) {
@@ -122,14 +122,14 @@ class DataBaseReader {
 		Cursor cursor = db.rawQuery(
 				"select ls.stop as stopID, l.name as lineName from line_stop ls join line l on ls.line = l._id;",
 				new String[0]);
-		Map<Integer, List<Line>> stopLines = new TreeMap<Integer, List<Line>>();
+		Map<Integer, List<Line>> stopLines = new TreeMap<>();
 		while (cursor.moveToNext()) {
 			int stopID = cursor.getInt(cursor.getColumnIndex("stopID"));
 			String lineString = cursor.getString(cursor.getColumnIndex("lineName"));
 			Line line = Line.valueOf(lineString);
 			List<Line> lines = stopLines.get(stopID);
 			if (lines == null) {
-				lines = new LinkedList<Line>();
+				lines = new LinkedList<>();
 				stopLines.put(stopID, lines);
 			}
 			lines.add(line);
@@ -142,7 +142,7 @@ class DataBaseReader {
 		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
 		Cursor cursor = db.rawQuery("select ls.line as lineID, ls.code as code from line_stop ls where ls.stop = ?;",
 				new String[]{String.valueOf(stopID)});
-		Map<Line, String> lines = new EnumMap<Line, String>(Line.class);
+		Map<Line, String> lines = new EnumMap<>(Line.class);
 		while (cursor.moveToNext()) {
 			int lineID = cursor.getInt(cursor.getColumnIndex("lineID"));
 			String code = cursor.getString(cursor.getColumnIndex("code"));
@@ -157,14 +157,14 @@ class DataBaseReader {
 		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
 		Cursor cursor = db.rawQuery(
 				"select area_code, latitude, longitude from AreaHull order by area_code, hull_index;", new String[0]);
-		Map<String, List<AreaHullPoint>> areas = new TreeMap<String, List<AreaHullPoint>>();
+		Map<String, List<AreaHullPoint>> areas = new TreeMap<>();
 		while (cursor.moveToNext()) {
 			String area = cursor.getString(cursor.getColumnIndex("area_code"));
 			double latitude = cursor.getDouble(cursor.getColumnIndex("latitude"));
 			double longitude = cursor.getDouble(cursor.getColumnIndex("longitude"));
 			List<AreaHullPoint> list = areas.get(area);
 			if (list == null) {
-				list = new ArrayList<AreaHullPoint>();
+				list = new ArrayList<>();
 				areas.put(area, list);
 			}
 			list.add(new AreaHullPoint(latitude, longitude));
@@ -177,14 +177,14 @@ class DataBaseReader {
 	public Map<Integer, Map<Integer, Double>> getDistances() {
 		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
 		Cursor cursor = db.rawQuery("select stopFrom, stopTo, distance from StopDistance;", new String[0]);
-		Map<Integer, Map<Integer, Double>> distances = new TreeMap<Integer, Map<Integer, Double>>();
+		Map<Integer, Map<Integer, Double>> distances = new TreeMap<>();
 		while (cursor.moveToNext()) {
 			Integer fromID = cursor.getInt(cursor.getColumnIndex("stopFrom"));
 			Integer toID = cursor.getInt(cursor.getColumnIndex("stopTo"));
 			Double distance = cursor.getDouble(cursor.getColumnIndex("distance"));
 			Map<Integer, Double> dists = distances.get(fromID);
 			if (dists == null) {
-				dists = new TreeMap<Integer, Double>();
+				dists = new TreeMap<>();
 				distances.put(fromID, dists);
 			}
 			dists.put(toID, distance);
@@ -195,7 +195,7 @@ class DataBaseReader {
 		SQLiteDatabase db = m_dataBaseHelper.getReadableDatabase();
 		String query = IOTools.getAssetAsString(m_dataBaseHelper.getContext(), "getNetwork.sql");
 		Cursor cursor = db.rawQuery(query, new String[0]);
-		Map<MultiKey, NetworkNode> nodes = new HashMap<MultiKey, NetworkNode>();
+		Map<MultiKey, NetworkNode> nodes = new HashMap<>();
 		while (cursor.moveToNext()) {
 			int fromID = cursor.getInt(cursor.getColumnIndex("fromID"));
 			String fromName = cursor.getString(cursor.getColumnIndex("fromName"));
@@ -244,7 +244,7 @@ class DataBaseReader {
 			}
 		}
 		// readDistances(nodes);
-		return new HashSet<NetworkNode>(nodes.values());
+		return new HashSet<>(nodes.values());
 	}
 
 	protected void readDistances(Map<MultiKey, NetworkNode> nodes) {

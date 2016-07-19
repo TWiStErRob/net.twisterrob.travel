@@ -12,12 +12,12 @@ import net.twisterrob.java.collections.MultiKey;
 public class PredictionSummaryFeed extends BaseFeed<PredictionSummaryFeed> {
 	private Date m_timeStamp = new Date();
 	private Line m_line = Line.unknown;
-	private final List<Station> m_stations = new ArrayList<Station>();
-	private final List<Station> m_alienStations = new ArrayList<Station>();
-	private final List<Platform> m_platforms = new ArrayList<Platform>();
-	private final List<Train> m_trains = new ArrayList<Train>();
-	private final Map<Station, List<Platform>> m_stationPlatform = new HashMap<Station, List<Platform>>();
-	private final Map<MultiKey, List<Train>> m_stationPlatformTrain = new HashMap<MultiKey, List<Train>>();
+	private final List<Station> m_stations = new ArrayList<>();
+	private final List<Station> m_alienStations = new ArrayList<>();
+	private final List<Platform> m_platforms = new ArrayList<>();
+	private final List<Train> m_trains = new ArrayList<>();
+	private final Map<Station, List<Platform>> m_stationPlatform = new HashMap<>();
+	private final Map<MultiKey, List<Train>> m_stationPlatformTrain = new HashMap<>();
 
 	public Line getLine() {
 		return m_line;
@@ -89,7 +89,7 @@ public class PredictionSummaryFeed extends BaseFeed<PredictionSummaryFeed> {
 	public void addPlatform(Station station, Platform platform) {
 		List<Platform> platforms = m_stationPlatform.get(station);
 		if (platforms == null) {
-			platforms = new ArrayList<Platform>();
+			platforms = new ArrayList<>();
 			m_stationPlatform.put(station, platforms);
 		}
 		platforms.add(platform);
@@ -98,7 +98,7 @@ public class PredictionSummaryFeed extends BaseFeed<PredictionSummaryFeed> {
 		MultiKey key = new MultiKey(station, platform);
 		List<Train> trains = m_stationPlatformTrain.get(key);
 		if (trains == null) {
-			trains = new ArrayList<Train>();
+			trains = new ArrayList<>();
 			m_stationPlatformTrain.put(key, trains);
 		}
 	}
@@ -107,7 +107,7 @@ public class PredictionSummaryFeed extends BaseFeed<PredictionSummaryFeed> {
 		MultiKey key = new MultiKey(station, platform);
 		List<Train> trains = m_stationPlatformTrain.get(key);
 		if (trains == null) {
-			trains = new ArrayList<Train>();
+			trains = new ArrayList<>();
 			m_stationPlatformTrain.put(key, trains);
 		}
 		trains.add(train);
@@ -115,7 +115,7 @@ public class PredictionSummaryFeed extends BaseFeed<PredictionSummaryFeed> {
 	}
 
 	public Map<Platform, List<Train>> collectTrains(Station station) {
-		Map<Platform, List<Train>> result = new TreeMap<Platform, List<Train>>(new Comparator<Platform>() {
+		Map<Platform, List<Train>> result = new TreeMap<>(new Comparator<Platform>() {
 			@Override
 			public int compare(Platform platform1, Platform platform2) {
 				int p1 = platform1.extractPlatformNumber();

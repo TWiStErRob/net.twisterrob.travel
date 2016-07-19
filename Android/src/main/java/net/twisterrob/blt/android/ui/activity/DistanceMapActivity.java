@@ -60,7 +60,7 @@ public class DistanceMapActivity extends FragmentActivity {
 	private DistanceMapGenerator m_distanceMapGenerator;
 	private DistanceMapDrawerAndroid m_distanceMapDrawer;
 	private GroundOverlay m_groundOverlay;
-	private List<Marker> m_markersStart = new LinkedList<Marker>();
+	private List<Marker> m_markersStart = new LinkedList<>();
 
 	protected void setNodes(Set<NetworkNode> nodes) {
 		LOG.trace("setNodes(nodes:{})", nodes.size());

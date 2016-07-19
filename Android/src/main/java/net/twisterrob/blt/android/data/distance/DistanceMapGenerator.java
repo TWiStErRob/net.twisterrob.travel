@@ -35,9 +35,9 @@ public class DistanceMapGenerator {
 	}
 
 	public Map<NetworkNode, Double> generate(Location location) {
-		startNodes = new HashMap<NetworkNode, Double>();
+		startNodes = new HashMap<>();
 		findStartNodes(location);
-		finishedNodes = new HashMap<NetworkNode, Double>();
+		finishedNodes = new HashMap<>();
 		finishedNodes.put(new NetworkNode(0, "Walk", Line.unknown, location), config.minutes);
 		for (Entry<NetworkNode, Double> start: startNodes.entrySet()) {
 			Double oldRemaining = finishedNodes.get(start.getKey());

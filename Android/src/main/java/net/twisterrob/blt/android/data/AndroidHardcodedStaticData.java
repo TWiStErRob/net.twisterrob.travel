@@ -7,8 +7,8 @@ import net.twisterrob.blt.data.SharedStaticData;
 import net.twisterrob.blt.model.StopType;
 
 public class AndroidHardcodedStaticData extends SharedStaticData implements AndroidStaticData {
-	private Map<StopType, Integer> stopTypeLogos = new EnumMap<StopType, Integer>(StopType.class);
-	private Map<StopType, Integer> stopTypeMapIcons = new EnumMap<StopType, Integer>(StopType.class);
+	private Map<StopType, Integer> stopTypeLogos = new EnumMap<>(StopType.class);
+	private Map<StopType, Integer> stopTypeMapIcons = new EnumMap<>(StopType.class);
 
 	public AndroidHardcodedStaticData() {
 		initStopTypeDrawables();

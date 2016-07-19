@@ -19,7 +19,7 @@ import android.widget.*;
 import android.widget.TextView.BufferType;
 
 public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
-	private Map<StopType, Drawable> bitmapCache = new EnumMap<StopType, Drawable>(StopType.class);
+	private Map<StopType, Drawable> bitmapCache = new EnumMap<>(StopType.class);
 
 	public StationAdapter(final Context context, final Collection<Station> items) {
 		super(context, items, false);
@@ -93,9 +93,9 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 	@Override
 	protected List<Station> filter(List<? extends Station> fullList, String filter, List<Station> resultList) {
 		filter = filter.toLowerCase();
-		List<Station> nameMatches = new LinkedList<Station>();
-		List<Station> typeMatches = new LinkedList<Station>();
-		List<Station> lineMatches = new LinkedList<Station>();
+		List<Station> nameMatches = new LinkedList<>();
+		List<Station> typeMatches = new LinkedList<>();
+		List<Station> lineMatches = new LinkedList<>();
 		for (Station station: fullList) {
 			if (matchName(station, filter)) {
 				nameMatches.add(station);

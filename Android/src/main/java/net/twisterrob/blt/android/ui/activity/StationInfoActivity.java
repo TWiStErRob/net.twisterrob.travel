@@ -43,7 +43,7 @@ public class StationInfoActivity extends AppCompatActivity
 
 	protected ListViewHandler m_listHandler;
 
-	private final Map<Station, Map<Platform, List<Train>>> m_map = new TreeMap<Station, Map<Platform, List<Train>>>(
+	private final Map<Station, Map<Platform, List<Train>>> m_map = new TreeMap<>(
 			new Comparator<Station>() {
 				public int compare(Station lhs, Station rhs) {
 					int first = Station.COMPARATOR_NAME.compare(lhs, rhs);
@@ -96,7 +96,7 @@ public class StationInfoActivity extends AppCompatActivity
 	private void delayedGetRoot() {
 		m_doneLines.clear();
 		for (final Line line: m_station.getLines()) {
-			Map<String, Object> args = new HashMap<String, Object>();
+			Map<String, Object> args = new HashMap<>();
 			args.put("line", line);
 			args.put("station", m_station.getTrackerNetCode(line));
 			new DownloadFeedTask<PredictionSummaryFeed>(args) {
@@ -119,7 +119,7 @@ public class StationInfoActivity extends AppCompatActivity
 		}
 	}
 
-	List<Line> m_doneLines = new ArrayList<Line>();
+	List<Line> m_doneLines = new ArrayList<>();
 
 	protected synchronized void addResult(PredictionSummaryFeed root, Line line) {
 		m_lastUpdated = Calendar.getInstance();
@@ -138,8 +138,7 @@ public class StationInfoActivity extends AppCompatActivity
 	}
 
 	private static Map<Station, Map<Platform, List<Train>>> map(PredictionSummaryFeed root) {
-		Map<Station, Map<Platform, List<Train>>> data = new TreeMap<Station, Map<Platform, List<Train>>>(
-				Station.COMPARATOR_NAME);
+		Map<Station, Map<Platform, List<Train>>> data = new TreeMap<>(Station.COMPARATOR_NAME);
 		for (net.twisterrob.blt.io.feeds.trackernet.model.Station station: root.getStationPlatform().keySet()) {
 			data.put(station, root.collectTrains(station));
 		}

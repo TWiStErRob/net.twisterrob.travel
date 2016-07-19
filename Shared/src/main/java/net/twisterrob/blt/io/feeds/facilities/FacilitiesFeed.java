@@ -13,7 +13,7 @@ public class FacilitiesFeed extends BaseFeed<FacilitiesFeed> {
 	private Map<String, String> m_styles;
 
 	public FacilitiesFeed() {
-		m_styles = new HashMap<String, String>();
+		m_styles = new HashMap<>();
 	}
 
 	public List<Station> getStations() {
@@ -30,9 +30,9 @@ public class FacilitiesFeed extends BaseFeed<FacilitiesFeed> {
 	@Override
 	protected void postProcess() {
 		if (m_stations != null) {
-			m_lines = new HashMap<Line, List<Station>>();
-			m_zones = new HashMap<Zone, List<Station>>();
-			m_facilities = new HashMap<String, List<Station>>();
+			m_lines = new HashMap<>();
+			m_zones = new HashMap<>();
+			m_facilities = new HashMap<>();
 			for (Station station: m_stations) {
 				for (Line line: station.getLines()) {
 					if (!m_lines.containsKey(line)) {

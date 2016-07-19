@@ -44,7 +44,7 @@ public class PredictionSummaryActivity extends AppCompatActivity
 	protected final SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	protected Calendar m_lastUpdated;
 
-	protected final Set<String> m_expandedStationNames = new LinkedHashSet<String>();
+	protected final Set<String> m_expandedStationNames = new LinkedHashSet<>();
 
 	protected SwipeRefreshLayout m_refresh;
 	protected TextView m_status;
@@ -145,7 +145,7 @@ public class PredictionSummaryActivity extends AppCompatActivity
 	}
 
 	private void delayedGetRoot() {
-		Map<String, Object> args = new HashMap<String, Object>();
+		Map<String, Object> args = new HashMap<>();
 		args.put("line", m_line);
 		new DownloadFeedTask<PredictionSummaryFeed>(args) {
 			@Override
@@ -169,8 +169,7 @@ public class PredictionSummaryActivity extends AppCompatActivity
 				m_refresh.setRefreshing(false);
 			}
 			private Map<Station, Map<Platform, List<Train>>> map(PredictionSummaryFeed root) {
-				Map<Station, Map<Platform, List<Train>>> data = new TreeMap<Station, Map<Platform, List<Train>>>(
-						Station.COMPARATOR_NAME);
+				Map<Station, Map<Platform, List<Train>>> data = new TreeMap<>(Station.COMPARATOR_NAME);
 				for (Station station: root.getStationPlatform().keySet()) {
 					data.put(station, root.collectTrains(station));
 				}
@@ -250,11 +249,9 @@ public class PredictionSummaryActivity extends AppCompatActivity
 	}
 
 	protected final Set<PlatformDirection> m_directionsEnabled = EnumSet.noneOf(PlatformDirection.class);
-	protected final Map<Integer, PlatformDirection> menuIDs = new TreeMap<Integer, PlatformDirection>();
-	protected final Map<PlatformDirection, MenuItem> menus = new EnumMap<PlatformDirection, MenuItem>(
-			PlatformDirection.class);
-	protected final Map<PlatformDirection, ToggleButton> buttons = new EnumMap<PlatformDirection, ToggleButton>(
-			PlatformDirection.class);
+	protected final Map<Integer, PlatformDirection> menuIDs = new TreeMap<>();
+	protected final Map<PlatformDirection, MenuItem> menus = new EnumMap<>(PlatformDirection.class);
+	protected final Map<PlatformDirection, ToggleButton> buttons = new EnumMap<>(PlatformDirection.class);
 
 	protected void resetCompassState() {
 		PlatformDirection[] values = PlatformDirection.values();
