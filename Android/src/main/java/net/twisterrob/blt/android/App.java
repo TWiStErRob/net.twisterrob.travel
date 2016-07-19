@@ -1,6 +1,7 @@
 package net.twisterrob.blt.android;
 
 import org.slf4j.*;
+import org.slf4j.impl.AndroidLoggerFactory;
 
 import android.widget.Toast;
 
@@ -11,9 +12,15 @@ import net.twisterrob.blt.android.db.DataBaseHelper;
 import net.twisterrob.blt.io.feeds.*;
 
 public class App extends android.app.Application {
+	static {
+		AndroidLoggerFactory.addReplacement("^net\\.twisterrob\\.blt\\.android\\.(.+\\.)?", "");
+		AndroidLoggerFactory.addReplacement("^net\\.twisterrob\\.blt\\.(.+\\.)?", "");
+		AndroidLoggerFactory.addReplacement("^net\\.twisterrob\\.android\\.(.+\\.)?", "");
+	}
 	private static final Logger LOG = LoggerFactory.getLogger(App.class);
+
 	private static /*final*/ App s_instance;
-	private static final boolean DEBUG = false;
+	private static final boolean ALLOW_MOCK_URLS = false;
 
 	private AndroidStaticData m_static;
 
@@ -37,11 +44,11 @@ public class App extends android.app.Application {
 	}
 
 	private volatile DataBaseHelper m_dataBaseHelper = null;
-	private URLBuilder m_urlBuilder = isDebug()? new LocalhostUrlBuilder() : new TFLUrlBuilder(
+	private URLBuilder m_urlBuilder = useMockUrls()? new LocalhostUrlBuilder() : new TFLUrlBuilder(
 			"papp.robert.s@gmail.com");
 
-	protected static boolean isDebug() {
-		return BuildConfig.DEBUG && DEBUG;
+	protected static boolean useMockUrls() {
+		return BuildConfig.DEBUG && ALLOW_MOCK_URLS;
 	}
 
 	public static void exit() {

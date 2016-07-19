@@ -11,29 +11,15 @@ dependencies {
 	compile 'org.slf4j:slf4j-simple:1.7.5'
 	compile 'org.xerial:sqlite-jdbc:3.7.15-M1'
 }
-/* TODO figure out a way to do this in gradle
-<plugin>
-	<!-- mvn jetty:run -e -Dorg.eclipse.jetty.util.log.stderr.LONG=true %c% -->
-	<!-- mvn jetty:run -e -Dorg.eclipse.jetty.LEVEL=DEBUG -Dorg.eclipse.jetty.util.log.stderr.SOURCE=true -Dorg.eclipse.jetty.util.log.stderr.LONG=true %c% -->
-	<groupId>org.eclipse.jetty</groupId>
-	<artifactId>jetty-maven-plugin</artifactId>
-	<version>9.0.5.v20130815</version>
-	<configuration>
-		<webAppSourceDirectory>src/data</webAppSourceDirectory>
-		<reload>manual</reload>
-		<webAppConfig>
-			<defaultsDescriptor>src/data/jetty-webdefault.xml</defaultsDescriptor>
-		</webAppConfig>
-		<systemProperties>
-			<systemProperty>
-				<key>jetty.host</key>
-				<value>0.0.0.0</value>
-			</systemProperty>
-			<systemProperty>
-				<key>jetty.port</key>
-				<value>8081</value>
-			</systemProperty>
-		</systemProperties>
-	</configuration>
-</plugin>
-*/
+
+apply plugin: 'jetty'
+// TODO logging doesn't work with org.eclipse nor org.mortbay package names
+// -Dorg.mortbay.log.class=org.eclipse.jetty.util.log.StrErrLog changes the logger, but no output
+// --debug logs, but too much and not configurable
+JettyRun jettyRun = tasks[JettyPlugin.JETTY_RUN] as JettyRun
+jettyRun.classpath = files([]) // to prevent running :Data:classes task
+jettyRun.daemon = true
+jettyRun.reload = JettyPlugin.RELOAD_MANUAL
+jettyRun.webAppSourceDirectory = file('src/data')
+jettyRun.httpPort = 8081
+//jettyRun.additionalRuntimeJars = configurations.compile.findAll { it.name.contains('slf4j-simple') }
