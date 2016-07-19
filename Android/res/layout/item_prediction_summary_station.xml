@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE layout>
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
-	android:orientation="vertical">
-
+	android:orientation="vertical"
+	>
 	<TextView
 		android:id="@+id/prediction_station_name"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
+		android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+		android:paddingStart="?android:attr/expandableListPreferredChildPaddingLeft"
 		android:paddingTop="3dip"
 		android:paddingRight="3dip"
+		android:paddingEnd="3dip"
 		android:paddingBottom="3dip"
-		android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-		android:text="@string/demo_title"
+		android:text="Station Name"
+		android:textSize="14sp"
 		android:textStyle="bold"
-		android:textSize="14sp" />
-
+		/>
 </LinearLayout>

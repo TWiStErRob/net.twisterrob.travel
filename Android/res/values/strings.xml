@@ -1,4 +1,4 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources>
 	<string name="app_name">Better London Travel</string>
 	<string name="launcher_station_list">Station List</string>
 	<string name="launcher_station_map">Station Map</string>
@@ -8,13 +8,6 @@
 	<string name="launcher_distance_map">Distance Map</string>
 	<string name="launcher_line_status">Line Status</string>
 	<string name="launcher_prediction_summary">Train Predictions</string>
-	<string name="demo_time">12:34</string>
-	<string name="demo_title">Lorem ipsum</string>
-	<string name="demo_short">Lorem ipsum dolor sit amet</string>
-	<string name="demo_long">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
-	<string name="demo_text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-		minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-		esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-	</string>
 	<string name="label_search">Search</string>
+	<string name="demo_error">Possible long error message detailing what went wrong.</string>
 </resources>

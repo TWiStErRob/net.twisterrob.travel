@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
     <issue id="DefaultLocale" severity="ignore" />
+    <issue id="RtlSymmetry" severity="ignore" />
     <issue id="HardcodedText" severity="ignore" />
     <issue id="MissingTranslation" severity="ignore" />
     <issue id="ShowToast" severity="ignore" />

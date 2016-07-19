@@ -1,86 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE layout>
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
-	android:orientation="horizontal">
+	android:orientation="horizontal"
+	>
 
 	<ImageView
 		android:id="@android:id/icon"
 		android:layout_width="36sp"
 		android:layout_height="30sp"
-		android:padding="2sp"
 		android:layout_gravity="center"
-		android:src="@drawable/ic_launcher"
+		android:padding="2sp"
+		android:contentDescription="Station operator icon"
 		android:scaleType="fitXY"
-		android:contentDescription="Station operator icon" />
+		tools:src="@drawable/tfl_roundel_lul"
+		/>
 
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:orientation="vertical">
+		android:orientation="vertical"
+		>
 
-		<RelativeLayout
+		<LinearLayout
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical">
+			android:layout_marginRight="10dp"
+			android:layout_marginEnd="10dp"
+			android:orientation="horizontal"
+			android:gravity="center_vertical"
+			>
 			<TextView
 				android:id="@android:id/text1"
-				android:layout_width="wrap_content"
+				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:layout_alignParentLeft="true"
-				android:layout_centerVertical="true"
-				android:gravity="left"
-				android:text="@string/demo_title"
-				android:textSize="20sp" />
-			<View
-				android:id="@+id/box_line_1"
-				android:layout_width="10dp"
-				android:layout_height="20dp"
-				android:layout_alignParentRight="true"
-				android:layout_centerVertical="true"
-				android:layout_marginRight="10dp" />
-			<View
-				android:id="@+id/box_line_2"
-				android:layout_width="10dp"
-				android:layout_height="20dp"
-				android:layout_toLeftOf="@+id/box_line_1"
-				android:layout_centerVertical="true" />
-			<View
-				android:id="@+id/box_line_3"
-				android:layout_width="10dp"
-				android:layout_height="20dp"
-				android:layout_toLeftOf="@+id/box_line_2"
-				android:layout_centerVertical="true" />
-			<View
-				android:id="@+id/box_line_4"
-				android:layout_width="10dp"
-				android:layout_height="20dp"
-				android:layout_toLeftOf="@+id/box_line_3"
-				android:layout_centerVertical="true" />
-			<View
-				android:id="@+id/box_line_5"
-				android:layout_width="10dp"
-				android:layout_height="20dp"
-				android:layout_toLeftOf="@+id/box_line_4"
-				android:layout_centerVertical="true" />
-			<View
-				android:id="@+id/box_line_6"
-				android:layout_width="10dp"
-				android:layout_height="20dp"
-				android:layout_toLeftOf="@+id/box_line_5"
-				android:layout_centerVertical="true" />
-		</RelativeLayout>
+				android:layout_weight="1"
+				android:gravity="start"
+				android:textSize="20sp"
+				tools:text="Something Blah Station"
+				/>
+			<!--@formatter:off -->
+			<View android:id="@+id/box_line_1" android:layout_width="10dp" android:layout_height="20dp" tools:background="#00f" />
+			<View android:id="@+id/box_line_2" android:layout_width="10dp" android:layout_height="20dp" tools:background="#0f0" />
+			<View android:id="@+id/box_line_3" android:layout_width="10dp" android:layout_height="20dp" tools:background="#f00" />
+			<View android:id="@+id/box_line_4" android:layout_width="10dp" android:layout_height="20dp" tools:background="#0ff" />
+			<View android:id="@+id/box_line_5" android:layout_width="10dp" android:layout_height="20dp" tools:background="#f0f" />
+			<View android:id="@+id/box_line_6" android:layout_width="10dp" android:layout_height="20dp" tools:background="#ff0" />
+			<!--@formatter:on -->
+		</LinearLayout>
 
 		<TextView
 			android:id="@android:id/text2"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:gravity="left"
-			android:text="@string/demo_short"
+			android:gravity="start"
 			android:textSize="12sp"
-			android:textStyle="italic" />
+			android:textStyle="italic"
+			tools:text="Underground: [Line1, Line2, Line3, Line4]"
+			/>
 	</LinearLayout>
 
 </LinearLayout>

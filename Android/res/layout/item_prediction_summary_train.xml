@@ -1,43 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE layout>
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:background="#000"
 	android:paddingLeft="4dip"
-	android:paddingRight="4dip">
+	android:paddingRight="4dip"
+	android:background="#000"
+	>
 
 	<TextView
 		android:id="@+id/prediction_train_name"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignParentLeft="true"
 		android:padding="2dip"
 		android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-		android:text="@string/demo_title"
+		android:paddingStart="?android:attr/expandableListPreferredChildPaddingLeft"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentStart="true"
 		android:textColor="#fc0"
-		android:textSize="14sp" />
+		android:textSize="14sp"
+		tools:text="Train Destination"
+		/>
 
 	<TextView
 		android:id="@+id/prediction_train_description"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_toEndOf="@+id/prediction_train_name"
 		android:layout_toLeftOf="@+id/prediction_train_time"
 		android:layout_toRightOf="@+id/prediction_train_name"
-		android:gravity="left"
-		android:text="@string/demo_short"
+		android:layout_toStartOf="@+id/prediction_train_time"
+		android:gravity="start"
 		android:textColor="#a90"
-		android:textSize="12sp" />
+		android:textSize="12sp"
+		tools:text="Detailed location of the train carriages."
+		/>
 
 	<TextView
 		android:id="@+id/prediction_train_time"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_alignParentEnd="true"
 		android:layout_alignParentRight="true"
-		android:gravity="right"
-		android:text="@string/demo_time"
-		android:textStyle="bold"
+		android:gravity="end"
 		android:textColor="#fc0"
-		android:textSize="14sp" />
+		android:textSize="14sp"
+		android:textStyle="bold"
+		tools:text="12:34"
+		/>
 </RelativeLayout>

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE layout>
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+	android:layout_height="fill_parent"
+	>
 
 	<include
 		android:id="@+id/layout$common_header"
+		layout="@layout/common_header"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
-		layout="@layout/common_header" />
+		/>
 
 	<com.google.android.maps.MapView
 		xmlns:android="http://schemas.android.com/apk/res/android"
@@ -20,13 +21,15 @@
 		android:layout_above="@+id/layout$common_footer"
 		android:layout_below="@+id/layout$common_header"
 		android:apiKey="0molON3Yz76yRWjDLWokLs_ZoRoH9W9klGqXx3w"
-		android:clickable="true" />
+		android:clickable="true"
+		/>
 
 	<include
 		android:id="@+id/layout$common_footer"
+		layout="@layout/common_footer"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
-		layout="@layout/common_footer" />
+		/>
 
 </RelativeLayout>
