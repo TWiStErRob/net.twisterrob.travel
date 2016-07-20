@@ -1,0 +1,63 @@
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/design_bottom_sheet"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:background="#fff"
+	app:behavior_hideable="true"
+	app:behavior_skipCollapsed="true"
+	app:layout_behavior="@string/bottom_sheet_behavior"
+	app:behavior_peekHeight="160dp"
+	>
+	<android.support.v7.widget.Toolbar
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize"
+		>
+		<TextSwitcher
+			android:id="@+id/distance_map_dropped_pin"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			>
+			<TextView
+				style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				/>
+			<TextView
+				style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				/>
+		</TextSwitcher>
+	</android.support.v7.widget.Toolbar>
+	<android.support.v7.widget.CardView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		>
+		<ListView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			/>
+		<LinearLayout
+			android:id="@+id/layout$distance_map$nearest_stations"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			>
+			<include layout="@layout/item_station" />
+			<include layout="@layout/item_station" />
+			<include layout="@layout/item_station" />
+			<include layout="@layout/item_station" />
+		</LinearLayout>
+	</android.support.v7.widget.CardView>
+
+	<Button
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Blah"
+		/>
+</LinearLayout>
