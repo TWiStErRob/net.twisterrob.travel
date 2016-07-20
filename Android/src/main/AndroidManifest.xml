@@ -122,7 +122,8 @@
 
 		<activity
 			android:name=".ui.activity.DistanceMapActivity"
-			android:label="@string/launcher_distance_map">
+			android:label="@string/launcher_distance_map"
+			android:theme="@style/Theme.NoActionBar">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="net.twisterrob.blt.android.ui.activity.main.MainActivity" />

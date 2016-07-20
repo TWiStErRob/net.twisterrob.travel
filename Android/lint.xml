@@ -12,7 +12,7 @@
 		<!-- Possibly a LINT bug, because it works in both IDEA/runtime -->
 		<ignore path="res/layout/activity_stations_map.xml" />
 	</issue>
-	<!-- Increased readability probably TODO re-check after layout is redesigned -->
+	<!-- They give increased readability -->
 	<issue id="UnusedIds" severity="ignore" />
 	<issue id="UnusedResources">
 		<ignore regexp="R\.drawable\.tfl_roundel_.+" />
