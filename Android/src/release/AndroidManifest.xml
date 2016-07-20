@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<application>
+		<!-- STOPSHIP fix package signature to net.twisterrob.blt and sign with store key -->
+		<!-- Release 26:E3:C7:59:11:CA:5C:AE:3C:43:73:7F:D4:A9:9F:C7:59:AF:1E:7C;net.twisterrob.blt.android -->
+		<meta-data
+			android:name="com.google.android.maps.v2.API_KEY"
+			android:value="AIzaSyB6qc9WlSDbaNGO-c-mnu8ajlq3jroh2E4" />
+	</application>
+</manifest>

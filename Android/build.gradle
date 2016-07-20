@@ -42,7 +42,8 @@ android {
 	}
 	buildTypes {
 		debug {
-			applicationIdSuffix '.android' // FIXME Update Maps API v2 Key for net.twisterrob.blt.debug
+			applicationIdSuffix '.android'
+			// FIXME Update Maps API v2 Key for net.twisterrob.blt.debug (see debug manifest)
 		}
 		release {
 			minifyEnabled false
