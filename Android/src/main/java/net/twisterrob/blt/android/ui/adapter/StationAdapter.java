@@ -1,7 +1,6 @@
 package net.twisterrob.blt.android.ui.adapter;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,7 +10,6 @@ import android.text.*;
 import android.text.style.TextAppearanceSpan;
 import android.view.View;
 import android.widget.*;
-import android.widget.TextView.BufferType;
 
 import net.twisterrob.android.adapter.BaseListAdapter;
 import net.twisterrob.blt.android.*;
@@ -20,19 +18,67 @@ import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder;
 import net.twisterrob.blt.model.*;
 
 public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
-	private Map<StopType, Drawable> bitmapCache = new EnumMap<>(StopType.class);
-
 	public StationAdapter(final Context context, final Collection<Station> items) {
 		super(context, items, false);
-		for (Entry<StopType, Integer> logo : App.getInstance().getStaticData().getStopTypeLogos().entrySet()) {
-			bitmapCache.put(logo.getKey(), ContextCompat.getDrawable(context, logo.getValue()));
-		}
 	}
-	protected static class ViewHolder {
-		TextView title;
-		TextView description;
-		ImageView icon;
-		View[] lines = new View[6];
+	public static class ViewHolder {
+		private final TextView title;
+		private final TextView description;
+		private final ImageView icon;
+		private final View[] lines = new View[6];
+		private Context context;
+
+		public ViewHolder(View view) {
+			this.context = view.getContext();
+			this.title = (TextView)view.findViewById(android.R.id.text1);
+			this.description = (TextView)view.findViewById(android.R.id.text2);
+			this.icon = (ImageView)view.findViewById(android.R.id.icon);
+			lines[0] = view.findViewById(R.id.box_line_1);
+			lines[1] = view.findViewById(R.id.box_line_2);
+			lines[2] = view.findViewById(R.id.box_line_3);
+			lines[3] = view.findViewById(R.id.box_line_4);
+			lines[4] = view.findViewById(R.id.box_line_5);
+			lines[5] = view.findViewById(R.id.box_line_6);
+		}
+
+		public void bind(Station currentItem, String filter) {
+			Map<StopType, Integer> logos = App.getInstance().getStaticData().getStopTypeLogos();
+			Drawable icon = ContextCompat.getDrawable(context, logos.get(currentItem.getType()));
+			CharSequence title = highlight(currentItem.getName(), filter);
+			String stationLines = context.getString(R.string.station_lines,
+					currentItem.getType(), currentItem.getLines());
+			CharSequence description = highlight(stationLines, filter);
+
+			this.title.setText(title);
+			this.description.setText(description);
+			this.icon.setImageDrawable(icon);
+			updateLineColors(currentItem.getLines());
+		}
+
+		private CharSequence highlight(String title, String lastFilter) {
+			if (lastFilter == null) {
+				return title;
+			}
+			SpannableString text = new SpannableString(title);
+			int matchIndex = title.toLowerCase().indexOf(lastFilter.toLowerCase());
+			if (0 <= matchIndex) {
+				TextAppearanceSpan style = new TextAppearanceSpan(context, R.style.search_highlight);
+				text.setSpan(style, matchIndex, matchIndex + lastFilter.length(),
+						Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+			}
+			return text;
+		}
+
+		private void updateLineColors(List<Line> lines) {
+			LineColors colors = App.getInstance().getStaticData().getLineColors();
+			for (int i = 0; i < this.lines.length; ++i) {
+				int bg = Color.TRANSPARENT; // make it invisible by default
+				if (i < lines.size()) {
+					bg = lines.get(i).getBackground(colors);
+				}
+				this.lines[i].setBackgroundColor(bg);
+			}
+		}
 	}
 
 	@Override protected int getItemLayoutId() {
@@ -40,54 +86,11 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 	}
 
 	@Override protected ViewHolder createHolder(final View convertView) {
-		ViewHolder holder = new ViewHolder();
-		holder.title = (TextView)convertView.findViewById(android.R.id.text1);
-		holder.description = (TextView)convertView.findViewById(android.R.id.text2);
-		holder.icon = (ImageView)convertView.findViewById(android.R.id.icon);
-		holder.lines[0] = convertView.findViewById(R.id.box_line_1);
-		holder.lines[1] = convertView.findViewById(R.id.box_line_2);
-		holder.lines[2] = convertView.findViewById(R.id.box_line_3);
-		holder.lines[3] = convertView.findViewById(R.id.box_line_4);
-		holder.lines[4] = convertView.findViewById(R.id.box_line_5);
-		holder.lines[5] = convertView.findViewById(R.id.box_line_6);
-		return holder;
+		return new ViewHolder(convertView);
 	}
 
 	@Override protected void bindView(final ViewHolder holder, final Station currentItem, final View convertView) {
-		Drawable icon = bitmapCache.get(currentItem.getType());
-		SpannableString title = highlight(currentItem.getName());
-		String stationLines = m_context.getString(R.string.station_lines,
-				currentItem.getType(), currentItem.getLines());
-		SpannableString description = highlight(stationLines);
-
-		holder.title.setText(title, BufferType.SPANNABLE);
-		holder.description.setText(description, BufferType.SPANNABLE);
-		holder.icon.setImageDrawable(icon);
-		updateLineColors(holder.lines, currentItem.getLines());
-	}
-
-	private SpannableString highlight(String title) {
-		SpannableString text = new SpannableString(title);
-		String lastFilter = getLastFilter();
-		if (lastFilter != null) {
-			int matchIndex = title.toLowerCase().indexOf(lastFilter.toLowerCase());
-			if (0 <= matchIndex) {
-				TextAppearanceSpan style = new TextAppearanceSpan(m_context, R.style.search_highlight);
-				text.setSpan(style, matchIndex, matchIndex + lastFilter.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-			}
-		}
-		return text;
-	}
-
-	private static void updateLineColors(View[] views, List<Line> lines) {
-		LineColors colors = App.getInstance().getStaticData().getLineColors();
-		for (int i = 0; i < views.length; ++i) {
-			int bg = Color.TRANSPARENT;
-			if (i < lines.size()) {
-				bg = lines.get(i).getBackground(colors);
-			}
-			views[i].setBackgroundColor(bg);
-		}
+		holder.bind(currentItem, getLastFilter());
 	}
 
 	@Override protected List<Station> filter(List<? extends Station> fullList, String filter, List<Station> result) {

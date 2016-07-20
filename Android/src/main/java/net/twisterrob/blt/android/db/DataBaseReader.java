@@ -225,7 +225,7 @@ class DataBaseReader {
 					toNode = new NetworkNode(toID, toName, line, new Location(toLat, toLon));
 					nodes.put(toKey, toNode);
 				}
-				fromNode.out.add(new NetworkLink(fromNode, toNode, distance));
+				fromNode.getOut().add(new NetworkLink(fromNode, toNode, distance));
 				// TODO efficiency with some cache or DB
 				for (Line neighborLine : Line.values()) {
 					if (neighborLine != line) {
@@ -233,16 +233,16 @@ class DataBaseReader {
 							MultiKey neighborKey = new MultiKey(neighborLine, fromID);
 							NetworkNode neighbor = nodes.get(neighborKey);
 							if (neighbor != null) {
-								fromNode.neighbors.add(neighbor);
-								neighbor.neighbors.add(fromNode);
+								fromNode.getNeighbors().add(neighbor);
+								neighbor.getNeighbors().add(fromNode);
 							}
 						}
 						{
 							MultiKey neighborKey = new MultiKey(neighborLine, toID);
 							NetworkNode neighbor = nodes.get(neighborKey);
 							if (neighbor != null) {
-								toNode.neighbors.add(neighbor);
-								neighbor.neighbors.add(toNode);
+								toNode.getNeighbors().add(neighbor);
+								neighbor.getNeighbors().add(toNode);
 							}
 						}
 					}
@@ -267,7 +267,7 @@ class DataBaseReader {
 					if (toNode == null) {
 						continue;
 					}
-					node.dists.put(toNode, dist.getValue());
+					node.getDists().put(toNode, dist.getValue());
 				}
 			}
 		}
