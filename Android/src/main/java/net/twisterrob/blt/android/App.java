@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import net.twisterrob.android.utils.LibContextProvider;
 import net.twisterrob.android.utils.concurrent.MailSenderAsyncTask;
+import net.twisterrob.android.utils.tools.AndroidTools;
 import net.twisterrob.blt.android.data.*;
 import net.twisterrob.blt.android.db.DataBaseHelper;
 import net.twisterrob.blt.io.feeds.*;
@@ -37,6 +38,7 @@ public class App extends android.app.Application {
 	@Override public void onCreate() {
 		LOG.trace("App.onCreate()");
 		super.onCreate();
+		AndroidTools.setContext(this);
 		LibContextProvider.setApplicationContext(this);
 		DataBaseHelper db = m_dataBaseHelper = new DataBaseHelper(this);
 		db.openDB();
