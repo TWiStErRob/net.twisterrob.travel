@@ -29,7 +29,7 @@
 		android:icon="@drawable/ic_launcher"
 		android:allowBackup="true"
 		android:largeHeap="true"
-		android:theme="@style/Theme.Default">
+		android:theme="@style/AppTheme.Default">
 
 		<uses-library
 			android:name="com.google.android.maps"
@@ -123,7 +123,7 @@
 		<activity
 			android:name=".ui.activity.DistanceMapActivity"
 			android:label="@string/launcher_distance_map"
-			android:theme="@style/Theme.NoActionBar">
+			android:theme="@style/AppTheme.NoActionBar">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="net.twisterrob.blt.android.ui.activity.main.MainActivity" />
