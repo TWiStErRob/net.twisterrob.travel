@@ -1,15 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	android:id="@+id/design_bottom_sheet"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
-	android:background="#fff"
-	app:behavior_hideable="true"
-	app:behavior_skipCollapsed="true"
-	app:layout_behavior="@string/bottom_sheet_behavior"
-	app:behavior_peekHeight="160dp"
+	android:background="@android:color/white"
 	>
 	<android.support.v7.widget.Toolbar
 		android:layout_width="match_parent"
@@ -25,6 +21,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
+				tools:text="Location at blah, blah"
 				/>
 			<TextView
 				style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
@@ -55,9 +52,4 @@
 		</LinearLayout>
 	</android.support.v7.widget.CardView>
 
-	<Button
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="Blah"
-		/>
 </LinearLayout>

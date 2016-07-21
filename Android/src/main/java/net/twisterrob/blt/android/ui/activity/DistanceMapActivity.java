@@ -4,37 +4,30 @@ import java.util.*;
 
 import org.slf4j.*;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.location.*;
 import android.os.*;
 import android.os.AsyncTask.Status;
-import android.support.annotation.*;
 import android.support.design.widget.*;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.*;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
+import com.google.android.gms.maps.GoogleMap.*;
 import com.google.android.gms.maps.model.*;
 import com.google.android.gms.maps.model.Marker;
 
-import net.twisterrob.android.utils.concurrent.SimpleSafeAsyncTask;
 import net.twisterrob.android.utils.tools.AndroidTools;
 import net.twisterrob.android.view.*;
 import net.twisterrob.android.view.ViewProvider.StaticViewProvider;
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.data.distance.*;
-import net.twisterrob.blt.android.db.model.*;
-import net.twisterrob.blt.android.ui.adapter.StationAdapter;
-import net.twisterrob.blt.model.*;
-import net.twisterrob.java.model.Location;
-
-import static net.twisterrob.blt.android.R.id.*;
+import net.twisterrob.blt.android.db.model.NetworkNode;
+import net.twisterrob.blt.android.ui.activity.DistanceOptionsFragment.ConfigsUpdatedListener;
 
 public class DistanceMapActivity extends AppCompatActivity {
 	private static final Logger LOG = LoggerFactory.getLogger(DistanceMapActivity.class);
@@ -47,34 +40,45 @@ public class DistanceMapActivity extends AppCompatActivity {
 			.minutes(25);
 	private DistanceMapDrawerConfig drawConfig = new DistanceMapDrawerConfig()
 			.dynamicColor(true);
-	private TextSwitcher droppedPin;
-	private ViewGroup nearestStations;
 	private BottomSheetBehavior behavior;
-	private GeocoderTask m_geocoderTask;
+	private NearestStationsFragment nearestFragment;
+	private DistanceOptionsFragment distanceOptions;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_distance_map);
 
-		final SupportMapFragment mapFragment =
-				(SupportMapFragment)getSupportFragmentManager().findFragmentById(map);
+		FragmentManager fm = getSupportFragmentManager();
+		SupportMapFragment mapFragment = (SupportMapFragment)fm.findFragmentById(R.id.map);
 		m_map = mapFragment.getMap();
 		m_map.setMyLocationEnabled(true);
+		m_map.getUiSettings().setZoomControlsEnabled(false);
 		m_map.setOnMapLongClickListener(new OnMapLongClickListener() {
 			public void onMapLongClick(LatLng latlng) {
 				reDraw(latlng);
 			}
 		});
+		m_map.setOnMarkerClickListener(new OnMarkerClickListener() {
+			@Override public boolean onMarkerClick(Marker marker) {
+				if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+					behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+				}
+				return false;
+			}
+		});
 
 		Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
-		droppedPin = (TextSwitcher)findViewById(R.id.distance_map_dropped_pin);
-		droppedPin.setInAnimation(this, android.R.anim.fade_in);
-		droppedPin.setOutAnimation(this, android.R.anim.fade_out);
-		nearestStations = (ViewGroup)findViewById(R.id.layout$distance_map$nearest_stations);
-		nearestStations.removeAllViews();
+		nearestFragment = (NearestStationsFragment)fm.findFragmentById(R.id.distance_bottom_sheet);
+		distanceOptions = (DistanceOptionsFragment)fm.findFragmentById(R.id.distance_drawer);
+		distanceOptions.bindConfigs(distanceConfig, drawConfig);
+		distanceOptions.setConfigsUpdatedListener(new ConfigsUpdatedListener() {
+			@Override public void onConfigsUpdated() {
+				reDraw(m_lastStartPoint);
+			}
+		});
 		FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
-		behavior = BottomSheetBehavior.from(findViewById(R.id.design_bottom_sheet));
+		behavior = BottomSheetBehavior.from(findViewById(R.id.distance_bottom_sheet));
 		behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 		behavior.setBottomSheetCallback(new MultiBottomSheetCallback.Builder()
 				//.add(new LoggingBottomSheetCallback())
@@ -83,7 +87,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 				.build());
 		fab.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View v) {
-				behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+				distanceOptions.show();
 			}
 		});
 
@@ -130,7 +134,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 	private LatLng m_lastStartPoint;
 	@SuppressWarnings("Duplicates")
 	private void reDraw(LatLng latlng) {
-		LOG.trace("reDraw({}) / task status: {}", latlng, m_redrawTask == null? null : m_redrawTask.getStatus());
+		LOG.trace("reDraw({}) / task: {}", latlng, AndroidTools.toString(m_redrawTask));
 		if (m_redrawTask == null) {
 			m_redrawTask = new RedrawAsyncTask(m_distanceMapGenerator, m_distanceMapDrawer);
 		}
@@ -141,37 +145,13 @@ public class DistanceMapActivity extends AppCompatActivity {
 			return;
 		}
 
-		LOG.trace("geoCoder({}) / task status: {}", latlng, m_geocoderTask == null? null : m_geocoderTask.getStatus());
-		if (m_geocoderTask == null) {
-			m_geocoderTask = new GeocoderTask(this);
-		}
-		if (m_geocoderTask.getStatus() != Status.PENDING) {
-			m_geocoderTask.cancel(true);
-			m_geocoderTask = null;
-			reDraw(latlng);
-			return;
-		}
-
 		m_lastStartPoint = latlng;
-		updateLocation(latlng, null);
+		nearestFragment.updateLocation(latlng, null);
 		try {
 			AndroidTools.executePreferParallel(m_redrawTask, latlng);
-			AndroidTools.executePreferParallel(m_geocoderTask, latlng);
 		} catch (Exception ex) {
 			LOG.warn("Exception while executing tasks", ex);
 			Toast.makeText(DistanceMapActivity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
-		}
-	}
-
-	private void updateLocation(@NonNull LatLng latlng, @Nullable Address address) {
-		LOG.trace("Got location: {}, address: {}", latlng, AndroidTools.toString(address));
-		String addressString = LocationUtils.getVagueAddress(address);
-		if (addressString == null) {
-			String pin = String.format(Locale.getDefault(),
-					"Location at %.4f, %.4f", latlng.latitude, latlng.longitude);
-			droppedPin.setCurrentText(pin);
-		} else {
-			droppedPin.setText(addressString);
 		}
 	}
 
@@ -201,69 +181,21 @@ public class DistanceMapActivity extends AppCompatActivity {
 			Marker marker = m_map.addMarker(new MarkerOptions()
 					.title("Starting point")
 					.position(m_lastStartPoint)
-					.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+					.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+			);
 			m_markersStart.add(marker);
 		}
 	}
+
 	private void updateNearestStations(Collection<NetworkNode> startNodes) {
-		nearestStations.removeAllViews();
-		for (StationWithDistance station : toStations(startNodes)) {
-			LOG.trace("Creating nearest station for {}", station);
-			View view = getLayoutInflater().inflate(R.layout.item_station, nearestStations, false);
-			station.setName(station.getName() + " (" + Math.round(station.getDistance()) + "m)");
-			new StationAdapter.ViewHolder(view).bind(station, null);
-			nearestStations.addView(view);
-		}
-		if (nearestStations.getChildCount() == 0) {
-			TextView empty = new TextView(this);
-			empty.setText("No stations found around here.");
-			nearestStations.addView(empty);
-		}
+		nearestFragment.updateNearestStations(startNodes);
 		// force the UI to become collapsed, this post-hack gives the most consistent results
 		behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-		nearestStations.post(new Runnable() {
+		getWindow().getDecorView().post(new Runnable() {
 			@Override public void run() {
 				behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 			}
 		});
-	}
-	private Collection<StationWithDistance> toStations(Collection<NetworkNode> nodes) {
-		Map<String, StationWithDistance> stations = new HashMap<>();
-		Location distanceReference = LocationUtils.fromLatLng(m_lastStartPoint);
-		for (NetworkNode node : nodes) {
-			String key = node.getName();
-			StationWithDistance station = stations.get(key);
-			if (station == null) {
-				station = new StationWithDistance();
-				station.setName(node.getName());
-				station.setLocation(node.getLocation());
-				station.setLines(new ArrayList<Line>());
-				station.setDistance(LocationUtils.distance(distanceReference, station.getLocation()));
-				stations.put(key, station);
-			}
-			station.getLines().add(node.getLine());
-		}
-		for (StationWithDistance station : stations.values()) {
-			int[] stopCounts = new int[StopType.values().length];
-			for (Line line : station.getLines()) {
-				stopCounts[line.getDefaultStopType().ordinal()]++;
-			}
-			int max = 0;
-			for (int i = max + 1; i < stopCounts.length; i++) {
-				// picks the first if there's a tie
-				if (stopCounts[max] < stopCounts[i]) {
-					max = i;
-				}
-			}
-			station.setType(StopType.values()[max]);
-		}
-		List<StationWithDistance> result = new ArrayList<>(stations.values());
-		Collections.sort(result, new Comparator<StationWithDistance>() {
-			@Override public int compare(StationWithDistance lhs, StationWithDistance rhs) {
-				return Double.compare(lhs.getDistance(), rhs.getDistance());
-			}
-		});
-		return result;
 	}
 
 	@SuppressWarnings("unused")
@@ -271,16 +203,6 @@ public class DistanceMapActivity extends AppCompatActivity {
 		for (NetworkNode node : nodes) {
 			LatLng ll = LocationUtils.toLatLng(node.getLocation());
 			m_map.addMarker(new MarkerOptions().title(String.valueOf(node.getID())).position(ll));
-		}
-	}
-
-	private static class StationWithDistance extends Station {
-		private double distance;
-		public double getDistance() {
-			return distance;
-		}
-		public void setDistance(double distance) {
-			this.distance = distance;
 		}
 	}
 
@@ -314,34 +236,6 @@ public class DistanceMapActivity extends AppCompatActivity {
 
 		@Override protected void onPostExecute(Bitmap map) {
 			updateDistanceMap(map);
-		}
-	}
-
-	private final class GeocoderTask extends SimpleSafeAsyncTask<LatLng, Void, Address> {
-		private final Geocoder geocoder;
-		private GeocoderTask(Context context) {
-			if (Geocoder.isPresent()) {
-				geocoder = new Geocoder(context);
-			} else {
-				LOG.warn("Geocoding not available.");
-				geocoder = null;
-			}
-		}
-		@Override protected @Nullable Address doInBackground(LatLng latlng) throws Exception {
-			if (geocoder != null) {
-				List<Address> location = geocoder.getFromLocation(latlng.latitude, latlng.longitude, 1);
-				if (location != null && !location.isEmpty()) {
-					return location.get(0);
-				}
-			}
-			return null;
-		}
-		@Override protected void onResult(@Nullable Address address, LatLng latlng) {
-			updateLocation(latlng, address);
-		}
-		@Override protected void onError(@NonNull Exception ex, LatLng latlng) {
-			LOG.warn("Cannot determine location for {}", latlng, ex);
-			updateLocation(latlng, null);
 		}
 	}
 }
