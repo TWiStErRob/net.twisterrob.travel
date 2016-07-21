@@ -139,6 +139,7 @@ public enum Line {
 			return colors.getEmiratesForeground();
 		}
 	},
+	// TODO what is the tracker net code?
 	TflRail('?', 83, StopType.Rail, "TfL Rail") {
 		@Override public int getBackground(LineColors colors) {
 			return colors.getTfLRailBackground();
@@ -192,6 +193,13 @@ public enum Line {
 	public abstract int getBackground(LineColors colors);
 	public abstract int getForeground(LineColors colors);
 
+	public static Line fromEnumName(String line) {
+		try {
+			return Line.valueOf(line);
+		} catch (IllegalArgumentException ex) {
+			return Line.unknown;
+		}
+	}
 	public static Line fromAlias(String alias) {
 		for (Line line : values()) {
 			if (line.aliases.contains(alias)) {

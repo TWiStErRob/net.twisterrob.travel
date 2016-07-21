@@ -2,6 +2,9 @@ package net.twisterrob.blt.model;
 
 import java.util.Date;
 
+/**
+ * Assume a light default background when subclassing this.
+ */
 public abstract class LineColors {
 	abstract String getLineColorsSource();
 	abstract String getLineColorsName();
