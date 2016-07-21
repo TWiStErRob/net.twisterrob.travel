@@ -23,7 +23,7 @@ public class DistanceMapGenerator {
 
 	public DistanceMapGenerator(Set<NetworkNode> networkNodes, DistanceMapGeneratorConfig config) {
 		this.nodes = networkNodes;
-		this.config = config;
+		this.config = new DistanceMapGeneratorConfig(config); // make a copy to prevent weirdness if modified
 	}
 
 	public DistanceMapGeneratorConfig getConfig() {

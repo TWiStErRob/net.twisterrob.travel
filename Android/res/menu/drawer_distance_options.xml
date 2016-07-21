@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Due to Preview thinking this is an openable menu, the preview is only available in layout/inc_distance_options -->
+<menu
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+	<item
+		android:title="Distance calculation parameters"
+		>
+		<menu>
+			<item
+				android:id="@+id/distance_config_journey_time"
+				android:title="@string/distance_config_journey_time"
+				app:actionLayout="@layout/menu_widget_number" />
+			<item
+				android:id="@+id/distance_config_interchange_interstation"
+				android:title="@string/distance_config_interchange_interstation"
+				app:actionLayout="@layout/menu_widget_boolean" />
+			<item
+				android:id="@+id/distance_config_walking_speed"
+				android:title="@string/distance_config_walking_speed"
+				app:actionLayout="@layout/menu_widget_number" />
+			<item
+				android:id="@+id/distance_config_transfer_entry_exit"
+				android:title="@string/distance_config_transfer_entry_exit"
+				app:actionLayout="@layout/menu_widget_number" />
+			<item
+				android:id="@+id/distance_config_interchange_intrastation"
+				android:title="@string/distance_config_interchange_intrastation"
+				app:actionLayout="@layout/menu_widget_boolean" />
+			<item
+				android:id="@+id/distance_config_interchange_time"
+				android:title="@string/distance_config_interchange_time"
+				app:actionLayout="@layout/menu_widget_number" />
+		</menu>
+	</item>
+</menu>
