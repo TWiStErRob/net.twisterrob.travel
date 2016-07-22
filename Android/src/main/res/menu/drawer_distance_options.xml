@@ -12,6 +12,10 @@
 				android:title="@string/distance_config_journey_time"
 				app:actionLayout="@layout/menu_widget_number" />
 			<item
+				android:id="@+id/distance_config_journey_start"
+				android:title="@string/distance_config_journey_start"
+				app:actionLayout="@layout/menu_widget_number" />
+			<item
 				android:id="@+id/distance_config_interchange_interstation"
 				android:title="@string/distance_config_interchange_interstation"
 				app:actionLayout="@layout/menu_widget_boolean" />
@@ -31,6 +35,16 @@
 				android:id="@+id/distance_config_interchange_time"
 				android:title="@string/distance_config_interchange_time"
 				app:actionLayout="@layout/menu_widget_number" />
+		</menu>
+	</item>
+	<item
+		android:title="Interface settings"
+		>
+		<menu>
+			<item
+				android:id="@+id/distance_ui_show_stations"
+				android:title="@string/distance_ui_show_stations"
+				app:actionLayout="@layout/menu_widget_boolean" />
 		</menu>
 	</item>
 </menu>

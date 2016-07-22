@@ -7,8 +7,10 @@ import org.slf4j.*;
 import android.graphics.Bitmap;
 import android.os.*;
 import android.os.AsyncTask.Status;
+import android.preference.PreferenceManager;
 import android.support.design.widget.*;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -42,7 +44,8 @@ public class DistanceMapActivity extends AppCompatActivity {
 			.dynamicColor(true);
 	private BottomSheetBehavior behavior;
 	private NearestStationsFragment nearestFragment;
-	private DistanceOptionsFragment distanceOptions;
+	private DistanceOptionsFragment optionsFragment;
+	private DrawerLayout drawers;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -69,10 +72,12 @@ public class DistanceMapActivity extends AppCompatActivity {
 
 		Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+		drawers = (DrawerLayout)findViewById(R.id.drawer);
+
 		nearestFragment = (NearestStationsFragment)fm.findFragmentById(R.id.distance_bottom_sheet);
-		distanceOptions = (DistanceOptionsFragment)fm.findFragmentById(R.id.distance_drawer);
-		distanceOptions.bindConfigs(distanceConfig, drawConfig);
-		distanceOptions.setConfigsUpdatedListener(new ConfigsUpdatedListener() {
+		optionsFragment = (DistanceOptionsFragment)fm.findFragmentById(R.id.distance_drawer);
+		optionsFragment.bindConfigs(distanceConfig, drawConfig);
+		optionsFragment.setConfigsUpdatedListener(new ConfigsUpdatedListener() {
 			@Override public void onConfigsUpdated() {
 				reDraw(m_lastStartPoint);
 			}
@@ -87,7 +92,8 @@ public class DistanceMapActivity extends AppCompatActivity {
 				.build());
 		fab.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View v) {
-				distanceOptions.show();
+				//noinspection WrongConstant it's not a constant, but it is a gravity field
+				drawers.openDrawer(((DrawerLayout.LayoutParams)optionsFragment.getView().getLayoutParams()).gravity);
 			}
 		});
 
@@ -134,6 +140,9 @@ public class DistanceMapActivity extends AppCompatActivity {
 	private LatLng m_lastStartPoint;
 	@SuppressWarnings("Duplicates")
 	private void reDraw(LatLng latlng) {
+		if (latlng == null) {
+			return;
+		}
 		LOG.trace("reDraw({}) / task: {}", latlng, AndroidTools.toString(m_redrawTask));
 		if (m_redrawTask == null) {
 			m_redrawTask = new RedrawAsyncTask(m_distanceMapGenerator, m_distanceMapDrawer);
@@ -189,13 +198,15 @@ public class DistanceMapActivity extends AppCompatActivity {
 
 	private void updateNearestStations(Collection<NetworkNode> startNodes) {
 		nearestFragment.updateNearestStations(startNodes);
-		// force the UI to become collapsed, this post-hack gives the most consistent results
-		behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-		getWindow().getDecorView().post(new Runnable() {
-			@Override public void run() {
-				behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-			}
-		});
+		if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("showNearest", true)) {
+			// force the UI to become collapsed, this post-hack gives the most consistent results
+			behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+			getWindow().getDecorView().post(new Runnable() {
+				@Override public void run() {
+					behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+				}
+			});
+		}
 	}
 
 	@SuppressWarnings("unused")

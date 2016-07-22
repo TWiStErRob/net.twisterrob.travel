@@ -18,87 +18,61 @@
 	<string name="prediction_approach_zero">%1$s has no trains approaching</string>
 	<string name="station_lines">%1$s: %2$s</string>
 
+	<!-- Configuration Strings -->
+	<!-- If the below strings are injected as HTML make sure to set <station> as an inline element in the Code Style. -->
 	<string name="distance_config_journey_time">Journey time</string>
 	<string name="distance_config_journey_time_tooltip" process="HtmlParser"><![CDATA[
-	<b>How much time do you allow for the entire journey?</b> (<i>measured in minutes</i>)
+	<b>How much time do you allow for the entire journey?</b>
+	(<i>measured in minutes</i>)
 	Including entering/exiting the station, interchanges, and sitting on the vehicles.
+	]]></string>
+
+	<string name="distance_config_journey_start">Time to first station</string>
+	<string name="distance_config_journey_start_tooltip" process="HtmlParser"><![CDATA[
+	<b>How far are you willing to walk to enter the first station?</b>
+	(<i>measured in minutes</i>)
+	Think about it like going from home to the nearest station.
 	]]></string>
 
 	<string name="distance_config_interchange_interstation">Allow station interchange</string>
 	<string name="distance_config_interchange_interstation_tooltip" process="HtmlParser"><![CDATA[
-	<b>When at a station, would you leave that station and walk to another nearby station?</b> (
-	<i>options are yes/no</i>)
+	<b>When at a station, would you leave that station and walk to another nearby station?</b>
+	(<i>options are yes/no</i>)
 	Where there may be no nearby line interchanges possible, leaving the station may benefit your overall journey time.
 	This means you can get farther in the same amount of time.
 	\nInter-station interchange examples include
 	<ul>
-		<li>
-			<station line="Piccadilly">North Ealing</station>
-			⇌
-			<station line="Central">West Acton</station>
-		</li>
-		<li>
-			<station line="HammersmithAndCity">Latimer Road</station>
-			⇌
-			<station line="Central">White City</station>
-		</li>
-		<li>
-			<station line="Circle">Royal Oak</station>
-			⇌
-			<station line="Bakerloo">Warwick Avenue</station>
-		</li>
-		<li>
-			<station line="Overground">Hampstead Heath</station>
-			⇌
-			<station line="Northern">Belsize Park</station>
-		</li>
-		<li>
-			<station line="Bakerloo">Regent\'s Park</station>
-			⇌
-			<station line="Metropolitan">Great Portland Street</station>
-		</li>
-		<li>
-			<station line="Circle">Farringdon</station>
-			⇌
-			<station line="Central">Chancery Lane</station>
-		</li>
+		<li><station line="Piccadilly">North Ealing</station>⇌<station line="Central">West Acton</station></li>
+		<li><station line="HammersmithAndCity">Latimer Road</station>⇌<station line="Central">White City</station></li>
+		<li><station line="Circle">Royal Oak</station>⇌<station line="Bakerloo">Warwick Avenue</station></li>
+		<li><station line="Overground">Hampstead Heath</station>⇌<station line="Northern">Belsize Park</station></li>
+		<li><station line="Bakerloo">Regent\'s Park</station>⇌<station
+			line="Metropolitan">Great Portland Street</station></li>
+		<li><station line="Circle">Farringdon</station>⇌<station line="Central">Chancery Lane</station></li>
 	</ul>
 	<a href="https://tfl.gov.uk/fares-and-payments/oyster/using-oyster/touching-in-and-out#on-this-page-5">
 		TfL will likely count these as fully leaving/entering the system</a>.
 	\nThere are some stations where you can make an interchange and TfL may count it as an intra-station interchange;
 	examples of this:
 	<ul>
-		<li>Hammersmith (
-			<station line="Piccadilly">Piccadilly</station>
-		    ⇌
-			<station line="Circle">Circle</station>
-		    )
-		</li>
-		<li>Shadwell (
-			<station line="DLR">DLR</station>
-		    ⇌
-			<station line="Overground">Overground</station>
-		    )
-		</li>
-		<li>Canary Wharf (
-			<station line="Jubilee">Jubilee</station>
-		    ⇌
-			<station line="DLR">DLR</station>
-		    )
-		</li>
+		<li>Hammersmith (<station line="Piccadilly">Piccadilly</station>⇌<station line="Circle">Circle</station>)</li>
+		<li>Shadwell (<station line="DLR">DLR</station>⇌<station line="Overground">Overground</station>)</li>
+		<li>Canary Wharf (<station line="Jubilee">Jubilee</station>⇌<station line="DLR">DLR</station>)</li>
 	</ul>
 	However, to simplify these exceptions these are treated as inter-station interchanges by the algorithm.
 	]]></string>
 
 	<string name="distance_config_walking_speed">Walking speed</string>
 	<string name="distance_config_walking_speed_tooltip" process="HtmlParser"><![CDATA[
-	<b>What is the average speed you walk during a journey?</b> (<i>measured in km/h</i>)
+	<b>What is the average speed you walk during a journey?</b>
+	(<i>measured in km/h</i>)
 	This will be used to calculate how much time it would take to walk between two geographic locations where only the distance known.
 	]]></string>
 
 	<string name="distance_config_transfer_entry_exit">Street ⇌ Platform time</string>
 	<string name="distance_config_transfer_entry_exit_tooltip" process="HtmlParser"><![CDATA[
-	<b>What is the average time it takes for you to enter/exit a station?</b> (<i>measured in minutes</i>)
+	<b>What is the average time it takes for you to enter/exit a station?</b>
+	(<i>measured in minutes</i>)
 	That is, to go from the street entrance to the platform to board a train,
 	including passing gates, escalators, elevators, travelators and stairs.
 	Entering (street ⇀ platform) and exiting (platform ↽ street) is assumed to take the same amount of time.
@@ -106,17 +80,26 @@
 
 	<string name="distance_config_interchange_intrastation">Allow line interchange</string>
 	<string name="distance_config_interchange_intrastation_tooltip" process="HtmlParser"><![CDATA[
-	<b>When at a station, would you want to transfer between trains without leaving the station?</b> (
-	<i>options are yes/no</i>)
+	<b>When at a station, would you want to transfer between trains without leaving the station?</b>
+	(<i>options are yes/no</i>)
 	You might want to disable this option to only allow direct journeys.
 	]]></string>
 
 	<string name="distance_config_interchange_time">Interchange time</string>
 	<string name="distance_config_interchange_time_tooltip" process="HtmlParser"><![CDATA[
-	<b>How long does it take, on average, to alight a train and board another one?</b> (<i>measured in minutes</i>)
+	<b>How long does it take, on average, to alight a train and board another one?</b>
+	(<i>measured in minutes</i>)
 	This only applies within a single station, without going to the street.
 	It may range from a few seconds to several minutes, depending on the station size:
 	<a href="http://www.cityam.com/226215/longest-tube-interchange-10-tube-stations-where-changing-lines-takes-longest">
 		for example interchanges at Bank, Charing Cross, Kings Cross will take over a 5 minute walk</a>.
+	]]></string>
+
+	<string name="distance_ui_show_stations">Show stations</string>
+	<string name="distance_ui_show_stations_tooltip" process="HtmlParser"><![CDATA[
+	<b>When you select a location, do you want to automatically see the nearest stations?</b>
+	(<i>options are yes/no</i>)
+	This is useful if you have a small screen and want to play around with the options.
+	Disable to give more space for the map.
 	]]></string>
 </resources>

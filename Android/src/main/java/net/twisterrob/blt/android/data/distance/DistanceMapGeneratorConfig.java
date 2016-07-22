@@ -2,8 +2,10 @@ package net.twisterrob.blt.android.data.distance;
 
 import android.support.annotation.FloatRange;
 
+@SuppressWarnings("PointlessArithmeticExpression") // TODO TimeUnit?
 public class DistanceMapGeneratorConfig {
 	private static final double MPH_TO_KPH = 1.609344;
+	private static final int MINUTES = 1;
 	private static final int HOURS_IN_MINUTES = 60;
 	/** Average male jogging speed */
 	public static final double WALK_JOG_MALE = 8.3 * MPH_TO_KPH;
@@ -13,6 +15,17 @@ public class DistanceMapGeneratorConfig {
 	public static final double WALK_OLIMPIC = 9.6 * MPH_TO_KPH;
 	/** Usain Bolt's London 2012 world record {@code 1 / (run_time * (1km/100m) / (minutes * seconds)} */
 	public static final double WALK_BOLT = 1 / (9.58 * (1000 / 100) / (60 * 60));
+
+	public static final double SPEED_ON_FOOT_MIN = 0 /*km/h*/;
+	public static final double SPEED_ON_FOOT_MAX = WALK_BOLT /*km/h*/;
+	public static final double MINUTES_MIN = 0 * MINUTES;
+	public static final double MINUTES_MAX = 6 * HOURS_IN_MINUTES;
+	public static final double START_WALK_MIN = 0 * MINUTES;
+	public static final double START_WALK_MAX = MINUTES_MAX;
+	public static final double TIME_PLATFORM_TO_STREET_MIN = 0 * MINUTES;
+	public static final double TIME_PLATFORM_TO_STREET_MAX = 30 * MINUTES;
+	public static final double TIME_TRANSFER_MIN = 0 * MINUTES;
+	public static final double TIME_TRANSFER_MAX = 30 * MINUTES;
 	/** minutes */
 	double timeTransfer = 5;
 	/** minutes */
@@ -51,7 +64,8 @@ public class DistanceMapGeneratorConfig {
 	 * Only valid if {@link #transferInStation} is allowed.
 	 * @see #transferInStation(boolean)
 	 */
-	public DistanceMapGeneratorConfig timeTransfer(double timeTransfer) {
+	public DistanceMapGeneratorConfig timeTransfer(
+			@FloatRange(from = TIME_TRANSFER_MIN, to = TIME_TRANSFER_MAX) double timeTransfer) {
 		this.timeTransfer = timeTransfer;
 		return this;
 	}
@@ -60,7 +74,7 @@ public class DistanceMapGeneratorConfig {
 	 * Average time it takes in minutes from train doors opening to leaving the station and being on the street.
 	 */
 	public DistanceMapGeneratorConfig timePlatformToStreet(
-			@FloatRange(from = 0, to = 30 /*minutes*/) double platformToStreet) {
+			@FloatRange(from = TIME_PLATFORM_TO_STREET_MIN, to = TIME_PLATFORM_TO_STREET_MAX) double platformToStreet) {
 		this.timePlatformToStreet = platformToStreet;
 		return this;
 	}
@@ -72,7 +86,7 @@ public class DistanceMapGeneratorConfig {
 	 *     Article on running speeds</a>
 	 */
 	public DistanceMapGeneratorConfig speedOnFoot(
-			@FloatRange(from = 0, to = WALK_BOLT) double speed) {
+			@FloatRange(from = SPEED_ON_FOOT_MIN, to = SPEED_ON_FOOT_MAX) double speed) {
 		this.speedOnFoot = speed;
 		return this;
 	}
@@ -90,7 +104,7 @@ public class DistanceMapGeneratorConfig {
 	 * Allowed time in minutes for the travel to take from the starting point.
 	 */
 	public DistanceMapGeneratorConfig minutes(
-			@FloatRange(from = 0, to = 6 * HOURS_IN_MINUTES, fromInclusive = false) double minutes) {
+			@FloatRange(from = MINUTES_MIN, to = MINUTES_MAX, fromInclusive = false) double minutes) {
 		this.minutes = minutes;
 		return this;
 	}
@@ -118,8 +132,35 @@ public class DistanceMapGeneratorConfig {
 	 * Maximum amount of time in minutes to reach the first station to board a train by walking.
 	 * Think about it like going from home to the nearest station.
 	 */
-	public DistanceMapGeneratorConfig startWalkMinutes(double startWalkMinutes) {
+	public DistanceMapGeneratorConfig startWalkMinutes(
+			@FloatRange(from = START_WALK_MIN, to = START_WALK_MAX, fromInclusive = false)
+					double startWalkMinutes) {
 		this.startWalkMinutes = startWalkMinutes;
 		return this;
+	}
+
+	public double getTimeTransfer() {
+		return timeTransfer;
+	}
+	public double getTimePlatformToStreet() {
+		return timePlatformToStreet;
+	}
+	public double getSpeedOnFoot() {
+		return speedOnFoot;
+	}
+	public double getMinutes() {
+		return minutes;
+	}
+	public double getStartWalkMinutes() {
+		return startWalkMinutes;
+	}
+	public DistanceStrategy getTubingStrategy() {
+		return tubingStrategy;
+	}
+	public boolean isTransferInStation() {
+		return transferInStation;
+	}
+	public boolean isTransferWalk() {
+		return transferWalk;
 	}
 }
