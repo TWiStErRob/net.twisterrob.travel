@@ -52,8 +52,5 @@ android {
 	sourceSets {
 		// STOPSHIP figure out another way
 		main.java.srcDir 'src/main/hack'
-		// TODO move folders to the their conventional location
-		main.res.srcDir 'res'
-		main.assets.srcDir 'assets'
 	}
 }
