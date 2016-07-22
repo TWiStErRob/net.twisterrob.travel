@@ -30,6 +30,7 @@ import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.data.distance.*;
 import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.android.ui.activity.DistanceOptionsFragment.ConfigsUpdatedListener;
+import net.twisterrob.blt.model.StopType;
 
 public class DistanceMapActivity extends AppCompatActivity {
 	private static final Logger LOG = LoggerFactory.getLogger(DistanceMapActivity.class);
@@ -179,10 +180,13 @@ public class DistanceMapActivity extends AppCompatActivity {
 		}
 		for (NetworkNode startNode : startNodes) {
 			LOG.trace("Creating marker for {}", startNode);
+			StopType stopType = startNode.getLine().getDefaultStopType();
+			Map<StopType, Integer> icons = App.getInstance().getStaticData().getStopTypeMiniIcons();
 			Marker marker = m_map.addMarker(new MarkerOptions()
 					.title(startNode.getName())
 					.position(LocationUtils.toLatLng(startNode.getLocation()))
-					.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+					.anchor(0.5f, 0.5f)
+					.icon(BitmapDescriptorFactory.fromResource(icons.get(stopType))));
 			m_markersStart.add(marker);
 		}
 		if (m_lastStartPoint != null) {
@@ -190,7 +194,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 			Marker marker = m_map.addMarker(new MarkerOptions()
 					.title("Starting point")
 					.position(m_lastStartPoint)
-					.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+					.icon(BitmapDescriptorFactory.defaultMarker())
 			);
 			m_markersStart.add(marker);
 		}
