@@ -15,9 +15,9 @@ import static net.twisterrob.android.utils.tools.AndroidTools.*;
 // TODO merge with NumberPickerPreference
 public class NumberPickerWidget {
 	private static final Formatter FORMATTER = new Formatter();
-	private double value;
-	private double minValue;
-	private double maxValue;
+	private float value;
+	private float minValue;
+	private float maxValue;
 	private final TextView display;
 	private OnValueChangeListener onValueChangeListener;
 
@@ -34,7 +34,7 @@ public class NumberPickerWidget {
 		 * @param oldVal The previous value.
 		 * @param newVal The new value.
 		 */
-		void onValueChange(NumberPickerWidget picker, double oldVal, double newVal);
+		void onValueChange(NumberPickerWidget picker, float oldVal, float newVal);
 	}
 
 	public NumberPickerWidget(View view) {
@@ -78,13 +78,13 @@ public class NumberPickerWidget {
 		this.onValueChangeListener = onValueChangedListener;
 	}
 
-	public double getValue() {
+	public float getValue() {
 		return value;
 	}
-	public void setValue(double value) {
+	public void setValue(float value) {
 		setValueInternal(value, false);
 	}
-	private void setValueInternal(double value, boolean notify) {
+	private void setValueInternal(float value, boolean notify) {
 		value = Math.max(value, minValue);
 		value = Math.min(value, maxValue);
 		if (this.value == value) {
@@ -96,10 +96,10 @@ public class NumberPickerWidget {
 			onValueChangeListener.onValueChange(this, this.value, value);
 		}
 	}
-	public double getMinValue() {
+	public float getMinValue() {
 		return minValue;
 	}
-	public void setMinValue(double minValue) {
+	public void setMinValue(float minValue) {
 		if (this.minValue == minValue) {
 			return;
 		}
@@ -109,10 +109,10 @@ public class NumberPickerWidget {
 			setValue(this.minValue);
 		}
 	}
-	public double getMaxValue() {
+	public float getMaxValue() {
 		return maxValue;
 	}
-	public void setMaxValue(double maxValue) {
+	public void setMaxValue(float maxValue) {
 		if (this.maxValue == maxValue) {
 			return;
 		}
@@ -137,7 +137,7 @@ public class NumberPickerWidget {
 			this.locale = locale;
 		}
 
-		public String format(double value) {
+		public String format(float value) {
 			final Locale currentLocale = Locale.getDefault();
 			if (this.locale != currentLocale) {
 				init(currentLocale);

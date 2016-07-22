@@ -50,7 +50,7 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 
 	@Override public @Nullable View onCreateView(
 			LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.inc_distance_options, container, false);
+		return inflater.inflate(R.layout.fragment_distance_options, container, false);
 	}
 
 	@Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -70,8 +70,8 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 		intraStation = getAction(R.id.distance_config_interchange_intrastation);
 		intraStation.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (genConfig.isTransferInStation() != isChecked) {
-					genConfig.transferInStation(isChecked);
+				if (genConfig.allowsIntraStationInterchange() != isChecked) {
+					genConfig.setIntraStationInterchange(isChecked);
 					configsUpdatedListener.onConfigsUpdated();
 				}
 			}
@@ -79,8 +79,8 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 		interStation = getAction(R.id.distance_config_interchange_interstation);
 		interStation.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (genConfig.isTransferWalk() != isChecked) {
-					genConfig.transferWalk(isChecked);
+				if (genConfig.allowsInterStationInterchange() != isChecked) {
+					genConfig.setInterStationInterchange(isChecked);
 					configsUpdatedListener.onConfigsUpdated();
 				}
 			}
@@ -89,9 +89,9 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 				DistanceMapGeneratorConfig.SPEED_ON_FOOT_MIN,
 				DistanceMapGeneratorConfig.SPEED_ON_FOOT_MAX,
 				new OnValueChangeListener() {
-					@Override public void onValueChange(NumberPickerWidget picker, double oldVal, double newVal) {
-						if (genConfig.getSpeedOnFoot() != newVal) {
-							genConfig.speedOnFoot(newVal);
+					@Override public void onValueChange(NumberPickerWidget picker, float oldVal, float newVal) {
+						if (genConfig.getWalkingSpeed() != newVal) {
+							genConfig.setWalkingSpeed(newVal);
 							configsUpdatedListener.onConfigsUpdated();
 						}
 					}
@@ -100,9 +100,9 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 				DistanceMapGeneratorConfig.TIME_TRANSFER_MIN,
 				DistanceMapGeneratorConfig.TIME_TRANSFER_MAX,
 				new OnValueChangeListener() {
-					@Override public void onValueChange(NumberPickerWidget picker, double oldVal, double newVal) {
-						if (genConfig.getTimeTransfer() != newVal) {
-							genConfig.timeTransfer(newVal);
+					@Override public void onValueChange(NumberPickerWidget picker, float oldVal, float newVal) {
+						if (genConfig.getIntraStationInterchangeTime() != newVal) {
+							genConfig.setIntraStationInterchangeTime(newVal);
 							configsUpdatedListener.onConfigsUpdated();
 						}
 					}
@@ -111,9 +111,9 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 				DistanceMapGeneratorConfig.MINUTES_MIN,
 				DistanceMapGeneratorConfig.MINUTES_MAX,
 				new OnValueChangeListener() {
-					@Override public void onValueChange(NumberPickerWidget picker, double oldVal, double newVal) {
-						if (genConfig.getMinutes() != newVal) {
-							genConfig.minutes(newVal);
+					@Override public void onValueChange(NumberPickerWidget picker, float oldVal, float newVal) {
+						if (genConfig.getTotalAllottedTime() != newVal) {
+							genConfig.setTotalAllottedTime(newVal);
 							configsUpdatedListener.onConfigsUpdated();
 						}
 					}
@@ -122,9 +122,9 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 				DistanceMapGeneratorConfig.TIME_PLATFORM_TO_STREET_MIN,
 				DistanceMapGeneratorConfig.TIME_PLATFORM_TO_STREET_MAX,
 				new OnValueChangeListener() {
-					@Override public void onValueChange(NumberPickerWidget picker, double oldVal, double newVal) {
-						if (genConfig.getMinutes() != newVal) {
-							genConfig.minutes(newVal);
+					@Override public void onValueChange(NumberPickerWidget picker, float oldVal, float newVal) {
+						if (genConfig.getTotalAllottedTime() != newVal) {
+							genConfig.setTotalAllottedTime(newVal);
 							configsUpdatedListener.onConfigsUpdated();
 						}
 					}
@@ -133,9 +133,9 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 				DistanceMapGeneratorConfig.START_WALK_MIN,
 				DistanceMapGeneratorConfig.START_WALK_MAX,
 				new OnValueChangeListener() {
-					@Override public void onValueChange(NumberPickerWidget picker, double oldVal, double newVal) {
-						if (genConfig.getMinutes() != newVal) {
-							genConfig.minutes(newVal);
+					@Override public void onValueChange(NumberPickerWidget picker, float oldVal, float newVal) {
+						if (genConfig.getTotalAllottedTime() != newVal) {
+							genConfig.setTotalAllottedTime(newVal);
 							configsUpdatedListener.onConfigsUpdated();
 						}
 					}
@@ -148,7 +148,7 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 		return (T)MenuItemCompat.getActionView(switchItem);
 	}
 
-	private NumberPickerWidget picker(@IdRes int menuItemId, double min, double max, OnValueChangeListener listener) {
+	private NumberPickerWidget picker(@IdRes int menuItemId, float min, float max, OnValueChangeListener listener) {
 		NumberPickerWidget picker = new NumberPickerWidget(getAction(menuItemId));
 		picker.setMinValue(min);
 		picker.setMaxValue(max);
@@ -174,13 +174,13 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 	public void bindConfigs(DistanceMapGeneratorConfig genConfig, DistanceMapDrawerConfig drawConfig) {
 		this.genConfig = genConfig;
 		this.drawConfig = drawConfig;
-		interStation.setChecked(genConfig.isTransferWalk());
-		intraStation.setChecked(genConfig.isTransferInStation());
-		journeyTime.setValue(genConfig.getMinutes());
-		startWalk.setValue(genConfig.getStartWalkMinutes());
-		interchangeTime.setValue(genConfig.getTimeTransfer());
-		walkingSpeed.setValue(genConfig.getSpeedOnFoot());
-		platformStreet.setValue(genConfig.getTimePlatformToStreet());
+		interStation.setChecked(genConfig.allowsInterStationInterchange());
+		intraStation.setChecked(genConfig.allowsIntraStationInterchange());
+		journeyTime.setValue(genConfig.getTotalAllottedTime());
+		startWalk.setValue(genConfig.getInitialAllottedWalkTime());
+		interchangeTime.setValue(genConfig.getIntraStationInterchangeTime());
+		walkingSpeed.setValue(genConfig.getWalkingSpeed());
+		platformStreet.setValue(genConfig.getPlatformToStreetTime());
 	}
 
 	public void setConfigsUpdatedListener(ConfigsUpdatedListener configsUpdatedListener) {

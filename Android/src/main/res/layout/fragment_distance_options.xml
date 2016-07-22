@@ -9,6 +9,6 @@
 	android:background="@android:color/white"
 	android:maxWidth="320dp"
 	tools:layout_gravity="end"
-	app:headerLayout="@layout/inc_distance_options_header"
+	app:headerLayout="@layout/fragment_distance_options_header"
 	app:menu="@menu/drawer_distance_options"
 	/>

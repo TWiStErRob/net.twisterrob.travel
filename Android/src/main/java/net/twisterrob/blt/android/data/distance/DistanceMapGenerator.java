@@ -1,5 +1,6 @@
 package net.twisterrob.blt.android.data.distance;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -15,9 +16,18 @@ import net.twisterrob.java.model.*;
 public class DistanceMapGenerator {
 	private static final Logger LOG = LoggerFactory.getLogger(DistanceMapGenerator.class);
 
+	/**
+	 * Full system network graph to traverse.
+	 */
 	private final Set<NetworkNode> nodes;
-	private HashMap<NetworkNode, Double> startNodes;
-	private Map<NetworkNode, Double> finishedNodes;
+	/**
+	 * Nodes where the search starts. The values are their distances in minutes with the given walking speed.
+	 */
+	private Map<NetworkNode, Double> startNodes;
+	/**
+	 * All the nodes that have been seen during traversal along with their best time to reach them.
+	 */
+	private Map<NetworkNode, Double> distances;
 
 	private final DistanceMapGeneratorConfig config;
 
@@ -31,49 +41,58 @@ public class DistanceMapGenerator {
 	}
 
 	public Collection<NetworkNode> getStartNodes() {
-		return startNodes.keySet();
+		return Collections.unmodifiableSet(startNodes.keySet());
 	}
 
 	public Map<NetworkNode, Double> generate(Location location) {
-		startNodes = new HashMap<>();
-		findStartNodes(location);
-		finishedNodes = new HashMap<>();
-		finishedNodes.put(new NetworkNode(0, "Walk", Line.unknown, location), config.minutes);
+		startNodes = findStartNodes(location);
+		distances = new HashMap<>();
+		distances.put(new NetworkNode(0, "Walk", Line.unknown, location), (double)config.totalAllottedTime);
 		for (Entry<NetworkNode, Double> start : startNodes.entrySet()) {
-			Double oldRemaining = finishedNodes.get(start.getKey());
-			double newRemaining = config.minutes - start.getValue() - config.timePlatformToStreet;
+			Double oldRemaining = distances.get(start.getKey());
+			double newRemaining = config.totalAllottedTime
+					- start.getValue() // walk to the station
+					- config.platformToStreetTime // enter the station
+					;
 			if (oldRemaining == null || oldRemaining < newRemaining) {
-				traverse(start.getKey(), newRemaining);
+				traverseDepthFirst(start.getKey(), newRemaining);
 			}
 		}
-		for (Entry<NetworkNode, Double> circle : finishedNodes.entrySet()) {
-			double remainingMinutes = circle.getValue();
-			double remainingWalk = (remainingMinutes - config.timePlatformToStreet) / 60.0 /* to hours */
-					* config.speedOnFoot * 1000.0 /* to meters */;
+		// convert all resulting remaining minutes to meters
+		for (Entry<NetworkNode, Double> circle : distances.entrySet()) {
+			double remainingWalkMinutes = circle.getValue();
+			double remainingWalkDistance = (remainingWalkMinutes - config.platformToStreetTime) // exit the station
+					/ 60.0 // to hours
+					* config.walkingSpeed // to kilometers
+					* 1000.0 // to meters
+					;
 			//LOG.debug("Converting result for {}/{}: {} min -> {} m",
-			//		circle.getKey().getLine(), circle.getKey().getName(), remainingMinutes, remainingWalk);
-			circle.setValue(remainingWalk);
+			//		circle.getKey().getLine(), circle.getKey().getName(), remainingWalkMinutes, remainingWalkDistance);
+			circle.setValue(remainingWalkDistance);
 		}
-		return finishedNodes;
+		return distances;
 	}
 
-	private void findStartNodes(Location location) {
+	private Map<NetworkNode, Double> findStartNodes(Location location) {
+		Map<NetworkNode, Double> startNodes = new HashMap<>();
 		for (NetworkNode node : nodes) {
-			double distance = LocationUtils.distance(location, node.getLocation());
-			double minutes = distance / 1000.0 / config.speedOnFoot * 60;
-			if (minutes < config.startWalkMinutes) {
-				startNodes.put(node, minutes);
+			double distanceToStartNode = LocationUtils.distance(location, node.getLocation());
+			double minutesToReachStartNode = walk(distanceToStartNode);
+			if (minutesToReachStartNode < config.initialAllottedWalkTime) {
+				startNodes.put(node, minutesToReachStartNode);
 			}
 		}
 		if (startNodes.isEmpty()) {
-			findClosesStartNode(location);
-			if (startNodes.entrySet().iterator().next().getValue() > config.minutes) {
-				startNodes.clear();
+			// nothing is reachable within the initial walk time, get the closest one anyway so we can still journey
+			Entry<NetworkNode, Double> closestNode = findClosestNode(location);
+			if (closestNode.getValue() <= config.totalAllottedTime) {
+				startNodes.put(closestNode.getKey(), closestNode.getValue());
 			}
 		}
+		return startNodes;
 	}
 
-	private void findClosesStartNode(Location location) {
+	private Map.Entry<NetworkNode, Double> findClosestNode(Location location) {
 		double bestDistance = Double.POSITIVE_INFINITY;
 		NetworkNode closest = null;
 		for (NetworkNode node : nodes) {
@@ -83,46 +102,60 @@ public class DistanceMapGenerator {
 				closest = node;
 			}
 		}
-		startNodes.put(closest, bestDistance / 1000.0 / config.speedOnFoot * 60);
+		return new SimpleEntry<>(closest, walk(bestDistance));
+	}
+
+	/**
+	 * @param meters how far to walk
+	 * @return how long it takes to walk that far
+	 */
+	private double walk(double meters) {
+		return meters
+				/ 1000.0 // to kilometers
+				/ config.walkingSpeed // to hours
+				* 60 // to minutes
+				;
 	}
 
 	/**
 	 * @param from current tube station
 	 * @param remainingMinutes minutes remaining from the possible trips
+	 * @return whether the node was traversed CONSIDER why is this needed, can we shortcut using it?   
 	 */
-	private boolean traverse(NetworkNode from, double remainingMinutes) {
-		if (remainingMinutes < 0) {
-			return false;
-		} else {
-			finishedNodes.put(from, remainingMinutes);
+	private boolean traverseDepthFirst(NetworkNode from, double remainingMinutes) {
+		if (remainingMinutes <= 0) {
+			return false; // we don't have any time left, just give up here
 		}
+		distances.put(from, remainingMinutes);
 		for (NetworkLink link : from.getOut()) {
 			NetworkNode to = link.getTarget();
-			Double oldRemaining = finishedNodes.get(to);
+			Double oldRemaining = distances.get(to);
 			double travelWithTube = config.tubingStrategy.distance(link);
 			double newRemaining = remainingMinutes - travelWithTube;
 			if (oldRemaining == null || oldRemaining < newRemaining) {
-				traverse(to, newRemaining);
+				traverseDepthFirst(to, newRemaining);
 			}
 		}
-		if (config.transferInStation) {
+		if (config.allowIntraStationInterchange) {
 			for (NetworkNode to : from.getNeighbors()) {
-				Double oldRemaining = finishedNodes.get(to);
-				double newRemaining = remainingMinutes - config.timeTransfer;
+				Double oldRemaining = distances.get(to);
+				// TODO use tubingStrategy to calculate this to account for Bank and other weirdos
+				double newRemaining = remainingMinutes - config.intraStationInterchangeTime;
 				if (oldRemaining == null || oldRemaining < newRemaining) {
-					traverse(to, newRemaining);
+					traverseDepthFirst(to, newRemaining);
 				}
 			}
 		}
-		if (config.transferWalk) {
-			for (Entry<NetworkNode, Double> distEntry : from.getDists().entrySet()) {
-				NetworkNode to = distEntry.getKey();
-				Double oldRemaining = finishedNodes.get(to);
-				double walkToOtherStation = distEntry.getValue() / 1000.0 / config.speedOnFoot * 60;
-				walkToOtherStation = config.timePlatformToStreet + walkToOtherStation + config.timePlatformToStreet;
-				double newRemaining = remainingMinutes - walkToOtherStation;
-				if (oldRemaining == null || oldRemaining < newRemaining) {
-					traverse(to, newRemaining);
+		if (config.allowInterStationInterchange) {
+			for (Entry<NetworkNode, Double> otherStation : from.getDists().entrySet()) {
+				NetworkNode to = otherStation.getKey();
+				Double bestRemainingTime = distances.get(to);
+				final double exitCurrentStation = config.platformToStreetTime;
+				final double enterOtherStation = config.platformToStreetTime;
+				double timeToOtherStation = exitCurrentStation + walk(otherStation.getValue()) + enterOtherStation;
+				double remainingAtOtherStation = remainingMinutes - timeToOtherStation;
+				if (bestRemainingTime == null || bestRemainingTime < remainingAtOtherStation) {
+					traverseDepthFirst(to, remainingAtOtherStation);
 				}
 			}
 		}

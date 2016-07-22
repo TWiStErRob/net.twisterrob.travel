@@ -8,7 +8,7 @@
 
 	<include
 		android:id="@+id/layout$common_header"
-		layout="@layout/snippet_common_header"
+		layout="@layout/inc_common_header"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		/>
@@ -22,7 +22,7 @@
 
 	<include
 		android:id="@+id/layout$common_footer"
-		layout="@layout/snippet_common_footer"
+		layout="@layout/inc_common_footer"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		/>

@@ -15,7 +15,7 @@ public class AndroidHardcodedStaticData extends SharedStaticData implements Andr
 		initDefaults();
 		initStopTypeDrawables();
 		initStopTypeMapIcons();
-		initStopTypeMapPins();
+		initStopTypeMiniIcons();
 	}
 
 	/** Make sure all stop types have some drawable associated */
@@ -42,12 +42,14 @@ public class AndroidHardcodedStaticData extends SharedStaticData implements Andr
 	}
 
 	private void initStopTypeMapIcons() {
+		stopTypeMapIcons.put(StopType.Underground, R.drawable.tfl_roundel_lul_map);
 		stopTypeMapIcons.put(StopType.DLR, R.drawable.tfl_roundel_dlr_map);
 		stopTypeMapIcons.put(StopType.Overground, R.drawable.tfl_roundel_overground_map);
 		stopTypeMapIcons.put(StopType.Tram, R.drawable.tfl_roundel_tramlink_map);
 	}
 
-	private void initStopTypeMapPins() {
+	private void initStopTypeMiniIcons() {
+		stopTypeMiniIcons.put(StopType.Underground, R.drawable.tfl_roundel_lul_mini);
 		stopTypeMiniIcons.put(StopType.DLR, R.drawable.tfl_roundel_dlr_mini);
 		stopTypeMiniIcons.put(StopType.Overground, R.drawable.tfl_roundel_overground_mini);
 	}

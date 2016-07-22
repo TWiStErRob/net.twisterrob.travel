@@ -21,7 +21,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_marginTop="?attr/actionBarSize"
-			tools:layout="@layout/snippet_compass"
+			tools:layout="@layout/inc_compass"
 			/>
 
 		<android.support.design.widget.AppBarLayout
@@ -66,7 +66,7 @@
 			class="net.twisterrob.blt.android.ui.activity.NearestStationsFragment"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			tools:layout="@layout/inc_distance_nearest"
+			tools:layout="@layout/fragment_distance_nearest"
 			app:behavior_hideable="true"
 			app:behavior_skipCollapsed="true"
 			app:layout_behavior="@string/bottom_sheet_behavior"
@@ -80,6 +80,6 @@
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
 		android:layout_gravity="end"
-		tools:layout="@layout/inc_distance_options"
+		tools:layout="@layout/fragment_distance_options"
 		/>
 </android.support.v4.widget.ClickThroughDrawerLayout>

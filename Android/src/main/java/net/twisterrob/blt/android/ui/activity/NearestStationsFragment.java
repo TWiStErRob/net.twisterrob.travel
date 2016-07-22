@@ -33,7 +33,7 @@ public class NearestStationsFragment extends Fragment {
 	private GeocoderTask m_geocoderTask;
 	@Override public @Nullable View onCreateView(
 			LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.inc_distance_nearest, container, false);
+		return inflater.inflate(R.layout.fragment_distance_nearest, container, false);
 	}
 	@Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);

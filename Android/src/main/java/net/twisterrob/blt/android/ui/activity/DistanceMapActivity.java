@@ -41,8 +41,8 @@ public class DistanceMapActivity extends AppCompatActivity {
 
 	private GoogleMap m_map;
 	private DistanceMapGeneratorConfig distanceConfig = new DistanceMapGeneratorConfig()
-			.startWalkMinutes(10)
-			.minutes(25);
+			.setInitialAllottedWalkTime(10)
+			.setTotalAllottedTime(25);
 	private DistanceMapDrawerConfig drawConfig = new DistanceMapDrawerConfig()
 			.dynamicColor(true);
 	private BottomSheetBehavior behavior;
@@ -105,7 +105,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 				.build());
 		fab.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View v) {
-				//noinspection WrongConstant it's not a constant, but it is a gravity field
+				//noinspection WrongConstant it's not a constant, and it is a gravity field
 				drawers.openDrawer(((DrawerLayout.LayoutParams)optionsFragment.getView().getLayoutParams()).gravity);
 			}
 		});

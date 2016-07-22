@@ -15,5 +15,5 @@
 		android:textSize="16sp"
 		tools:text="Something Blah Station"
 		/>
-	<include layout="@layout/snippet_list" />
+	<include layout="@layout/inc_refreshable_empty_list" />
 </LinearLayout>

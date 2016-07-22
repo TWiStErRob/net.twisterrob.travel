@@ -2,80 +2,84 @@ package net.twisterrob.blt.android.data.distance;
 
 import android.support.annotation.FloatRange;
 
-@SuppressWarnings("PointlessArithmeticExpression") // TODO TimeUnit?
+@SuppressWarnings({"PointlessArithmeticExpression", "unused"}) // TODO TimeUnit?
 public class DistanceMapGeneratorConfig {
-	private static final double MPH_TO_KPH = 1.609344;
+	private static final float MPH_TO_KPH = 1.609344f;
 	private static final int MINUTES = 1;
 	private static final int HOURS_IN_MINUTES = 60;
 	/** Average male jogging speed */
-	public static final double WALK_JOG_MALE = 8.3 * MPH_TO_KPH;
-	public static final double WALK_JOG_FEMALE = 6.5 * MPH_TO_KPH;
-	public static final double WALK_SPRINT = 15.9 * MPH_TO_KPH;
-	public static final double WALK_HEALTHY = 3 * MPH_TO_KPH;
-	public static final double WALK_OLIMPIC = 9.6 * MPH_TO_KPH;
+	public static final float WALK_JOG_MALE = 8.3f * MPH_TO_KPH;
+	public static final float WALK_JOG_FEMALE = 6.5f * MPH_TO_KPH;
+	public static final float WALK_SPRINT = 15.9f * MPH_TO_KPH;
+	public static final float WALK_HEALTHY = 3f * MPH_TO_KPH;
+	public static final float WALK_OLIMPIC = 9.6f * MPH_TO_KPH;
 	/** Usain Bolt's London 2012 world record {@code 1 / (run_time * (1km/100m) / (minutes * seconds)} */
-	public static final double WALK_BOLT = 1 / (9.58 * (1000 / 100) / (60 * 60));
+	public static final float WALK_BOLT = 1 / (9.58f * (1000 / 100) / (60 * 60));
 
-	public static final double SPEED_ON_FOOT_MIN = 0 /*km/h*/;
-	public static final double SPEED_ON_FOOT_MAX = WALK_BOLT /*km/h*/;
-	public static final double MINUTES_MIN = 0 * MINUTES;
-	public static final double MINUTES_MAX = 6 * HOURS_IN_MINUTES;
-	public static final double START_WALK_MIN = 0 * MINUTES;
-	public static final double START_WALK_MAX = MINUTES_MAX;
-	public static final double TIME_PLATFORM_TO_STREET_MIN = 0 * MINUTES;
-	public static final double TIME_PLATFORM_TO_STREET_MAX = 30 * MINUTES;
-	public static final double TIME_TRANSFER_MIN = 0 * MINUTES;
-	public static final double TIME_TRANSFER_MAX = 30 * MINUTES;
+	public static final float SPEED_ON_FOOT_MIN = 0 /*km/h*/;
+	public static final float SPEED_ON_FOOT_MAX = WALK_BOLT /*km/h*/;
+	public static final float MINUTES_MIN = 0 * MINUTES;
+	public static final float MINUTES_MAX = 6 * HOURS_IN_MINUTES;
+	public static final float START_WALK_MIN = 0 * MINUTES;
+	public static final float START_WALK_MAX = MINUTES_MAX;
+	public static final float TIME_PLATFORM_TO_STREET_MIN = 0 * MINUTES;
+	public static final float TIME_PLATFORM_TO_STREET_MAX = 30 * MINUTES;
+	public static final float TIME_TRANSFER_MIN = 0 * MINUTES;
+	public static final float TIME_TRANSFER_MAX = 30 * MINUTES;
 	/** minutes */
-	double timeTransfer = 5;
+	float intraStationInterchangeTime = 5;
 	/** minutes */
-	double timePlatformToStreet = 1;
+	float platformToStreetTime = 1;
 	/** km/h */
-	double speedOnFoot;
+	float walkingSpeed;
 	/** minutes */
-	double minutes;
+	float totalAllottedTime;
 	/** minutes */
-	double startWalkMinutes;
+	float initialAllottedWalkTime;
 
 	DistanceStrategy tubingStrategy = new AverageSpeedTubingStrategy();
 	//DistanceStrategy tubingStrategy = new SmartTubingStrategy();
 
-	boolean transferInStation = true;
-	boolean transferWalk = false;
+	boolean allowIntraStationInterchange = true;
+	boolean allowInterStationInterchange = false;
 	public DistanceMapGeneratorConfig() {
-		timeTransfer(5);
-		timePlatformToStreet(1);
-		speedOnFoot(4.5);
-		startWalkMinutes(5);
+		setIntraStationInterchangeTime(5);
+		setPlatformToStreetTime(1);
+		setWalkingSpeed(4.5f);
+		setInitialAllottedWalkTime(5);
 	}
 	public DistanceMapGeneratorConfig(DistanceMapGeneratorConfig config) {
-		timeTransfer(config.timeTransfer);
-		timePlatformToStreet(config.timePlatformToStreet);
-		speedOnFoot(config.speedOnFoot);
-		tubingStrategy(config.tubingStrategy);
-		minutes(config.minutes);
-		transferInStation(config.transferInStation);
-		transferWalk(config.transferWalk);
-		startWalkMinutes(config.startWalkMinutes);
+		this.intraStationInterchangeTime = config.intraStationInterchangeTime;
+		this.platformToStreetTime = config.platformToStreetTime;
+		this.walkingSpeed = config.walkingSpeed;
+		this.tubingStrategy = config.tubingStrategy;
+		this.totalAllottedTime = config.totalAllottedTime;
+		this.allowIntraStationInterchange = config.allowIntraStationInterchange;
+		this.allowInterStationInterchange = config.allowInterStationInterchange;
+		this.initialAllottedWalkTime = config.initialAllottedWalkTime;
 	}
 
 	/**
 	 * Average time it takes in minutes to transfer from one train to another without leaving the station.
-	 * Only valid if {@link #transferInStation} is allowed.
-	 * @see #transferInStation(boolean)
+	 * Only valid if {@link #allowIntraStationInterchange} is allowed.
+	 * @see #setIntraStationInterchange(boolean)
+	 * @see #TIME_TRANSFER_MIN
+	 * @see #TIME_TRANSFER_MAX
 	 */
-	public DistanceMapGeneratorConfig timeTransfer(
-			@FloatRange(from = TIME_TRANSFER_MIN, to = TIME_TRANSFER_MAX) double timeTransfer) {
-		this.timeTransfer = timeTransfer;
+	public DistanceMapGeneratorConfig setIntraStationInterchangeTime(
+			@FloatRange(from = TIME_TRANSFER_MIN, to = TIME_TRANSFER_MAX) float transferTime) {
+		this.intraStationInterchangeTime = transferTime;
 		return this;
 	}
 
 	/**
 	 * Average time it takes in minutes from train doors opening to leaving the station and being on the street.
+	 * @see #TIME_PLATFORM_TO_STREET_MIN
+	 * @see #TIME_PLATFORM_TO_STREET_MAX
 	 */
-	public DistanceMapGeneratorConfig timePlatformToStreet(
-			@FloatRange(from = TIME_PLATFORM_TO_STREET_MIN, to = TIME_PLATFORM_TO_STREET_MAX) double platformToStreet) {
-		this.timePlatformToStreet = platformToStreet;
+	public DistanceMapGeneratorConfig setPlatformToStreetTime(
+			@FloatRange(from = TIME_PLATFORM_TO_STREET_MIN, to = TIME_PLATFORM_TO_STREET_MAX) float transferTime) {
+		this.platformToStreetTime = transferTime;
 		return this;
 	}
 
@@ -84,10 +88,12 @@ public class DistanceMapGeneratorConfig {
 	 * @see DistanceMapGeneratorConfig constants starting with <code>WALK_</code>
 	 * @see <a href="http://www.telegraph.co.uk/sport/olympics/athletics/9450234/100m-final-how-fast-could-you-run-it.html">
 	 *     Article on running speeds</a>
+	 * @see #SPEED_ON_FOOT_MIN
+	 * @see #SPEED_ON_FOOT_MAX
 	 */
-	public DistanceMapGeneratorConfig speedOnFoot(
-			@FloatRange(from = SPEED_ON_FOOT_MIN, to = SPEED_ON_FOOT_MAX) double speed) {
-		this.speedOnFoot = speed;
+	public DistanceMapGeneratorConfig setWalkingSpeed(
+			@FloatRange(from = SPEED_ON_FOOT_MIN, to = SPEED_ON_FOOT_MAX) float speed) {
+		this.walkingSpeed = speed;
 		return this;
 	}
 
@@ -95,72 +101,77 @@ public class DistanceMapGeneratorConfig {
 	 * Only the distance between tube stations on a particular line is known,
 	 * this is used to calculate how long it takes for a train to go between the two stations. 
 	 */
-	public DistanceMapGeneratorConfig tubingStrategy(DistanceStrategy distance) {
+	public DistanceMapGeneratorConfig setTubingStrategy(DistanceStrategy distance) {
 		this.tubingStrategy = distance;
 		return this;
 	}
 
 	/**
 	 * Allowed time in minutes for the travel to take from the starting point.
+	 * @see #MINUTES_MIN
+	 * @see #MINUTES_MAX
 	 */
-	public DistanceMapGeneratorConfig minutes(
-			@FloatRange(from = MINUTES_MIN, to = MINUTES_MAX, fromInclusive = false) double minutes) {
-		this.minutes = minutes;
+	public DistanceMapGeneratorConfig setTotalAllottedTime(
+			@FloatRange(from = MINUTES_MIN, to = MINUTES_MAX, fromInclusive = false) float minutes) {
+		this.totalAllottedTime = minutes;
 		return this;
 	}
 
 	/**
-	 * Allow transfers without leaving the station. {@link #timeTransfer} determines how long it takes to transfer.
-	 * @see #timeTransfer(double)
+	 * Allow transfers without leaving the station. {@link #intraStationInterchangeTime} determines how long it takes to transfer.
+	 * @see #setIntraStationInterchangeTime(float)
 	 */
-	public DistanceMapGeneratorConfig transferInStation(boolean transferInStation) {
-		this.transferInStation = transferInStation;
+	public DistanceMapGeneratorConfig setIntraStationInterchange(boolean allow) {
+		this.allowIntraStationInterchange = allow;
 		return this;
 	}
 
 	/**
 	 * Allow transfers by leaving the station and walking to another one nearby.
-	 * Time to leave the station and time to enter the station will be accounted via {@link #timePlatformToStreet}.
-	 * @see #timePlatformToStreet(double)
+	 * Time to leave the station and time to enter the station will be accounted via {@link #platformToStreetTime}.
+	 * @see #setPlatformToStreetTime(float)
+	 * @see #START_WALK_MIN
+	 * @see #START_WALK_MAX
 	 */
-	public DistanceMapGeneratorConfig transferWalk(boolean transferWalk) {
-		this.transferWalk = transferWalk;
+	public DistanceMapGeneratorConfig setInterStationInterchange(boolean allow) {
+		this.allowInterStationInterchange = allow;
 		return this;
 	}
 
 	/**
 	 * Maximum amount of time in minutes to reach the first station to board a train by walking.
 	 * Think about it like going from home to the nearest station.
+	 * @see #START_WALK_MIN
+	 * @see #START_WALK_MAX
 	 */
-	public DistanceMapGeneratorConfig startWalkMinutes(
-			@FloatRange(from = START_WALK_MIN, to = START_WALK_MAX, fromInclusive = false)
-					double startWalkMinutes) {
-		this.startWalkMinutes = startWalkMinutes;
+	public DistanceMapGeneratorConfig setInitialAllottedWalkTime(
+			@FloatRange(from = START_WALK_MIN, to = START_WALK_MAX, fromInclusive = false) float transferTime) {
+		this.initialAllottedWalkTime = transferTime;
 		return this;
 	}
 
-	public double getTimeTransfer() {
-		return timeTransfer;
+	public float getIntraStationInterchangeTime() {
+		return intraStationInterchangeTime;
 	}
-	public double getTimePlatformToStreet() {
-		return timePlatformToStreet;
+	public float getPlatformToStreetTime() {
+		return platformToStreetTime;
 	}
-	public double getSpeedOnFoot() {
-		return speedOnFoot;
+	public float getWalkingSpeed() {
+		return walkingSpeed;
 	}
-	public double getMinutes() {
-		return minutes;
+	public float getTotalAllottedTime() {
+		return totalAllottedTime;
 	}
-	public double getStartWalkMinutes() {
-		return startWalkMinutes;
+	public float getInitialAllottedWalkTime() {
+		return initialAllottedWalkTime;
 	}
 	public DistanceStrategy getTubingStrategy() {
 		return tubingStrategy;
 	}
-	public boolean isTransferInStation() {
-		return transferInStation;
+	public boolean allowsIntraStationInterchange() {
+		return allowIntraStationInterchange;
 	}
-	public boolean isTransferWalk() {
-		return transferWalk;
+	public boolean allowsInterStationInterchange() {
+		return allowInterStationInterchange;
 	}
 }
