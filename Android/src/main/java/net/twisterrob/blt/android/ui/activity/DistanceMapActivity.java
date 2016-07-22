@@ -10,11 +10,13 @@ import android.os.AsyncTask.Status;
 import android.preference.PreferenceManager;
 import android.support.design.widget.*;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.DrawerLayout;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.*;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.*;
@@ -46,7 +48,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 	private BottomSheetBehavior behavior;
 	private NearestStationsFragment nearestFragment;
 	private DistanceOptionsFragment optionsFragment;
-	private DrawerLayout drawers;
+	private ClickThroughDrawerLayout drawers;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,7 +75,17 @@ public class DistanceMapActivity extends AppCompatActivity {
 
 		Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
-		drawers = (DrawerLayout)findViewById(R.id.drawer);
+		drawers = (ClickThroughDrawerLayout)findViewById(R.id.drawer);
+		drawers.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			@SuppressWarnings("deprecation")
+			@Override public void onGlobalLayout() {
+				drawers.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+				// when the map has more than 40% of the screen, allow using it even when the drawer is open
+				if (optionsFragment.getView().getWidth() <= drawers.getWidth() * 0.60f) {
+					drawers.setAllowClickThrough(true);
+				}
+			}
+		});
 
 		nearestFragment = (NearestStationsFragment)fm.findFragmentById(R.id.distance_bottom_sheet);
 		optionsFragment = (DistanceOptionsFragment)fm.findFragmentById(R.id.distance_drawer);
@@ -107,6 +119,18 @@ public class DistanceMapActivity extends AppCompatActivity {
 				setNodes(nodes);
 			}
 		}.execute((Void[])null);
+	}
+
+	@Override public void onBackPressed() {
+		if (drawers.isDrawerOpen(GravityCompat.START) || drawers.isDrawerOpen(GravityCompat.END)) {
+			drawers.closeDrawers();
+			return;
+		}
+		if (behavior.isHideable() && behavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
+			behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+			return;
+		}
+		super.onBackPressed();
 	}
 
 	private DistanceMapGenerator m_distanceMapGenerator;
