@@ -17,7 +17,6 @@
 	</plurals>
 	<string name="prediction_approach_zero">%1$s has no trains approaching</string>
 	<string name="station_lines">%1$s: %2$s</string>
-	<string name="maps_v1_api_key">0molON3Yz76yRWjDLWokLs_ZoRoH9W9klGqXx3w</string>
 
 	<string name="distance_config_journey_time">Journey time</string>
 	<string name="distance_config_journey_time_tooltip" process="HtmlParser"><![CDATA[

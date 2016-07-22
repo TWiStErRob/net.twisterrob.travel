@@ -19,6 +19,11 @@ import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.db.model.Station;
 
+/**
+ * @deprecated TODO Maps API v1 was deprecated 2012
+ *             (<a href="https://developers.google.com/maps/documentation/android-api/v1/">docs</a>)
+ */
+@Deprecated
 public class StationMapActivity extends MapActivity {
 	protected MapView m_map;
 

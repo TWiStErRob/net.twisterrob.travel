@@ -2,8 +2,7 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android">
 	<application>
-		<!-- FIXME Update Maps API v2 Key for net.twisterrob.blt.debug (see also build.gradle) -->
-		<!-- Debug 3A:01:32:8E:53:38:57:08:8F:6C:0D:2D:2F:9C:1C:0E:5A:35:96:44;net.twisterrob.blt.android -->
+		<!-- Debug 3A:01:32:8E:53:38:57:08:8F:6C:0D:2D:2F:9C:1C:0E:5A:35:96:44;net.twisterrob.blt.debug -->
 		<meta-data
 			android:name="com.google.android.maps.v2.API_KEY"
 			android:value="AIzaSyDEBLxBF4iOGFUtzAm-Z8OeDYd-sShe_LA" />

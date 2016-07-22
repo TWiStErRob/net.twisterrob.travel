@@ -3,14 +3,12 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	package="net.twisterrob.blt.android">
 
-	<uses-feature
-		android:glEsVersion="0x00020000"
-		android:required="true" />
+	<!-- Maps API v2 recommended (https://code.google.com/p/gmaps-api-issues/issues/detail?id=4699#c19) -->
+	<!--<uses-feature android:glEsVersion="0x00020000" android:required="true" />-->
 
-	<permission
-		android:name="net.twisterrob.blt.android.permission.MAPS_RECEIVE"
-		android:protectionLevel="signature" />
-	<uses-permission android:name="net.twisterrob.blt.android.permission.MAPS_RECEIVE" />
+	<!-- Maps API v2 required (but apparently only before Google Play Services 3.1.59) -->
+	<!--<permission android:name="${applicationId}.permission.MAPS_RECEIVE" android:protectionLevel="signature" />-->
+	<!--<uses-permission android:name="${applicationId}.permission.MAPS_RECEIVE" />-->
 	<!-- App, Maps API v2 required -->
 	<uses-permission android:name="android.permission.INTERNET" />
 	<!-- Maps API v2 required -->
@@ -22,6 +20,7 @@
 	<!-- Maps API v2 recommended -->
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<!-- App, Maps API v2 recommended -->
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 	<application
 		android:name="net.twisterrob.blt.android.App"
@@ -31,10 +30,11 @@
 		android:largeHeap="true"
 		android:theme="@style/AppTheme.Default">
 
-		<uses-library
-			android:name="com.google.android.maps"
-			android:required="false" />
+		<!-- TODO Maps API v1 was deprecated 2012: https://developers.google.com/maps/documentation/android-api/v1/ -->
+		<!-- Maps API v1 required -->
+		<uses-library android:name="com.google.android.maps" android:required="false" />
 
+		<!-- TODO change to com.google.android.geo.API_KEY -->
 		<!-- See <meta-data android:name="com.google.android.maps.v2.API_KEY" in variant folders -->
 		<meta-data
 			android:name="com.google.android.gms.version"
@@ -98,6 +98,7 @@
 
 		<activity
 			android:name=".ui.activity.StationMapActivity"
+			android:enabled="@bool/in_test"
 			android:label="@string/launcher_station_map">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
