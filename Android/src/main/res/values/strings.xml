@@ -95,6 +95,22 @@
 		for example interchanges at Bank, Charing Cross, Kings Cross will take over a 5 minute walk</a>.
 	]]></string>
 
+	<string name="distance_config_dynamic_color">Use dynamic colors</string>
+	<string name="distance_config_dynamic_color_tooltip" process="HtmlParser"><![CDATA[
+	]]></string>
+	<string name="distance_config_distance_color">Distance color</string>
+	<string name="distance_config_distance_color_tooltip" process="HtmlParser"><![CDATA[
+	]]></string>
+	<string name="distance_config_border_size">Border size</string>
+	<string name="distance_config_border_size_tooltip" process="HtmlParser"><![CDATA[
+	]]></string>
+	<string name="distance_config_border_color">Border color</string>
+	<string name="distance_config_border_color_tooltip" process="HtmlParser"><![CDATA[
+	]]></string>
+	<string name="distance_config_pixel_density">Pixel density</string>
+	<string name="distance_config_pixel_density_tooltip" process="HtmlParser"><![CDATA[
+	]]></string>
+
 	<string name="distance_ui_show_stations">Show stations</string>
 	<string name="distance_ui_show_stations_tooltip" process="HtmlParser"><![CDATA[
 	<b>When you select a location, do you want to automatically see the nearest stations?</b>

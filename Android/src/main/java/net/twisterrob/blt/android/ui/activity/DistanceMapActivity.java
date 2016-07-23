@@ -50,7 +50,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 			.setInitialAllottedWalkTime(10)
 			.setTotalAllottedTime(25);
 	private DistanceMapDrawerConfig drawConfig = new DistanceMapDrawerConfig()
-			.dynamicColor(true);
+			.setDynamicColor(true);
 	private BottomSheetBehavior behavior;
 	private NearestStationsFragment nearestFragment;
 	private DistanceOptionsFragment optionsFragment;

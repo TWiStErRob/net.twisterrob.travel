@@ -6,10 +6,14 @@ import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.model.*;
 
 public class DistanceMapDrawerConfig {
+	public static final int BORDER_SIZE_MIN = 0;
+	public static final int BORDER_SIZE_MAX = 128;
+	public static final float PIXEL_DENSITY_MIN = 0;
+	public static final float PIXEL_DENSITY_MAX = 10000;
 	int borderSize = 0;
 	int borderColor = Color.BLACK;
 
-	double pixelDensity = 1000;
+	float pixelDensity = 1000;
 
 	boolean dynamicColor = false;
 	int distanceColor = Color.RED;
@@ -30,28 +34,55 @@ public class DistanceMapDrawerConfig {
 		return color & 0x00FFFFFF; // remove alpha
 	}
 
-	public DistanceMapDrawerConfig borderSize(int width) {
+	public DistanceMapDrawerConfig setColors(LineColors colors) {
+		this.colors = colors;
+		return this;
+	}
+
+	public DistanceMapDrawerConfig setBorderSize(int width) {
 		this.borderSize = width;
 		return this;
 	}
 
-	public DistanceMapDrawerConfig borderColor(int color) {
+	public DistanceMapDrawerConfig setBorderColor(int color) {
 		this.borderColor = color;
 		return this;
 	}
 
-	public DistanceMapDrawerConfig pixelDensity(double speed) {
+	public DistanceMapDrawerConfig setPixelDensity(float speed) {
 		this.pixelDensity = speed;
 		return this;
 	}
 
-	public DistanceMapDrawerConfig dynamicColor(boolean dynamicColor) {
+	/**
+	 * Whether to use {@link LineColors} or {@link #distanceColor} when drawing range circles. 
+	 */
+	public DistanceMapDrawerConfig setDynamicColor(boolean dynamicColor) {
 		this.dynamicColor = dynamicColor;
 		return this;
 	}
 
-	public DistanceMapDrawerConfig distanceColor(int distanceColor) {
+	public DistanceMapDrawerConfig setDistanceColor(int distanceColor) {
 		this.distanceColor = distanceColor;
 		return this;
+	}
+
+	public LineColors getColors() {
+		return colors;
+	}
+	public boolean isDynamicColor() {
+		return dynamicColor;
+	}
+	public int getBorderSize() {
+		return borderSize;
+	}
+	public int getBorderColor() {
+		return borderColor;
+	}
+	public float getPixelDensity() {
+		return pixelDensity;
+	}
+	public int getDistanceColor() {
+		return distanceColor;
 	}
 }

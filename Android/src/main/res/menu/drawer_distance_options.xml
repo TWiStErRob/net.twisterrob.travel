@@ -4,7 +4,7 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto">
 	<item
-		android:title="Distance calculation parameters"
+		android:title="Distance Calculation"
 		>
 		<menu>
 			<item
@@ -38,7 +38,34 @@
 		</menu>
 	</item>
 	<item
-		android:title="Interface settings"
+		android:title="Map Drawing"
+		>
+		<menu>
+			<item
+				android:id="@+id/distance_config_dynamic_color"
+				android:title="@string/distance_config_dynamic_color"
+				app:actionLayout="@layout/menu_widget_boolean" />
+			<item
+				android:id="@+id/distance_config_distance_color"
+				android:title="@string/distance_config_distance_color"
+				app:actionLayout="@layout/menu_widget_color" />
+			<item
+				android:id="@+id/distance_config_border_size"
+				android:title="@string/distance_config_border_size"
+				app:actionLayout="@layout/menu_widget_number" />
+			<item
+				android:id="@+id/distance_config_border_color"
+				android:title="@string/distance_config_border_color"
+				app:actionLayout="@layout/menu_widget_color" />
+			<item
+				android:id="@+id/distance_config_pixel_density"
+				android:title="@string/distance_config_pixel_density"
+				android:visible="@bool/in_test"
+				app:actionLayout="@layout/menu_widget_number" />
+		</menu>
+	</item>
+	<item
+		android:title="Interface Settings"
 		>
 		<menu>
 			<item

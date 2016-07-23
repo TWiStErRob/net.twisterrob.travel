@@ -34,6 +34,11 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 	private CompoundButton intraStation;
 	private CompoundButton interStation;
 	private SharedPreferences prefs;
+	private ColorPickerWidget borderColor;
+	private NumberPickerWidget borderSize;
+	private CompoundButton dynamicColor;
+	private NumberPickerWidget pixelDensity;
+	private ColorPickerWidget distanceColor;
 
 	interface ConfigsUpdatedListener {
 		void onConfigsUpdated();
@@ -59,27 +64,23 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 		nav.setNavigationItemSelectedListener(this);
 		AndroidTools.accountForStatusBar(nav.getHeaderView(0));
 
-		CompoundButton showNearestStations = getAction(R.id.distance_ui_show_stations);
-		showNearestStations.setChecked(prefs.getBoolean("showNearest", true));
-		showNearestStations.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		bool(R.id.distance_ui_show_stations, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (prefs.getBoolean("showNearest", true) != isChecked) {
 					prefs.edit().putBoolean("showNearest", isChecked).apply();
 				}
 			}
-		});
-		CompoundButton showFloatingToolbar = getAction(R.id.distance_ui_show_toolbar);
-		showFloatingToolbar.setChecked(prefs.getBoolean("showToolbar", true));
-		showFloatingToolbar.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		}).setChecked(prefs.getBoolean("showNearest", true));
+		bool(R.id.distance_ui_show_toolbar, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (prefs.getBoolean("showToolbar", true) != isChecked) {
 					prefs.edit().putBoolean("showToolbar", isChecked).apply();
 					((DistanceMapActivity)getActivity()).updateToolbarVisibility();
 				}
 			}
-		});
-		intraStation = getAction(R.id.distance_config_interchange_intrastation);
-		intraStation.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		}).setChecked(prefs.getBoolean("showToolbar", true));
+
+		intraStation = bool(R.id.distance_config_interchange_intrastation, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (genConfig.allowsIntraStationInterchange() != isChecked) {
 					genConfig.setIntraStationInterchange(isChecked);
@@ -87,8 +88,7 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 				}
 			}
 		});
-		interStation = getAction(R.id.distance_config_interchange_interstation);
-		interStation.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		interStation = bool(R.id.distance_config_interchange_interstation, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (genConfig.allowsInterStationInterchange() != isChecked) {
 					genConfig.setInterStationInterchange(isChecked);
@@ -96,7 +96,7 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 				}
 			}
 		});
-		walkingSpeed = picker(R.id.distance_config_walking_speed,
+		walkingSpeed = number(R.id.distance_config_walking_speed,
 				DistanceMapGeneratorConfig.SPEED_ON_FOOT_MIN,
 				DistanceMapGeneratorConfig.SPEED_ON_FOOT_MAX,
 				new OnValueChangeListener() {
@@ -107,7 +107,7 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 						}
 					}
 				});
-		interchangeTime = picker(R.id.distance_config_interchange_time,
+		interchangeTime = number(R.id.distance_config_interchange_time,
 				DistanceMapGeneratorConfig.TIME_TRANSFER_MIN,
 				DistanceMapGeneratorConfig.TIME_TRANSFER_MAX,
 				new OnValueChangeListener() {
@@ -118,7 +118,7 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 						}
 					}
 				});
-		journeyTime = picker(R.id.distance_config_journey_time,
+		journeyTime = number(R.id.distance_config_journey_time,
 				DistanceMapGeneratorConfig.MINUTES_MIN,
 				DistanceMapGeneratorConfig.MINUTES_MAX,
 				new OnValueChangeListener() {
@@ -129,7 +129,7 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 						}
 					}
 				});
-		platformStreet = picker(R.id.distance_config_transfer_entry_exit,
+		platformStreet = number(R.id.distance_config_transfer_entry_exit,
 				DistanceMapGeneratorConfig.TIME_PLATFORM_TO_STREET_MIN,
 				DistanceMapGeneratorConfig.TIME_PLATFORM_TO_STREET_MAX,
 				new OnValueChangeListener() {
@@ -140,13 +140,64 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 						}
 					}
 				});
-		startWalk = picker(R.id.distance_config_journey_start,
+		startWalk = number(R.id.distance_config_journey_start,
 				DistanceMapGeneratorConfig.START_WALK_MIN,
 				DistanceMapGeneratorConfig.START_WALK_MAX,
 				new OnValueChangeListener() {
 					@Override public void onValueChange(NumberPickerWidget picker, float oldVal, float newVal) {
 						if (genConfig.getTotalAllottedTime() != newVal) {
 							genConfig.setTotalAllottedTime(newVal);
+							configsUpdatedListener.onConfigsUpdated();
+						}
+					}
+				});
+
+		dynamicColor = bool(R.id.distance_config_dynamic_color, new OnCheckedChangeListener() {
+			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if (drawConfig.isDynamicColor() != isChecked) {
+					drawConfig.setDynamicColor(isChecked);
+					configsUpdatedListener.onConfigsUpdated();
+				}
+			}
+		});
+		borderSize = number(R.id.distance_config_border_size,
+				DistanceMapDrawerConfig.BORDER_SIZE_MIN,
+				DistanceMapDrawerConfig.BORDER_SIZE_MAX,
+				new OnValueChangeListener() {
+					@Override public void onValueChange(NumberPickerWidget picker, float oldVal, float newVal) {
+						if (drawConfig.getBorderSize() != newVal) {
+							drawConfig.setBorderSize((int)newVal);
+							configsUpdatedListener.onConfigsUpdated();
+						}
+					}
+				});
+		borderColor = color(R.id.distance_config_border_color,
+				new ColorPickerWidget.OnValueChangeListener() {
+					@Override public void onValueChange(
+							ColorPickerWidget picker, @ColorInt int oldVal, @ColorInt int newVal) {
+						if (drawConfig.getBorderColor() != newVal) {
+							drawConfig.setBorderColor(newVal);
+							configsUpdatedListener.onConfigsUpdated();
+						}
+					}
+				});
+		distanceColor = color(R.id.distance_config_distance_color,
+				new ColorPickerWidget.OnValueChangeListener() {
+					@Override public void onValueChange(
+							ColorPickerWidget picker, @ColorInt int oldVal, @ColorInt int newVal) {
+						if (drawConfig.getDistanceColor() != newVal) {
+							drawConfig.setDistanceColor(newVal);
+							configsUpdatedListener.onConfigsUpdated();
+						}
+					}
+				});
+		pixelDensity = number(R.id.distance_config_pixel_density,
+				DistanceMapDrawerConfig.PIXEL_DENSITY_MIN,
+				DistanceMapDrawerConfig.PIXEL_DENSITY_MAX,
+				new OnValueChangeListener() {
+					@Override public void onValueChange(NumberPickerWidget picker, float oldVal, float newVal) {
+						if (drawConfig.getPixelDensity() != newVal) {
+							drawConfig.setPixelDensity((int)newVal);
 							configsUpdatedListener.onConfigsUpdated();
 						}
 					}
@@ -159,10 +210,24 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 		return (T)MenuItemCompat.getActionView(switchItem);
 	}
 
-	private NumberPickerWidget picker(@IdRes int menuItemId, float min, float max, OnValueChangeListener listener) {
+	private CompoundButton bool(@IdRes int menuItemId, OnCheckedChangeListener listener) {
+		CompoundButton check = getAction(menuItemId);
+		check.setOnCheckedChangeListener(listener);
+		return check;
+	}
+
+	private NumberPickerWidget number(@IdRes int menuItemId,
+			float min, float max, NumberPickerWidget.OnValueChangeListener listener) {
 		NumberPickerWidget picker = new NumberPickerWidget(getAction(menuItemId));
 		picker.setMinValue(min);
 		picker.setMaxValue(max);
+		picker.setOnValueChangedListener(listener);
+		return picker;
+	}
+
+	private ColorPickerWidget color(@IdRes int menuItemId,
+			ColorPickerWidget.OnValueChangeListener listener) {
+		ColorPickerWidget picker = new ColorPickerWidget(getAction(menuItemId));
 		picker.setOnValueChangedListener(listener);
 		return picker;
 	}
@@ -192,6 +257,11 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 		interchangeTime.setValue(genConfig.getIntraStationInterchangeTime());
 		walkingSpeed.setValue(genConfig.getWalkingSpeed());
 		platformStreet.setValue(genConfig.getPlatformToStreetTime());
+		borderColor.setValue(drawConfig.getBorderColor());
+		borderSize.setValue(drawConfig.getBorderSize());
+		dynamicColor.setChecked(drawConfig.isDynamicColor());
+		pixelDensity.setValue(drawConfig.getPixelDensity());
+		distanceColor.setValue(drawConfig.getDistanceColor());
 	}
 
 	public void setConfigsUpdatedListener(ConfigsUpdatedListener configsUpdatedListener) {
