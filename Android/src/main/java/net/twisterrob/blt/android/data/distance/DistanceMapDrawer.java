@@ -66,15 +66,22 @@ public abstract class DistanceMapDrawer<T> {
 
 	public T draw(Map<NetworkNode, Double> nodes) {
 		pixels = new int[pixelHeight * pixelWidth];
-		int[] pixels = calcPixels(nodes);
-		T map = createMap(pixels);
+		calcPixels(nodes);
+		return createMap(getAndForgetPixels());
+	}
+	/**
+	 * This helps to release memory once createMap doesn't need it
+	 * by not holding a field nor a thread local reference to the pixels array.
+	 */
+	private int[] getAndForgetPixels() {
+		int[] pixels = this.pixels;
 		this.pixels = null;
-		return map;
+		return pixels;
 	}
 
 	protected abstract T createMap(int[] pixels);
 
-	protected int[] calcPixels(Map<NetworkNode, Double> nodes) {
+	protected void calcPixels(Map<NetworkNode, Double> nodes) {
 		if (DEBUG) {
 			LOG.debug("Mapping area w={}, h={} to pixels w={}, h={}",
 					geoWidth, geoHeight, pixelWidth, pixelHeight);
@@ -86,8 +93,6 @@ public abstract class DistanceMapDrawer<T> {
 		if (0 < config.borderSize) {
 			border(config.borderSize, config.borderColor);
 		}
-
-		return pixels;
 	}
 
 	private void drawCircle(NetworkNode node, double remainingWalk) {

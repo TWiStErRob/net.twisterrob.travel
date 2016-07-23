@@ -14,6 +14,16 @@ public class DistanceMapDrawerConfig {
 	boolean dynamicColor = false;
 	int distanceColor = Color.RED;
 	LineColors colors = App.getInstance().getStaticData().getLineColors();
+	public DistanceMapDrawerConfig() {
+	}
+	public DistanceMapDrawerConfig(DistanceMapDrawerConfig other) {
+		this.borderSize = other.borderSize;
+		this.borderColor = other.borderColor;
+		this.pixelDensity = other.pixelDensity;
+		this.dynamicColor = other.dynamicColor;
+		this.distanceColor = other.distanceColor;
+		this.colors = other.colors;
+	}
 
 	public int getColor(Line line) {
 		int color = dynamicColor? line.getBackground(colors) : distanceColor;

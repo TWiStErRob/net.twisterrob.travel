@@ -6,8 +6,8 @@ import org.slf4j.*;
 
 import android.graphics.Bitmap;
 import android.os.*;
-import android.os.AsyncTask.Status;
 import android.preference.PreferenceManager;
+import android.support.annotation.*;
 import android.support.design.widget.*;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -24,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap.*;
 import com.google.android.gms.maps.model.*;
 import com.google.android.gms.maps.model.Marker;
 
+import net.twisterrob.android.utils.concurrent.SimpleAsyncTask;
 import net.twisterrob.android.utils.tools.AndroidTools;
 import net.twisterrob.android.view.*;
 import net.twisterrob.android.view.ViewProvider.StaticViewProvider;
@@ -34,12 +35,14 @@ import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.android.ui.activity.DistanceOptionsFragment.ConfigsUpdatedListener;
 import net.twisterrob.blt.model.StopType;
 
+import static net.twisterrob.blt.android.R.id.*;
+
 public class DistanceMapActivity extends AppCompatActivity {
 	private static final Logger LOG = LoggerFactory.getLogger(DistanceMapActivity.class);
 
 	private static final int MAP_PADDING = 50;
 
-	private GoogleMap m_map;
+	private GoogleMap map;
 	private DistanceMapGeneratorConfig distanceConfig = new DistanceMapGeneratorConfig()
 			.setInitialAllottedWalkTime(10)
 			.setTotalAllottedTime(25);
@@ -49,6 +52,9 @@ public class DistanceMapActivity extends AppCompatActivity {
 	private NearestStationsFragment nearestFragment;
 	private DistanceOptionsFragment optionsFragment;
 	private ClickThroughDrawerLayout drawers;
+	private Set<NetworkNode> tubeNetwork;
+	private DrawAsyncTask drawTask;
+	private LatLng lastStartPoint;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,26 +62,42 @@ public class DistanceMapActivity extends AppCompatActivity {
 
 		FragmentManager fm = getSupportFragmentManager();
 		SupportMapFragment mapFragment = (SupportMapFragment)fm.findFragmentById(R.id.map);
-		m_map = mapFragment.getMap();
-		m_map.setMyLocationEnabled(true);
-		m_map.getUiSettings().setZoomControlsEnabled(false);
-		m_map.setOnMapLongClickListener(new OnMapLongClickListener() {
-			public void onMapLongClick(LatLng latlng) {
+		map = mapFragment.getMap();
+		map.setMyLocationEnabled(true);
+		map.getUiSettings().setZoomControlsEnabled(false);
+		class MapInteractorListener implements OnMapClickListener, OnMarkerClickListener, OnMapLongClickListener {
+			private Marker currentMarker;
+			@Override public void onMapLongClick(LatLng latlng) {
+				if (currentMarker != null) {
+					currentMarker.hideInfoWindow();
+					currentMarker = null;
+				}
 				reDraw(latlng);
 			}
-		});
-		m_map.setOnMarkerClickListener(new OnMarkerClickListener() {
+			@Override public void onMapClick(LatLng latlng) {
+				if (currentMarker != null) {
+					currentMarker = null;
+					return;
+				}
+				reDraw(latlng);
+			}
 			@Override public boolean onMarkerClick(Marker marker) {
+				currentMarker = marker;
 				if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
 					behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 				}
 				return false;
 			}
-		});
+		}
+
+		MapInteractorListener listener = new MapInteractorListener();
+		map.setOnMapClickListener(listener);
+		map.setOnMapLongClickListener(listener);
+		map.setOnMarkerClickListener(listener);
 
 		Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
-		drawers = (ClickThroughDrawerLayout)findViewById(R.id.drawer);
+		drawers = (ClickThroughDrawerLayout)findViewById(drawer);
 		drawers.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			@SuppressWarnings("deprecation")
 			@Override public void onGlobalLayout() {
@@ -92,7 +114,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 		optionsFragment.bindConfigs(distanceConfig, drawConfig);
 		optionsFragment.setConfigsUpdatedListener(new ConfigsUpdatedListener() {
 			@Override public void onConfigsUpdated() {
-				reDraw(m_lastStartPoint);
+				reDraw(lastStartPoint);
 			}
 		});
 		FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
@@ -133,66 +155,70 @@ public class DistanceMapActivity extends AppCompatActivity {
 		super.onBackPressed();
 	}
 
-	private DistanceMapGenerator m_distanceMapGenerator;
-	private DistanceMapDrawerAndroid m_distanceMapDrawer;
-	private GroundOverlay m_groundOverlay;
+	@Override protected void onDestroy() {
+		super.onDestroy();
+		killTask();
+	}
+	private void killTask() {
+		if (drawTask != null) {
+			drawTask.cancel(true);
+			drawTask = null;
+		}
+	}
+
+	private GroundOverlay distanceMapOverlay;
 	private List<Marker> m_markersStart = new LinkedList<>();
 
 	private void setNodes(Set<NetworkNode> nodes) {
-		LOG.trace("setNodes(nodes:{})", nodes.size());
-		m_distanceMapGenerator = new DistanceMapGenerator(nodes, distanceConfig);
-		m_distanceMapDrawer = new DistanceMapDrawerAndroid(nodes, drawConfig);
-		CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(m_distanceMapDrawer.getBounds(), MAP_PADDING);
-		m_map.moveCamera(cu);
+		tubeNetwork = nodes;
+		LOG.trace("setNodes(nodes:{})", tubeNetwork.size());
+		// TODO move to BG thread
+		DistanceMapDrawerAndroid distanceMapDrawer = new DistanceMapDrawerAndroid(tubeNetwork, drawConfig);
+		CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(distanceMapDrawer.getBounds(), MAP_PADDING);
+		map.moveCamera(cu);
 		// distance map below
-		Bitmap emptyMap = m_distanceMapDrawer.draw(Collections.<NetworkNode, Double>emptyMap());
-		m_groundOverlay = m_map.addGroundOverlay(new GroundOverlayOptions()
-				.positionFromBounds(
-						m_distanceMapDrawer.getBounds())
+		Bitmap emptyMap = distanceMapDrawer.draw(Collections.<NetworkNode, Double>emptyMap());
+		distanceMapOverlay = map.addGroundOverlay(new GroundOverlayOptions()
+				.positionFromBounds(distanceMapDrawer.getBounds())
 				.transparency(0.0f)
 				.image(BitmapDescriptorFactory.fromBitmap(emptyMap))
 		);
 		// tube map above
-		m_map.addGroundOverlay(new GroundOverlayOptions()
-				.positionFromBounds(m_distanceMapDrawer.getBounds())
+		map.addGroundOverlay(new GroundOverlayOptions()
+				.positionFromBounds(distanceMapDrawer.getBounds())
 				.transparency(0.3f)
 				.image(BitmapDescriptorFactory.fromBitmap(new TubeMapDrawer(nodes).draw(nodes)))
 		);
+		if (lastStartPoint != null) {
+			reDraw(lastStartPoint);
+		}
 	}
 
-	private AsyncTask<LatLng, Void, Bitmap> m_redrawTask;
-
-	private LatLng m_lastStartPoint;
 	@SuppressWarnings("Duplicates")
 	private void reDraw(LatLng latlng) {
 		if (latlng == null) {
 			return;
 		}
-		LOG.trace("reDraw({}) / task: {}", latlng, AndroidTools.toString(m_redrawTask));
-		if (m_redrawTask == null) {
-			m_redrawTask = new RedrawAsyncTask(m_distanceMapGenerator, m_distanceMapDrawer);
-		}
-		if (m_redrawTask.getStatus() != Status.PENDING) {
-			m_redrawTask.cancel(true);
-			m_redrawTask = null;
-			reDraw(latlng);
+		lastStartPoint = latlng;
+		nearestFragment.updateLocation(latlng, null);
+
+		LOG.trace("reDraw({}) / task: {}", latlng, AndroidTools.toString(drawTask));
+		killTask();
+		if (tubeNetwork == null) {
+			String message = "Someone has quick fingers, Tube network is not ready, please wait and try again.";
+			Toast.makeText(DistanceMapActivity.this, message, Toast.LENGTH_LONG).show();
 			return;
 		}
-
-		m_lastStartPoint = latlng;
-		nearestFragment.updateLocation(latlng, null);
-		try {
-			AndroidTools.executePreferParallel(m_redrawTask, latlng);
-		} catch (Exception ex) {
-			LOG.warn("Exception while executing tasks", ex);
-			Toast.makeText(DistanceMapActivity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
-		}
+		// don't set empty image for the ground overlay here because it flashes
+		drawTask = new DrawAsyncTask(tubeNetwork, distanceConfig, drawConfig);
+		AndroidTools.executePreferParallel(drawTask, latlng);
 	}
 
-	private void updateDistanceMap(Bitmap map) {
+	private void updateDistanceMap(Bitmap map, Collection<NetworkNode> startNodes) {
 		LOG.trace("updateDistanceMap({})", map);
-		m_groundOverlay.setImage(BitmapDescriptorFactory.fromBitmap(map));
-		Collection<NetworkNode> startNodes = m_distanceMapGenerator.getStartNodes();
+		if (map != null) {
+			distanceMapOverlay.setImage(BitmapDescriptorFactory.fromBitmap(map));
+		}
 		reCreateMarkers(startNodes);
 		updateNearestStations(startNodes);
 	}
@@ -206,18 +232,18 @@ public class DistanceMapActivity extends AppCompatActivity {
 			LOG.trace("Creating marker for {}", startNode);
 			StopType stopType = startNode.getLine().getDefaultStopType();
 			Map<StopType, Integer> icons = App.getInstance().getStaticData().getStopTypeMiniIcons();
-			Marker marker = m_map.addMarker(new MarkerOptions()
+			Marker marker = map.addMarker(new MarkerOptions()
 					.title(startNode.getName())
 					.position(LocationUtils.toLatLng(startNode.getLocation()))
 					.anchor(0.5f, 0.5f)
 					.icon(BitmapDescriptorFactory.fromResource(icons.get(stopType))));
 			m_markersStart.add(marker);
 		}
-		if (m_lastStartPoint != null) {
-			LOG.trace("Creating marker for starting point {}", m_lastStartPoint);
-			Marker marker = m_map.addMarker(new MarkerOptions()
+		if (lastStartPoint != null) {
+			LOG.trace("Creating marker for starting point {}", lastStartPoint);
+			Marker marker = map.addMarker(new MarkerOptions()
 					.title("Starting point")
-					.position(m_lastStartPoint)
+					.position(lastStartPoint)
 					.icon(BitmapDescriptorFactory.defaultMarker())
 			);
 			m_markersStart.add(marker);
@@ -241,40 +267,53 @@ public class DistanceMapActivity extends AppCompatActivity {
 	private void addMarkers(Iterable<NetworkNode> nodes) {
 		for (NetworkNode node : nodes) {
 			LatLng ll = LocationUtils.toLatLng(node.getLocation());
-			m_map.addMarker(new MarkerOptions().title(String.valueOf(node.getID())).position(ll));
+			map.addMarker(new MarkerOptions().title(String.valueOf(node.getID())).position(ll));
 		}
 	}
 
-	private final class RedrawAsyncTask extends AsyncTask<LatLng, Void, Bitmap> {
-		private DistanceMapGenerator m_mapGenerator;
-		private DistanceMapDrawerAndroid m_mapDrawer;
+	private final class DrawAsyncTask extends SimpleAsyncTask<LatLng, DrawAsyncTask.Result, DrawAsyncTask.Result> {
+		private final Set<NetworkNode> nodes;
+		private final DistanceMapGeneratorConfig config;
+		private final DistanceMapDrawerConfig drawConfig;
 
-		private RedrawAsyncTask(DistanceMapGenerator distanceMapGenerator, DistanceMapDrawerAndroid distanceMapDrawer) {
-			m_mapGenerator = distanceMapGenerator;
-			m_mapDrawer = distanceMapDrawer;
+		public DrawAsyncTask(Set<NetworkNode> nodes,
+				DistanceMapGeneratorConfig config, DistanceMapDrawerConfig drawConfig) {
+			this.nodes = nodes;
+			// Make a copy of configs to make sure any modifications are not messing with the background thread
+			this.config = new DistanceMapGeneratorConfig(config);
+			this.drawConfig = new DistanceMapDrawerConfig(drawConfig);
 		}
 
-		@Override protected void onPreExecute() {
-			if (m_mapGenerator == null || m_mapDrawer == null) {
-				cancel(false);
-				throw new IllegalStateException(
-						"Someone has quick fingers, Tube network is not ready, please wait and try again.");
-			}
-		}
-
-		@Override protected Bitmap doInBackground(LatLng... params) {
-			LOG.trace("Drawing map for {}", (Object)params);
-			Map<NetworkNode, Double> distanceMap = m_mapGenerator.generate(LocationUtils.fromLatLng(params[0]));
+		@Override protected @NonNull Result doInBackground(@Nullable LatLng location) {
+			LOG.trace("Drawing map for {}", location);
+			Result result = new Result();
+			DistanceMapGenerator generator = new DistanceMapGenerator(nodes, config);
+			Map<NetworkNode, Double> distanceMap = generator.generate(LocationUtils.fromLatLng(location));
+			result.startNodes = generator.getStartNodes();
 			if (isCancelled()) {
-				return null;
+				return result;
 			}
-			//noinspection UnnecessaryLocalVariable easier to check the value in debug
-			Bitmap overlay = m_mapDrawer.draw(distanceMap);
-			return overlay;
+			//publishProgress(result); // looks like the color is playing catchup with the pins
+
+			// this allocation is expensive
+			DistanceMapDrawerAndroid drawer = new DistanceMapDrawerAndroid(nodes, drawConfig);
+			result.distanceMap = drawer.draw(distanceMap);
+			if (isCancelled()) {
+				return result;
+			}
+			return result;
 		}
 
-		@Override protected void onPostExecute(Bitmap map) {
-			updateDistanceMap(map);
+		@Override protected void onProgressUpdate(Result result) {
+			updateDistanceMap(result.distanceMap, result.startNodes);
+		}
+		@Override protected void onPostExecute(Result result) {
+			updateDistanceMap(result.distanceMap, result.startNodes);
+		}
+
+		class Result {
+			Collection<NetworkNode> startNodes = Collections.emptyList();
+			Bitmap distanceMap = null;
 		}
 	}
 }
