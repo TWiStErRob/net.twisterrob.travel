@@ -20,33 +20,37 @@ public class StationMapsV2Activity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stations_map_v2);
 
-		m_map = ((SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-		m_map.setMyLocationEnabled(true);
-		m_map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.512161, -0.090981), 13)); // City of london
+		SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+		mapFragment.getMapAsync(new OnMapReadyCallback() {
+			@Override public void onMapReady(GoogleMap map) {
+				m_map = map;
+				m_map.setMyLocationEnabled(true);
+				LatLng cityOfLondon = new LatLng(51.512161, -0.090981);
+				m_map.moveCamera(CameraUpdateFactory.newLatLngZoom(cityOfLondon, 13));
+				new LoadStationsTask().execute((Void[])null);
+			}
+		});
 	}
 
-	@Override protected void onStart() {
-		super.onStart();
-		new AsyncTask<Void, Void, List<Station>>() {
-			@Override protected List<Station> doInBackground(Void... params) {
-				return App.getInstance().getDataBaseHelper().getStations();
-			}
-			@Override protected void onPostExecute(List<Station> result) {
-				super.onPostExecute(result);
+	private class LoadStationsTask extends AsyncTask<Void, Void, List<Station>> {
+		@Override protected List<Station> doInBackground(Void... params) {
+			return App.getInstance().getDataBaseHelper().getStations();
+		}
+		@Override protected void onPostExecute(List<Station> result) {
+			super.onPostExecute(result);
 
-				@SuppressWarnings("synthetic-access")
-				GoogleMap map = m_map;
-				Map<StopType, Integer> icons = App.getInstance().getStaticData().getStopTypeMapIcons();
-				for (Station station : result) {
-					map.addMarker(new MarkerOptions()
-							.position(LocationUtils.toLatLng(station.getLocation()))
-							.title(station.getName())
-							.snippet(station.getAddress())
-							.anchor(0.5f, 0.5f)
-							.icon(BitmapDescriptorFactory.fromResource(icons.get(station.getType())))
-					);
-				}
+			@SuppressWarnings("synthetic-access")
+			GoogleMap map = m_map;
+			Map<StopType, Integer> icons = App.getInstance().getStaticData().getStopTypeMapIcons();
+			for (Station station : result) {
+				map.addMarker(new MarkerOptions()
+						.position(LocationUtils.toLatLng(station.getLocation()))
+						.title(station.getName())
+						.snippet(station.getAddress())
+						.anchor(0.5f, 0.5f)
+						.icon(BitmapDescriptorFactory.fromResource(icons.get(station.getType())))
+				);
 			}
-		}.execute((Void[])null);
+		}
 	}
 }

@@ -26,10 +26,11 @@
 			app:layout_scrollFlags="scroll|enterAlways"
 			map:mapType="normal"
 			map:uiCompass="true"
+			map:uiZoomControls="false"
+			map:uiMapToolbar="false"
 			map:uiRotateGestures="true"
 			map:uiScrollGestures="true"
 			map:uiTiltGestures="true"
-			map:uiZoomControls="true"
 			map:uiZoomGestures="true"
 			/>
 		<!-- TODO maxWidth simply doesn't work, so it's hardcoded -->
@@ -40,7 +41,10 @@
 			android:layout_width="340dp"
 			android:layout_height="wrap_content"
 			android:layout_gravity="top|center_horizontal"
-			android:layout_margin="8dp"
+			android:layout_marginLeft="8dp"
+			android:layout_marginTop="8dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginBottom="0dp"
 			android:maxWidth="360dp"
 			>
 			<android.support.design.widget.AppBarLayout

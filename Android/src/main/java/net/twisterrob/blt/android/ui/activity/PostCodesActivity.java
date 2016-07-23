@@ -22,58 +22,62 @@ public class PostCodesActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stations_map_v2);
 
-		m_map = ((SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-		m_map.setMyLocationEnabled(true);
-		m_map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.512161, -0.090981), 13)); // City of london
+		SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+		mapFragment.getMapAsync(new OnMapReadyCallback() {
+			@Override public void onMapReady(GoogleMap map) {
+				m_map = map;
+				m_map.setMyLocationEnabled(true);
+				LatLng cityOfLondon = new LatLng(51.512161, -0.090981);
+				m_map.moveCamera(CameraUpdateFactory.newLatLngZoom(cityOfLondon, 13));
+				new LoadPostCodesTask().execute((Void[])null);
+			}
+		});
 	}
 
-	@Override protected void onStart() {
-		super.onStart();
-		new AsyncTask<Void, Void, Map<String, List<AreaHullPoint>>>() {
-			@Override protected Map<String, List<AreaHullPoint>> doInBackground(Void... params) {
-				return App.getInstance().getDataBaseHelper().getAreas();
-			}
-			@Override protected void onPostExecute(Map<String, List<AreaHullPoint>> result) {
-				super.onPostExecute(result);
+	private class LoadPostCodesTask extends AsyncTask<Void, Void, Map<String, List<AreaHullPoint>>> {
+		@Override protected Map<String, List<AreaHullPoint>> doInBackground(Void... params) {
+			return App.getInstance().getDataBaseHelper().getAreas();
+		}
+		@Override protected void onPostExecute(Map<String, List<AreaHullPoint>> result) {
+			super.onPostExecute(result);
 
-				@SuppressWarnings("synthetic-access")
-				GoogleMap map = m_map;
+			@SuppressWarnings("synthetic-access")
+			GoogleMap map = m_map;
 
-				float[] hsv = {0, 1, 1};
-				float[] hues = {
-						BitmapDescriptorFactory.HUE_RED,
-						BitmapDescriptorFactory.HUE_ORANGE,
-						BitmapDescriptorFactory.HUE_YELLOW,
-						BitmapDescriptorFactory.HUE_GREEN,
-						BitmapDescriptorFactory.HUE_CYAN,
-						BitmapDescriptorFactory.HUE_AZURE,
-						BitmapDescriptorFactory.HUE_BLUE,
-						BitmapDescriptorFactory.HUE_VIOLET,
-						BitmapDescriptorFactory.HUE_MAGENTA,
-						BitmapDescriptorFactory.HUE_ROSE
-				};
-				for (Entry<String, List<AreaHullPoint>> area : result.entrySet()) {
-					PolygonOptions poly = new PolygonOptions();
-					float hue = hues[Math.abs(area.getKey().hashCode()) % hues.length];
-					hsv[0] = hue;
-					poly.fillColor(Color.HSVToColor(0x40, hsv));
-					boolean first = true;
-					for (AreaHullPoint point : area.getValue()) {
-						Location loc = point.getLocation();
-						if (first) {
-							first = false;
-							map.addMarker(new MarkerOptions()
-									.position(LocationUtils.toLatLng(loc))
-									.title(area.getKey())
-									.icon(BitmapDescriptorFactory.defaultMarker(hue))
-							);
-						} else {
-							poly.add(LocationUtils.toLatLng(loc));
-						}
+			float[] hsv = {0, 1, 1};
+			float[] hues = {
+					BitmapDescriptorFactory.HUE_RED,
+					BitmapDescriptorFactory.HUE_ORANGE,
+					BitmapDescriptorFactory.HUE_YELLOW,
+					BitmapDescriptorFactory.HUE_GREEN,
+					BitmapDescriptorFactory.HUE_CYAN,
+					BitmapDescriptorFactory.HUE_AZURE,
+					BitmapDescriptorFactory.HUE_BLUE,
+					BitmapDescriptorFactory.HUE_VIOLET,
+					BitmapDescriptorFactory.HUE_MAGENTA,
+					BitmapDescriptorFactory.HUE_ROSE
+			};
+			for (Entry<String, List<AreaHullPoint>> area : result.entrySet()) {
+				PolygonOptions poly = new PolygonOptions();
+				float hue = hues[Math.abs(area.getKey().hashCode()) % hues.length];
+				hsv[0] = hue;
+				poly.fillColor(Color.HSVToColor(0x40, hsv));
+				boolean first = true;
+				for (AreaHullPoint point : area.getValue()) {
+					Location loc = point.getLocation();
+					if (first) {
+						first = false;
+						map.addMarker(new MarkerOptions()
+								.position(LocationUtils.toLatLng(loc))
+								.title(area.getKey())
+								.icon(BitmapDescriptorFactory.defaultMarker(hue))
+						);
+					} else {
+						poly.add(LocationUtils.toLatLng(loc));
 					}
-					map.addPolygon(poly);
 				}
+				map.addPolygon(poly);
 			}
-		}.execute((Void[])null);
+		}
 	}
 }

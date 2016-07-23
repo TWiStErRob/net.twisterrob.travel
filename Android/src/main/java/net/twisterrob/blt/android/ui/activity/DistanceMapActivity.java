@@ -38,6 +38,7 @@ import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.android.ui.activity.DistanceOptionsFragment.ConfigsUpdatedListener;
 import net.twisterrob.blt.model.StopType;
 
+import static net.twisterrob.android.utils.tools.AndroidTools.*;
 import static net.twisterrob.blt.android.R.id.*;
 
 public class DistanceMapActivity extends AppCompatActivity {
@@ -62,38 +63,43 @@ public class DistanceMapActivity extends AppCompatActivity {
 
 		FragmentManager fm = getSupportFragmentManager();
 		SupportMapFragment mapFragment = (SupportMapFragment)fm.findFragmentById(R.id.map);
-		map = mapFragment.getMap();
-		map.setMyLocationEnabled(true);
-		zoomFullLondon();
-		class MapInteractorListener implements OnMapClickListener, OnMarkerClickListener, OnMapLongClickListener {
-			private Marker currentMarker;
-			@Override public void onMapLongClick(LatLng latlng) {
-				if (currentMarker != null) {
-					currentMarker.hideInfoWindow();
-					currentMarker = null;
+		mapFragment.getMapAsync(new OnMapReadyCallback() {
+			@Override public void onMapReady(GoogleMap map) {
+				DistanceMapActivity.this.map = map;
+				map.setMyLocationEnabled(true);
+				zoomFullLondon();
+				updateToolbarVisibility();
+				class MapInteractorListener
+						implements OnMapClickListener, OnMarkerClickListener, OnMapLongClickListener {
+					private Marker currentMarker;
+					@Override public void onMapLongClick(LatLng latlng) {
+						if (currentMarker != null) {
+							currentMarker.hideInfoWindow();
+							currentMarker = null;
+						}
+						reDraw(latlng);
+					}
+					@Override public void onMapClick(LatLng latlng) {
+						if (currentMarker != null) {
+							currentMarker = null;
+							return;
+						}
+						reDraw(latlng);
+					}
+					@Override public boolean onMarkerClick(Marker marker) {
+						currentMarker = marker;
+						if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+							behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+						}
+						return false;
+					}
 				}
-				reDraw(latlng);
+				MapInteractorListener listener = new MapInteractorListener();
+				map.setOnMapClickListener(listener);
+				map.setOnMapLongClickListener(listener);
+				map.setOnMarkerClickListener(listener);
 			}
-			@Override public void onMapClick(LatLng latlng) {
-				if (currentMarker != null) {
-					currentMarker = null;
-					return;
-				}
-				reDraw(latlng);
-			}
-			@Override public boolean onMarkerClick(Marker marker) {
-				currentMarker = marker;
-				if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
-					behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-				}
-				return false;
-			}
-		}
-
-		MapInteractorListener listener = new MapInteractorListener();
-		map.setOnMapClickListener(listener);
-		map.setOnMapLongClickListener(listener);
-		map.setOnMarkerClickListener(listener);
+		});
 
 		AndroidTools.accountForStatusBar(findViewById(R.id.toolbar_container));
 		Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -101,8 +107,8 @@ public class DistanceMapActivity extends AppCompatActivity {
 //		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //		getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_launcher);
 		drawers = (ClickThroughDrawerLayout)findViewById(drawer);
-		new DoAfterLayout(drawers) {
-			@Override protected void onLayout() {
+		new DoAfterLayout(drawers, true) {
+			@Override protected void onLayout(@NonNull View view) {
 				// when the map has more than 40% of the screen, allow using it even when the drawer is open
 				if (optionsFragment.getView().getWidth() <= drawers.getWidth() * 0.60f) {
 					drawers.setAllowClickThrough(true);
@@ -148,8 +154,9 @@ public class DistanceMapActivity extends AppCompatActivity {
 	private void zoomFullLondon() {
 		LatLngBounds fullLondon = new LatLngBounds(new LatLng(51.342889, -0.611361), new LatLng(51.705232, 0.251388));
 		Point screen = AndroidTools.getScreenSize(getWindowManager().getDefaultDisplay());
-		map.moveCamera(CameraUpdateFactory.newLatLngBounds(fullLondon, screen.x, screen.y, 0));
-		// TODO map.moveCamera(CameraUpdateFactory.zoomIn()); // currently doesn't work maybe after updating play
+		map.moveCamera(CameraUpdateFactory.newLatLngBounds(fullLondon, screen.x, screen.y, dipInt(this, -160)));
+		// TODO below doesn't work, even with latest GMS, negative padding above is a workaround
+//		map.moveCamera(CameraUpdateFactory.zoomIn()); 
 	}
 
 	public void updateToolbarVisibility() {
@@ -157,20 +164,32 @@ public class DistanceMapActivity extends AppCompatActivity {
 		boolean showToolbar = prefs.getBoolean("showToolbar", false);
 		final View container = findViewById(R.id.toolbar_container);
 		AndroidTools.displayedIf(container, showToolbar);
-		new DoAfterLayout(drawers) {
-			@Override protected void onLayout() {
-				View bottomMostTopView = findViewById(R.id.toolbar_container);
-				View topMostBottomView = findViewById(R.id.fab);
-				int topMargin = bottomMostTopView.getBottom() + AndroidTools.getBottomMargin(bottomMostTopView);
-				int bottomMargin = topMostBottomView.getTop() - AndroidTools.getTopMargin(topMostBottomView);
-				bottomMargin = ((View)topMostBottomView.getParent()).getHeight() - bottomMargin;
-				int statusBar = AndroidTools.getStatusBarHeight(DistanceMapActivity.this);
-				map.setPadding(
-						0, // left
-						bottomMostTopView.getVisibility() != View.GONE? topMargin : statusBar, // top 
-						0, // right
-						topMostBottomView.getVisibility() != View.GONE? bottomMargin : 0 // bottom
-				);
+		new DoAfterLayout(drawers, true) {
+			@Override protected void onLayout(@NonNull View view) {
+				if (map == null) {
+					return; // too early, just ignore, map-ready will call this too
+				}
+				// CONSIDER rewriting this as a behavior if possible (could account for expanding toolbar and bottom sheet)
+				// https://medium.com/google-developers/intercepting-everything-with-coordinatorlayout-behaviors-8c6adc140c26
+				UiSettings ui = map.getUiSettings();
+				int topMargin = 0;
+				if (ui.isMyLocationButtonEnabled() || ui.isCompassEnabled()) {
+					View bottomMostTopView = findViewById(R.id.toolbar_container);
+					if (bottomMostTopView.getVisibility() != View.GONE) {
+						topMargin = bottomMostTopView.getBottom() + AndroidTools.getBottomMargin(bottomMostTopView);
+					} else {
+						topMargin = AndroidTools.getStatusBarHeight(DistanceMapActivity.this);
+					}
+				}
+				int bottomMargin = 0;
+				if (ui.isMapToolbarEnabled() || ui.isZoomControlsEnabled()/* || ui.isIndoorLevelPickerEnabled()*/) {
+					View topMostBottomView = findViewById(R.id.fab);
+					if (topMostBottomView.getVisibility() != View.GONE) {
+						bottomMargin = topMostBottomView.getTop() - AndroidTools.getTopMargin(topMostBottomView);
+						bottomMargin = ((View)topMostBottomView.getParent()).getHeight() - bottomMargin;
+					}
+				}
+				map.setPadding(0 /*left*/, topMargin, 0 /*right*/, bottomMargin);
 			}
 		};
 	}
@@ -213,7 +232,8 @@ public class DistanceMapActivity extends AppCompatActivity {
 		LOG.trace("setNodes(nodes:{})", tubeNetwork.size());
 		// TODO move to BG thread
 		DistanceMapDrawerAndroid distanceMapDrawer = new DistanceMapDrawerAndroid(tubeNetwork, drawConfig);
-//		map.moveCamera(CameraUpdateFactory.newLatLngBounds(distanceMapDrawer.getBounds(), 0)); // disabled for now
+		// disabled for now, the bounds are hardcoded
+//		map.moveCamera(CameraUpdateFactory.newLatLngBounds(distanceMapDrawer.getBounds(), 0));
 		// distance map below
 		Bitmap emptyMap = distanceMapDrawer.draw(Collections.<NetworkNode, Double>emptyMap());
 		distanceMapOverlay = map.addGroundOverlay(new GroundOverlayOptions()

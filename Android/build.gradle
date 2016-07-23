@@ -15,8 +15,8 @@ dependencies {
 		exclude module: 'android-polyfill'
 	}
 	// TOFIX otherwise VariantFragment descendants don't see Fragment and its methods (Cannot access FQCN errors in IDEA)
-	def supportVersion = '24.0.0'
-	compile 'com.google.android.gms:play-services:4.0.30'
+	def supportVersion = '24.1.1'
+	compile 'com.google.android.gms:play-services-maps:9.2.1'
 	compile "com.android.support:support-v4:${supportVersion}"
 	compile "com.android.support:appcompat-v7:${supportVersion}"
 	compile "com.android.support:design:${supportVersion}"
@@ -33,6 +33,7 @@ dependencies {
 }
 
 android {
+	// STOPSHIP Maps API v1 was deprecated 2012: https://developers.google.com/maps/documentation/android-api/v1/
 	compileSdkVersion "Google Inc.:Google APIs:23"
 	defaultConfig {
 		applicationId 'net.twisterrob.blt'
