@@ -19,7 +19,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.*;
@@ -31,6 +30,7 @@ import net.twisterrob.android.utils.concurrent.SimpleAsyncTask;
 import net.twisterrob.android.utils.tools.AndroidTools;
 import net.twisterrob.android.view.*;
 import net.twisterrob.android.view.ViewProvider.StaticViewProvider;
+import net.twisterrob.android.view.layout.DoAfterLayout;
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.data.distance.*;
@@ -101,16 +101,14 @@ public class DistanceMapActivity extends AppCompatActivity {
 //		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //		getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_launcher);
 		drawers = (ClickThroughDrawerLayout)findViewById(drawer);
-		drawers.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-			@SuppressWarnings("deprecation")
-			@Override public void onGlobalLayout() {
-				drawers.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+		new DoAfterLayout(drawers) {
+			@Override protected void onLayout() {
 				// when the map has more than 40% of the screen, allow using it even when the drawer is open
 				if (optionsFragment.getView().getWidth() <= drawers.getWidth() * 0.60f) {
 					drawers.setAllowClickThrough(true);
 				}
 			}
-		});
+		};
 
 		nearestFragment = (NearestStationsFragment)fm.findFragmentById(R.id.distance_bottom_sheet);
 		optionsFragment = (DistanceOptionsFragment)fm.findFragmentById(R.id.distance_drawer);
@@ -159,10 +157,8 @@ public class DistanceMapActivity extends AppCompatActivity {
 		boolean showToolbar = prefs.getBoolean("showToolbar", false);
 		final View container = findViewById(R.id.toolbar_container);
 		AndroidTools.displayedIf(container, showToolbar);
-		drawers.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-			@SuppressWarnings("deprecation")
-			@Override public void onGlobalLayout() {
-				drawers.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+		new DoAfterLayout(drawers) {
+			@Override protected void onLayout() {
 				View bottomMostTopView = findViewById(R.id.toolbar_container);
 				View topMostBottomView = findViewById(R.id.fab);
 				int topMargin = bottomMostTopView.getBottom() + AndroidTools.getBottomMargin(bottomMostTopView);
@@ -176,7 +172,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 						topMostBottomView.getVisibility() != View.GONE? bottomMargin : 0 // bottom
 				);
 			}
-		});
+		};
 	}
 
 	@Override public boolean onCreateOptionsMenu(Menu menu) {
