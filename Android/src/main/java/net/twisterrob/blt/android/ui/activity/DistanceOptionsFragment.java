@@ -10,6 +10,8 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.Toolbar.OnMenuItemClickListener;
 import android.text.Spanned;
 import android.view.*;
 import android.widget.CompoundButton;
@@ -23,7 +25,7 @@ import net.twisterrob.blt.android.data.distance.*;
 import net.twisterrob.blt.android.ui.*;
 import net.twisterrob.blt.android.ui.NumberPickerWidget.OnValueChangeListener;
 
-public class DistanceOptionsFragment extends Fragment implements OnNavigationItemSelectedListener {
+public class DistanceOptionsFragment extends Fragment {
 	private static final Logger LOG = LoggerFactory.getLogger(DistanceOptionsFragment.class);
 	private NavigationView nav;
 	private NumberPickerWidget walkingSpeed;
@@ -61,8 +63,19 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 	@Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		nav = (NavigationView)view.findViewById(R.id.navigation_view);
-		nav.setNavigationItemSelectedListener(this);
+		nav.setNavigationItemSelectedListener(new OnNavigationItemSelectedListener() {
+			@Override public boolean onNavigationItemSelected(MenuItem item) {
+				return onOptionsItemSelected(item);
+			}
+		});
 		AndroidTools.accountForStatusBar(nav.getHeaderView(0));
+		Toolbar toolbar = (Toolbar)nav.getHeaderView(0).findViewById(R.id.parameters_toolbar);
+		toolbar.inflateMenu(R.menu.drawer_distance_options_header);
+		toolbar.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override public boolean onMenuItemClick(MenuItem item) {
+				return onOptionsItemSelected(item);
+			}
+		});
 
 		bool(R.id.distance_ui_show_stations, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -73,12 +86,12 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 		}).setChecked(prefs.getBoolean("showNearest", true));
 		bool(R.id.distance_ui_show_toolbar, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (prefs.getBoolean("showToolbar", true) != isChecked) {
+				if (prefs.getBoolean("showToolbar", false) != isChecked) {
 					prefs.edit().putBoolean("showToolbar", isChecked).apply();
 					((DistanceMapActivity)getActivity()).updateToolbarVisibility();
 				}
 			}
-		}).setChecked(prefs.getBoolean("showToolbar", true));
+		}).setChecked(prefs.getBoolean("showToolbar", false));
 
 		intraStation = bool(R.id.distance_config_interchange_intrastation, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -232,19 +245,35 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 		return picker;
 	}
 
-	@Override public boolean onNavigationItemSelected(MenuItem item) {
-		String name = getResources().getResourceEntryName(item.getItemId()) + "_tooltip";
-		@StringRes int tooltipID = AndroidTools.getStringResourceID(getContext(), name);
-		if (tooltipID != AndroidTools.INVALID_RESOURCE_ID) {
-			Spanned tooltip = HtmlParser.fromHtml(getString(tooltipID), null, new TubeHtmlHandler(getContext()));
-			AndroidTools
-					.notify(getContext(), PopupCallbacks.DoNothing.<Boolean>instance())
-					.setTitle(item.getTitle())
-					.setMessage(tooltip)
-					.show();
-			return true;
+	@Override public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getGroupId() == R.id.menu$group$distance_config_generate
+				|| item.getGroupId() == R.id.menu$group$distance_config_draw
+				|| item.getGroupId() == R.id.menu$group$distance_config_ui) {
+			String name = getResources().getResourceEntryName(item.getItemId()) + "_tooltip";
+			@StringRes int tooltipID = AndroidTools.getStringResourceID(getContext(), name);
+			if (tooltipID != AndroidTools.INVALID_RESOURCE_ID) {
+				Spanned tooltip = HtmlParser.fromHtml(getString(tooltipID), null, new TubeHtmlHandler(getContext()));
+				AndroidTools
+						.notify(getContext(), PopupCallbacks.DoNothing.<Boolean>instance())
+						.setTitle(item.getTitle())
+						.setMessage(tooltip)
+						.show();
+				return true;
+			}
 		}
-		return false;
+		switch (item.getItemId()) {
+			case R.id.menu$option$distance_reset_distance:
+				genConfig.set(new DistanceMapGeneratorConfig());
+				bindConfigs(genConfig, drawConfig); // update self UI
+				configsUpdatedListener.onConfigsUpdated();
+				return true;
+			case R.id.menu$option$distance_reset_drawing:
+				drawConfig.set(new DistanceMapDrawerConfig());
+				bindConfigs(genConfig, drawConfig); // update self UI
+				configsUpdatedListener.onConfigsUpdated();
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	public void bindConfigs(DistanceMapGeneratorConfig genConfig, DistanceMapDrawerConfig drawConfig) {

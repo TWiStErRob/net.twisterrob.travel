@@ -97,9 +97,13 @@
 
 	<string name="distance_config_dynamic_color">Use dynamic colors</string>
 	<string name="distance_config_dynamic_color_tooltip" process="HtmlParser"><![CDATA[
+	<b>Do you want to use TfL line colors when drawing the range map?</b>
+	This can help to generate a visually pleasing and easily queriable map.
+	Looking at any part of the map it is easy to determine which tube station covers that area.
 	]]></string>
 	<string name="distance_config_distance_color">Distance color</string>
 	<string name="distance_config_distance_color_tooltip" process="HtmlParser"><![CDATA[
+	<b>Which color to use when drawing the map without dynamic colors?</b>
 	]]></string>
 	<string name="distance_config_border_size">Border size</string>
 	<string name="distance_config_border_size_tooltip" process="HtmlParser"><![CDATA[

@@ -15,12 +15,17 @@ public class DistanceMapDrawerConfig {
 
 	float pixelDensity = 1000;
 
-	boolean dynamicColor = false;
+	boolean dynamicColor = true;
 	int distanceColor = Color.RED;
 	LineColors colors = App.getInstance().getStaticData().getLineColors();
 	public DistanceMapDrawerConfig() {
 	}
-	public DistanceMapDrawerConfig(DistanceMapDrawerConfig other) {
+
+	public DistanceMapDrawerConfig(DistanceMapDrawerConfig config) {
+		set(config);
+	}
+
+	public void set(DistanceMapDrawerConfig other) {
 		this.borderSize = other.borderSize;
 		this.borderColor = other.borderColor;
 		this.pixelDensity = other.pixelDensity;

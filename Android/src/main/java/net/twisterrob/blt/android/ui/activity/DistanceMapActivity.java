@@ -44,11 +44,8 @@ public class DistanceMapActivity extends AppCompatActivity {
 	private static final Logger LOG = LoggerFactory.getLogger(DistanceMapActivity.class);
 
 	private GoogleMap map;
-	private DistanceMapGeneratorConfig distanceConfig = new DistanceMapGeneratorConfig()
-			.setInitialAllottedWalkTime(10)
-			.setTotalAllottedTime(25);
-	private DistanceMapDrawerConfig drawConfig = new DistanceMapDrawerConfig()
-			.setDynamicColor(true);
+	private DistanceMapGeneratorConfig distanceConfig = new DistanceMapGeneratorConfig();
+	private DistanceMapDrawerConfig drawConfig = new DistanceMapDrawerConfig();
 	private BottomSheetBehavior behavior;
 	private NearestStationsFragment nearestFragment;
 	private DistanceOptionsFragment optionsFragment;
@@ -159,7 +156,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 
 	public void updateToolbarVisibility() {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		boolean showToolbar = prefs.getBoolean("showToolbar", true);
+		boolean showToolbar = prefs.getBoolean("showToolbar", false);
 		final View container = findViewById(R.id.toolbar_container);
 		AndroidTools.displayedIf(container, showToolbar);
 		drawers.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {

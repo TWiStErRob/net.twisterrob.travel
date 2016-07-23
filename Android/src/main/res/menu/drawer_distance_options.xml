@@ -7,40 +7,43 @@
 		android:title="Distance Calculation"
 		>
 		<menu>
-			<item
-				android:id="@+id/distance_config_journey_time"
-				android:title="@string/distance_config_journey_time"
-				app:actionLayout="@layout/menu_widget_number" />
-			<item
-				android:id="@+id/distance_config_journey_start"
-				android:title="@string/distance_config_journey_start"
-				app:actionLayout="@layout/menu_widget_number" />
-			<item
-				android:id="@+id/distance_config_interchange_interstation"
-				android:title="@string/distance_config_interchange_interstation"
-				app:actionLayout="@layout/menu_widget_boolean" />
-			<item
-				android:id="@+id/distance_config_walking_speed"
-				android:title="@string/distance_config_walking_speed"
-				app:actionLayout="@layout/menu_widget_number" />
-			<item
-				android:id="@+id/distance_config_transfer_entry_exit"
-				android:title="@string/distance_config_transfer_entry_exit"
-				app:actionLayout="@layout/menu_widget_number" />
-			<item
-				android:id="@+id/distance_config_interchange_intrastation"
-				android:title="@string/distance_config_interchange_intrastation"
-				app:actionLayout="@layout/menu_widget_boolean" />
-			<item
-				android:id="@+id/distance_config_interchange_time"
-				android:title="@string/distance_config_interchange_time"
-				app:actionLayout="@layout/menu_widget_number" />
+			<group android:id="@+id/menu$group$distance_config_generate">
+				<item
+					android:id="@+id/distance_config_journey_time"
+					android:title="@string/distance_config_journey_time"
+					app:actionLayout="@layout/menu_widget_number" />
+				<item
+					android:id="@+id/distance_config_journey_start"
+					android:title="@string/distance_config_journey_start"
+					app:actionLayout="@layout/menu_widget_number" />
+				<item
+					android:id="@+id/distance_config_interchange_interstation"
+					android:title="@string/distance_config_interchange_interstation"
+					app:actionLayout="@layout/menu_widget_boolean" />
+				<item
+					android:id="@+id/distance_config_walking_speed"
+					android:title="@string/distance_config_walking_speed"
+					app:actionLayout="@layout/menu_widget_number" />
+				<item
+					android:id="@+id/distance_config_transfer_entry_exit"
+					android:title="@string/distance_config_transfer_entry_exit"
+					app:actionLayout="@layout/menu_widget_number" />
+				<item
+					android:id="@+id/distance_config_interchange_intrastation"
+					android:title="@string/distance_config_interchange_intrastation"
+					app:actionLayout="@layout/menu_widget_boolean" />
+				<item
+					android:id="@+id/distance_config_interchange_time"
+					android:title="@string/distance_config_interchange_time"
+					app:actionLayout="@layout/menu_widget_number" />
+			</group>
 		</menu>
 	</item>
 	<item
 		android:title="Map Drawing"
 		>
 		<menu>
+			<group android:id="@+id/menu$group$distance_config_draw">
 			<item
 				android:id="@+id/distance_config_dynamic_color"
 				android:title="@string/distance_config_dynamic_color"
@@ -52,22 +55,26 @@
 			<item
 				android:id="@+id/distance_config_border_size"
 				android:title="@string/distance_config_border_size"
+				android:visible="@bool/in_test"
 				app:actionLayout="@layout/menu_widget_number" />
 			<item
 				android:id="@+id/distance_config_border_color"
 				android:title="@string/distance_config_border_color"
+				android:visible="@bool/in_test"
 				app:actionLayout="@layout/menu_widget_color" />
 			<item
 				android:id="@+id/distance_config_pixel_density"
 				android:title="@string/distance_config_pixel_density"
 				android:visible="@bool/in_test"
 				app:actionLayout="@layout/menu_widget_number" />
+			</group>
 		</menu>
 	</item>
 	<item
 		android:title="Interface Settings"
 		>
 		<menu>
+			<group android:id="@+id/menu$group$distance_config_ui">
 			<item
 				android:id="@+id/distance_ui_show_stations"
 				android:title="@string/distance_ui_show_stations"
@@ -76,6 +83,7 @@
 				android:id="@+id/distance_ui_show_toolbar"
 				android:title="@string/distance_ui_show_toolbar"
 				app:actionLayout="@layout/menu_widget_boolean" />
+			</group>
 		</menu>
 	</item>
 </menu>

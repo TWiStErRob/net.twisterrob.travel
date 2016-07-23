@@ -1,12 +1,10 @@
 package net.twisterrob.blt.android.data.distance;
 
-import android.support.annotation.FloatRange;
+import static java.util.concurrent.TimeUnit.*;
 
 @SuppressWarnings({"PointlessArithmeticExpression", "unused"}) // TODO TimeUnit?
 public class DistanceMapGeneratorConfig {
 	private static final float MPH_TO_KPH = 1.609344f;
-	private static final int MINUTES = 1;
-	private static final int HOURS_IN_MINUTES = 60;
 	/** Average male jogging speed */
 	public static final float WALK_JOG_MALE = 8.3f * MPH_TO_KPH;
 	public static final float WALK_JOG_FEMALE = 6.5f * MPH_TO_KPH;
@@ -18,18 +16,18 @@ public class DistanceMapGeneratorConfig {
 
 	public static final float SPEED_ON_FOOT_MIN = 0 /*km/h*/;
 	public static final float SPEED_ON_FOOT_MAX = WALK_BOLT /*km/h*/;
-	public static final float MINUTES_MIN = 0 * MINUTES;
-	public static final float MINUTES_MAX = 6 * HOURS_IN_MINUTES;
-	public static final float START_WALK_MIN = 0 * MINUTES;
+	public static final float MINUTES_MIN = MINUTES.toMinutes(0);
+	public static final float MINUTES_MAX = HOURS.toMinutes(6);
+	public static final float START_WALK_MIN = MINUTES.toMinutes(0);
 	public static final float START_WALK_MAX = MINUTES_MAX;
-	public static final float TIME_PLATFORM_TO_STREET_MIN = 0 * MINUTES;
-	public static final float TIME_PLATFORM_TO_STREET_MAX = 30 * MINUTES;
-	public static final float TIME_TRANSFER_MIN = 0 * MINUTES;
-	public static final float TIME_TRANSFER_MAX = 30 * MINUTES;
+	public static final float TIME_PLATFORM_TO_STREET_MIN = MINUTES.toMinutes(0);
+	public static final float TIME_PLATFORM_TO_STREET_MAX = MINUTES.toMinutes(30);
+	public static final float TIME_TRANSFER_MIN = MINUTES.toMinutes(0);
+	public static final float TIME_TRANSFER_MAX = MINUTES.toMinutes(30);
 	/** minutes */
-	float intraStationInterchangeTime = 5;
+	float intraStationInterchangeTime;
 	/** minutes */
-	float platformToStreetTime = 1;
+	float platformToStreetTime;
 	/** km/h */
 	float walkingSpeed;
 	/** minutes */
@@ -44,19 +42,25 @@ public class DistanceMapGeneratorConfig {
 	boolean allowInterStationInterchange = false;
 	public DistanceMapGeneratorConfig() {
 		setIntraStationInterchangeTime(5);
-		setPlatformToStreetTime(1);
+		setPlatformToStreetTime(MINUTES.toMinutes(1));
 		setWalkingSpeed(4.5f);
-		setInitialAllottedWalkTime(5);
+		setTotalAllottedTime(MINUTES.toMinutes(25));
+		setInitialAllottedWalkTime(MINUTES.toMinutes(10));
 	}
+
 	public DistanceMapGeneratorConfig(DistanceMapGeneratorConfig config) {
-		this.intraStationInterchangeTime = config.intraStationInterchangeTime;
-		this.platformToStreetTime = config.platformToStreetTime;
-		this.walkingSpeed = config.walkingSpeed;
-		this.tubingStrategy = config.tubingStrategy;
-		this.totalAllottedTime = config.totalAllottedTime;
-		this.allowIntraStationInterchange = config.allowIntraStationInterchange;
-		this.allowInterStationInterchange = config.allowInterStationInterchange;
-		this.initialAllottedWalkTime = config.initialAllottedWalkTime;
+		set(config);
+	}
+
+	public void set(DistanceMapGeneratorConfig other) {
+		this.intraStationInterchangeTime = other.intraStationInterchangeTime;
+		this.platformToStreetTime = other.platformToStreetTime;
+		this.walkingSpeed = other.walkingSpeed;
+		this.tubingStrategy = other.tubingStrategy;
+		this.totalAllottedTime = other.totalAllottedTime;
+		this.allowIntraStationInterchange = other.allowIntraStationInterchange;
+		this.allowInterStationInterchange = other.allowInterStationInterchange;
+		this.initialAllottedWalkTime = other.initialAllottedWalkTime;
 	}
 
 	/**
@@ -66,8 +70,7 @@ public class DistanceMapGeneratorConfig {
 	 * @see #TIME_TRANSFER_MIN
 	 * @see #TIME_TRANSFER_MAX
 	 */
-	public DistanceMapGeneratorConfig setIntraStationInterchangeTime(
-			@FloatRange(from = TIME_TRANSFER_MIN, to = TIME_TRANSFER_MAX) float transferTime) {
+	public DistanceMapGeneratorConfig setIntraStationInterchangeTime(float transferTime) {
 		this.intraStationInterchangeTime = transferTime;
 		return this;
 	}
@@ -77,8 +80,7 @@ public class DistanceMapGeneratorConfig {
 	 * @see #TIME_PLATFORM_TO_STREET_MIN
 	 * @see #TIME_PLATFORM_TO_STREET_MAX
 	 */
-	public DistanceMapGeneratorConfig setPlatformToStreetTime(
-			@FloatRange(from = TIME_PLATFORM_TO_STREET_MIN, to = TIME_PLATFORM_TO_STREET_MAX) float transferTime) {
+	public DistanceMapGeneratorConfig setPlatformToStreetTime(float transferTime) {
 		this.platformToStreetTime = transferTime;
 		return this;
 	}
@@ -91,8 +93,7 @@ public class DistanceMapGeneratorConfig {
 	 * @see #SPEED_ON_FOOT_MIN
 	 * @see #SPEED_ON_FOOT_MAX
 	 */
-	public DistanceMapGeneratorConfig setWalkingSpeed(
-			@FloatRange(from = SPEED_ON_FOOT_MIN, to = SPEED_ON_FOOT_MAX) float speed) {
+	public DistanceMapGeneratorConfig setWalkingSpeed(float speed) {
 		this.walkingSpeed = speed;
 		return this;
 	}
@@ -111,8 +112,7 @@ public class DistanceMapGeneratorConfig {
 	 * @see #MINUTES_MIN
 	 * @see #MINUTES_MAX
 	 */
-	public DistanceMapGeneratorConfig setTotalAllottedTime(
-			@FloatRange(from = MINUTES_MIN, to = MINUTES_MAX, fromInclusive = false) float minutes) {
+	public DistanceMapGeneratorConfig setTotalAllottedTime(float minutes) {
 		this.totalAllottedTime = minutes;
 		return this;
 	}
@@ -144,8 +144,7 @@ public class DistanceMapGeneratorConfig {
 	 * @see #START_WALK_MIN
 	 * @see #START_WALK_MAX
 	 */
-	public DistanceMapGeneratorConfig setInitialAllottedWalkTime(
-			@FloatRange(from = START_WALK_MIN, to = START_WALK_MAX, fromInclusive = false) float transferTime) {
+	public DistanceMapGeneratorConfig setInitialAllottedWalkTime(float transferTime) {
 		this.initialAllottedWalkTime = transferTime;
 		return this;
 	}
