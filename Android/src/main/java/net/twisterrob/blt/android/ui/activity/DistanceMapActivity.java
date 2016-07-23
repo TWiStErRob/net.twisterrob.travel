@@ -5,7 +5,7 @@ import java.util.*;
 import org.slf4j.*;
 
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
+import android.graphics.*;
 import android.os.*;
 import android.preference.PreferenceManager;
 import android.support.annotation.*;
@@ -43,8 +43,6 @@ import static net.twisterrob.blt.android.R.id.*;
 public class DistanceMapActivity extends AppCompatActivity {
 	private static final Logger LOG = LoggerFactory.getLogger(DistanceMapActivity.class);
 
-	private static final int MAP_PADDING = 50;
-
 	private GoogleMap map;
 	private DistanceMapGeneratorConfig distanceConfig = new DistanceMapGeneratorConfig()
 			.setInitialAllottedWalkTime(10)
@@ -69,6 +67,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 		SupportMapFragment mapFragment = (SupportMapFragment)fm.findFragmentById(R.id.map);
 		map = mapFragment.getMap();
 		map.setMyLocationEnabled(true);
+		zoomFullLondon();
 		class MapInteractorListener implements OnMapClickListener, OnMarkerClickListener, OnMapLongClickListener {
 			private Marker currentMarker;
 			@Override public void onMapLongClick(LatLng latlng) {
@@ -104,7 +103,6 @@ public class DistanceMapActivity extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 //		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //		getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_launcher);
-		updateToolbarVisibility();
 		drawers = (ClickThroughDrawerLayout)findViewById(drawer);
 		drawers.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			@SuppressWarnings("deprecation")
@@ -140,6 +138,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 			}
 		});
 
+		updateToolbarVisibility();
 		new AsyncTask<Void, Void, Set<NetworkNode>>() {
 			@Override protected Set<NetworkNode> doInBackground(Void... params) {
 				return App.getInstance().getDataBaseHelper().getTubeNetwork();
@@ -151,15 +150,22 @@ public class DistanceMapActivity extends AppCompatActivity {
 		}.execute((Void[])null);
 	}
 
+	private void zoomFullLondon() {
+		LatLngBounds fullLondon = new LatLngBounds(new LatLng(51.342889, -0.611361), new LatLng(51.705232, 0.251388));
+		Point screen = AndroidTools.getScreenSize(getWindowManager().getDefaultDisplay());
+		map.moveCamera(CameraUpdateFactory.newLatLngBounds(fullLondon, screen.x, screen.y, 0));
+		// TODO map.moveCamera(CameraUpdateFactory.zoomIn()); // currently doesn't work maybe after updating play
+	}
+
 	public void updateToolbarVisibility() {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		boolean showToolbar = prefs.getBoolean("showToolbar", true);
 		final View container = findViewById(R.id.toolbar_container);
 		AndroidTools.displayedIf(container, showToolbar);
-		container.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+		drawers.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			@SuppressWarnings("deprecation")
 			@Override public void onGlobalLayout() {
-				container.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+				drawers.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 				View bottomMostTopView = findViewById(R.id.toolbar_container);
 				View topMostBottomView = findViewById(R.id.fab);
 				int topMargin = bottomMostTopView.getBottom() + AndroidTools.getBottomMargin(bottomMostTopView);
@@ -214,8 +220,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 		LOG.trace("setNodes(nodes:{})", tubeNetwork.size());
 		// TODO move to BG thread
 		DistanceMapDrawerAndroid distanceMapDrawer = new DistanceMapDrawerAndroid(tubeNetwork, drawConfig);
-		CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(distanceMapDrawer.getBounds(), MAP_PADDING);
-		map.moveCamera(cu);
+//		map.moveCamera(CameraUpdateFactory.newLatLngBounds(distanceMapDrawer.getBounds(), 0)); // disabled for now
 		// distance map below
 		Bitmap emptyMap = distanceMapDrawer.draw(Collections.<NetworkNode, Double>emptyMap());
 		distanceMapOverlay = map.addGroundOverlay(new GroundOverlayOptions()
