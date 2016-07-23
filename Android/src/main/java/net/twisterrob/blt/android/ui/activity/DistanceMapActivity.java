@@ -4,17 +4,20 @@ import java.util.*;
 
 import org.slf4j.*;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.*;
 import android.preference.PreferenceManager;
 import android.support.annotation.*;
 import android.support.design.widget.*;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.*;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Toast;
@@ -57,6 +60,8 @@ public class DistanceMapActivity extends AppCompatActivity {
 	private LatLng lastStartPoint;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
+		int statusBarColor = ColorUtils.setAlphaComponent(ContextCompat.getColor(this, R.color.accent), 0x66);
+		AndroidTools.setTranslucentStatusBar(getWindow(), statusBarColor);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_distance_map);
 
@@ -64,7 +69,6 @@ public class DistanceMapActivity extends AppCompatActivity {
 		SupportMapFragment mapFragment = (SupportMapFragment)fm.findFragmentById(R.id.map);
 		map = mapFragment.getMap();
 		map.setMyLocationEnabled(true);
-		map.getUiSettings().setZoomControlsEnabled(false);
 		class MapInteractorListener implements OnMapClickListener, OnMarkerClickListener, OnMapLongClickListener {
 			private Marker currentMarker;
 			@Override public void onMapLongClick(LatLng latlng) {
@@ -95,8 +99,12 @@ public class DistanceMapActivity extends AppCompatActivity {
 		map.setOnMapLongClickListener(listener);
 		map.setOnMarkerClickListener(listener);
 
+		AndroidTools.accountForStatusBar(findViewById(R.id.toolbar_container));
 		Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+//		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//		getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_launcher);
+		updateToolbarVisibility();
 		drawers = (ClickThroughDrawerLayout)findViewById(drawer);
 		drawers.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			@SuppressWarnings("deprecation")
@@ -141,6 +149,38 @@ public class DistanceMapActivity extends AppCompatActivity {
 				setNodes(nodes);
 			}
 		}.execute((Void[])null);
+	}
+
+	public void updateToolbarVisibility() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		boolean showToolbar = prefs.getBoolean("showToolbar", true);
+		final View container = findViewById(R.id.toolbar_container);
+		AndroidTools.displayedIf(container, showToolbar);
+		container.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			@SuppressWarnings("deprecation")
+			@Override public void onGlobalLayout() {
+				container.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+				View bottomMostTopView = findViewById(R.id.toolbar_container);
+				View topMostBottomView = findViewById(R.id.fab);
+				int topMargin = bottomMostTopView.getBottom() + AndroidTools.getBottomMargin(bottomMostTopView);
+				int bottomMargin = topMostBottomView.getTop() - AndroidTools.getTopMargin(topMostBottomView);
+				bottomMargin = ((View)topMostBottomView.getParent()).getHeight() - bottomMargin;
+				int statusBar = AndroidTools.getStatusBarHeight(DistanceMapActivity.this);
+				map.setPadding(
+						0, // left
+						bottomMostTopView.getVisibility() != View.GONE? topMargin : statusBar, // top 
+						0, // right
+						topMostBottomView.getVisibility() != View.GONE? bottomMargin : 0 // bottom
+				);
+			}
+		});
+	}
+
+	@Override public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		getMenuInflater().inflate(R.menu.options_distance_map, menu);
+//		AndroidTools.prepareSearch(this, menu, R.id.menu$options$search);
+		return true;
 	}
 
 	@Override public void onBackPressed() {

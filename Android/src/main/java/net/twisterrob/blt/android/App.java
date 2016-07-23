@@ -40,6 +40,7 @@ public class App extends android.app.Application {
 		super.onCreate();
 		AndroidTools.setContext(this);
 		LibContextProvider.setApplicationContext(this);
+//		com.facebook.stetho.Stetho.initializeWithDefaults(this);
 		DataBaseHelper db = m_dataBaseHelper = new DataBaseHelper(this);
 		db.openDB();
 		m_static = new AndroidDBStaticData(db);

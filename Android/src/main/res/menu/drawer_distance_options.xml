@@ -45,6 +45,10 @@
 				android:id="@+id/distance_ui_show_stations"
 				android:title="@string/distance_ui_show_stations"
 				app:actionLayout="@layout/menu_widget_boolean" />
+			<item
+				android:id="@+id/distance_ui_show_toolbar"
+				android:title="@string/distance_ui_show_toolbar"
+				app:actionLayout="@layout/menu_widget_boolean" />
 		</menu>
 	</item>
 </menu>

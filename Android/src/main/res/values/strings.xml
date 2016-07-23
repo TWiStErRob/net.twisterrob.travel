@@ -102,4 +102,10 @@
 	This is useful if you have a small screen and want to play around with the options.
 	Disable to give more space for the map.
 	]]></string>
+
+	<string name="distance_ui_show_toolbar">Show toolbar</string>
+	<string name="distance_ui_show_toolbar_tooltip" process="HtmlParser"><![CDATA[
+	<b>Do you want to use the floating toolbar?</b>
+	(<i>options are yes/no</i>)
+	]]></string>
 </resources>

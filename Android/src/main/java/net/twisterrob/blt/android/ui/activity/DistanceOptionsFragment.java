@@ -57,6 +57,7 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 		super.onViewCreated(view, savedInstanceState);
 		nav = (NavigationView)view.findViewById(R.id.navigation_view);
 		nav.setNavigationItemSelectedListener(this);
+		AndroidTools.accountForStatusBar(nav.getHeaderView(0));
 
 		CompoundButton showNearestStations = getAction(R.id.distance_ui_show_stations);
 		showNearestStations.setChecked(prefs.getBoolean("showNearest", true));
@@ -64,6 +65,16 @@ public class DistanceOptionsFragment extends Fragment implements OnNavigationIte
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (prefs.getBoolean("showNearest", true) != isChecked) {
 					prefs.edit().putBoolean("showNearest", isChecked).apply();
+				}
+			}
+		});
+		CompoundButton showFloatingToolbar = getAction(R.id.distance_ui_show_toolbar);
+		showFloatingToolbar.setChecked(prefs.getBoolean("showToolbar", true));
+		showFloatingToolbar.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if (prefs.getBoolean("showToolbar", true) != isChecked) {
+					prefs.edit().putBoolean("showToolbar", isChecked).apply();
+					((DistanceMapActivity)getActivity()).updateToolbarVisibility();
 				}
 			}
 		});
