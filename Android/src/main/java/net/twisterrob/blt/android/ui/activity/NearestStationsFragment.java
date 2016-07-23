@@ -2,6 +2,8 @@ package net.twisterrob.blt.android.ui.activity;
 
 import java.util.*;
 
+import static java.util.concurrent.TimeUnit.*;
+
 import org.slf4j.*;
 
 import android.content.Context;
@@ -17,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng;
 import net.twisterrob.android.utils.concurrent.SimpleSafeAsyncTask;
 import net.twisterrob.android.utils.tools.AndroidTools;
 import net.twisterrob.android.utils.tostring.stringers.name.AddressNameStringer;
+import net.twisterrob.android.view.AutomatedViewSwitcher;
 import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.db.model.*;
@@ -28,6 +31,7 @@ import net.twisterrob.java.utils.tostring.*;
 public class NearestStationsFragment extends Fragment {
 	private static final Logger LOG = LoggerFactory.getLogger(NearestStationsFragment.class);
 	private TextSwitcher droppedPin;
+	private AutomatedViewSwitcher droppedPinAutomation;
 	private ViewGroup nearestStations;
 	private LatLng lastStartPoint;
 	private GeocoderTask m_geocoderTask;
@@ -40,6 +44,7 @@ public class NearestStationsFragment extends Fragment {
 		droppedPin = (TextSwitcher)view.findViewById(R.id.distance_map_dropped_pin);
 		droppedPin.setInAnimation(getContext(), android.R.anim.fade_in);
 		droppedPin.setOutAnimation(getContext(), android.R.anim.fade_out);
+		droppedPinAutomation = new AutomatedViewSwitcher(droppedPin, SECONDS.toMillis(3), SECONDS.toMillis(15));
 		nearestStations = (ViewGroup)view.findViewById(R.id.layout$distance_map$nearest_stations);
 		nearestStations.removeAllViews();
 	}
@@ -69,12 +74,12 @@ public class NearestStationsFragment extends Fragment {
 		LOG.trace("updateLocationInternal: {}, address: {}, task: {}",
 				latlng, address != null? "<received>" : null, AndroidTools.toString(m_geocoderTask));
 		String addressString = LocationUtils.getVagueAddress(address);
-		if (addressString == null) {
-			String pin = String.format(Locale.getDefault(),
-					"Location at %.4f, %.4f", latlng.latitude, latlng.longitude);
-			droppedPin.setCurrentText(pin);
-		} else {
+		String pin = String.format(Locale.getDefault(), "Location at %.4f, %.4f", latlng.latitude, latlng.longitude);
+		droppedPinAutomation.stop();
+		droppedPin.setCurrentText(pin);
+		if (addressString != null) {
 			droppedPin.setText(addressString);
+			droppedPinAutomation.start();
 		}
 	}
 	public void updateNearestStations(Collection<NetworkNode> startNodes) {
