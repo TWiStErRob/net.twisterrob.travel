@@ -28,7 +28,6 @@ public class MainActivity extends BaseActivity {
 					intent.putExtra(PredictionSummaryActivity.EXTRA_LINE, Line.District);
 				}
 			},
-			new LauncherItem(R.string.launcher_station_map, StationMapActivity.class),
 			new LauncherItem(R.string.launcher_station_info, StationInfoActivity.class) {
 				@Override void addIntentParams(Intent intent) {
 					super.addIntentParams(intent);

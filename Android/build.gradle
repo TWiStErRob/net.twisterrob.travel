@@ -34,8 +34,6 @@ dependencies {
 }
 
 android {
-	// STOPSHIP Maps API v1 was deprecated 2012: https://developers.google.com/maps/documentation/android-api/v1/
-	compileSdkVersion "Google Inc.:Google APIs:23"
 	defaultConfig {
 		applicationId 'net.twisterrob.blt'
 		version {
@@ -44,11 +42,6 @@ android {
 		}
 	}
 	buildTypes {
-		// STOPSHIP Maps API v1 was deprecated 2012: https://developers.google.com/maps/documentation/android-api/v1/
-		deprecated {
-			initWith debug
-			applicationIdSuffix '.android'
-		}
 		release {
 			minifyEnabled false
 		}

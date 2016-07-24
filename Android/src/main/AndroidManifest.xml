@@ -30,10 +30,6 @@
 		android:largeHeap="true"
 		android:theme="@style/AppTheme.Default">
 
-		<!-- TODO Maps API v1 was deprecated 2012: https://developers.google.com/maps/documentation/android-api/v1/ -->
-		<!-- Maps API v1 required -->
-		<uses-library android:name="com.google.android.maps" android:required="false" />
-
 		<meta-data
 			android:name="com.google.android.geo.API_KEY"
 			android:value="@string/gms_key_geo" />
@@ -95,15 +91,6 @@
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="net.twisterrob.blt.android.ui.activity.StationListActivity" />
-		</activity>
-
-		<activity
-			android:name=".ui.activity.StationMapActivity"
-			android:enabled="@bool/in_test"
-			android:label="@string/launcher_station_map">
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="net.twisterrob.blt.android.ui.activity.main.MainActivity" />
 		</activity>
 
 		<activity

@@ -9,7 +9,6 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.*;
 
-import net.twisterrob.android.utils.LibContextProvider;
 import net.twisterrob.android.utils.concurrent.MailSenderAsyncTask;
 import net.twisterrob.android.utils.tools.AndroidTools;
 import net.twisterrob.android.utils.tostring.stringers.detailed.*;
@@ -49,7 +48,6 @@ public class App extends android.app.Application {
 		StringerRepo.INSTANCE.register(LatLng.class, new LatLngStringer());
 		StringerRepo.INSTANCE.register(LatLngBounds.class, new LatLngBoundsStringer());
 		AndroidTools.setContext(this);
-		LibContextProvider.setApplicationContext(this);
 //		com.facebook.stetho.Stetho.initializeWithDefaults(this);
 		DataBaseHelper db = m_dataBaseHelper = new DataBaseHelper(this);
 		db.openDB();
