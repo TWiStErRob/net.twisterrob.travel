@@ -7,7 +7,6 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="?android:windowBackground"
-	android:maxWidth="320dp"
 	app:headerLayout="@layout/fragment_distance_options_header"
 	app:menu="@menu/drawer_distance_options"
 	tools:layout_gravity="end"

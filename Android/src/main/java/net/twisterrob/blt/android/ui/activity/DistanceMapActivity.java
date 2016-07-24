@@ -32,7 +32,6 @@ import com.google.android.gms.maps.model.Marker;
 import net.twisterrob.android.utils.concurrent.SimpleAsyncTask;
 import net.twisterrob.android.utils.tools.AndroidTools;
 import net.twisterrob.android.view.*;
-import net.twisterrob.android.view.ViewProvider.StaticViewProvider;
 import net.twisterrob.android.view.layout.DoAfterLayout;
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.data.LocationUtils;
@@ -133,7 +132,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 		behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 		behavior.setBottomSheetCallback(new MultiBottomSheetCallback.Builder()
 				//.add(new LoggingBottomSheetCallback())
-				.add(new ShowOnlyWhenSheetHidden(new StaticViewProvider(fab)))
+				.add(new ShowOnlyWhenSheetNotExpandedFAB(fab))
 				//.add(new BottomMarginAdjuster(new SupportFragmentViewProvider(mapFragment), false))
 				.build());
 		fab.setOnClickListener(new OnClickListener() {
@@ -180,7 +179,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 
 	public void updateToolbarVisibility() {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		boolean showToolbar = prefs.getBoolean("showToolbar", false);
+		boolean showToolbar = prefs.getBoolean("showToolbar", true);
 		final View container = findViewById(R.id.toolbar_container);
 		AndroidTools.displayedIf(container, showToolbar);
 		new DoAfterLayout(drawers, true) {
@@ -330,13 +329,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 	private void updateNearestStations(Collection<NetworkNode> startNodes) {
 		nearestFragment.updateNearestStations(startNodes, distanceConfig);
 		if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("showNearest", true)) {
-			// force the UI to become collapsed, this post-hack gives the most consistent results
-			behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-			getWindow().getDecorView().post(new Runnable() {
-				@Override public void run() {
-					behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-				}
-			});
+			behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 		}
 	}
 

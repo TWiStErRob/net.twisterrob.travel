@@ -76,7 +76,7 @@ public class NearestStationsFragment extends Fragment {
 		LOG.trace("updateLocationInternal: {}, address: {}, task: {}",
 				latlng, address != null? "<received>" : null, AndroidTools.toString(m_geocoderTask));
 		String addressString = LocationUtils.getVagueAddress(address);
-		String pin = String.format(Locale.getDefault(), "Location at %.4f, %.4f", latlng.latitude, latlng.longitude);
+		String pin = String.format(Locale.getDefault(), "Near %.4f, %.4f", latlng.latitude, latlng.longitude);
 		droppedPinAutomation.stop();
 		droppedPin.setCurrentText(pin);
 		if (addressString != null) {

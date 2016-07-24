@@ -88,30 +88,29 @@
 			android:id="@+id/fab"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_gravity="bottom|end"
-			android:layout_marginLeft="-12dp"
-			android:layout_marginStart="-12dp"
-			android:layout_marginTop="-18dp"
-			android:layout_marginRight="12dp"
-			android:layout_marginEnd="12dp"
-			android:layout_marginBottom="12dp"
 			android:src="@android:drawable/ic_menu_preferences"
-			fab:fabSize="normal"
+			android:tint="?colorAccent"
+			fab:fabSize="mini"
 			fab:useCompatPadding="true"
-			tools:ignore="NegativeMargin"
+			fab:backgroundTint="?colorPrimary"
+			coordinator:layout_anchor="@+id/distance_bottom_sheet"
+			coordinator:layout_anchorGravity="top|end"
 			/>
 
+		<!-- peekHeight = actionBarSize (56dp) + 1.5 * item_station height (~40dp) -->
 		<fragment
 			android:id="@+id/distance_bottom_sheet"
 			class="net.twisterrob.blt.android.ui.activity.NearestStationsFragment"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:elevation="4dp"
 			tools:layout="@layout/fragment_distance_nearest"
 			coordinator:behavior_hideable="true"
-			coordinator:behavior_skipCollapsed="true"
+			coordinator:behavior_skipCollapsed="false"
 			coordinator:layout_behavior="@string/bottom_sheet_behavior"
-			coordinator:behavior_peekHeight="160dp"
+			coordinator:behavior_peekHeight="116dp"
 			/>
+
 	</android.support.design.widget.CoordinatorLayout>
 
 	<fragment
@@ -121,6 +120,7 @@
 		android:layout_height="match_parent"
 		android:layout_gravity="end"
 		android:fitsSystemWindows="true"
+		android:maxWidth="320dp"
 		tools:layout_marginTop="@android:dimen/status_bar_height"
 		tools:layout="@layout/fragment_distance_options"
 		/>

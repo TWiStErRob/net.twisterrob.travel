@@ -87,12 +87,12 @@ public class DistanceOptionsFragment extends Fragment {
 		}).setChecked(prefs.getBoolean("showNearest", true));
 		bool(R.id.distance_ui_show_toolbar, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (prefs.getBoolean("showToolbar", false) != isChecked) {
+				if (prefs.getBoolean("showToolbar", true) != isChecked) {
 					prefs.edit().putBoolean("showToolbar", isChecked).apply();
 					((DistanceMapActivity)getActivity()).updateToolbarVisibility();
 				}
 			}
-		}).setChecked(prefs.getBoolean("showToolbar", false));
+		}).setChecked(prefs.getBoolean("showToolbar", true));
 
 		intraStation = bool(R.id.distance_config_interchange_intrastation, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
