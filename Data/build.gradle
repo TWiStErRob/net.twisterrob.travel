@@ -1,5 +1,5 @@
 // name = 'twister-travel-data'
-version ='0.0.1-SNAPSHOT'
+version = '0.0.1-SNAPSHOT'
 // <name>Better London Travel Data Generation</name>
 // <description>Standalone project to handle large feeds</description>
 
@@ -17,7 +17,7 @@ apply plugin: 'jetty'
 // -Dorg.mortbay.log.class=org.eclipse.jetty.util.log.StrErrLog changes the logger, but no output
 // --debug logs, but too much and not configurable
 JettyRun jettyRun = tasks[JettyPlugin.JETTY_RUN] as JettyRun
-jettyRun.classpath = files([]) // to prevent running :Data:classes task
+jettyRun.classpath = files([ ]) // to prevent running :Data:classes task
 jettyRun.daemon = true
 jettyRun.reload = JettyPlugin.RELOAD_MANUAL
 jettyRun.webAppSourceDirectory = file('src/data')
@@ -29,4 +29,31 @@ idea {
 	module {
 		excludeDirs = [ file('output'), file('src/data') ]
 	}
+}
+
+apply plugin: 'application'
+
+task runNetwork(type: JavaExec) {
+	group = ApplicationPlugin.APPLICATION_GROUP
+	classpath = sourceSets.main.runtimeClasspath
+	main = 'net.twisterrob.blt.data.apps.TravelNetworkParser'
+	enableAssertions = true
+}
+
+task runPostCode(type: JavaExec) {
+	group = ApplicationPlugin.APPLICATION_GROUP
+	classpath = sourceSets.main.runtimeClasspath
+	main = 'net.twisterrob.blt.data.apps.PostCodeAreas'
+	enableAssertions = true
+}
+
+task runDisplay(type: JavaExec) {
+	group = ApplicationPlugin.APPLICATION_GROUP
+	classpath = sourceSets.main.runtimeClasspath
+	main = 'net.twisterrob.blt.data.apps.DisplayLine'
+	args = [ 'DLR' ]
+	if (project.hasProperty('lines')) {
+		args = project.property('lines').toString().split(',') as List;
+	}
+	enableAssertions = true
 }

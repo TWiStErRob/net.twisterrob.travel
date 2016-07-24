@@ -113,15 +113,15 @@ public class RouteInfo {
 	public void analyze() {
 		Node first = nodes.values().iterator().next();
 		if (printProgress != null) {
-			System.out.printf(Locale.ROOT, "Starting from: %s\n", first);
+			System.out.printf(Locale.ROOT, "Starting from: %s%n", first);
 		}
 		dfs(first, 0);
 	}
 	protected void printGraph() {
 		for (Node node : nodes.values()) {
-			System.out.printf(Locale.ROOT, "%s(%s)\n", node, node.state);
+			System.out.printf(Locale.ROOT, "%s(%s)%n", node, node.state);
 			for (Entry<Node, State> edge : node.out.entrySet()) {
-				System.out.printf(Locale.ROOT, "\t%s --%s-> %s\n", node, edge.getValue(), edge.getKey());
+				System.out.printf(Locale.ROOT, "\t%s --%s-> %s%n", node, edge.getValue(), edge.getKey());
 			}
 		}
 	}
@@ -159,7 +159,7 @@ public class RouteInfo {
 			String padding = new String(new char[level]).replace("\0", printProgress);
 			State oldState = node.state;
 			String nodeName = node.data.getName();
-			System.out.printf(Locale.ROOT, "%snode (%s->%s): %s\n", padding, oldState, newState, nodeName);
+			System.out.printf(Locale.ROOT, "%snode (%s->%s): %s%n", padding, oldState, newState, nodeName);
 		}
 		node.state = newState;
 	}
@@ -168,7 +168,7 @@ public class RouteInfo {
 			String padding = new String(new char[level]).replace("\0", printProgress);
 			State oldState = edge.getValue();
 			Node toNode = edge.getKey();
-			System.out.printf(Locale.ROOT, "%sedge (%s->%s): %s to %s\n",
+			System.out.printf(Locale.ROOT, "%sedge (%s->%s): %s to %s%n",
 					padding, oldState, newState, fromNode, toNode);
 		}
 		edge.setValue(newState);
