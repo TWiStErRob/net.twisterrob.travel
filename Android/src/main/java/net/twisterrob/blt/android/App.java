@@ -5,12 +5,18 @@ import org.slf4j.impl.AndroidLoggerFactory;
 
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.maps.model.*;
+
 import net.twisterrob.android.utils.LibContextProvider;
 import net.twisterrob.android.utils.concurrent.MailSenderAsyncTask;
 import net.twisterrob.android.utils.tools.AndroidTools;
+import net.twisterrob.android.utils.tostring.stringers.detailed.*;
 import net.twisterrob.blt.android.data.*;
 import net.twisterrob.blt.android.db.DataBaseHelper;
 import net.twisterrob.blt.io.feeds.*;
+import net.twisterrob.java.utils.tostring.StringerRepo;
 
 public class App extends android.app.Application {
 	static {
@@ -38,6 +44,10 @@ public class App extends android.app.Application {
 	@Override public void onCreate() {
 		LOG.trace("App.onCreate()");
 		super.onCreate();
+		StringerRepo.INSTANCE.register(Status.class, new StatusStringer());
+		StringerRepo.INSTANCE.register(Place.class, new PlaceStringer());
+		StringerRepo.INSTANCE.register(LatLng.class, new LatLngStringer());
+		StringerRepo.INSTANCE.register(LatLngBounds.class, new LatLngBoundsStringer());
 		AndroidTools.setContext(this);
 		LibContextProvider.setApplicationContext(this);
 //		com.facebook.stetho.Stetho.initializeWithDefaults(this);

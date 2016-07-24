@@ -8,6 +8,7 @@
 	<application>
 		<!-- http://tools.android.com/tech-docs/new-build-system/user-guide/manifest-merger#TOC-All-Elements-removal -->
 		<!-- Start with a clean slate for this variant -->
+		<!-- FIXME ask SO about node=merge, maybe CommonsWare has some good input -->
 		<activity tools:node="removeAll" />
 		<!--<activity-alias tools:node="removeAll" />-->
 		<provider tools:node="removeAll" />
