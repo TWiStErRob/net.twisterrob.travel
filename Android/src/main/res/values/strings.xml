@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 	<string name="app_name">Better London Travel</string>
 	<string name="launcher_station_list">Station List</string>
 	<string name="launcher_station_map">Station Map</string>
@@ -17,8 +17,21 @@
 	</plurals>
 	<string name="prediction_approach_zero">%1$s has no trains approaching</string>
 	<string name="station_lines">%1$s: %2$s</string>
+	<!-- CONSIDER dynamic content description based on icon -->
+	<string name="station_operator_contentDescription">Station operator icon</string>
+	<string name="compass_directions">Directions</string>
+	<string name="compass_north">Northbound</string>
+	<string name="compass_south">Southbound</string>
+	<string name="compass_west">Westbound</string>
+	<string name="compass_east">Eastbound</string>
+	<string name="compass_center">Others</string>
 
 	<!-- Configuration Strings -->
+	<string name="distance_config_header_calculation">Distance Calculation</string>
+	<string name="distance_config_header_drawing">Map Drawing</string>
+	<string name="distance_config_header_ui">Interface Settings</string>
+	<string name="menu$option$distance_reset_distance">Reset distance calculation defaults</string>
+	<string name="menu$option$distance_reset_drawing">Reset drawing defaults</string>
 	<!-- If the below strings are injected as HTML make sure to set <station> as an inline element in the Code Style. -->
 	<string name="distance_config_journey_time">Journey time</string>
 	<string name="distance_config_journey_time_tooltip" process="HtmlParser"><![CDATA[
@@ -35,7 +48,7 @@
 	]]></string>
 
 	<string name="distance_config_interchange_interstation">Allow station interchange</string>
-	<string name="distance_config_interchange_interstation_tooltip" process="HtmlParser"><![CDATA[
+	<string name="distance_config_interchange_interstation_tooltip" process="HtmlParser" tools:ignore="TypographyQuotes"><![CDATA[
 	<b>When at a station, would you leave that station and walk to another nearby station?</b>
 	(<i>options are yes/no</i>)
 	Where there may be no nearby line interchanges possible, leaving the station may benefit your overall journey time.
@@ -86,7 +99,7 @@
 	]]></string>
 
 	<string name="distance_config_interchange_time">Interchange time</string>
-	<string name="distance_config_interchange_time_tooltip" process="HtmlParser"><![CDATA[
+	<string name="distance_config_interchange_time_tooltip" process="HtmlParser" tools:ignore="TypographyQuotes"><![CDATA[
 	<b>How long does it take, on average, to alight a train and board another one?</b>
 	(<i>measured in minutes</i>)
 	This only applies within a single station, without going to the street.

@@ -16,6 +16,7 @@
 
 package android.widget;
 
+import android.annotation.SuppressLint;
 import android.os.*;
 import android.util.Log;
 
@@ -33,6 +34,8 @@ import android.util.Log;
  *
  * @see android.widget.Filterable
  */
+@SuppressWarnings("all")
+@SuppressLint("all")
 public abstract class Filter {
     private static final String LOG_TAG = "Filter";
     

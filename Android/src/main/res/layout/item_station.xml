@@ -13,8 +13,9 @@
 		android:layout_height="30sp"
 		android:layout_gravity="center"
 		android:padding="2sp"
-		android:contentDescription="Station operator icon"
 		android:scaleType="fitXY"
+		android:contentDescription="@string/station_operator_contentDescription"
+		tools:ignore="contentDescription"
 		tools:src="@drawable/tfl_roundel_lul"
 		/>
 

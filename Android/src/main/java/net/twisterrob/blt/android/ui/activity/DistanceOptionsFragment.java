@@ -20,10 +20,11 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import net.twisterrob.android.content.HtmlParser;
 import net.twisterrob.android.utils.tools.AndroidTools;
 import net.twisterrob.android.utils.tools.AndroidTools.PopupCallbacks;
+import net.twisterrob.android.wiring.NumberPickerWidget;
+import net.twisterrob.android.wiring.NumberPickerWidget.OnValueChangeListener;
 import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.data.distance.*;
 import net.twisterrob.blt.android.ui.*;
-import net.twisterrob.blt.android.ui.NumberPickerWidget.OnValueChangeListener;
 
 public class DistanceOptionsFragment extends Fragment {
 	private static final Logger LOG = LoggerFactory.getLogger(DistanceOptionsFragment.class);

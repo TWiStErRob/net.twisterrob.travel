@@ -1,4 +1,4 @@
-package net.twisterrob.blt.android.ui;
+package net.twisterrob.android.wiring;
 
 import java.util.Locale;
 
@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
+import net.twisterrob.android.R;
 import net.twisterrob.android.utils.tools.AndroidTools.*;
 import net.twisterrob.android.view.RepeatListener;
-import net.twisterrob.blt.android.R;
 
 import static net.twisterrob.android.utils.tools.AndroidTools.*;
 

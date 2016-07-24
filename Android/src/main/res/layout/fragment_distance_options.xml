@@ -6,9 +6,10 @@
 	android:id="@+id/navigation_view"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="@android:color/white"
+	android:background="?android:windowBackground"
 	android:maxWidth="320dp"
-	tools:layout_gravity="end"
 	app:headerLayout="@layout/fragment_distance_options_header"
 	app:menu="@menu/drawer_distance_options"
+	tools:layout_gravity="end"
+	tools:ignore="Overdraw"
 	/>

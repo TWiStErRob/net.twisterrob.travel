@@ -11,6 +11,7 @@
 		<!-- FIXME ask SO about node=merge, maybe CommonsWare has some good input -->
 		<activity tools:node="removeAll" />
 		<!--<activity-alias tools:node="removeAll" />-->
+		<!--suppress ExportedContentProvider -->
 		<provider tools:node="removeAll" />
 		<!--<service tools:node="removeAll" />-->
 		<!--<receiver tools:node="removeAll" />-->

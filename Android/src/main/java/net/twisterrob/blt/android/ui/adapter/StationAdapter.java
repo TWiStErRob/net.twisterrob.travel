@@ -72,11 +72,20 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 		private void updateLineColors(List<Line> lines) {
 			LineColors colors = App.getInstance().getStaticData().getLineColors();
 			for (int i = 0; i < this.lines.length; ++i) {
-				int bg = Color.TRANSPARENT; // make it invisible by default
+				int bg;
+				String cd;
 				if (i < lines.size()) {
-					bg = lines.get(i).getBackground(colors);
+					Line line = lines.get(i);
+					bg = line.getBackground(colors);
+					cd = line.getTitle();
+				} else {
+					// hide it
+					bg = Color.TRANSPARENT;
+					cd = null;
 				}
-				this.lines[i].setBackgroundColor(bg);
+				View lineView = this.lines[i];
+				lineView.setBackgroundColor(bg);
+				lineView.setContentDescription(cd);
 			}
 		}
 	}

@@ -98,6 +98,7 @@
 			android:src="@android:drawable/ic_menu_preferences"
 			fab:fabSize="normal"
 			fab:useCompatPadding="true"
+			tools:ignore="NegativeMargin"
 			/>
 
 		<fragment

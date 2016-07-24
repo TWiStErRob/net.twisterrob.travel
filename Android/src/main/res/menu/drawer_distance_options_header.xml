@@ -4,10 +4,10 @@
 	>
 	<item
 		android:id="@+id/menu$option$distance_reset_distance"
-		android:title="Reset distance calculation defaults"
+		android:title="@string/menu$option$distance_reset_distance"
 		/>
 	<item
 		android:id="@+id/menu$option$distance_reset_drawing"
-		android:title="Reset drawing defaults"
+		android:title="@string/menu$option$distance_reset_drawing"
 		/>
 </menu>
