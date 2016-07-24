@@ -1,0 +1,12 @@
+INSERT INTO StopType (_id, name) VALUES(0, 'unknown');
+INSERT INTO StopType (_id, name) VALUES(1, 'Underground');
+INSERT INTO StopType (_id, name) VALUES(2, 'Overground');
+INSERT INTO StopType (_id, name) VALUES(3, 'DLR');
+INSERT INTO StopType (_id, name) VALUES(4, 'Tram');
+INSERT INTO StopType (_id, name) VALUES(5, 'Bus');
+INSERT INTO StopType (_id, name) VALUES(6, 'Rail');
+INSERT INTO StopType (_id, name) VALUES(7, 'Coach');
+INSERT INTO StopType (_id, name) VALUES(8, 'Taxi');
+INSERT INTO StopType (_id, name) VALUES(9, 'Water');
+INSERT INTO StopType (_id, name) VALUES(10, 'Cycle');
+INSERT INTO StopType (_id, name) VALUES(11, 'Air');

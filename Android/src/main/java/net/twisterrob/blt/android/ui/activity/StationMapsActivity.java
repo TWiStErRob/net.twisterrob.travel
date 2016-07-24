@@ -34,7 +34,7 @@ public class StationMapsActivity extends FragmentActivity {
 
 	private class LoadStationsTask extends AsyncTask<Void, Void, List<Station>> {
 		@Override protected List<Station> doInBackground(Void... params) {
-			return App.getInstance().getDataBaseHelper().getStations();
+			return App.db().getStations();
 		}
 		@Override protected void onPostExecute(List<Station> result) {
 			super.onPostExecute(result);

@@ -72,7 +72,7 @@ public class StationInfoActivity extends BaseActivity implements
 		// gather params
 		Intent intent = getIntent();
 		String name = (String)intent.getSerializableExtra(EXTRA_STATION_NAME);
-		m_station = App.getInstance().getDataBaseHelper().getStation(name);
+		m_station = App.db().getStation(name);
 
 		getSupportActionBar().setSubtitle(name);
 		((TextView)findViewById(R.id.text_station)).setText(name);

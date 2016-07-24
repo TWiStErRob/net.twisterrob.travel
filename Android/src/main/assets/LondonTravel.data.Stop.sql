@@ -103,8 +103,8 @@ insert into Stop(_id, name, type, latitude, longitude, precision, locality) valu
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1196191675, 'Elmers End', 4, 51.3979473901, -0.0499097179, 1, 'Elmers End');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-390477174, 'Elverson Road', 3, 51.4687110827, -0.0166864833, 1, 'Elverson Road');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1976934814, 'Embankment', 1, 51.5066718948, -0.1228547720, 1, 'Embankment');
-insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1384993313, 'Emirates Greenwich Peninsula', 10, 51.4998640807, 0.0080068087, 1, 'North Greenwich');
-insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1940297095, 'Emirates Royal Docks', 10, 51.5075221415, 0.0176526997, 1, 'Royal Victoria');
+insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(1384993313, 'Emirates Greenwich Peninsula', 11, 51.4998640807, 0.0080068087, 1, 'North Greenwich');
+insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(-1940297095, 'Emirates Royal Docks', 11, 51.5075221415, 0.0176526997, 1, 'Royal Victoria');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(2082286781, 'Epping', 1, 51.6934970052, 0.1137733313, 1, 'Epping');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(2087004368, 'Euston', 1, 51.5278218866, -0.1318459934, 1, 'Euston (London)');
 insert into Stop(_id, name, type, latitude, longitude, precision, locality) values(2127231629, 'Euston Square', 1, 51.5256291026, -0.1353234962, 1, 'Euston Square');

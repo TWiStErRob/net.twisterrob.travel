@@ -29,9 +29,8 @@ public class PostCodeAreas {
 		writeData(clusters);
 	}
 
-	protected static void writeData(Map<String, List<PostCode>> clusters) throws FileNotFoundException,
-			UnsupportedEncodingException {
-		try (PrintWriter out = new PrintWriter(STATIC_DATA.getOut("LondonTravel.v1.data-AreaHull.sql"), "utf-8")) {
+	protected static void writeData(Map<String, List<PostCode>> clusters) throws IOException {
+		try (PrintWriter out = new PrintWriter(STATIC_DATA.getOut("LondonTravel.data.AreaHull.sql"), "utf-8")) {
 			for (Entry<String, List<PostCode>> cluster : clusters.entrySet()) {
 				String area = cluster.getKey();
 				Location center = ConvexHull.center(cluster.getValue(), POSER);

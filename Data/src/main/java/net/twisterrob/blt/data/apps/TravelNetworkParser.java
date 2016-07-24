@@ -90,9 +90,33 @@ public class TravelNetworkParser {
 		Map<StopPoint, Set<Line>> stops = getStopsAndLines(feeds);
 		Map<Line, Map<String, String>> stationCodes = getStationCodes(lines);
 
+		writeEnum(StopType.class);
+		writeEnum(Line.class);
+		writeStops(lines, stops, stationCodes);
+		writeDistances(feeds, stops);
+		writeRoutes(feeds);
+	}
+
+	private static <T extends Enum<T>> void writeEnum(
+			Class<T> enumClass
+	) throws IOException {
+		try (PrintWriter out = out("LondonTravel.data." + enumClass.getSimpleName() + ".sql")) {
+			LOG.info("Writing enum table contents for {}: {}", enumClass.getSimpleName(), enumClass.getEnumConstants());
+			for (T value : enumClass.getEnumConstants()) {
+				out.printf(Locale.ROOT, "INSERT INTO %1$s (_id, name) VALUES(%2$d, '%3$s');\n",
+						enumClass.getSimpleName(), value.ordinal(), value.name());
+			}
+		}
+	}
+
+	private static void writeStops(
+			Collection<Line> lines,
+			Map<StopPoint, Set<Line>> stops,
+			Map<Line, Map<String, String>> stationCodes
+	) throws IOException {
 		try (
-				PrintWriter outStop = out("LondonTravel.v1.data-Stop.sql");
-				PrintWriter outLineStop = out("LondonTravel.v1.data-Line_Stop.sql")
+				PrintWriter outStop = out("LondonTravel.data.Stop.sql");
+				PrintWriter outLineStop = out("LondonTravel.data.Line_Stop.sql")
 		) {
 			LOG.info("Writing Stop and Line_Stop table contents for {}", lines);
 			for (Entry<StopPoint, Set<Line>> entry : stops.entrySet()) {
@@ -117,7 +141,13 @@ public class TravelNetworkParser {
 				}
 			}
 		}
-		try (PrintWriter dist = out("LondonTravel.v1.data-StopDistance.sql")) {
+	}
+
+	private static void writeDistances(
+			Map<Line, JourneyPlannerTimetableFeed> feeds,
+			Map<StopPoint, Set<Line>> stops
+	) throws IOException {
+		try (PrintWriter dist = out("LondonTravel.data.StopDistance.sql")) {
 			LOG.info("Writing StopDistance table contents for {}", feeds.keySet());
 			for (Entry<StopPoint, Set<Line>> fromEntry : stops.entrySet()) {
 				StopPoint from = fromEntry.getKey();
@@ -136,12 +166,17 @@ public class TravelNetworkParser {
 				}
 			}
 		}
+	}
+
+	private static void writeRoutes(
+			Map<Line, JourneyPlannerTimetableFeed> feeds
+	) throws IOException {
 		try (
-				PrintWriter outRoute = out("LondonTravel.v1.data-Route.sql");
-				PrintWriter outSection = out("LondonTravel.v1.data-Section.sql");
-				PrintWriter outLink = out("LondonTravel.v1.data-Link.sql");
-				PrintWriter outRouteSection = out("LondonTravel.v1.data-Route_Section.sql");
-				PrintWriter outSectionLink = out("LondonTravel.v1.data-Section_Link.sql")
+				PrintWriter outRoute = out("LondonTravel.data.Route.sql");
+				PrintWriter outSection = out("LondonTravel.data.Section.sql");
+				PrintWriter outLink = out("LondonTravel.data.Link.sql");
+				PrintWriter outRouteSection = out("LondonTravel.data.Route_Section.sql");
+				PrintWriter outSectionLink = out("LondonTravel.data.Section_Link.sql")
 		) {
 			LOG.info("Writing Route, Section, Link table contents for {}", feeds.keySet());
 			for (Entry<Line, JourneyPlannerTimetableFeed> entry : feeds.entrySet()) {
@@ -174,17 +209,18 @@ public class TravelNetworkParser {
 			}
 		}
 	}
+
 	private static PrintWriter out(String fileName) throws FileNotFoundException, UnsupportedEncodingException {
 		return new PrintWriter(STATIC_DATA.getOut(fileName), "utf-8");
 	}
-	protected static void writeStopLine(PrintWriter out, StopPoint stop, Line line, String code) {
+	private static void writeStopLine(PrintWriter out, StopPoint stop, Line line, String code) {
 		LOG.trace("StopLine: Line {}, station {} ({}), code {}", line, stop.getName(), stop.getName().hashCode(), code);
 		code = code == null? "NULL" : "'" + code + "'";
 		out.printf(Locale.ROOT, "insert into Line_Stop(line, stop, code) values(%1$d, %2$d, %3$s);\n",
 				line.ordinal(), stop.getName().hashCode(), code);
 	}
 
-	protected static void writeStop(PrintWriter out, StopPoint stop, StopType stopType) {
+	private static void writeStop(PrintWriter out, StopPoint stop, StopType stopType) {
 		LOG.trace("Stop {} ({}): {}", stop.getName(), stop.getName().hashCode(), stop);
 		out.printf(Locale.ROOT, "insert into Stop(_id, name, type, latitude, longitude, precision, locality) "
 						+ "values(%1$d, '%2$s', %7$d, %3$.10f, %4$.10f, %5$d, '%6$s');\n", stop.getName().hashCode(),

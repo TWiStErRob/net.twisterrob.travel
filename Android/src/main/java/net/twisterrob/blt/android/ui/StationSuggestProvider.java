@@ -128,7 +128,7 @@ public class StationSuggestProvider extends ContentProvider {
 				}
 				query = query.toLowerCase();
 				LOG.debug("Search suggestions requested: {}", query);
-				List<Station> stations = App.getInstance().getDataBaseHelper().getStations();
+				List<Station> stations = App.db().getStations();
 				for (Iterator<Station> it = stations.iterator(); it.hasNext(); ) {
 					Station station = it.next();
 					if (!station.getName().toLowerCase().contains(query)) {

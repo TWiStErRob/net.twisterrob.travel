@@ -160,7 +160,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 		updateToolbarVisibility();
 		new AsyncTask<Void, Void, Set<NetworkNode>>() {
 			@Override protected Set<NetworkNode> doInBackground(Void... params) {
-				return App.getInstance().getDataBaseHelper().getTubeNetwork();
+				return App.db().getTubeNetwork();
 			}
 			@Override protected void onPostExecute(Set<NetworkNode> nodes) {
 				super.onPostExecute(nodes);

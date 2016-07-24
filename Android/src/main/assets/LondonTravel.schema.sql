@@ -1,6 +1,3 @@
-BEGIN TRANSACTION;
-
-
 CREATE TABLE IF NOT EXISTS StopType (
 	_id                 INTEGER            NOT NULL, -- StopType.ordinal()
 	name                NVARCHAR           NOT NULL UNIQUE, -- StopType.name()
@@ -95,5 +92,3 @@ CREATE TABLE IF NOT EXISTS AreaHull (
 	longitude           REAL               NOT NULL,
 	PRIMARY KEY(area_code, hull_index)
 );
-
-END TRANSACTION;

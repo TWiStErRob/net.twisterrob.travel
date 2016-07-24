@@ -36,7 +36,7 @@ public class PostCodesActivity extends FragmentActivity {
 
 	private class LoadPostCodesTask extends AsyncTask<Void, Void, Map<String, List<AreaHullPoint>>> {
 		@Override protected Map<String, List<AreaHullPoint>> doInBackground(Void... params) {
-			return App.getInstance().getDataBaseHelper().getAreas();
+			return App.db().getAreas();
 		}
 		@Override protected void onPostExecute(Map<String, List<AreaHullPoint>> result) {
 			super.onPostExecute(result);
