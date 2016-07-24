@@ -16,19 +16,19 @@ import net.twisterrob.blt.android.db.model.AreaHullPoint;
 import net.twisterrob.java.model.Location;
 
 public class PostCodesActivity extends FragmentActivity {
-	private GoogleMap m_map;
+	private GoogleMap map;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_stations_map_v2);
+		setContentView(R.layout.activity_stations_map);
 
 		SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
 		mapFragment.getMapAsync(new OnMapReadyCallback() {
 			@Override public void onMapReady(GoogleMap map) {
-				m_map = map;
-				m_map.setMyLocationEnabled(true);
+				PostCodesActivity.this.map = map;
+				map.setMyLocationEnabled(true);
 				LatLng cityOfLondon = new LatLng(51.512161, -0.090981);
-				m_map.moveCamera(CameraUpdateFactory.newLatLngZoom(cityOfLondon, 13));
+				map.moveCamera(CameraUpdateFactory.newLatLngZoom(cityOfLondon, 13));
 				new LoadPostCodesTask().execute((Void[])null);
 			}
 		});
@@ -40,9 +40,6 @@ public class PostCodesActivity extends FragmentActivity {
 		}
 		@Override protected void onPostExecute(Map<String, List<AreaHullPoint>> result) {
 			super.onPostExecute(result);
-
-			@SuppressWarnings("synthetic-access")
-			GoogleMap map = m_map;
 
 			float[] hsv = {0, 1, 1};
 			float[] hues = {

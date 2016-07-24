@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 	<string name="app_name">Better London Travel</string>
 	<string name="launcher_station_list">Station List</string>
-	<string name="launcher_station_map_v2">Station Map V2</string>
+	<string name="launcher_station_map">Station Map</string>
 	<string name="launcher_station_info">Station Info</string>
 	<string name="launcher_postcode_map">PostCode Map</string>
 	<string name="launcher_distance_map">Distance Map</string>

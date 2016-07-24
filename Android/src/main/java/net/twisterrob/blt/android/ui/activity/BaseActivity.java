@@ -7,7 +7,7 @@ import android.widget.ListView;
 
 import net.twisterrob.blt.android.R;
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 	@Override public void setContentView(@LayoutRes int layoutResID) {
 		super.setContentView(R.layout.activity_common);
 		ViewGroup content = (ViewGroup)findViewById(R.id.layout$common_content);
