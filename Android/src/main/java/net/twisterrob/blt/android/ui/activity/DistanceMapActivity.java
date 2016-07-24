@@ -21,6 +21,9 @@ import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.*;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.GoogleMap.*;
 import com.google.android.gms.maps.model.*;
@@ -54,6 +57,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 	private Set<NetworkNode> tubeNetwork;
 	private DrawAsyncTask drawTask;
 	private LatLng lastStartPoint;
+	private SupportPlaceAutocompleteFragment searchFragment;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		int statusBarColor = ColorUtils.setAlphaComponent(ContextCompat.getColor(this, R.color.accent), 0x66);
@@ -139,6 +143,21 @@ public class DistanceMapActivity extends AppCompatActivity {
 			}
 		});
 
+		searchFragment = (SupportPlaceAutocompleteFragment)fm.findFragmentById(R.id.place_autocomplete_fragment);
+		searchFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+			@Override public void onPlaceSelected(Place place) {
+				LOG.trace("Selected: {}", AndroidTools.toString(place));
+				reDraw(place.getLatLng());
+			}
+
+			@Override public void onError(Status status) {
+				LOG.warn("Cannot search: {}", AndroidTools.toString(status));
+				String message = String.format(Locale.getDefault(), "Sorry, cannot search: %d/%s",
+						status.getStatusCode(), status.getStatusMessage());
+				Toast.makeText(DistanceMapActivity.this, message, Toast.LENGTH_LONG).show();
+			}
+		});
+
 		updateToolbarVisibility();
 		new AsyncTask<Void, Void, Set<NetworkNode>>() {
 			@Override protected Set<NetworkNode> doInBackground(Void... params) {
@@ -197,7 +216,6 @@ public class DistanceMapActivity extends AppCompatActivity {
 	@Override public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.options_distance_map, menu);
-//		AndroidTools.prepareSearch(this, menu, R.id.menu$options$search);
 		return true;
 	}
 
@@ -234,6 +252,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 		DistanceMapDrawerAndroid distanceMapDrawer = new DistanceMapDrawerAndroid(tubeNetwork, drawConfig);
 		// disabled for now, the bounds are hardcoded
 //		map.moveCamera(CameraUpdateFactory.newLatLngBounds(distanceMapDrawer.getBounds(), 0));
+		searchFragment.setBoundsBias(distanceMapDrawer.getBounds());
 		// distance map below
 		Bitmap emptyMap = distanceMapDrawer.draw(Collections.<NetworkNode, Double>emptyMap());
 		distanceMapOverlay = map.addGroundOverlay(new GroundOverlayOptions()

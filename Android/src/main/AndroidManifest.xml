@@ -34,8 +34,6 @@
 		<!-- Maps API v1 required -->
 		<uses-library android:name="com.google.android.maps" android:required="false" />
 
-		<!-- TODO change to com.google.android.geo.API_KEY -->
-		<!-- See <meta-data android:name="com.google.android.maps.v2.API_KEY" in variant folders -->
 		<meta-data
 			android:name="com.google.android.gms.version"
 			android:value="@integer/google_play_services_version" />
