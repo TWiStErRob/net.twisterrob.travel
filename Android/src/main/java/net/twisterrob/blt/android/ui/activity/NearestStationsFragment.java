@@ -22,8 +22,10 @@ import net.twisterrob.android.utils.tostring.stringers.name.AddressNameStringer;
 import net.twisterrob.android.view.AutomatedViewSwitcher;
 import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.data.LocationUtils;
+import net.twisterrob.blt.android.data.distance.DistanceMapGeneratorConfig;
 import net.twisterrob.blt.android.db.model.*;
 import net.twisterrob.blt.android.ui.adapter.StationAdapter;
+import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder.DescriptionFormatter;
 import net.twisterrob.blt.model.*;
 import net.twisterrob.java.model.Location;
 import net.twisterrob.java.utils.tostring.*;
@@ -82,14 +84,23 @@ public class NearestStationsFragment extends Fragment {
 			droppedPinAutomation.start();
 		}
 	}
-	public void updateNearestStations(Collection<NetworkNode> startNodes) {
+	public void updateNearestStations(Collection<NetworkNode> startNodes, final DistanceMapGeneratorConfig config) {
 		nearestStations.removeAllViews();
 		LayoutInflater inflater = LayoutInflater.from(getContext());
+		DescriptionFormatter formatter = new DescriptionFormatter() {
+			@Override public CharSequence format(Station station) {
+				double meters = ((StationWithDistance)station).getDistance();
+				double minutes = config.walk(meters);
+				double halfMinutes = Math.round(minutes * 2) / 2.0; // round to nearest half
+				return String.format(Locale.getDefault(),
+						"%s station " + (halfMinutes % 1.0 != .0? "%.1f" : "%.0f") + " min / %d m away",
+						station.getType(), halfMinutes, Math.round(meters));
+			}
+		};
 		for (StationWithDistance station : toStations(startNodes)) {
 			LOG.trace("Creating nearest station for {}", station);
 			View view = inflater.inflate(R.layout.item_station, nearestStations, false);
-			station.setName(station.getName() + " (" + Math.round(station.getDistance()) + "m)");
-			new StationAdapter.ViewHolder(view).bind(station, null);
+			new StationAdapter.ViewHolder(view, formatter).bind(station, null);
 			nearestStations.addView(view);
 		}
 		if (nearestStations.getChildCount() == 0) {

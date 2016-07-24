@@ -173,4 +173,16 @@ public class DistanceMapGeneratorConfig {
 	public boolean allowsInterStationInterchange() {
 		return allowInterStationInterchange;
 	}
+
+	/**
+	 * @param meters how far to walk
+	 * @return how long it takes to walk that far
+	 */
+	public double walk(double meters) {
+		return meters
+				/ 1000.0 // to kilometers
+				/ walkingSpeed // to hours
+				* 60 // to minutes
+				;
+	}
 }

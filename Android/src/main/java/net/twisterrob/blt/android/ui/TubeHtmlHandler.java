@@ -60,34 +60,40 @@ public class TubeHtmlHandler implements HtmlParser.TagHandler {
 
 			if (marker != null && start != -1) {
 				int end = output.length();
-				if (marker.icon != Icon.None) {
-					@DrawableRes int logoID = logos.get(marker.line.getDefaultStopType());
-					Drawable logo = ContextCompat.getDrawable(context, logoID);
-					int iconSize = (int)(textSize * ICON_SCALE);
-					DrawableBinder.bindTopLeft(logo, iconSize, iconSize);
-					ImageSpan image = new ImageSpan(logo, DynamicDrawableSpan.ALIGN_BASELINE);
-					switch (marker.icon) {
-						case Before:
-							String imagePlaceholder = "" + ICON_PLACEHOLDER + ICON_SPACING;
-							output.insert(start, imagePlaceholder);
-							output.setSpan(image, start, start + 1, SPAN_EXCLUSIVE_EXCLUSIVE);
-							start += imagePlaceholder.length();
-							break;
-						case After:
-							output.append(ICON_SPACING).append(ICON_PLACEHOLDER);
-							output.setSpan(image, end + 1, end + 2, SPAN_EXCLUSIVE_EXCLUSIVE);
-							break;
-					}
-				}
-				@ColorInt int fgColor = marker.line.getForeground(colors);
-				@ColorInt int bgColor = marker.line.getBackground(colors);
-				if (start != end) { // there's some text
-					output.setSpan(new ForegroundColorSpan(fgColor), start, end, SPAN_EXCLUSIVE_EXCLUSIVE);
-					output.setSpan(new BackgroundColorSpan(bgColor), start, end, SPAN_EXCLUSIVE_EXCLUSIVE);
-				}
+				Line line = marker.line;
+				Icon icon = marker.icon;
+				applySpan(output, start, end, line, icon);
 			}
 		}
 		return true;
+	}
+
+	public void applySpan(Editable output, int start, int end, Line line, Icon icon) {
+		if (icon != Icon.None) {
+			@DrawableRes int logoID = logos.get(line.getDefaultStopType());
+			Drawable logo = ContextCompat.getDrawable(context, logoID);
+			int iconSize = (int)(textSize * ICON_SCALE);
+			DrawableBinder.bindTopLeft(logo, iconSize, iconSize);
+			ImageSpan image = new ImageSpan(logo, DynamicDrawableSpan.ALIGN_BASELINE);
+			switch (icon) {
+				case Before:
+					String imagePlaceholder = "" + ICON_PLACEHOLDER + ICON_SPACING;
+					output.insert(start, imagePlaceholder);
+					output.setSpan(image, start, start + 1, SPAN_EXCLUSIVE_EXCLUSIVE);
+					start += imagePlaceholder.length();
+					break;
+				case After:
+					output.append(ICON_SPACING).append(ICON_PLACEHOLDER);
+					output.setSpan(image, end + 1, end + 2, SPAN_EXCLUSIVE_EXCLUSIVE);
+					break;
+			}
+		}
+		@ColorInt int fgColor = line.getForeground(colors);
+		@ColorInt int bgColor = line.getBackground(colors);
+		if (start != end) { // there's some text
+			output.setSpan(new ForegroundColorSpan(fgColor), start, end, SPAN_EXCLUSIVE_EXCLUSIVE);
+			output.setSpan(new BackgroundColorSpan(bgColor), start, end, SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -111,7 +117,7 @@ public class TubeHtmlHandler implements HtmlParser.TagHandler {
 		}
 	}
 
-	private enum Icon {
+	public enum Icon {
 		None,
 		Before,
 		After;

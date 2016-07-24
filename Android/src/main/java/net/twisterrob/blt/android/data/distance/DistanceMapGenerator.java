@@ -77,7 +77,7 @@ public class DistanceMapGenerator {
 		Map<NetworkNode, Double> startNodes = new HashMap<>();
 		for (NetworkNode node : nodes) {
 			double distanceToStartNode = LocationUtils.distance(location, node.getLocation());
-			double minutesToReachStartNode = walk(distanceToStartNode);
+			double minutesToReachStartNode = config.walk(distanceToStartNode);
 			if (minutesToReachStartNode < config.initialAllottedWalkTime) {
 				startNodes.put(node, minutesToReachStartNode);
 			}
@@ -102,19 +102,7 @@ public class DistanceMapGenerator {
 				closest = node;
 			}
 		}
-		return new SimpleEntry<>(closest, walk(bestDistance));
-	}
-
-	/**
-	 * @param meters how far to walk
-	 * @return how long it takes to walk that far
-	 */
-	private double walk(double meters) {
-		return meters
-				/ 1000.0 // to kilometers
-				/ config.walkingSpeed // to hours
-				* 60 // to minutes
-				;
+		return new SimpleEntry<>(closest, config.walk(bestDistance));
 	}
 
 	/**
@@ -152,7 +140,8 @@ public class DistanceMapGenerator {
 				Double bestRemainingTime = distances.get(to);
 				final double exitCurrentStation = config.platformToStreetTime;
 				final double enterOtherStation = config.platformToStreetTime;
-				double timeToOtherStation = exitCurrentStation + walk(otherStation.getValue()) + enterOtherStation;
+				double timeToOtherStation =
+						exitCurrentStation + config.walk(otherStation.getValue()) + enterOtherStation;
 				double remainingAtOtherStation = remainingMinutes - timeToOtherStation;
 				if (bestRemainingTime == null || bestRemainingTime < remainingAtOtherStation) {
 					traverseDepthFirst(to, remainingAtOtherStation);

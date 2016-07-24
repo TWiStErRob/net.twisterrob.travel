@@ -5,6 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:orientation="horizontal"
+	android:clickable="true"
 	>
 
 	<ImageView
@@ -13,8 +14,8 @@
 		android:layout_height="30sp"
 		android:layout_gravity="center"
 		android:padding="2sp"
-		android:scaleType="fitXY"
 		android:contentDescription="@string/station_operator_contentDescription"
+		android:scaleType="fitXY"
 		tools:ignore="contentDescription"
 		tools:src="@drawable/tfl_roundel_lul"
 		/>

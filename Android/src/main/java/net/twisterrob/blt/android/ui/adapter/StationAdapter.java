@@ -9,12 +9,14 @@ import android.support.v4.content.ContextCompat;
 import android.text.*;
 import android.text.style.TextAppearanceSpan;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.*;
 
 import net.twisterrob.android.adapter.BaseListAdapter;
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.db.model.Station;
 import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder;
+import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder.DescriptionFormatter;
 import net.twisterrob.blt.model.*;
 
 public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
@@ -25,11 +27,17 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 		private final TextView title;
 		private final TextView description;
 		private final ImageView icon;
+		private final DescriptionFormatter descriptionFormatter;
 		private final View[] lines = new View[6];
-		private Context context;
+		private final Context context;
 
-		public ViewHolder(View view) {
+		public interface DescriptionFormatter {
+			CharSequence format(Station station);
+		}
+
+		public ViewHolder(final View view, DescriptionFormatter descriptionFormatter) {
 			this.context = view.getContext();
+			this.descriptionFormatter = descriptionFormatter;
 			this.title = (TextView)view.findViewById(android.R.id.text1);
 			this.description = (TextView)view.findViewById(android.R.id.text2);
 			this.icon = (ImageView)view.findViewById(android.R.id.icon);
@@ -39,14 +47,37 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 			lines[3] = view.findViewById(R.id.box_line_4);
 			lines[4] = view.findViewById(R.id.box_line_5);
 			lines[5] = view.findViewById(R.id.box_line_6);
+			OnClickListener click = new OnClickListener() {
+				@Override public void onClick(View v) {
+					SpannableStringBuilder message = new SpannableStringBuilder("Lines: ");
+					final int initialLength = message.length();
+//					TubeHtmlHandler html = new TubeHtmlHandler(v.getContext());
+					for (int i = lines.length - 1; i >= 0; i--) {
+						Line line = (Line)lines[i].getTag();
+						if (line != null) {
+							if (initialLength != message.length()) {
+								message.append(", ");
+							}
+							String current = line.getTitle();
+//							int start = message.length();
+							message.append(current);
+							// disabled, because can't guarantee toast will have bright BG
+//							html.applySpan(message, start, message.length(), line, Icon.After);
+						}
+					}
+					Toast.makeText(v.getContext().getApplicationContext(), message, Toast.LENGTH_LONG).show();
+				}
+			};
+			for (View lineView : lines) {
+				lineView.setOnClickListener(click);
+			}
 		}
 
 		public void bind(Station currentItem, String filter) {
 			Map<StopType, Integer> logos = App.getInstance().getStaticData().getStopTypeLogos();
 			Drawable icon = ContextCompat.getDrawable(context, logos.get(currentItem.getType()));
 			CharSequence title = highlight(currentItem.getName(), filter);
-			String stationLines = context.getString(R.string.station_lines,
-					currentItem.getType(), currentItem.getLines());
+			CharSequence stationLines = descriptionFormatter.format(currentItem);
 			CharSequence description = highlight(stationLines, filter);
 
 			this.title.setText(title);
@@ -55,16 +86,19 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 			updateLineColors(currentItem.getLines());
 		}
 
-		private CharSequence highlight(String title, String lastFilter) {
+		private CharSequence highlight(CharSequence title, String lastFilter) {
 			if (lastFilter == null) {
 				return title;
 			}
 			SpannableString text = new SpannableString(title);
-			int matchIndex = title.toLowerCase().indexOf(lastFilter.toLowerCase());
-			if (0 <= matchIndex) {
+			String haystack = title.toString().toLowerCase();
+			String needle = lastFilter.toLowerCase();
+			int matchIndex = haystack.indexOf(needle);
+			while (0 <= matchIndex) {
 				TextAppearanceSpan style = new TextAppearanceSpan(context, R.style.search_highlight);
 				text.setSpan(style, matchIndex, matchIndex + lastFilter.length(),
 						Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+				matchIndex = haystack.indexOf(needle, matchIndex + needle.length());
 			}
 			return text;
 		}
@@ -72,20 +106,19 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 		private void updateLineColors(List<Line> lines) {
 			LineColors colors = App.getInstance().getStaticData().getLineColors();
 			for (int i = 0; i < this.lines.length; ++i) {
-				int bg;
-				String cd;
+				View lineView = this.lines[i];
 				if (i < lines.size()) {
 					Line line = lines.get(i);
-					bg = line.getBackground(colors);
-					cd = line.getTitle();
+					lineView.setVisibility(View.VISIBLE);
+					lineView.setBackgroundColor(line.getBackground(colors));
+					lineView.setContentDescription(line.getTitle());
+					lineView.setTag(line);
 				} else {
-					// hide it
-					bg = Color.TRANSPARENT;
-					cd = null;
+					lineView.setVisibility(View.INVISIBLE);
+					lineView.setBackgroundColor(Color.TRANSPARENT);
+					lineView.setContentDescription(null);
+					lineView.setTag(null);
 				}
-				View lineView = this.lines[i];
-				lineView.setBackgroundColor(bg);
-				lineView.setContentDescription(cd);
 			}
 		}
 	}
@@ -95,7 +128,12 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 	}
 
 	@Override protected ViewHolder createHolder(final View convertView) {
-		return new ViewHolder(convertView);
+		return new ViewHolder(convertView, new DescriptionFormatter() {
+			@Override public CharSequence format(Station station) {
+				return convertView.getContext().getString(R.string.station_lines,
+						station.getType(), station.getLines());
+			}
+		});
 	}
 
 	@Override protected void bindView(final ViewHolder holder, final Station currentItem, final View convertView) {

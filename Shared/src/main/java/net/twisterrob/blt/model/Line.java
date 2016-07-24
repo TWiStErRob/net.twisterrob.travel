@@ -51,7 +51,7 @@ public enum Line {
 			return colors.getDistrictForeground();
 		}
 	},
-	HammersmithAndCity('H', 8, StopType.Underground, "H'smith & City", "Hammersmith & City", "Hammersmith and City") {
+	HammersmithAndCity('H', 8, StopType.Underground, "Hammersmith & City", "H'smith & City", "Hammersmith and City") {
 		@Override public int getBackground(LineColors colors) {
 			return colors.getHammersmithAndCityBackground();
 		}

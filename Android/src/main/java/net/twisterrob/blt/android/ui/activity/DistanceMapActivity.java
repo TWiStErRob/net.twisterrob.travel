@@ -328,7 +328,7 @@ public class DistanceMapActivity extends AppCompatActivity {
 	}
 
 	private void updateNearestStations(Collection<NetworkNode> startNodes) {
-		nearestFragment.updateNearestStations(startNodes);
+		nearestFragment.updateNearestStations(startNodes, distanceConfig);
 		if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("showNearest", true)) {
 			// force the UI to become collapsed, this post-hack gives the most consistent results
 			behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
