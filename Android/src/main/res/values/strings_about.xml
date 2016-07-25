@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+	<!ENTITY nbsp "&#160;"><!-- non-breaking space, http://www.fileformat.info/info/unicode/char/00A0/index.htm -->
+	<!ENTITY lquot "&#8220;"><!-- left double quotation mark, http://www.fileformat.info/info/unicode/char/201C/index.htm -->
+	<!ENTITY rquot "&#8221;"><!-- right double quotation mark, http://www.fileformat.info/info/unicode/char/201D/index.htm -->
+	<!ENTITY LI "\n&#8195;&#8226;&#8194;"><!-- m-space (\u2003) bullet (\u2022) n-space (\u2002) -->
+	<!ENTITY LLI "\n&#8195;&#8195;&#8226;&#8194;"><!-- 2x m-space (\u2003) bullet (\u2022) n-space (\u2002) -->
+	]>
+<resources>
+	<string-array name="about_licenses" translatable="false">
+		<item>@string/about_license_tfl_title</item>
+		<item>@string/about_license_stackoverflow_title</item>
+		<item>@string/about_license_asset_studio_title</item>
+		<item>@string/about_license_gms_title</item>
+	</string-array>
+
+	<string-array name="about_licenses_content" translatable="false">
+		<item>@string/about_license_tfl</item>
+		<item>@string/about_license_stackoverflow</item>
+		<item>@string/about_license_asset_studio</item>
+		<item>@string/about_license_gms</item>
+	</string-array>
+
+
+	<string name="about_tips">@string/empty</string>
+	<string name="about_faq">@string/empty</string>
+	<string name="about_help">
+		<big><b>Usage</b></big>
+		\nFor more information read the <a href="https://play.google.com/store/apps/details?id=net.twisterrob.blt.range">Google Play Store</a> description.
+		\n\n\n<big><b>Disclaimer</b></big>
+		\nThis app is provided &lquot;as is&rquot;, it may not be a reliable source of information, use it responsibly.
+	</string>
+
+
+	<string name="about_license_tfl_title">Transport for London</string>
+	<string name="about_license_tfl"><b>Thanks to <a href="http://tfl.gov.uk">Transport for London</a> for making their <a href="http://original">data</a> available.</b>
+		\n
+		\nThis app is <i>Powered by TfL Open Data</i> and it <i>Contains OS data © Crown copyright and database rights 2016.</i>
+		\n
+		\n<i>License obtained from <a href="https://tfl.gov.uk/corporate/terms-and-conditions/transport-data-service">Transport Data Service</a> follows:</i>
+		\n
+		\nThese licence terms and conditions apply to TfL\'s free transport data service and are based on version 2.0 of the Open Government Licence with specific amendments for Transport for London (the "Licence").  TfL may at any time revise this Licence without notice. It is up to you ("You") to regularly review the Licence, which will be available on this website, in case there are any changes. Your continued use of the transport data feeds You have opted to receive ("Information") after a change has been made to the Licence will be treated as Your acceptance of that change.
+		\n
+		\n<b>Using Information under this Licence</b>
+		\nTfL grants You a worldwide, royalty-free, perpetual, non-exclusive Licence to use the Information subject to the conditions below (as varied from time to time).
+		\nThis Licence does not affect Your freedom under fair dealing or fair use or any other copyright or database right exceptions and limitations.
+		\nThis Licence shall apply from the date of registration and shall continue for the period the Information is provided to You or You breach the Licence.
+		\n
+		\n<b>Rights</b>
+		\nYou are free to:
+		&LI;Copy, publish, distribute and transmit the Information
+		&LI;Adapt the Information and
+		&LI;Exploit the Information commercially and non-commercially for example, by combining it with other Information, or by including it in Your own product or application
+		\n
+		\n<b>Requirements</b>
+		&LI;You must, where You do any of the above:
+		&LI;Acknowledge TfL as the source of the Information by including the following attribution statement \'Powered by TfL Open Data\'
+		&LI;Acknowledge that this Information contains Ordnance Survey derived data by including the following attribution statement: \'Contains OS data © Crown copyright and database rights 2016\'
+		&LI;Ensure our intellectual property rights, including all logos, design rights, patents and trademarks, are protected by following our design and branding guidelines
+		&LI;Limit traffic requests up to a maximum of 300 calls per minute per data feed. TfL reserves the right to throttle or limit access to feeds when it is believed the overall service is being degraded by excessive use and
+		&LI;Ensure the information You provide on registration is accurate
+		\nThese are important conditions of this Licence and if You fail to comply with them the rights granted to You under this Licence, or any similar licence granted by TfL, will end automatically.
+		\n
+		\n<b>Exemptions</b>
+		&LI;This Licence does not:
+		&LI;Transfer any intellectual property rights in the Information to You or any third party
+		&LI;Include personal data in the Information
+		&LI;Provide any rights to use the Information after this Licence has ended
+		&LI;Provide any rights to use any other intellectual property rights, including patents, trade marks, and design rights or permit You to:
+		&LLI;Use data from the Oyster, Congestion Charging and Santander Cycles websites to populate or update any other software or database or
+		&LLI;Use any automated system, software or process to extract content and/or data, including trawling, data mining and screen scraping in relation to the Oyster, Congestion Charging and Santander Cycles websites, except where expressly permitted under a written licence agreement with TfL.
+		\nThese are important conditions of this Licence and, if You fail to comply with them, the rights granted to You under this Licence, or any similar licence granted by TfL, will end automatically.
+		\n
+		\n<b>Non-endorsement</b>
+		\nThis Licence does not grant You any right to use the Information in a way that suggests any official status or that TfL endorses You or Your use of the Information.
+		\n
+		\n<b>Non warranty</b>
+		\nThe Information is licensed \'as is\' and TfL excludes all representations, warranties, obligations and liabilities in relation to the Information to the maximum extent permitted by law.
+		\nTfL is not liable for any errors or omissions in the Information and shall not be liable for any loss, injury or damage of any kind caused by its use or any inability to use the Service. TfL does not guarantee the continued supply of the Information.
+		\nNothing in this Licence shall limit either TfL\'s or Your liability for death or personal injury caused by negligence, and/or the negligence of either TfL\'s or Your respective employees or agents or for fraud.
+		\n
+		\n<b>Governing Law</b>
+		\nThis Licence is governed by the laws of England and Wales.
+		\nTfL\'s Privacy Policy will apply to all personal information collected in connection with Your use of the Service.
+	</string>
+</resources>
