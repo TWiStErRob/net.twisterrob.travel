@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Due to Preview thinking this is an openable menu, the preview is only available in layout/inc_distance_options -->
+<menu
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+	<item
+		android:title="@string/range$config$header$generator"
+		>
+		<menu>
+			<group android:id="@+id/group$range$config$generator">
+				<item
+					android:id="@+id/option$range$config$journey_time"
+					android:title="@string/range$config$journey_time"
+					app:actionLayout="@layout/menu_widget_number" />
+				<item
+					android:id="@+id/option$range$config$journey_start"
+					android:title="@string/range$config$journey_start"
+					app:actionLayout="@layout/menu_widget_number" />
+				<item
+					android:id="@+id/option$range$config$interchange_interstation"
+					android:title="@string/range$config$interchange_interstation"
+					app:actionLayout="@layout/menu_widget_boolean" />
+				<item
+					android:id="@+id/option$range$config$walking_speed"
+					android:title="@string/range$config$walking_speed"
+					app:actionLayout="@layout/menu_widget_number" />
+				<item
+					android:id="@+id/option$range$config$transfer_entry_exit"
+					android:title="@string/range$config$transfer_entry_exit"
+					app:actionLayout="@layout/menu_widget_number" />
+				<item
+					android:id="@+id/option$range$config$interchange_intrastation"
+					android:title="@string/range$config$interchange_intrastation"
+					app:actionLayout="@layout/menu_widget_boolean" />
+				<item
+					android:id="@+id/option$range$config$interchange_time"
+					android:title="@string/range$config$interchange_time"
+					app:actionLayout="@layout/menu_widget_number" />
+			</group>
+		</menu>
+	</item>
+	<item
+		android:title="@string/range$config$header$draw"
+		>
+		<menu>
+			<group android:id="@+id/group$range$config$draw">
+				<item
+					android:id="@+id/option$range$config$dynamic_color"
+					android:title="@string/range$config$dynamic_color"
+					app:actionLayout="@layout/menu_widget_boolean" />
+				<item
+					android:id="@+id/option$range$config$range_color"
+					android:title="@string/range$config$range_color"
+					app:actionLayout="@layout/menu_widget_color" />
+				<item
+					android:id="@+id/option$range$config$border_size"
+					android:title="@string/range$config$border_size"
+					android:visible="@bool/in_test"
+					app:actionLayout="@layout/menu_widget_number" />
+				<item
+					android:id="@+id/option$range$config$border_color"
+					android:title="@string/range$config$border_color"
+					android:visible="@bool/in_test"
+					app:actionLayout="@layout/menu_widget_color" />
+				<item
+					android:id="@+id/option$range$config$pixel_density"
+					android:title="@string/range$config$pixel_density"
+					android:visible="@bool/in_test"
+					app:actionLayout="@layout/menu_widget_number" />
+			</group>
+		</menu>
+	</item>
+	<item
+		android:title="@string/range$config$header$ui"
+		>
+		<menu>
+			<group android:id="@+id/group$range$config$ui">
+				<item
+					android:id="@+id/option$range$config$ui_show_stations"
+					android:title="@string/range$config$ui_show_stations"
+					app:actionLayout="@layout/menu_widget_boolean" />
+				<item
+					android:id="@+id/option$range$config$ui_show_toolbar"
+					android:title="@string/range$config$ui_show_toolbar"
+					app:actionLayout="@layout/menu_widget_boolean" />
+			</group>
+		</menu>
+	</item>
+</menu>

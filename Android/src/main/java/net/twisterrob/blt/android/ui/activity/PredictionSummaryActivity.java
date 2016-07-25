@@ -208,7 +208,7 @@ public class PredictionSummaryActivity extends BaseActivity implements
 	}
 
 	@Override public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.options_prediction_summary, menu);
+		getMenuInflater().inflate(R.menu.prediction_summary, menu);
 		menuIDs.put(R.id.menu$option$compass_east, PlatformDirection.East);
 		menuIDs.put(R.id.menu$option$compass_west, PlatformDirection.West);
 		menuIDs.put(R.id.menu$option$compass_north, PlatformDirection.North);

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress AndroidDomInspection -->
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	package="net.twisterrob.blt.android">
+
+	<application>
+		<!-- http://tools.android.com/tech-docs/new-build-system/user-guide/manifest-merger#TOC-All-Elements-removal -->
+		<!-- Start with a clean slate for this variant -->
+		<!-- FIXME ask SO about node=merge, maybe CommonsWare has some good input -->
+		<activity tools:node="removeAll" />
+		<!--<activity-alias tools:node="removeAll" />-->
+		<!--suppress ExportedContentProvider -->
+		<provider tools:node="removeAll" />
+		<!--<service tools:node="removeAll" />-->
+		<!--<receiver tools:node="removeAll" />-->
+
+		<!-- Re-declare wanted items -->
+		<activity
+			android:name=".ui.activity.StandaloneRangeMapActivity"
+			android:label="@string/launcher$range_map"
+			android:theme="@style/AppTheme.NoActionBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity
+			android:name="net.twisterrob.android.activity.AboutActivity"
+			android:label="@string/about_title"
+			android:exported="false" />
+	</application>
+</manifest>

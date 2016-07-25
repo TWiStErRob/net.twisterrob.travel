@@ -14,7 +14,7 @@
 	<!-- <![CDATA[<a href=""></a>]]> triggers it -->
 	<issue id="TypographyQuotes">
 		<!-- TOFIX report that these are not suppressible by resource, only by file -->
-		<ignore regexp="R\.string\.distance_(.+)_tooltip" />
+		<ignore regexp="R\.string\.range\$config\$(.+)\$tooltip" />
 	</issue>
 	<!-- They give increased readability -->
 	<issue id="UnusedIds" severity="ignore" />
@@ -24,7 +24,7 @@
 		<ignore regexp="R\.string\.app_package" />
 		<ignore regexp="R\.bool\.in_prod" />
 		<ignore regexp="R\.bool\.in_test" />
-		<ignore regexp="R\.string\.distance_(.+)_tooltip" />
+		<ignore regexp="R\.string\.range\$config\$(.+)\$tooltip" />
 	</issue>
 	<!-- STOPSHIP Leave me alone for now, we'll see when I'm ready to publish -->
 	<issue id="IconDensity" severity="ignore" />

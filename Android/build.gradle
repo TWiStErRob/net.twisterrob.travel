@@ -50,8 +50,8 @@ android {
 		full {
 			// default
 		}
-		distance {
-			applicationId 'net.twisterrob.blt.distance'
+		range {
+			applicationId 'net.twisterrob.blt.range'
 		}
 	}
 

@@ -20,23 +20,23 @@ import net.twisterrob.blt.model.Line;
 public class MainActivity extends BaseActivity {
 
 	private static final List<LauncherItem> launcherItems = Arrays.asList(
-			new LauncherItem(R.string.launcher_line_status, StatusActivity.class),
-			new LauncherItem(R.string.launcher_station_list, StationListActivity.class),
-			new LauncherItem(R.string.launcher_prediction_summary, PredictionSummaryActivity.class) {
+			new LauncherItem(R.string.launcher$line_status, StatusActivity.class),
+			new LauncherItem(R.string.launcher$station_list, StationListActivity.class),
+			new LauncherItem(R.string.launcher$prediction_summary, PredictionSummaryActivity.class) {
 				@Override void addIntentParams(Intent intent) {
 					super.addIntentParams(intent);
 					intent.putExtra(PredictionSummaryActivity.EXTRA_LINE, Line.District);
 				}
 			},
-			new LauncherItem(R.string.launcher_station_info, StationInfoActivity.class) {
+			new LauncherItem(R.string.launcher$station_info, StationInfoActivity.class) {
 				@Override void addIntentParams(Intent intent) {
 					super.addIntentParams(intent);
 					intent.putExtra(StationInfoActivity.EXTRA_STATION_NAME, "King's Cross St.Pancras");
 				}
 			},
-			new LauncherItem(R.string.launcher_station_map, StationMapsActivity.class),
-			new LauncherItem(R.string.launcher_postcode_map, PostCodesActivity.class),
-			new LauncherItem(R.string.launcher_distance_map, DistanceMapActivity.class)
+			new LauncherItem(R.string.launcher$station_map, StationMapsActivity.class),
+			new LauncherItem(R.string.launcher$postcode_map, PostCodesActivity.class),
+			new LauncherItem(R.string.launcher$range_map, RangeMapActivity.class)
 	);
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity {
 	}
 
 	@Override public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.options_main, menu);
+		getMenuInflater().inflate(R.menu.main, menu);
 
 		SearchView searchView = (SearchView)MenuItemCompat.getActionView(menu.findItem(R.id.menu$options$search));
 		setSearchableInfo(searchView);

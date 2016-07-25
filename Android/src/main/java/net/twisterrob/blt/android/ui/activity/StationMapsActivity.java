@@ -18,9 +18,10 @@ public class StationMapsActivity extends FragmentActivity {
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_stations_map);
+		setContentView(R.layout.inc_map);
 
-		SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+		SupportMapFragment mapFragment =
+				(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.view$map);
 		mapFragment.getMapAsync(new OnMapReadyCallback() {
 			@Override public void onMapReady(GoogleMap map) {
 				StationMapsActivity.this.map = map;

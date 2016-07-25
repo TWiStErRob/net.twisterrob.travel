@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.NavigationView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/view$range$navigation_view"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="?android:windowBackground"
+	app:headerLayout="@layout/fragment_range_options_header"
+	app:menu="@menu/range_options"
+	tools:layout_gravity="end"
+	tools:ignore="Overdraw"
+	/>
