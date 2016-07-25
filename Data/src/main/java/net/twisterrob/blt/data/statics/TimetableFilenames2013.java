@@ -7,7 +7,7 @@ import static java.util.Collections.*;
 
 import net.twisterrob.blt.model.Line;
 
-public class TimetableFilenames implements StaticDataFragment<Map<Line, List<String>>> {
+public class TimetableFilenames2013 implements StaticDataFragment<Map<Line, List<String>>> {
 	@SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
 	public Map<Line, List<String>> init() {
 		Map<Line, List<String>> fileNames = new TreeMap<>();

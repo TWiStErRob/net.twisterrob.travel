@@ -5,7 +5,9 @@ public enum Operator {
 	DLR("Dockland Light Railway"),
 	THC("Thames Clippers"),
 	TRAM("London Tramlink"),
+	TCL("London Trams"),
 	CAB("Emirates Air Line"),
+	EAL("Emirates Air Line"),
 	LU("LONDON UNITED BUSWAYS LIMITED");
 
 	private String tradingName;

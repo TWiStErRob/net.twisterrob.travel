@@ -8,6 +8,7 @@ import org.slf4j.*;
 import org.xml.sax.SAXException;
 
 import net.twisterrob.blt.data.io.FeedReader;
+import net.twisterrob.blt.data.statics.DesktopHardcodedStaticData;
 import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeed;
@@ -18,9 +19,14 @@ import net.twisterrob.java.model.LocationUtils;
 public class TravelNetworkParser {
 	private static final Logger LOG = LoggerFactory.getLogger(TravelNetworkParser.class);
 
-	private static final DesktopStaticData STATIC_DATA = DesktopStaticData.INSTANCE;
+	private static DesktopStaticData STATIC_DATA;
 
 	public static void main(String[] args) throws Throwable {
+		if (args.length == 2) {
+			STATIC_DATA = new DesktopHardcodedStaticData(args[0], new File(args[1]).getAbsoluteFile());
+		} else {
+			STATIC_DATA = new DesktopHardcodedStaticData();
+		}
 		writeDBScripts(STATIC_DATA.getTimetableFilenames().keySet());
 	}
 
@@ -128,7 +134,7 @@ public class TravelNetworkParser {
 					Map<String, String> codes = stationCodes.get(line);
 					String code = codes.get(stop.getName());
 					if (code == null) {
-						LOG.warn("No code for {}/{}", line, stop.getName());
+						LOG.warn("No code for {}/{} in {}", line, stop.getName(), codes);
 					} else {
 						codes.remove(stop.getName());
 					}

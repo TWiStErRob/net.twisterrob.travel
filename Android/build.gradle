@@ -60,3 +60,13 @@ android {
 		main.java.srcDir 'src/main/hack'
 	}
 }
+
+task generateDataBase(type: Copy, dependsOn: [':Data:runNetwork', ':Data:runPostCode']) {
+	from(new File(project(':Data').projectDir, 'output')) {
+		include '*.data.*.sql'
+	}
+	into android.sourceSets.main.assets.srcDirs[0]
+}
+android.applicationVariants.all { com.android.build.gradle.api.ApplicationVariant variant ->
+	variant.mergeAssets.dependsOn tasks.generateDataBase
+}

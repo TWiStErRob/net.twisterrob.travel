@@ -34,13 +34,22 @@ idea {
 apply plugin: 'application'
 
 task runNetwork(type: JavaExec) {
+	def inputDir = '../temp/feed15/LULDLRRiverTramCable'
+	def outputDir = 'output';
+	inputs.dir inputDir
+	outputs.dir outputDir
 	group = ApplicationPlugin.APPLICATION_GROUP
 	classpath = sourceSets.main.runtimeClasspath
 	main = 'net.twisterrob.blt.data.apps.TravelNetworkParser'
+	args = [ inputDir, outputDir ]
 	enableAssertions = true
 }
 
 task runPostCode(type: JavaExec) {
+	def inputDir = '../temp/feed15/LULDLRRiverTramCable'
+	def outputFile = 'output/LondonTravel.data.AreaHull.sql';
+	inputs.dir inputDir
+	outputs.file outputFile
 	group = ApplicationPlugin.APPLICATION_GROUP
 	classpath = sourceSets.main.runtimeClasspath
 	main = 'net.twisterrob.blt.data.apps.PostCodeAreas'

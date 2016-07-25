@@ -10,15 +10,26 @@ import net.twisterrob.blt.data.apps.DesktopStaticData;
 import net.twisterrob.blt.model.Line;
 
 public class DesktopHardcodedStaticData extends SharedStaticData implements DesktopStaticData {
-	private static final String TIMETABLE_ROOT = "../temp/feed15/lultramdlrcablecarriver";
+	private static final String TIMETABLE_ROOT = "../temp/feed15/LULDLRRiverTramCable";
 	private static final String DATA_ROOT = "./src/data/PredictionSummary/";
 	private static final File OUTPUT_FOLDER = new File("output");
 
-	private final Map<Line, List<String>> m_timetableFilenames = new TimetableFilenames().init();
+	private final Map<Line, List<String>> m_timetableFilenames = new TimetableFilenames2016().init();
 	private final Map<Line, String> m_predictionSummaryFilenames = new PredictionSummaryFilenames().init();
+	private final String timetableRoot;
+	private final File outputDir;
+
+	public DesktopHardcodedStaticData() {
+		timetableRoot = TIMETABLE_ROOT;
+		outputDir = OUTPUT_FOLDER;
+	}
+	public DesktopHardcodedStaticData(String timetableRoot, File outputDir) {
+		this.timetableRoot = timetableRoot;
+		this.outputDir = outputDir;
+	}
 
 	public String getTimetableRoot() {
-		return TIMETABLE_ROOT;
+		return timetableRoot;
 	}
 	public Map<Line, List<String>> getTimetableFilenames() {
 		return unmodifiableMap(m_timetableFilenames);
@@ -32,6 +43,6 @@ public class DesktopHardcodedStaticData extends SharedStaticData implements Desk
 		return unmodifiableMap(m_predictionSummaryFilenames);
 	}
 	@Override public File getOut(String path) {
-		return new File(OUTPUT_FOLDER, path);
+		return new File(outputDir, path);
 	}
 }
