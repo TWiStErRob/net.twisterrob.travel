@@ -250,17 +250,14 @@ public class RangeOptionsFragment extends Fragment {
 		if (item.getGroupId() == R.id.group$range$config$generator
 				|| item.getGroupId() == R.id.group$range$config$draw
 				|| item.getGroupId() == R.id.group$range$config$ui) {
-			String name = getResources().getResourceEntryName(item.getItemId()) + "_tooltip";
-			@StringRes int tooltipID = AndroidTools.getStringResourceID(getContext(), name);
-			if (tooltipID != AndroidTools.INVALID_RESOURCE_ID) {
-				Spanned tooltip = HtmlParser.fromHtml(getString(tooltipID), null, new TubeHtmlHandler(getContext()));
-				AndroidTools
-						.notify(getContext(), PopupCallbacks.DoNothing.<Boolean>instance())
-						.setTitle(item.getTitle())
-						.setMessage(tooltip)
-						.show();
-				return true;
-			}
+			@StringRes int tooltipID = getTooltip(item);
+			Spanned tooltip = HtmlParser.fromHtml(getString(tooltipID), null, new TubeHtmlHandler(getContext()));
+			AndroidTools
+					.notify(getContext(), PopupCallbacks.DoNothing.<Boolean>instance())
+					.setTitle(item.getTitle())
+					.setMessage(tooltip)
+					.show();
+			return true;
 		}
 		switch (item.getItemId()) {
 			case R.id.option$range$reset_generator:
@@ -275,6 +272,19 @@ public class RangeOptionsFragment extends Fragment {
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private int getTooltip(MenuItem item) {
+		int id = AndroidTools.INVALID_RESOURCE_ID;
+		String name = getResources().getResourceEntryName(item.getItemId());
+		if (name != null) {
+			name = name.substring("option$".length()) + "$tooltip";
+			id = AndroidTools.getStringResourceID(getContext(), name);
+		}
+		if (id == AndroidTools.INVALID_RESOURCE_ID) {
+			id = R.string.range$config$missing_tooltip;
+		}
+		return id;
 	}
 
 	public void bindConfigs(RangeMapGeneratorConfig genConfig, RangeMapDrawerConfig drawConfig) {

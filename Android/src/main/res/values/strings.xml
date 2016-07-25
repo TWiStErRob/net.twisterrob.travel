@@ -33,9 +33,15 @@
 	<string name="range$config$header$ui">User Interface</string>
 	<string name="option$range$reset_generator">Reset generator defaults</string>
 	<string name="option$range$reset_drawing">Reset drawing defaults</string>
+
+	<string name="range$config$missing_tooltip" process="HtmlParser"><![CDATA[ 
+	<b>This item doesn\'t have help text.</b>
+	\n
+	\nPlease report the issue to the <a href="mailto:feedback@twisterrob.net">developer</a>!
+	]]></string>
 	<!-- If the below strings are injected as HTML make sure to set <station> as an inline element in the Code Style. -->
 	<string name="range$config$journey_time">Journey time</string>
-	<string name="range$config$journey_time_tooltip" process="HtmlParser"><![CDATA[
+	<string name="range$config$journey_time$tooltip" process="HtmlParser"><![CDATA[
 	<b>How much time do you allow for the entire journey?</b>
 	(<i>measured in minutes</i>)
 	Including entering/exiting the station, interchanges, and sitting on the vehicles.
