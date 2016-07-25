@@ -5,6 +5,7 @@
 	<issue id="UnusedAttribute">
 		<!-- tools:targetApi is not acceptable in <manifest>/<application> -->
 		<ignore path="src/main/AndroidManifest.xml" />
+		<ignore regexp="is only used in API level" />
 	</issue>
 	<issue id="MissingRegistered">
 		<!-- Possibly a LINT bug, because it works in both IDEA/runtime -->

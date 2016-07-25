@@ -91,8 +91,8 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 				return title;
 			}
 			SpannableString text = new SpannableString(title);
-			String haystack = title.toString().toLowerCase();
-			String needle = lastFilter.toLowerCase();
+			String haystack = title.toString().toLowerCase(Locale.UK);
+			String needle = lastFilter.toLowerCase(Locale.UK);
 			int matchIndex = haystack.indexOf(needle);
 			while (0 <= matchIndex) {
 				TextAppearanceSpan style = new TextAppearanceSpan(context, R.style.search_highlight);
@@ -141,7 +141,7 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 	}
 
 	@Override protected List<Station> filter(List<? extends Station> fullList, String filter, List<Station> result) {
-		filter = filter.toLowerCase();
+		filter = filter.toLowerCase(Locale.UK);
 		List<Station> nameMatches = new LinkedList<>();
 		List<Station> typeMatches = new LinkedList<>();
 		List<Station> lineMatches = new LinkedList<>();
@@ -163,16 +163,16 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 	}
 
 	private static boolean matchName(Station station, String filter) {
-		return station.getName().toLowerCase().contains(filter);
+		return station.getName().toLowerCase(Locale.UK).contains(filter);
 	}
 
 	private static boolean matchStopType(Station station, String filter) {
-		return station.getType().toString().toLowerCase().contains(filter);
+		return station.getType().toString().toLowerCase(Locale.UK).contains(filter);
 	}
 
 	private static boolean matchLines(Station station, String filter) {
 		for (Line line : station.getLines()) {
-			if (line.getTitle().toLowerCase().contains(filter)) {
+			if (line.getTitle().toLowerCase(Locale.UK).contains(filter)) {
 				return true;
 			}
 		}

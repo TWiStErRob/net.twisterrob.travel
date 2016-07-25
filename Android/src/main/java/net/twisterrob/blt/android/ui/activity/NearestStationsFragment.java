@@ -76,7 +76,7 @@ public class NearestStationsFragment extends Fragment {
 		LOG.trace("updateLocationInternal: {}, address: {}, task: {}",
 				latlng, address != null? "<received>" : null, AndroidTools.toString(m_geocoderTask));
 		String addressString = LocationUtils.getVagueAddress(address);
-		String pin = String.format(Locale.getDefault(), "Near %.4f, %.4f", latlng.latitude, latlng.longitude);
+		String pin = getString(R.string.nearest_location, latlng.latitude, latlng.longitude);
 		droppedPinAutomation.stop();
 		droppedPin.setCurrentText(pin);
 		if (addressString != null) {
@@ -105,7 +105,7 @@ public class NearestStationsFragment extends Fragment {
 		}
 		if (nearestStations.getChildCount() == 0) {
 			TextView empty = new TextView(getContext());
-			empty.setText("No stations found around here.");
+			empty.setText(R.string.nearest_empty);
 			nearestStations.addView(empty);
 		}
 	}

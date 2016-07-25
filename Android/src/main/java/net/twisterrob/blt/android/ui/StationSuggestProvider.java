@@ -126,12 +126,12 @@ public class StationSuggestProvider extends ContentProvider {
 							"Search for station name or serving line.", null});
 					return cursor;
 				}
-				query = query.toLowerCase();
+				query = query.toLowerCase(Locale.UK);
 				LOG.debug("Search suggestions requested: {}", query);
 				List<Station> stations = App.db().getStations();
 				for (Iterator<Station> it = stations.iterator(); it.hasNext(); ) {
 					Station station = it.next();
-					if (!station.getName().toLowerCase().contains(query)) {
+					if (!station.getName().toLowerCase(Locale.UK).contains(query)) {
 						it.remove();
 					}
 				}

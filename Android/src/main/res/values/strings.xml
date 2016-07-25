@@ -18,6 +18,8 @@
 	<string name="station_lines">%1$s: %2$s</string>
 	<!-- CONSIDER dynamic content description based on icon -->
 	<string name="station_operator_contentDescription">Station operator icon</string>
+	<string name="nearest_location">Near %1$.4f, %2$.4f</string>
+	<string name="nearest_empty">No stations found around here.</string>
 	<string name="compass_directions">Directions</string>
 	<string name="compass_north">Northbound</string>
 	<string name="compass_south">Southbound</string>
