@@ -2,6 +2,7 @@ package net.twisterrob.blt.io.feeds.timetable;
 
 import java.util.*;
 
+// FIXME extend with from-to instead of name
 public class RouteSection implements Iterable<StopPoint> {
 	private String id;
 	List<RouteLink> routeLinks = new ArrayList<>();

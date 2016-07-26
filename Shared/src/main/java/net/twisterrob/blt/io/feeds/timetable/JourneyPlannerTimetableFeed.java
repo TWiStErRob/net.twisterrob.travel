@@ -11,7 +11,7 @@ public class JourneyPlannerTimetableFeed extends BaseFeed<JourneyPlannerTimetabl
 	List<Route> routes = new ArrayList<>();
 	private static final RouteFixer[] FIXERS = {new DLRWestferry2CanaryWharfFixer(),
 			new DLRPuddingMillLane2StratfordFixer(), new ReverseLinkDistanceFixer(),
-			new MostSimilarLinkDistanceFixer(), new CollapseRoutesFixer()};
+			new MostSimilarLinkDistanceFixer(), new CollapseRoutesFixer()/*, new StationNameFixer()*/};
 
 	public Line getLine() {
 		return line;

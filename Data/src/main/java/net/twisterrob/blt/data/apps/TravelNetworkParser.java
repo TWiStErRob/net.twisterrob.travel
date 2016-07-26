@@ -37,6 +37,7 @@ public class TravelNetworkParser {
 		String root = STATIC_DATA.getTimetableRoot();
 		for (Line line : lines) {
 			List<String> files = STATIC_DATA.getTimetableFilenames().get(line);
+			LOG.debug("Reading {}", files);
 			JourneyPlannerTimetableFeed feed = reader.readFeed(Feed.JourneyPlannerTimetables, root, files);
 			LOG.info("Read {} ({})", feed.getLine(), feed.getOperator().getTradingName());
 			feeds.put(line, feed);
@@ -134,7 +135,10 @@ public class TravelNetworkParser {
 					Map<String, String> codes = stationCodes.get(line);
 					String code = codes.get(stop.getName());
 					if (code == null) {
-						LOG.warn("No code for {}/{} in {}", line, stop.getName(), codes);
+						// TODO is it possible to have codes at all for DLR and Tram?
+						if (line != Line.DLR && line != Line.Tram) {
+							LOG.warn("No code for {}/{} in {}", line, stop.getName(), codes);
+						}
 					} else {
 						codes.remove(stop.getName());
 					}
@@ -163,7 +167,7 @@ public class TravelNetworkParser {
 						continue;
 					}
 					double distance = LocationUtils.distance(from.getLocation(), to.getLocation());
-					if (distance > 3 * 1609) {
+					if (distance > 3 * 1609 /*miles*/) {
 						continue;
 					}
 					dist.printf(Locale.ROOT,

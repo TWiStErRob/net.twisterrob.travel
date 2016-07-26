@@ -31,12 +31,11 @@ idea {
 	}
 }
 
-apply plugin: 'application'
-
 task runNetwork(type: JavaExec) {
 	def inputDir = '../temp/feed15/LULDLRRiverTramCable'
 	def outputDir = 'output';
 	inputs.dir inputDir
+	inputs.dir 'src/data/PredictionSummary'
 	outputs.dir outputDir
 	group = ApplicationPlugin.APPLICATION_GROUP
 	classpath = sourceSets.main.runtimeClasspath
