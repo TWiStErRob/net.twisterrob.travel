@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="pref$show_toolbar$title">Show toolbar</string>
+	<string name="pref$show_toolbar" translatable="false">showToolbar</string>
+	<bool name="pref$show_toolbar$default" translatable="false">true</bool>
+
+	<string name="pref$show_nearest$title">Show stations</string>
+	<string name="pref$show_nearest" translatable="false">showNearest</string>
+	<bool name="pref$show_nearest$default" translatable="false">true</bool>
+
+</resources>

@@ -4,10 +4,8 @@ import java.util.*;
 
 import org.slf4j.*;
 
-import android.content.SharedPreferences;
 import android.graphics.*;
 import android.os.*;
-import android.preference.PreferenceManager;
 import android.support.annotation.*;
 import android.support.design.widget.*;
 import android.support.v4.app.FragmentManager;
@@ -183,8 +181,7 @@ public class RangeMapActivity extends MapActivity {
 	}
 
 	public void updateToolbarVisibility() {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		boolean showToolbar = prefs.getBoolean("showToolbar", true);
+		boolean showToolbar = App.prefs().getBoolean(R.string.pref$show_toolbar, R.bool.pref$show_toolbar$default);
 		final View container = findViewById(R.id.view$range$toolbar_container);
 		AndroidTools.displayedIf(container, showToolbar);
 		new DoAfterLayout(drawers, true) {
@@ -333,7 +330,7 @@ public class RangeMapActivity extends MapActivity {
 
 	private void updateNearestStations(Collection<NetworkNode> startNodes) {
 		nearestFragment.updateNearestStations(startNodes, genConfig);
-		if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("showNearest", true)) {
+		if (App.prefs().getBoolean(R.string.pref$show_nearest, R.bool.pref$show_nearest$default)) {
 			behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 		}
 	}

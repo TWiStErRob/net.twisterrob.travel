@@ -2,9 +2,7 @@ package net.twisterrob.blt.android.ui.activity;
 
 import org.slf4j.*;
 
-import android.content.*;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.*;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
@@ -18,11 +16,12 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import net.twisterrob.android.content.HtmlParser;
+import net.twisterrob.android.content.pref.ResourcePreferences;
 import net.twisterrob.android.utils.tools.AndroidTools;
 import net.twisterrob.android.utils.tools.AndroidTools.PopupCallbacks;
 import net.twisterrob.android.wiring.NumberPickerWidget;
 import net.twisterrob.android.wiring.NumberPickerWidget.OnValueChangeListener;
-import net.twisterrob.blt.android.R;
+import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.data.range.*;
 import net.twisterrob.blt.android.ui.*;
 
@@ -36,7 +35,7 @@ public class RangeOptionsFragment extends Fragment {
 	private NumberPickerWidget startWalk;
 	private CompoundButton intraStation;
 	private CompoundButton interStation;
-	private SharedPreferences prefs;
+	private final ResourcePreferences prefs = App.prefs();
 	private ColorPickerWidget borderColor;
 	private NumberPickerWidget borderSize;
 	private CompoundButton dynamicColor;
@@ -50,11 +49,6 @@ public class RangeOptionsFragment extends Fragment {
 	private RangeMapGeneratorConfig genConfig;
 	private RangeMapDrawerConfig drawConfig;
 	private ConfigsUpdatedListener configsUpdatedListener;
-
-	@Override public void onAttach(Context context) {
-		super.onAttach(context);
-		prefs = PreferenceManager.getDefaultSharedPreferences(getContext().getApplicationContext());
-	}
 
 	@Override public @Nullable View onCreateView(
 			LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -80,19 +74,19 @@ public class RangeOptionsFragment extends Fragment {
 
 		bool(R.id.option$range$config$ui_show_stations, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (prefs.getBoolean("showNearest", true) != isChecked) {
-					prefs.edit().putBoolean("showNearest", isChecked).apply();
+				if (prefs.getBoolean(R.string.pref$show_nearest, R.bool.pref$show_nearest$default) != isChecked) {
+					prefs.setBoolean(R.string.pref$show_nearest, isChecked);
 				}
 			}
-		}).setChecked(prefs.getBoolean("showNearest", true));
+		}).setChecked(prefs.getBoolean(R.string.pref$show_nearest, R.bool.pref$show_nearest$default));
 		bool(R.id.option$range$config$ui_show_toolbar, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (prefs.getBoolean("showToolbar", true) != isChecked) {
-					prefs.edit().putBoolean("showToolbar", isChecked).apply();
+				if (prefs.getBoolean(R.string.pref$show_toolbar, R.bool.pref$show_toolbar$default) != isChecked) {
+					prefs.setBoolean(R.string.pref$show_toolbar, isChecked);
 					((RangeMapActivity)getActivity()).updateToolbarVisibility();
 				}
 			}
-		}).setChecked(prefs.getBoolean("showToolbar", true));
+		}).setChecked(prefs.getBoolean(R.string.pref$show_toolbar, R.bool.pref$show_toolbar$default));
 
 		intraStation = bool(R.id.option$range$config$interchange_intrastation, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

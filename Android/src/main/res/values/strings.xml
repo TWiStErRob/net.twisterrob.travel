@@ -135,7 +135,7 @@
 	<string name="range$config$pixel_density$tooltip" process="HtmlParser"><![CDATA[
 	]]></string>
 
-	<string name="range$config$ui_show_stations">Show stations</string>
+	<string name="range$config$ui_show_stations">@string/pref$show_nearest$title</string>
 	<string name="range$config$ui_show_stations$tooltip" process="HtmlParser"><![CDATA[
 	<b>When you select a location, do you want to automatically see the nearest stations?</b>
 	(<i>options are yes/no</i>)
@@ -143,7 +143,7 @@
 	Disable to give more space for the map.
 	]]></string>
 
-	<string name="range$config$ui_show_toolbar">Show toolbar</string>
+	<string name="range$config$ui_show_toolbar">@string/pref$show_toolbar$title</string>
 	<string name="range$config$ui_show_toolbar$tooltip" process="HtmlParser"><![CDATA[
 	<b>Do you want to use the floating toolbar?</b>
 	(<i>options are yes/no</i>)
