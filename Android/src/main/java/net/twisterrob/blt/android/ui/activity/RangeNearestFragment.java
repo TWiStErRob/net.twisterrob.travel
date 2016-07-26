@@ -151,13 +151,25 @@ public class RangeNearestFragment extends Fragment {
 	private final class GeocoderTask extends SimpleSafeAsyncTask<LatLng, Void, Address> {
 		private final Geocoder geocoder;
 		private GeocoderTask(Context context) {
+			geocoder = createGeocoder(context);
+		}
+
+		private Geocoder createGeocoder(Context context) {
+			Geocoder geocoder;
 			if (Geocoder.isPresent()) {
-				geocoder = new Geocoder(context);
+				try {
+					geocoder = new Geocoder(context);
+				} catch (Exception ex) {
+					LOG.warn("Geocoding not available.", ex);
+					geocoder = null;
+				}
 			} else {
 				LOG.warn("Geocoding not available.");
 				geocoder = null;
 			}
+			return geocoder;
 		}
+
 		@Override protected @Nullable Address doInBackground(LatLng latlng) throws Exception {
 			if (geocoder != null) {
 				List<Address> location = geocoder.getFromLocation(latlng.latitude, latlng.longitude, 1);
