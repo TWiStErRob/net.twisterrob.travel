@@ -34,7 +34,7 @@
 	<string name="option$range$reset_generator">Reset generator defaults</string>
 	<string name="option$range$reset_drawing">Reset drawing defaults</string>
 
-	<string name="range$config$missing_tooltip" process="HtmlParser"><![CDATA[ 
+	<string name="range$config$missing_tooltip" process="HtmlParser" tools:ignore="TypographyQuotes"><![CDATA[ 
 	<b>This item doesn\'t have help text.</b>
 	\n
 	\nPlease report the issue to the <a href="mailto:feedback@twisterrob.net">developer</a>!

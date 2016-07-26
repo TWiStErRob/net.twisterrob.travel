@@ -6,7 +6,7 @@
 	<!ENTITY LI "\n&#8195;&#8226;&#8194;"><!-- m-space (\u2003) bullet (\u2022) n-space (\u2002) -->
 	<!ENTITY LLI "\n&#8195;&#8195;&#8226;&#8194;"><!-- 2x m-space (\u2003) bullet (\u2022) n-space (\u2002) -->
 	]>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 	<string-array name="about_licenses" translatable="false">
 		<item>@string/about_license_tfl_title</item>
 		<item>@string/about_license_stackoverflow_title</item>
@@ -24,8 +24,8 @@
 
 	<string name="about_tips">@string/empty</string>
 	<string name="about_faq">@string/empty</string>
-	<string name="about_help">
-		<big><b>Usage</b></big>
+	<string name="about_help"
+		><big><b>Usage</b></big>
 		\nFor more information read the <a href="https://play.google.com/store/apps/details?id=net.twisterrob.blt.range">Google Play Store</a> description.
 		\n\n\n<big><b>Disclaimer</b></big>
 		\nThis app is provided &lquot;as is&rquot;, it may not be a reliable source of information, use it responsibly.
@@ -33,7 +33,8 @@
 
 
 	<string name="about_license_tfl_title">Transport for London</string>
-	<string name="about_license_tfl"><b>Thanks to <a href="http://tfl.gov.uk">Transport for London</a> for making their <a href="http://original">data</a> available.</b>
+	<string name="about_license_tfl" tools:ignore="TypographyQuotes"
+		><b>Thanks to <a href="http://tfl.gov.uk">Transport for London</a> for making their <a href="http://original">data</a> available.</b>
 		\n
 		\nThis app is <i>Powered by TfL Open Data</i> and it <i>Contains OS data © Crown copyright and database rights 2016.</i>
 		\n
