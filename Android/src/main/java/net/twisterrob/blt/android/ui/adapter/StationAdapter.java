@@ -87,7 +87,7 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 		}
 
 		private CharSequence highlight(CharSequence title, String lastFilter) {
-			if (lastFilter == null) {
+			if (lastFilter == null || lastFilter.length() == 0) {
 				return title;
 			}
 			SpannableString text = new SpannableString(title);

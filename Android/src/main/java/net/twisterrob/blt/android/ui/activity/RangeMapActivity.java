@@ -15,7 +15,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.*;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.*;
 import android.view.View.OnClickListener;
@@ -38,11 +37,12 @@ import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.data.range.*;
 import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.android.ui.activity.RangeOptionsFragment.ConfigsUpdatedListener;
+import net.twisterrob.blt.android.ui.activity.main.MapActivity;
 import net.twisterrob.blt.model.StopType;
 
 import static net.twisterrob.android.utils.tools.AndroidTools.*;
 
-public class RangeMapActivity extends AppCompatActivity {
+public class RangeMapActivity extends MapActivity {
 	private static final Logger LOG = LoggerFactory.getLogger(RangeMapActivity.class);
 
 	private GoogleMap map;
@@ -65,46 +65,6 @@ public class RangeMapActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_range_map);
 
-		FragmentManager fm = getSupportFragmentManager();
-		SupportMapFragment mapFragment = (SupportMapFragment)fm.findFragmentById(R.id.view$map);
-		mapFragment.getMapAsync(new OnMapReadyCallback() {
-			@Override public void onMapReady(GoogleMap map) {
-				RangeMapActivity.this.map = map;
-				map.setMyLocationEnabled(true);
-				zoomFullLondon();
-				updateToolbarVisibility();
-				class MapInteractorListener
-						implements OnMapClickListener, OnMarkerClickListener, OnMapLongClickListener {
-					private Marker currentMarker;
-					@Override public void onMapLongClick(LatLng latlng) {
-						if (currentMarker != null) {
-							currentMarker.hideInfoWindow();
-							currentMarker = null;
-						}
-						reDraw(latlng);
-					}
-					@Override public void onMapClick(LatLng latlng) {
-						if (currentMarker != null) {
-							currentMarker = null;
-							return;
-						}
-						reDraw(latlng);
-					}
-					@Override public boolean onMarkerClick(Marker marker) {
-						currentMarker = marker;
-						if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
-							behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-						}
-						return false;
-					}
-				}
-				MapInteractorListener listener = new MapInteractorListener();
-				map.setOnMapClickListener(listener);
-				map.setOnMapLongClickListener(listener);
-				map.setOnMarkerClickListener(listener);
-			}
-		});
-
 		AndroidTools.accountForStatusBar(findViewById(R.id.view$range$toolbar_container));
 		Toolbar toolbar = (Toolbar)findViewById(R.id.view$range$toolbar);
 		setSupportActionBar(toolbar);
@@ -120,6 +80,7 @@ public class RangeMapActivity extends AppCompatActivity {
 			}
 		};
 
+		FragmentManager fm = getSupportFragmentManager();
 		nearestFragment = (RangeNearestFragment)fm.findFragmentById(R.id.view$range$bottom_sheet);
 		optionsFragment = (RangeOptionsFragment)fm.findFragmentById(R.id.view$range$drawer);
 		optionsFragment.bindConfigs(genConfig, drawConfig);
@@ -168,6 +129,49 @@ public class RangeMapActivity extends AppCompatActivity {
 				setNodes(nodes);
 			}
 		}.execute((Void[])null);
+	}
+
+	@Override protected void setupMap() {
+		SupportMapFragment mapFragment =
+				(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.view$map);
+		mapFragment.getMapAsync(new OnMapReadyCallback() {
+			@Override public void onMapReady(GoogleMap map) {
+				RangeMapActivity.this.map = map;
+				map.setMyLocationEnabled(true);
+				zoomFullLondon();
+				updateToolbarVisibility();
+				class MapInteractorListener
+						implements OnMapClickListener, OnMarkerClickListener, OnMapLongClickListener {
+					private Marker currentMarker;
+					@Override public void onMapLongClick(LatLng latlng) {
+						if (currentMarker != null) {
+							currentMarker.hideInfoWindow();
+							currentMarker = null;
+						}
+						reDraw(latlng);
+					}
+					@Override public void onMapClick(LatLng latlng) {
+						if (currentMarker != null) {
+							currentMarker = null;
+							return;
+						}
+						reDraw(latlng);
+					}
+					@Override public boolean onMarkerClick(Marker marker) {
+						currentMarker = marker;
+						if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+							behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+						}
+						return false;
+					}
+				}
+				MapInteractorListener listener = new MapInteractorListener();
+				map.setOnMapClickListener(listener);
+				map.setOnMapLongClickListener(listener);
+				map.setOnMarkerClickListener(listener);
+				setNodes(tubeNetwork);
+			}
+		});
 	}
 
 	private void zoomFullLondon() {
@@ -243,8 +247,12 @@ public class RangeMapActivity extends AppCompatActivity {
 	}
 
 	private void setNodes(Set<NetworkNode> nodes) {
+		LOG.trace("setNodes(nodes:{})", nodes != null? nodes.size() : null);
 		tubeNetwork = nodes;
-		LOG.trace("setNodes(nodes:{})", tubeNetwork.size());
+		if (tubeNetwork == null || map == null) {
+			return;
+		}
+
 		// TODO move to BG thread
 		RangeMapDrawerAndroid rangeDrawer = new RangeMapDrawerAndroid(tubeNetwork, drawConfig);
 		// disabled for now, the bounds are hardcoded
@@ -269,10 +277,10 @@ public class RangeMapActivity extends AppCompatActivity {
 	}
 
 	private void reDraw(LatLng latlng) {
-		if (latlng == null) {
+		lastStartPoint = latlng;
+		if (map == null || latlng == null) {
 			return;
 		}
-		lastStartPoint = latlng;
 		nearestFragment.updateLocation(latlng, null);
 
 		LOG.trace("reDraw({}) / task: {}", latlng, AndroidTools.toString(drawTask));
