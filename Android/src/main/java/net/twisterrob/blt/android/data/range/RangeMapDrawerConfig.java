@@ -13,7 +13,7 @@ public class RangeMapDrawerConfig {
 	int borderSize = 0;
 	int borderColor = Color.BLACK;
 
-	float pixelDensity = 1000;
+	float pixelDensity = 1024;
 
 	boolean dynamicColor = true;
 	int rangeColor = Color.RED;

@@ -8,6 +8,7 @@ import org.slf4j.*;
 
 import android.graphics.*;
 
+import net.twisterrob.android.utils.tools.AndroidTools;
 import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.android.db.model.*;
 import net.twisterrob.java.model.Location;
@@ -25,8 +26,8 @@ public class TubeMapDrawer {
 	protected final double geoWidth;
 	protected final double geoHeight;
 
-	protected final int pixelWidth;
-	protected final int pixelHeight;
+	protected int pixelWidth;
+	protected int pixelHeight;
 
 	public TubeMapDrawer(Iterable<NetworkNode> nodes) {
 		double minX = Double.POSITIVE_INFINITY, maxX = Double.NEGATIVE_INFINITY;
@@ -51,9 +52,47 @@ public class TubeMapDrawer {
 		this.maxLat = maxY;
 		this.geoWidth = maxLon - minLon;
 		this.geoHeight = maxLat - minLat;
+		double defaultPixelSize = 1 / Math.max(geoWidth, geoHeight);
+		setRenderSafeGeoPixelSize(defaultPixelSize * 2048, defaultPixelSize * 2048);
+	}
+
+	/**
+	 * Sets the size of a 1° × 1° are of the geo-coordinate system in pixels.
+	 */
+	public void setGeoPixelSize(double geoLonPixelWidth, double getLatPixelHeight) {
 		// *2 makes the pixels square, because the geo coordinate system is twice as wide as tall
-		this.pixelWidth = (int)(geoWidth * 3000);
-		this.pixelHeight = (int)(geoHeight * 3000) * 2;
+		int pixelWidth = (int)(geoWidth * geoLonPixelWidth);
+		int pixelHeight = (int)(geoHeight * getLatPixelHeight * 2);
+		setPixelSize(pixelWidth, pixelHeight);
+	}
+
+	public void setRenderSafeGeoPixelSize(double geoLonPixelWidth, double getLatPixelHeight) {
+		// *2 makes the pixels square, because the geo coordinate system is twice as wide as tall
+		int pixelWidth = (int)(geoWidth * geoLonPixelWidth);
+		int pixelHeight = (int)(geoHeight * getLatPixelHeight * 2);
+		setRenderSafePixelSize(pixelWidth, pixelHeight);
+	}
+
+	/**
+	 * Sets the size of the resulting image in pixels.
+	 */
+	public void setPixelSize(int imageWidth, int imageHeight) {
+		this.pixelWidth = imageWidth;
+		this.pixelHeight = imageHeight;
+	}
+
+	public void setRenderSafePixelSize(int pixelWidth, int pixelHeight) {
+		Point size = AndroidTools.getMaximumBitmapSize(null);
+		if (pixelWidth <= size.x && pixelHeight <= size.y) {
+			setPixelSize(pixelWidth, pixelHeight);
+		} else {
+			final float widthPercentage = size.x / (float)pixelWidth;
+			final float heightPercentage = size.y / (float)pixelHeight;
+			final float minPercentage = Math.min(widthPercentage, heightPercentage);
+			setPixelSize((int)(minPercentage * pixelWidth), (int)(minPercentage * pixelHeight));
+			LOG.debug("Bitmap size ({}x{}) exceeded OpenGL maximum texture size ({}x{}), scaled down to {}x{}.",
+					pixelWidth, pixelHeight, size.x, size.y, this.pixelWidth, this.pixelHeight);
+		}
 	}
 
 	public Bitmap draw(Set<NetworkNode> nodes) {

@@ -14,6 +14,7 @@ import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.*;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
@@ -256,17 +257,20 @@ public class RangeMapActivity extends MapActivity {
 //		map.moveCamera(CameraUpdateFactory.newLatLngBounds(rangeDrawer.getBounds(), 0));
 		searchFragment.setBoundsBias(rangeDrawer.getBounds());
 		// range map below
-		Bitmap emptyMap = rangeDrawer.draw(Collections.<NetworkNode, Double>emptyMap());
+		Map<NetworkNode, Double> emptyNetwork = Collections.emptyMap();
 		mapOverlay = map.addGroundOverlay(new GroundOverlayOptions()
 				.positionFromBounds(rangeDrawer.getBounds())
 				.transparency(0.0f)
-				.image(BitmapDescriptorFactory.fromBitmap(emptyMap))
+				.image(BitmapDescriptorFactory.fromBitmap(rangeDrawer.draw(emptyNetwork)))
 		);
 		// tube map above
+		TubeMapDrawer tubeMapDrawer = new TubeMapDrawer(nodes);
+		DisplayMetrics metrics = getResources().getDisplayMetrics();
+		tubeMapDrawer.setRenderSafeGeoPixelSize(1024 * metrics.density, 1024 * metrics.density);
 		map.addGroundOverlay(new GroundOverlayOptions()
 				.positionFromBounds(rangeDrawer.getBounds())
 				.transparency(0.3f)
-				.image(BitmapDescriptorFactory.fromBitmap(new TubeMapDrawer(nodes).draw(nodes)))
+				.image(BitmapDescriptorFactory.fromBitmap(tubeMapDrawer.draw(nodes)))
 		);
 		if (lastStartPoint != null) {
 			reDraw(lastStartPoint);
