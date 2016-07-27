@@ -13,8 +13,6 @@ import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.android.db.model.*;
 import net.twisterrob.java.model.Location;
 
-// CONSIDER converting to TileProvider
-// http://stackoverflow.com/q/17133213/253468: line segments VS rectangle
 @NotThreadSafe
 public class TubeMapDrawer {
 	private static final Logger LOG = LoggerFactory.getLogger(TubeMapDrawer.class);
