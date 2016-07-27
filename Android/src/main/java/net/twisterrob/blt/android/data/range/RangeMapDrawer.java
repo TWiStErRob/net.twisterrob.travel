@@ -24,14 +24,11 @@ public abstract class RangeMapDrawer<T> {
 	protected final double maxLon;
 	protected final double minLat;
 	protected final double maxLat;
-	protected final double geoWidth;
-	protected final double geoHeight;
+	protected final RenderedGeoSize size;
 
-	protected final int pixelWidth;
-	protected final int pixelHeight;
 	private int[] pixels;
 
-	public RangeMapDrawer(Iterable<NetworkNode> nodes, RangeMapDrawerConfig config) {
+	public RangeMapDrawer(Iterable<NetworkNode> nodes, RangeMapDrawerConfig config, RenderedGeoSize size) {
 		this.config = config;
 		double minX = Double.POSITIVE_INFINITY, maxX = Double.NEGATIVE_INFINITY;
 		double minY = Double.POSITIVE_INFINITY, maxY = Double.NEGATIVE_INFINITY;
@@ -53,11 +50,11 @@ public abstract class RangeMapDrawer<T> {
 		this.maxLon = maxX;
 		this.minLat = minY;
 		this.maxLat = maxY;
-		this.geoWidth = maxLon - minLon;
-		this.geoHeight = maxLat - minLat;
-		// *2 makes the pixels square, because the geo coordinate system is twice as wide as tall
-		this.pixelWidth = (int)(geoWidth * config.pixelDensity);
-		this.pixelHeight = (int)(geoHeight * config.pixelDensity) * 2;
+		this.size = size != null? size : new RenderedGeoSize();
+		this.size.setGeoSize(maxLon - minLon, maxLat - minLat);
+		int pixelWidth = (int)(this.size.getGeoLonSpan() * config.pixelDensity);
+		int pixelHeight = (int)(this.size.getGeoLatSpan() * config.pixelDensity);
+		this.size.setSafeGeoPixelSize((double)pixelWidth, (double)pixelHeight);
 	}
 
 	public RangeMapDrawerConfig getConfig() {
@@ -65,7 +62,7 @@ public abstract class RangeMapDrawer<T> {
 	}
 
 	public T draw(Map<NetworkNode, Double> nodes) {
-		pixels = new int[pixelHeight * pixelWidth];
+		pixels = new int[size.getPixelHeight() * size.getPixelWidth()];
 		calcPixels(nodes);
 		return createMap(getAndForgetPixels());
 	}
@@ -84,7 +81,7 @@ public abstract class RangeMapDrawer<T> {
 	protected void calcPixels(Map<NetworkNode, Double> nodes) {
 		if (DEBUG) {
 			LOG.debug("Mapping area w={}, h={} to pixels w={}, h={}",
-					geoWidth, geoHeight, pixelWidth, pixelHeight);
+					size.getGeoLonSpan(), size.getGeoLatSpan(), size.getPixelWidth(), size.getPixelHeight());
 		}
 		for (Entry<NetworkNode, Double> circle : nodes.entrySet()) {
 			drawCircle(circle.getKey(), circle.getValue());
@@ -114,10 +111,10 @@ public abstract class RangeMapDrawer<T> {
 	protected void drawCircle(Location pos, Line line, double widthDegrees, double heightDegrees) {
 		double nodeXOffset = pos.getLongitude() - minLon;
 		double nodeYOffset = pos.getLatitude() - minLat;
-		int nodeX = (int)(nodeXOffset / geoWidth * pixelWidth);
-		int nodeY = (int)(nodeYOffset / geoHeight * pixelHeight);
-		int rX = (int)(widthDegrees / geoWidth * pixelWidth);
-		int rY = (int)(heightDegrees / geoHeight * pixelHeight);
+		int nodeX = (int)(nodeXOffset / size.getGeoLonSpan() * size.getPixelWidth());
+		int nodeY = (int)(nodeYOffset / size.getGeoLatSpan() * size.getPixelHeight());
+		int rX = (int)(widthDegrees / size.getGeoLonSpan() * size.getPixelWidth());
+		int rY = (int)(heightDegrees / size.getGeoLatSpan() * size.getPixelHeight());
 		if (DEBUG) {
 			LOG.debug("Drawing a circle at {},{} for {} (pixels: {},{}, radii: {},{})",
 					pos.getLongitude(), pos.getLatitude(), line, nodeX, nodeY, rX, rY);
@@ -131,6 +128,8 @@ public abstract class RangeMapDrawer<T> {
 	 * @param r radius around center
 	 */
 	protected void drawCircle(int nodeX, int nodeY, int r, int color) {
+		int pixelWidth = size.getPixelWidth();
+		int pixelHeight = size.getPixelHeight();
 		int startX = Math.max(nodeX - r, 0);
 		int endX = Math.min(nodeX + r, pixelWidth);
 		int startY = Math.max(nodeY - r, 0);
@@ -146,7 +145,7 @@ public abstract class RangeMapDrawer<T> {
 						- nodeY)); // r^2 - ( (x - x_0)^2 + (y - y_0)^2 )
 				if (height >= 0) {
 					// max height is r^2, scale down, and scale up to [0, 256) alpha range
-					magicColor(x, y, (int)(height / (r * r) * 255), color);
+					magicColor(x, y, (int)(height / (r * r) * 255), color, pixelWidth);
 				}
 			}
 		}
@@ -160,6 +159,8 @@ public abstract class RangeMapDrawer<T> {
 	 * @param color of the ellipse to be drawn, alpha is ignored
 	 */
 	protected void drawEllipse(int nodeX, int nodeY, int a, int b, int color) {
+		int pixelWidth = size.getPixelWidth();
+		int pixelHeight = size.getPixelHeight();
 		int startX = Math.max(nodeX - a, 0);
 		int endX = Math.min(nodeX + a, pixelWidth);
 		int startY = Math.max(nodeY - b, 0);
@@ -174,7 +175,7 @@ public abstract class RangeMapDrawer<T> {
 				double height = 1 - ((x - nodeX) * (x - nodeX) / (double)(a * a) + (y - nodeY) * (y - nodeY)
 						/ (double)(b * b));
 				if (height >= 0) {
-					magicColor(x, y, (int)(height * 255), color);
+					magicColor(x, y, (int)(height * 255), color, pixelWidth);
 				}
 			}
 		}
@@ -184,8 +185,9 @@ public abstract class RangeMapDrawer<T> {
 	 * @param x coordinate
 	 * @param y coordinate
 	 * @param color new color to blend without alpha value
+	 * @param pixelWidth length of a row in the pixels array
 	 */
-	private void magicColor(int x, int y, int newAlpha, int color) {
+	private void magicColor(int x, int y, int newAlpha, int color, int pixelWidth) {
 		int originalColor = pixels[y * pixelWidth + x];
 		if (originalColor == 0) {
 			pixels[y * pixelWidth + x] = color | (newAlpha << 24);
@@ -205,14 +207,18 @@ public abstract class RangeMapDrawer<T> {
 	}
 
 	private void border(int borderSize, int borderColor) {
+		int pixelWidth = size.getPixelWidth();
+		int pixelHeight = size.getPixelHeight();
 		for (int x = 0; x < borderSize; ++x) {
 			for (int y = 0; y < pixelHeight; ++y) {
-				pixels[y * pixelWidth + x] = pixels[y * pixelWidth + (pixelWidth - x - 1)] = borderColor;
+				pixels[y * pixelWidth + x] =
+				pixels[y * pixelWidth + (pixelWidth - x - 1)] = borderColor;
 			}
 		}
 		for (int y = 0; y < borderSize; ++y) {
 			for (int x = 0; x < pixelWidth; ++x) {
-				pixels[y * pixelWidth + x] = pixels[(pixelHeight - y - 1) * pixelWidth + x] = borderColor;
+				pixels[y * pixelWidth + x] =
+				pixels[(pixelHeight - y - 1) * pixelWidth + x] = borderColor;
 			}
 		}
 	}

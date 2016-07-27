@@ -15,12 +15,14 @@ public class RangeMapDrawerAndroid extends RangeMapDrawer<Bitmap> {
 	private static final Logger LOG = LoggerFactory.getLogger(RangeMapDrawerAndroid.class);
 
 	public RangeMapDrawerAndroid(Iterable<NetworkNode> nodes, RangeMapDrawerConfig config) {
-		super(nodes, config);
+		super(nodes, config, new AndroidOpenGLRenderedGeoSize());
 	}
 
 	@Override protected Bitmap createMap(int[] pixels) {
-		Bitmap bitmap = Bitmap.createBitmap(pixelWidth, pixelHeight, Bitmap.Config.ARGB_8888);
-		bitmap.setPixels(pixels, (pixelHeight - 1) * pixelWidth, -pixelWidth, 0, 0, pixelWidth, pixelHeight);
+		Bitmap bitmap = Bitmap.createBitmap(size.getPixelWidth(), size.getPixelHeight(), Bitmap.Config.ARGB_8888);
+		bitmap.setPixels(pixels, (size.getPixelHeight() - 1) * size.getPixelWidth(), -size.getPixelWidth(), 0, 0,
+				size.getPixelWidth(),
+				size.getPixelHeight());
 		return bitmap;
 	}
 

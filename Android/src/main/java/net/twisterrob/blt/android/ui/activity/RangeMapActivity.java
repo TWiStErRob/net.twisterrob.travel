@@ -268,7 +268,7 @@ public class RangeMapActivity extends MapActivity {
 		if (!App.prefs().getBoolean(R.string.pref$network_overlay, R.bool.pref$network_overlay$default)) {
 			TubeMapDrawer tubeMapDrawer = new TubeMapDrawer(nodes);
 			DisplayMetrics metrics = getResources().getDisplayMetrics();
-			tubeMapDrawer.setRenderSafeGeoPixelSize(1024 * metrics.density, 1024 * metrics.density);
+			tubeMapDrawer.setSize(dip(this, 1024), dip(this, 1024));
 			map.addGroundOverlay(new GroundOverlayOptions()
 					.positionFromBounds(rangeDrawer.getBounds())
 					.transparency(0.3f)
