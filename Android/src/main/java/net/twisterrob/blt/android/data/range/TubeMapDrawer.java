@@ -8,6 +8,7 @@ import android.graphics.*;
 
 import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.android.db.model.*;
+import net.twisterrob.blt.model.LineColors;
 import net.twisterrob.java.model.Location;
 
 @NotThreadSafe
@@ -74,7 +75,9 @@ public class TubeMapDrawer {
 		double toY = (maxLat - to.getLatitude()) * scaleY;
 
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		paint.setColor(link.getSource().getLine().getBackground(App.getInstance().getStaticData().getLineColors()));
+		LineColors colors = App.getInstance().getStaticData().getLineColors();
+		int lineColor = link.getSource().getLine().getBackground(colors);
+		paint.setColor(lineColor);
 		paint.setStrokeWidth(4);
 		canvas.drawLine((float)fromX, (float)fromY, (float)toX, (float)toY, paint);
 	}
