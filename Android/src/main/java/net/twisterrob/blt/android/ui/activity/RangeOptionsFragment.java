@@ -261,12 +261,12 @@ public class RangeOptionsFragment extends Fragment {
 			return true;
 		}
 		switch (item.getItemId()) {
-			case R.id.option$range$reset_generator:
+			case R.id.menu$action$range$reset_generator:
 				genConfig.set(new RangeMapGeneratorConfig());
 				bindConfigs(genConfig, drawConfig); // update self UI
 				configsUpdatedListener.onConfigsUpdated();
 				return true;
-			case R.id.option$range$reset_drawing:
+			case R.id.menu$action$range$reset_drawing:
 				drawConfig.set(new RangeMapDrawerConfig());
 				bindConfigs(genConfig, drawConfig); // update self UI
 				configsUpdatedListener.onConfigsUpdated();

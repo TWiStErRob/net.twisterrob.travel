@@ -31,8 +31,8 @@
 	<string name="range$config$header$generator">Range Generation</string>
 	<string name="range$config$header$draw">Map Overlay Drawing</string>
 	<string name="range$config$header$ui">User Interface</string>
-	<string name="option$range$reset_generator">Reset generator defaults</string>
-	<string name="option$range$reset_drawing">Reset drawing defaults</string>
+	<string name="menu$action$range$reset_generator">Reset generator defaults</string>
+	<string name="menu$action$range$reset_drawing">Reset drawing defaults</string>
 
 	<string name="range$config$missing_tooltip" process="HtmlParser" tools:ignore="TypographyQuotes"><![CDATA[ 
 	<b>This item doesn\'t have help text.</b>
