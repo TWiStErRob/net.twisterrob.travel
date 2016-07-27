@@ -148,4 +148,13 @@
 	<b>Do you want to use the floating toolbar?</b>
 	(<i>options are yes/no</i>)
 	]]></string>
+
+	<string name="range$config$ui_network_overlay">@string/pref$network_overlay$title</string>
+	<string name="range$config$ui_network_overlay$tooltip" process="HtmlParser"><![CDATA[
+	<b>Do you want to use tiles overlay or ground overlay for the tube network?</b>
+	(<i>options are yes/no</i>)
+	Yes, for tiles; when you zoom in they get smaller and nicer.
+	No, for ground; they are always shown, no time is needed to load them when zoomed, but they are a mush when zoomed in too much.
+	A restart is needed to take effect.
+	]]></string>
 </resources>

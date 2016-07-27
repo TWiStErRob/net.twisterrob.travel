@@ -87,6 +87,13 @@ public class RangeOptionsFragment extends Fragment {
 				}
 			}
 		}).setChecked(prefs.getBoolean(R.string.pref$show_toolbar, R.bool.pref$show_toolbar$default));
+		bool(R.id.option$range$config$ui_network_overlay, new OnCheckedChangeListener() {
+			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if (prefs.getBoolean(R.string.pref$network_overlay, R.bool.pref$network_overlay$default) != isChecked) {
+					prefs.setBoolean(R.string.pref$network_overlay, isChecked);
+				}
+			}
+		}).setChecked(prefs.getBoolean(R.string.pref$network_overlay, R.bool.pref$network_overlay$default));
 
 		intraStation = bool(R.id.option$range$config$interchange_intrastation, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

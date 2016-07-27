@@ -83,6 +83,11 @@
 					android:id="@+id/option$range$config$ui_show_toolbar"
 					android:title="@string/range$config$ui_show_toolbar"
 					app:actionLayout="@layout/menu_widget_boolean" />
+				<item
+					android:id="@+id/option$range$config$ui_network_overlay"
+					android:title="@string/range$config$ui_network_overlay"
+					android:visible="@bool/in_test"
+					app:actionLayout="@layout/menu_widget_boolean" />
 			</group>
 		</menu>
 	</item>

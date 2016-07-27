@@ -34,6 +34,7 @@ import net.twisterrob.android.view.layout.DoAfterLayout;
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.data.range.*;
+import net.twisterrob.blt.android.data.range.tiles.*;
 import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.android.ui.activity.RangeOptionsFragment.ConfigsUpdatedListener;
 import net.twisterrob.blt.android.ui.activity.main.MapActivity;
@@ -263,15 +264,40 @@ public class RangeMapActivity extends MapActivity {
 				.transparency(0.0f)
 				.image(BitmapDescriptorFactory.fromBitmap(rangeDrawer.draw(emptyNetwork)))
 		);
-		// tube map above
-		TubeMapDrawer tubeMapDrawer = new TubeMapDrawer(nodes);
-		DisplayMetrics metrics = getResources().getDisplayMetrics();
-		tubeMapDrawer.setRenderSafeGeoPixelSize(1024 * metrics.density, 1024 * metrics.density);
-		map.addGroundOverlay(new GroundOverlayOptions()
-				.positionFromBounds(rangeDrawer.getBounds())
-				.transparency(0.3f)
-				.image(BitmapDescriptorFactory.fromBitmap(tubeMapDrawer.draw(nodes)))
-		);
+//		// tube map above
+		if (!App.prefs().getBoolean(R.string.pref$network_overlay, R.bool.pref$network_overlay$default)) {
+			TubeMapDrawer tubeMapDrawer = new TubeMapDrawer(nodes);
+			DisplayMetrics metrics = getResources().getDisplayMetrics();
+			tubeMapDrawer.setRenderSafeGeoPixelSize(1024 * metrics.density, 1024 * metrics.density);
+			map.addGroundOverlay(new GroundOverlayOptions()
+					.positionFromBounds(rangeDrawer.getBounds())
+					.transparency(0.3f)
+					.image(BitmapDescriptorFactory.fromBitmap(tubeMapDrawer.draw(nodes)))
+			);
+		} else {
+			TubeMapTileProvider provider = new TubeMapTileProvider(nodes, Math.max(256, dipInt(this, 192)));
+			if (BuildConfig.DEBUG) {
+				provider.setMarkers(new MarkerAdder() {
+					@Override public void addMarker(final double lat, final double lon, final String text) {
+						getWindow().getDecorView().post(new Runnable() {
+							@Override public void run() {
+								map.addMarker(new MarkerOptions()
+										.icon(BitmapDescriptorFactory.defaultMarker())
+										.title(text)
+										.position(new LatLng(lat, lon))
+								);
+							}
+						});
+					}
+				});
+			}
+			TileOverlay overlay = map.addTileOverlay(new TileOverlayOptions()
+					.tileProvider(provider)
+			);
+			if (BuildConfig.DEBUG) {
+				overlay.clearTileCache();
+			}
+		}
 		if (lastStartPoint != null) {
 			reDraw(lastStartPoint);
 		}
