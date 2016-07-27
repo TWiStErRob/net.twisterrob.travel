@@ -14,7 +14,7 @@ public class FeedProcessor {
 		starts.removeAll(info.getLeaves());
 		System.out.printf(Locale.ROOT, "\t\033[1;32mStart\033[0m: %s%n", starts);
 		Set<Node> ends = new TreeSet<>(info.getEnds());
-		starts.removeAll(info.getLeaves());
+		ends.removeAll(info.getLeaves());
 		System.out.printf(Locale.ROOT, "\t\033[1;32mEnd\033[0m: %s%n", ends);
 
 		Set<Node> leaves = new TreeSet<>(info.getLeaves());
