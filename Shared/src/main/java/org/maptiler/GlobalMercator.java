@@ -168,7 +168,7 @@ public class GlobalMercator {
 
 	/** Returns bounds of the given tile in EPSG:900913 coordinates */
 	public Meters[] TileBounds(int tx, int ty, int zoom) {
-		Pixels[] bounds = TilePixelsBounds(tx, ty);
+		Pixels[] bounds = this.TilePixelsBounds(tx, ty);
 		Meters min = this.PixelsToMeters(bounds[0].x, bounds[0].y, zoom);
 		Meters max = this.PixelsToMeters(bounds[1].x, bounds[1].y, zoom);
 		return new Meters[] {min, max};

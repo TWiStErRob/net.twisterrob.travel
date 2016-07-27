@@ -43,6 +43,8 @@
  * when the for loop doesn't find a match.
  *
  * I cross-referenced all the changes with the map's info windows in the article.
+ * <code>javac org/maptiler/*.java && java org.maptiler.globalmaptiles 10 51.5 -0.17</code>
+ * (Central London, zoom 10: including Richmond, Wembley and Isle of Dogs)
  *
  * @see <a href="http://www.maptiler.org/google-maps-coordinates-tile-bounds-projection/">
  *     Tiles à la Google Maps: Coordinates, Tile Bounds and Projection</a>

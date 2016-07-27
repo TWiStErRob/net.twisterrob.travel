@@ -41,7 +41,8 @@ public class globalmaptiles {
 
 	private static void Usage(String s) {
 		PrintStream out = System.out;
-		out.println("Usage: java globalmaptiles [-profile 'mercator'|'geodetic'] zoomlevel lat lon [latmax lonmax]");
+		String clazz = globalmaptiles.class.getName();
+		out.println("Usage: java " + clazz + " [-profile 'mercator'|'geodetic'] zoomlevel lat lon [latmax lonmax]");
 		out.println();
 		if (s != null) {
 			out.println(s);
@@ -110,15 +111,15 @@ public class globalmaptiles {
 		int tz = zoomlevel;
 		GlobalMercator mercator = new GlobalMercator();
 
-		System.out.printf("WGS84 coordinates (EPSG:4326) coordinates for lat/lon: %f, %f\n", lat, lon);
+		System.out.printf("WGS84 coordinates (EPSG:4326) coordinates for lat/lon: %s, %s\n", lat, lon);
 		Meters m = mercator.LatLonToMeters(lat, lon);
-		System.out.printf("Spherical Mercator (ESPG:900913) coordinates for lat/lon: %f, %f\n", m.x, m.y);
+		System.out.printf("Spherical Mercator (ESPG:900913) coordinates for lat/lon: %s, %s\n", m.x, m.y);
 		Tile tmin = mercator.MetersToTile(m.x, m.y, tz), tmax;
 
 		if (boundingbox != null) {
-			System.out.printf("WGS84 coordinates (EPSG:4326) coordinates for maxlat/maxlon: %f, %f\n", latmax, lonmax);
+			System.out.printf("WGS84 coordinates (EPSG:4326) coordinates for maxlat/maxlon: %s, %s\n", latmax, lonmax);
 			Meters max = mercator.LatLonToMeters(latmax, lonmax);
-			System.out.printf("Spherical Mercator (ESPG:900913) coordinates for maxlat/maxlon: %f, %f\n", max.x, max.y);
+			System.out.printf("Spherical Mercator (ESPG:900913) coordinates for maxlat/maxlon: %s, %s\n", max.x, max.y);
 			tmax = mercator.MetersToTile(max.x, max.y, tz);
 		} else {
 			tmax = tmin;
