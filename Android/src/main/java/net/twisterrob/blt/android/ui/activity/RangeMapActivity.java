@@ -293,6 +293,7 @@ public class RangeMapActivity extends MapActivity {
 			}
 			TileOverlay overlay = map.addTileOverlay(new TileOverlayOptions()
 					.tileProvider(provider)
+					.transparency(0.50f)
 			);
 			if (BuildConfig.DEBUG) {
 				overlay.clearTileCache();

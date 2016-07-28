@@ -35,7 +35,7 @@ public class TubeMapTileProvider extends DebugGeneratedGeoTileProvider {
 		linePaintProto.setStyle(Style.STROKE);
 		linePaintProto.setStrokeCap(Cap.ROUND);
 		linePaintProto.setColor(Color.RED);
-		linePaintProto.setStrokeWidth(tileSize * 0.006f);
+		linePaintProto.setStrokeWidth(tileSize * 0.005f);
 
 		this.lineShadowPaintProto = new Paint(Paint.ANTI_ALIAS_FLAG);
 		lineShadowPaintProto.setStyle(Style.STROKE);
