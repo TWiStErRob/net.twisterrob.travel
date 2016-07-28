@@ -43,11 +43,10 @@ public class DataBaseHelper {
 			}
 			@Override public void onOpen(SQLiteDatabase db) {
 				super.onOpen(db);
-				verifyEnum(db, StopType.class);
-				verifyEnum(db, Line.class);
+				verifyEnum(db, StopType.class, "StopType");
+				verifyEnum(db, Line.class, "Line");
 			}
-			private <T extends Enum<T>> void verifyEnum(SQLiteDatabase db, Class<T> enumClass) {
-				String enumName = enumClass.getSimpleName();
+			private <T extends Enum<T>> void verifyEnum(SQLiteDatabase db, Class<T> enumClass, String enumName) {
 				T[] values = enumClass.getEnumConstants();
 				Cursor cursor = db.query(enumName, new String[] {"_id", "name"}, null, null, null, null, "_id");
 				try {
