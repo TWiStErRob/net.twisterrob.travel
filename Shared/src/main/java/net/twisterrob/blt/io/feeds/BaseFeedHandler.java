@@ -3,6 +3,7 @@ package net.twisterrob.blt.io.feeds;
 import org.slf4j.*;
 import org.xml.sax.helpers.DefaultHandler;
 
+import net.twisterrob.java.exceptions.StackTrace;
 import net.twisterrob.java.io.MailSender;
 
 public abstract class BaseFeedHandler<T extends BaseFeed<T>> extends DefaultHandler implements FeedHandler<T> {
@@ -17,7 +18,9 @@ public abstract class BaseFeedHandler<T extends BaseFeed<T>> extends DefaultHand
 		try {
 			sender.send();
 		} catch (Exception e) {
-			e.printStackTrace();
+			String callingClass = new StackTrace().getStackTrace()[1].getClassName();
+			Logger log = LoggerFactory.getLogger(callingClass);
+			log.warn("Cannot send email: ", e);
 		}
 	}
 }
