@@ -14,12 +14,12 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import name.fraser.neil.plaintext.diff_match_patch;
 import name.fraser.neil.plaintext.diff_match_patch.Diff;
 
+import net.twisterrob.blt.gapp.viewmodel.LineColor;
 import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus;
 import net.twisterrob.blt.model.Line;
 import net.twisterrob.java.utils.ObjectTools;
-import net.twisterrob.java.web.InvokerMap;
 
 import static net.twisterrob.blt.gapp.FeedConsts.*;
 
@@ -68,8 +68,7 @@ public class LineStatusHistoryServlet extends HttpServlet {
 
 		// display them
 		req.setAttribute("feedChanges", differences);
-		req.setAttribute("colors", FeedConsts.STATIC_DATA.getLineColors());
-		req.setAttribute("call", new InvokerMap());
+		req.setAttribute("colors", new LineColor.AllColors(FeedConsts.STATIC_DATA.getLineColors()));
 		RequestDispatcher view = req.getRequestDispatcher("/LineStatus.jsp");
 		view.forward(req, resp);
 	}
@@ -84,7 +83,6 @@ public class LineStatusHistoryServlet extends HttpServlet {
 				Feed feed = Feed.valueOf(entry.getKind());
 				InputStream stream = new StringInputStream(content.getValue(), ENCODING);
 				LineStatusFeed feedContents = feed.<LineStatusFeed>getHandler().parse(stream);
-				stream.close();
 				result = new Result(date, feedContents);
 			} catch (Exception ex) {
 				result = new Result(date, "Error while displaying loaded XML: " + ObjectTools.getFullStackTrace(ex));

@@ -8,10 +8,7 @@
 	<title>Line Status</title>
 	<script type="text/javascript" src="/static/jquery-1.10.2.min.js"></script>
 	<script type="text/javascript" src="/static/htmltooltip.js"></script>
-	<style>
-		th {
-			background-color: lightgray;
-		}
+    <style type="text/css">
 		div.htmltooltip {
 			position: absolute; /*leave this and next 3 values alone*/
 			z-index: 1000;
@@ -22,15 +19,67 @@
 			padding: 3px;
 			width: 700px; /*width of tooltip*/
 		}
+
+        table.info {
+            float: left;
+            width: 325px;
+            border: 1px solid black;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        table.info > thead > tr > th {
+            background-color: lightgray;
+            border: 1px solid black;
+        }
+
+        table.info > thead > tr > th.title {
+            font-style: italic;
+        }
+
+        table.info > * > tr > td,
+        table.info > * > tr > th {
+            padding: 2px;
+        }
+
+        .delay.hasDetails {
+            font-weight: bold;
+        }
+
+        .delay.inactive {
+            color: lightgray;
+        }
+
+        .delay.status-better {
+            color: green;
+            font-weight: bold;
+        }
+
+        .delay.status-worse {
+            color: red;
+            font-weight: bold;
+        }
+
+        .change.status-same {
+            color: white;
+        }
+
+        <c:forEach var="lineColor" items="${colors.iterator}" varStatus="status">
+        .line-${lineColor.line} {
+            color: ${lineColor.foregroundColor};
+            background-color: ${lineColor.backgroundColor};
+        }
+
+        </c:forEach>
 	</style>
 </head>
 <body>
 	<c:forEach var="feedChange" items="${feedChanges}" varStatus="status">
 	<c:set var="feed" value="${feedChange.new}" />
-	<table style="float: left; width: 320px; border: 1px solid black;">
+        <table class="info">
 		<thead>
 			<tr>
-				<th colspan="3" style="font-style: italic">
+                <th colspan="3" class="title">
 					${status.index+1}/${fn:length(feedChanges)}:
 					<fmt:formatDate value="${feed.when}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</th>
@@ -43,32 +92,16 @@
 		</thead>
 		<tbody>
 			<c:forEach var="lineStatus" items="${feed.content.lineStatuses}">
-				<c:set var="lineColor" value="${call.init[lineStatus.line].arg[colors].invoke['getBackground']}" />
-				<c:set var="lineTextColor" value="${call.init[lineStatus.line].arg[colors].invoke['getForeground']}" />
-				<c:set var="lineColor" value="${call.static['java.lang.Integer'].intArg[lineColor].invoke['toHexString']}" />
-				<c:set var="lineTextColor" value="${call.static['java.lang.Integer'].intArg[lineTextColor].invoke['toHexString']}" />
-				<c:set var="lineColor" value="${call.init[lineColor].intArg[2].invoke['substring']}" />
-				<c:set var="lineTextColor" value="${call.init[lineTextColor].intArg[2].invoke['substring']}" />
 				<c:set var="delayStyle" value="" />
-				<c:set var="changeStyle" value="" />
 				<c:if test="${not empty lineStatus.description}">
-					<c:set var="delayStyle" value="${delayStyle};font-weight:bold" />
+                    <c:set var="delayStyle" value="${delayStyle} hasDetails" />
 				</c:if>
 				<c:if test="${not lineStatus.active}">
-					<c:set var="delayStyle" value="${delayStyle};color: lightgray" />
-				</c:if>
-				<c:if test="${feedChange.statuses[lineStatus.line] == 'better'}">
-					<c:set var="delayStyle" value="${delayStyle};color: green;font-weight:bold" />
-				</c:if>
-				<c:if test="${feedChange.statuses[lineStatus.line] == 'worse'}">
-					<c:set var="delayStyle" value="${delayStyle};color: red;font-weight:bold" />
-				</c:if>
-				<c:if test="${feedChange.statuses[lineStatus.line] == 'same'}">
-					<c:set var="changeStyle" value="${changeStyle};color: white" />
+                    <c:set var="delayStyle" value="${delayStyle} inactive" />
 				</c:if>
 				<tr>
-					<td style="background-color: #${lineColor}; color: #${lineTextColor}">${lineStatus.line.title}</td>
-					<td style="${delayStyle}">
+                    <td class="line-${lineStatus.line}">${lineStatus.line.title}</td>
+                    <td class="delay status-${feedChange.statuses[lineStatus.line]} ${delayStyle}">
 					<c:choose>
 							<c:when test="${empty lineStatus.description}">
 								${lineStatus.type.title}
@@ -79,7 +112,7 @@
 							</c:otherwise>
 						</c:choose>
 					</td>
-					<td style="${changeStyle}">
+                    <td class="change status-${feedChange.statuses[lineStatus.line]}">
 						<c:choose>
 							<c:when test="${empty feedChange.descriptions[lineStatus.line]}">
 								${feedChange.statuses[lineStatus.line]}
