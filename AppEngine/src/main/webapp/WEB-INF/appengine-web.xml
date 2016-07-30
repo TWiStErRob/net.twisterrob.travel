@@ -11,11 +11,13 @@
 	<!-- Allows App Engine to send multiple requests to one instance in parallel. -->
 	<threadsafe>true</threadsafe>
 
-	<!-- Configure java.util.logging (JUL) -->
 	<system-properties>
-		<!-- FIXME disabled because the binding/handler is not found on dev server classpath -->
-		<!--<property name="java.util.logging.config.file" value="WEB-INF/java.util.logging.properties" />-->
-		<!--<property name="log4j.configuration" value="file:WEB-INF/classes/log4j.properties" />-->
+		<!-- Configure JUL -> SLF4J -> Log4J routing, see config files for more -->
+		<!-- TODO figure out how to add this property only at dev time -->
+		<property name="java.util.logging.config.file" value="WEB-INF/java.util.logging.properties" />
+		<property name="log4j.configuration" value="file:WEB-INF/log4j.properties" />
+		<!-- Helps diagnose when logs don't appear correctly -->
+		<property name="log4j.debug" value="false" />
 	</system-properties>
 
 	<!-- HTTP Sessions are disabled by default. To enable HTTP sessions specify: -->

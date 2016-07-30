@@ -1,7 +1,7 @@
 buildscript {
 	ext {
 		appEngineVersion = '1.9.38'
-		slf4jVersion = '1.7.5'
+		slf4jVersion = '1.7.21'
 		powermockVersion = '1.5.1'
 	}
 	dependencies {
@@ -17,9 +17,6 @@ apply plugin: 'appengine'
 sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
 
-configurations {
-	provided
-}
 dependencies {
 	appengineSdk "com.google.appengine:appengine-java-sdk:${appEngineVersion}"
 	compile "com.google.appengine:appengine-api-1.0-sdk:${appEngineVersion}" // com.google.appengine.api.datastore
@@ -30,11 +27,7 @@ dependencies {
 //	compile "taglibs:standard:1.1.2"
 //	compile "jstl:jstl:1.2"
 	compile project(':Shared')
-//	compile "org.slf4j:slf4j-api:${slf4jVersion}"
-//	// Use this for readable development log, see java.util.logging.properties
-//	compile "org.slf4j:slf4j-log4j12:${slf4jVersion}" // jdk14 for PROD, log4j12 for DEV
-//	compile "log4j:log4j:1.2.17"
-//	provided "org.sl4fj:jul-to-slf4j:${slf4jVersion}" // Direct default GAE JUL logging to SLF4J
+	compile "org.slf4j:slf4j-jdk14:${slf4jVersion}" // route apps SLF4J logging to JUL
 
 	compile "ant:ant:1.6.5" // for org.apache.tools.ant.filters.StringInputStream
 //	compile "com.google.guava:guava:14.0.1"
@@ -55,7 +48,7 @@ sourceSets {
 	test.java.srcDir 'src/test/diff'
 }
 
-appengine {
+appengine { // com.google.appengine.AppEnginePluginExtension
 	httpPort = 8888
 	downloadSdk = true
 	appcfg {
