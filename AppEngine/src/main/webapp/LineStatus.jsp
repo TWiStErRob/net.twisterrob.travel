@@ -129,8 +129,21 @@
 		<tfoot>
 			<tr>
 				<td colspan="3">
-					<a rel="htmltooltip">${feedChange.error}: ${feed.errorHeader}</a>
-					<div class="htmltooltip"><pre style="font-size: xx-small;">${feed.fullError}</pre></div>
+					<c:choose>
+						<c:when test="${not empty feed.errorHeader}">
+							<a rel="htmltooltip">${feedChange.error}: ${feed.errorHeader}</a>
+							<div class="htmltooltip">
+								<pre style="font-size: xx-small;">${feed.fullError}</pre>
+							</div>
+						</c:when>
+						<c:when test="${not empty feedChange.error}">
+							${feedChange.error}
+						</c:when>
+						<%-- Make sure there's always content, otherwise the height of the tables is not the same --%>
+						<c:otherwise>
+							&nbsp;
+						</c:otherwise>
+					</c:choose>
 				</td>
 			</tr>
 		</tfoot>
