@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To use this configuration, deploy it into your application's WEB-INF directory.
+To make everything work in DEV mode AppEngine needs the following parameters:
+	-Xbootclasspath/p:P:\caches\gradle\caches\modules-2\files-2.1\org.slf4j\jul-to-slf4j\1.7.21\2f22c882ffa479d1e9ff4eb0e8e2c29f2a0871ed\jul-to-slf4j-1.7.21.jar
+	-Xbootclasspath/p:P:\caches\gradle\caches\modules-2\files-2.1\org.slf4j\slf4j-api\1.7.21\139535a69a4239db087de9bab0bee568bf8e0b70\slf4j-api-1.7.21.jar
+	-Xbootclasspath/p:P:\caches\gradle\caches\modules-2\files-2.1\org.apache.logging.log4j\log4j-slf4j-impl\2.6.2\71d6c56133e0548e07434add048d7a7a2db53512\log4j-slf4j-impl-2.6.2.jar
+	-Xbootclasspath/p:P:\caches\gradle\caches\modules-2\files-2.1\org.apache.logging.log4j\log4j-api\2.6.2\bd1b74a5d170686362091c7cf596bbc3adf5c09b\log4j-api-2.6.2.jar
+	-Xbootclasspath/p:P:\caches\gradle\caches\modules-2\files-2.1\org.apache.logging.log4j\log4j-core\2.6.2\a91369f655eb1639c6aece5c5eb5108db18306\log4j-core-2.6.2.jar
+
+To bridge/route all JUL log records to the SLF4J API org.slf4j.bridge.SLF4JBridgeHandler is registered in java.util.logging.properties
+	J.U.L.  -> Log4J
+	ALL     -> ALL
+	FINEST  -> TRACE
+	FINER   -> DEBUG
+	FINE    -> DEBUG
+	INFO    -> INFO
+	WARNING -> WARN
+	SEVERE  -> ERROR
+	        -> FATAL
+	        -> OFF
+-->
+<Configuration>
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{ISO8601} %-5p [%t] %c(%F:%L) %m%n" />
+		</Console>
+	</Appenders>
+
+	<Loggers>
+		<Root level="ALL">
+			<AppenderRef ref="console" />
+		</Root>
+
+		<!-- tighten spamming logs -->
+
+		<!-- DEBUG/startup GAE Development server logs about all loaded files (jar, tld, ...) -->
+		<!-- INFO/startup Jetty version info and binding -->
+		<Logger name="JettyLogger(null)" level="WARN" />
+		<!-- TRACE/startup GAE Development server determines that it's a dev server:
+		     https://code.google.com/p/googleappengine/issues/detail?id=10412
+		     com.google.appengine.tools.development.DevAppServerModulesFilter(DevAppServerModulesFilter.java:210) Ignoring Exception getting module instance and continuing
+		     com.google.appengine.api.modules.ModulesException: Instance id unavailable
+		         at com.google.appengine.api.modules.ModulesServiceImpl.getCurrentInstanceId(ModulesServiceImpl.java:77)
+		-->
+		<Logger name="com.google.appengine.tools.development.DevAppServerModulesFilter" level="DEBUG" />
+		<!-- DEBUG/startup GAE Development server requests backend config
+		     com.google.appengine.tools.development.AbstractBackendServers(AbstractBackendServers.java:194) Got null backendsXml config.
+		-->
+		<Logger name="com.google.appengine.tools.development.AbstractBackendServers" level="INFO" />
+		<!-- TRACE/startup protobuf feature detection results -->
+		<Logger name="com.google.appengine.repackaged.com.google.protobuf" level="DEBUG" />
+
+		<!-- INFO Jersey Application startup (Root Resource Classes, Global Reader Interceptors, Global Writer Interceptors, Message Body Readers, Message Body Writers) -->
+		<!--<Logger name="org.glassfish.jersey.server.ApplicationHandler" level="WARN" />-->
+		<!-- TRACE A new abstract resource created by IntrospectionModeler: org.glassfish.jersey.server.model.Resource$Builder@13bd913 -->
+		<!--<Logger name="org.glassfish.jersey.server.model.IntrospectionModeller" level="DEBUG" />-->
+		<!-- DEBUG To determine "Running in a non-OSGi environment" it logs an exception:
+		     Unable to load class org.osgi.framework.BundleReference using the current class loader. java.lang.ClassNotFoundException: org.osgi.framework.BundleReference
+		-->
+		<!--<Logger name="org.glassfish.jersey.internal.util.ReflectionHelper" level="INFO" />-->
+		<!-- DEBUG Unable to get the $Proxy17 annotation value property java.lang.NoSuchMethodException: javax.inject.Inject.value() -->
+		<!--<Logger name="org.glassfish.jersey.server.model.Parameter" level="INFO" />-->
+		<!-- TRACE Loading next object: org.glassfish.jersey.*AutoDiscoverable -->
+		<!--<Logger name="org.glassfish.jersey.internal.ServiceFinder" level="DEBUG" />-->
+
+		<!-- DEBUG Rolled forward 1 of 1 jobs for Element {...} -->
+		<!--<Logger name="com.google.appengine.api.datastore.dev.LocalDatastoreService" level="INFO" />-->
+		<!-- DEBUG/request JSP compiler: JSP request logs -->
+		<Logger name="org.apache.jasper.servlet.JspServlet" level="INFO" />
+		<!-- DEBUG/request JSP compiler: JSP compilation logs (deleting, generated, compiled in time) -->
+		<Logger name="org.apache.jasper.compiler.Compiler" level="INFO" />
+		<!-- DEBUG/request JSP compiler: statement level code generation logs
+		     constant pool count: 673
+		     16 read class attr - - '_005fjspx_005ftagPool_005fc_005fwhen_0026_005ftest'
+		-->
+		<Logger name="org.apache.jasper.compiler.SmapUtil$SDEInstaller" level="INFO" />
+		<!-- DEBUG/request JSP compiler: class loaders and classpath -->
+		<Logger name="org.apache.jasper.compiler.JspRuntimeContext" level="INFO" />
+
+		<!-- DEBUG/request authentication internals
+		     authenticate() returning new principal for test@example.com
+		     Ignoring disassociate call for: test@example.com
+		-->
+		<Logger name="com.google.apphosting.utils.jetty.AppEngineAuthentication" level="INFO" />
+		<!-- DEBUG/request full logging of what goes over the wire (headers, content, etc).
+		     com.google.appengine.repackaged.org.apache.http.wire(Wire.java:63) >> "GET /TrackerNet/LineStatus HTTP/1.1[\r][\n]"
+		     com.google.appengine.repackaged.org.apache.http.wire(Wire.java:63) << "HTTP/1.1 200 OK[\r][\n]"
+		-->
+		<Logger name="com.google.appengine.repackaged.org.apache.http" level="INFO" />
+		<!-- DEBUG mail capabilities and handlers resolution -->
+		<Logger name="javax.activation" level="INFO" />
+
+		<!-- DEBUG/startup MBeans setup for Log4J loggers-->
+		<Logger name="javax.management.mbeanserver" level="INFO" />
+		<Logger name="javax.management.misc" level="INFO" />
+
+		<!-- Application specific logs. -->
+		<Logger name="net.twisterrob" level="ALL" />
+	</Loggers>
+</Configuration>

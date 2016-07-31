@@ -40,7 +40,14 @@ dependencies {
 	//provided 'jstl:jstl:1.2'
 
 	compile project(':Shared')
+
+	// See java.util.logging.properties and log4j2.xml
+	compile "org.slf4j:slf4j-api:${VERSION_SLF4J}"
 	compile "org.slf4j:slf4j-jdk14:${VERSION_SLF4J}" // route apps SLF4J logging to JUL
+	provided "org.slf4j:jul-to-slf4j:${VERSION_SLF4J}" // DEV only
+	provided "org.apache.logging.log4j:log4j-api:${VERSION_LOG4J}" // DEV only
+	provided "org.apache.logging.log4j:log4j-core:${VERSION_LOG4J}" // DEV only
+	provided "org.apache.logging.log4j:log4j-slf4j-impl:${VERSION_LOG4J}" // DEV only
 
 	compile "ant:ant:1.6.5" // for org.apache.tools.ant.filters.StringInputStream
 //	compile "com.google.guava:guava:14.0.1"
