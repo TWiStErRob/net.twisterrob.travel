@@ -15,22 +15,16 @@ dependencies {
 		exclude module: 'android-polyfill'
 	}
 	// TOFIX otherwise VariantFragment descendants don't see Fragment and its methods (Cannot access FQCN errors in IDEA)
-	def supportVersion = '24.1.1'
 	compile 'com.google.android.gms:play-services-maps:9.2.1'
 	compile 'com.google.android.gms:play-services-places:9.2.1'
-	compile "com.android.support:support-v4:${supportVersion}"
-	compile "com.android.support:appcompat-v7:${supportVersion}"
-	compile "com.android.support:design:${supportVersion}"
-//	compile "com.android.support:cardview-v7:${supportVersion}"
-//	compile "com.android.support:recyclerview-v7:${supportVersion}"
+	compile "com.android.support:support-v4:${VERSION_SUPPORT}"
+	compile "com.android.support:appcompat-v7:${VERSION_SUPPORT}"
+	compile "com.android.support:design:${VERSION_SUPPORT}"
+//	compile "com.android.support:cardview-v7:${VERSION_SUPPORT}"
+//	compile "com.android.support:recyclerview-v7:${VERSION_SUPPORT}"
 //	compile 'com.facebook.stetho:stetho:1.3.1'
-	testCompile('junit:junit:4.12') {
-		exclude module: 'hamcrest'
-		exclude module: 'hamcrest-core'
-	}
-	testCompile('org.hamcrest:hamcrest-junit:2.0.0.0') {
-		exclude module: 'junit'
-	}
+
+	apply from: "${rootDir}/gradle/testCompile.gradle", to: project
 }
 
 android {
@@ -68,6 +62,6 @@ task generateDataBase(type: Copy, dependsOn: [':Data:runNetwork', ':Data:runPost
 	}
 	into android.sourceSets.main.assets.srcDirs[0]
 }
-android.applicationVariants.all { com.android.build.gradle.api.ApplicationVariant variant ->
+android.applicationVariants.all { /*com.android.build.gradle.api.ApplicationVariant*/ variant ->
 	variant.mergeAssets.dependsOn tasks.generateDataBase
 }

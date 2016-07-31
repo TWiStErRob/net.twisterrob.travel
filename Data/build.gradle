@@ -10,6 +10,8 @@ dependencies {
 	compile project(':Shared')
 	compile 'org.slf4j:slf4j-simple:1.7.5'
 	compile 'org.xerial:sqlite-jdbc:3.7.15-M1'
+
+	apply from: "${rootDir}/gradle/testCompile.gradle", to: project
 }
 
 apply plugin: 'jetty'

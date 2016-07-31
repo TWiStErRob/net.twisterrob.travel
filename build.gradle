@@ -2,8 +2,18 @@ allprojects {
 	//configurations.compile.resolutionStrategy.cacheChangingModulesFor 0, 'seconds' // -SNAPSHOT
 
 	group = 'net.twisterrob.travel'
+
 	buildscript {
-		apply from: "${rootDir}/gradle/buildscript.gradle", to: buildscript
+		repositories {
+			jcenter()
+			maven { name 'twisterrob'; url 'http://localhost/maven' }
+		}
+		dependencies {
+			//configurations.classpath.resolutionStrategy.cacheChangingModulesFor 0, 'seconds' // -SNAPSHOT
+			//configurations.classpath.resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds' // .+
+			//noinspection GradleDynamicVersion
+			classpath "net.twisterrob.gradle:plugin:${VERSION_TWISTER_GRADLE}"
+		}
 	}
 
 	repositories {
@@ -11,8 +21,8 @@ allprojects {
 		maven { name 'twisterrob'; url 'http://localhost/maven' }
 		maven { name 'glide'; url 'http://oss.sonatype.org/content/repositories/snapshots' }
 	}
-	
-	project.afterEvaluate {
+
+	afterEvaluate {
 		tasks.withType(JavaCompile) {
 			options.encoding = 'UTF-8'
 		}
