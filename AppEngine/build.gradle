@@ -63,12 +63,10 @@ sourceSets {
 	main {
 		java.srcDir 'src/main/diff'
 		compileClasspath += configurations.provided
-		runtimeClasspath += configurations.provided
 	}
 	test {
 		java.srcDir 'src/test/diff'
 		compileClasspath += configurations.provided
-		runtimeClasspath += configurations.provided
 	}
 }
 
@@ -82,6 +80,9 @@ appengine { // com.google.appengine.AppEnginePluginExtension
 		email = 'papp.robert.s@gmail.com'
 		oauth2 = true
 	}
+	def logDependencyFilter = { Dependency d -> d.group?.contains('slf4j') || d.group?.contains('log4j') };
+	def deps = configurations.provided.dependencies.findAll logDependencyFilter;
+	configurations.provided.files(deps as Dependency[]).each { jvmFlags.add("-Xbootclasspath/p:${it.absolutePath}") }
 }
 
 appengineDownloadApp {
