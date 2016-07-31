@@ -101,7 +101,7 @@
 				</c:if>
 				<tr>
                     <td class="line-${lineStatus.line}">${lineStatus.line.title}</td>
-                    <td class="delay status-${feedChange.statuses[lineStatus.line]} ${delayStyle}">
+					<td class="delay ${feedChange.statuses[lineStatus.line].cssClass} ${delayStyle}">
 					<c:choose>
 							<c:when test="${empty lineStatus.description}">
 								${lineStatus.type.title}
@@ -112,10 +112,10 @@
 							</c:otherwise>
 						</c:choose>
 					</td>
-                    <td class="change status-${feedChange.statuses[lineStatus.line]}">
+					<td class="change ${feedChange.statuses[lineStatus.line].cssClass}">
 						<c:choose>
 							<c:when test="${empty feedChange.descriptions[lineStatus.line]}">
-								${feedChange.statuses[lineStatus.line]}
+								${feedChange.statuses[lineStatus.line].title}
 							</c:when>
 							<c:otherwise>
 								<a rel="htmltooltip">${feedChange.statuses[lineStatus.line]}</a>
@@ -131,13 +131,13 @@
 				<td colspan="3">
 					<c:choose>
 						<c:when test="${not empty feed.errorHeader}">
-							<a rel="htmltooltip">${feedChange.error}: ${feed.errorHeader}</a>
+							<a rel="htmltooltip">${feedChange.error.title}: ${feed.errorHeader}</a>
 							<div class="htmltooltip">
 								<pre style="font-size: xx-small;">${feed.fullError}</pre>
 							</div>
 						</c:when>
-						<c:when test="${not empty feedChange.error}">
-							${feedChange.error}
+						<c:when test="${not empty feedChange.error.title}">
+							${feedChange.error.title}
 						</c:when>
 						<%-- Make sure there's always content, otherwise the height of the tables is not the same --%>
 						<c:otherwise>
