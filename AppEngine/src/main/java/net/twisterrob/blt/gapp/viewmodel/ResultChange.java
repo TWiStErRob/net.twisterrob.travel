@@ -124,9 +124,9 @@ public class ResultChange {
 		Same("", "status-same"),
 		Unknown("unknown", "status-unknown"),
 		SameDescriptionSame("", "status-same-desc-same"),
-		SameDescriptionChange("description", "status-same-desc-change"),
-		SameDescriptionAdd("description", "status-same-desc-add"),
-		SameDescriptionDel("description", "status-same-desc-del");
+		SameDescriptionChange("descr.", "status-same-desc-change"),
+		SameDescriptionAdd("+ descr.", "status-same-desc-add"),
+		SameDescriptionDel("- descr.", "status-same-desc-del");
 		private final String title;
 		private final String cssClass;
 		StatusChange(String humanReadable, String cssClass) {

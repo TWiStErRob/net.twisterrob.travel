@@ -118,7 +118,7 @@
 								${feedChange.statuses[lineStatus.line].title}
 							</c:when>
 							<c:otherwise>
-								<a rel="htmltooltip">${feedChange.statuses[lineStatus.line]}</a>
+								<a rel="htmltooltip">${feedChange.statuses[lineStatus.line].title}</a>
 								<div class="htmltooltip">${feedChange.descriptions[lineStatus.line]}</div>
 							</c:otherwise>
 						</c:choose>
