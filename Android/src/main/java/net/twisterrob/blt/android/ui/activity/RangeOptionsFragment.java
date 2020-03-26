@@ -22,6 +22,7 @@ import net.twisterrob.android.utils.tools.AndroidTools.PopupCallbacks;
 import net.twisterrob.android.wiring.NumberPickerWidget;
 import net.twisterrob.android.wiring.NumberPickerWidget.OnValueChangeListener;
 import net.twisterrob.blt.android.*;
+import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.data.range.*;
 import net.twisterrob.blt.android.ui.*;
 

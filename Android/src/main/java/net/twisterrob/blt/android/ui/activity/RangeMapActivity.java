@@ -32,6 +32,7 @@ import net.twisterrob.android.utils.tools.AndroidTools;
 import net.twisterrob.android.view.*;
 import net.twisterrob.android.view.layout.DoAfterLayout;
 import net.twisterrob.blt.android.*;
+import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.data.range.*;
 import net.twisterrob.blt.android.data.range.tiles.*;

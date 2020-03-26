@@ -9,6 +9,7 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
 import net.twisterrob.blt.android.*;
+import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.db.model.Station;
 import net.twisterrob.blt.model.StopType;
