@@ -1,5 +1,5 @@
 <resources>
 	<!-- Need to repeat here, because flavor "range" has lower priority than build-type "debug" -->
 	<string name="app_name">@string/launcher__range_map</string>
-	<string name="launcher$range_map">!Tube Range Map</string>
+	<string name="launcher__range_map">!Tube Range Map</string>
 </resources>
