@@ -40,6 +40,12 @@ public enum DelayType {
 	 */
 	PartClosure("PC", 50, "Part Closure", "DisruptedService"),
 	/**
+	 * Example (during the 2020 March Lockdown due to COVID-19 outbreak):
+	 * <i>A 15 minute service is operating due to operational restrictions.
+	 * Public transport should only be used for essential journeys.</i>
+	 */
+	SpecialService("SS", 45, "Special Service", "DisruptedService"),
+	/**
 	 * Example:
 	 * <i>Between Turnham Green and Richmond only, due to a signal failure at Richmond.
 	 * GOOD SERVICE on the rest of the line.</i>
