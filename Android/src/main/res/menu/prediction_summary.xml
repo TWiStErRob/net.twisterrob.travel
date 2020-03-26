@@ -3,25 +3,25 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto">
 	<item
-		android:id="@+id/menu$options$compass"
+		android:id="@+id/menu__options__compass"
 		android:title="@string/compass_directions"
 		app:showAsAction="always">
 		<menu>
 			<group android:checkableBehavior="all">
 				<item
-					android:id="@+id/menu$option$compass_north"
+					android:id="@+id/menu__option__compass_north"
 					android:title="@string/compass_north" />
 				<item
-					android:id="@+id/menu$option$compass_south"
+					android:id="@+id/menu__option__compass_south"
 					android:title="@string/compass_south" />
 				<item
-					android:id="@+id/menu$option$compass_west"
+					android:id="@+id/menu__option__compass_west"
 					android:title="@string/compass_west" />
 				<item
-					android:id="@+id/menu$option$compass_east"
+					android:id="@+id/menu__option__compass_east"
 					android:title="@string/compass_east" />
 				<item
-					android:id="@+id/menu$option$compass_others"
+					android:id="@+id/menu__option__compass_others"
 					android:title="@string/compass_center" />
 			</group>
 		</menu>

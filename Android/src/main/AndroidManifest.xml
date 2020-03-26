@@ -43,7 +43,7 @@
 
 		<activity
 			android:name=".ui.activity.StatusActivity"
-			android:label="@string/launcher$line_status">
+			android:label="@string/launcher__line_status">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="net.twisterrob.blt.android.ui.activity.main.MainActivity" />
@@ -51,7 +51,7 @@
 
 		<activity
 			android:name=".ui.activity.PredictionSummaryActivity"
-			android:label="@string/launcher$prediction_summary">
+			android:label="@string/launcher__prediction_summary">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="net.twisterrob.blt.android.ui.activity.StatusActivity" />
@@ -59,7 +59,7 @@
 
 		<activity
 			android:name=".ui.activity.StationListActivity"
-			android:label="@string/launcher$station_list">
+			android:label="@string/launcher__station_list">
 			<intent-filter>
 				<action android:name="android.intent.action.SEARCH" />
 			</intent-filter>
@@ -73,7 +73,7 @@
 
 		<activity
 			android:name=".ui.activity.StationInfoActivity"
-			android:label="@string/launcher$station_info">
+			android:label="@string/launcher__station_info">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="net.twisterrob.blt.android.ui.activity.StationListActivity" />
@@ -81,7 +81,7 @@
 
 		<activity
 			android:name=".ui.activity.StationMapsActivity"
-			android:label="@string/launcher$station_map">
+			android:label="@string/launcher__station_map">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="net.twisterrob.blt.android.ui.activity.main.MainActivity" />
@@ -89,7 +89,7 @@
 
 		<activity
 			android:name=".ui.activity.PostCodesActivity"
-			android:label="@string/launcher$postcode_map">
+			android:label="@string/launcher__postcode_map">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="net.twisterrob.blt.android.ui.activity.main.MainActivity" />
@@ -97,7 +97,7 @@
 
 		<activity
 			android:name=".ui.activity.RangeMapActivity"
-			android:label="@string/launcher$range_map"
+			android:label="@string/launcher__range_map"
 			android:theme="@style/AppTheme.NoActionBar">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"

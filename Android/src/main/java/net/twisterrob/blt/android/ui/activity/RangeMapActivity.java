@@ -65,12 +65,12 @@ public class RangeMapActivity extends MapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_range_map);
 
-		AndroidTools.accountForStatusBar(findViewById(R.id.view$range$toolbar_container));
-		Toolbar toolbar = (Toolbar)findViewById(R.id.view$range$toolbar);
+		AndroidTools.accountForStatusBar(findViewById(R.id.view__range__toolbar_container));
+		Toolbar toolbar = (Toolbar)findViewById(R.id.view__range__toolbar);
 		setSupportActionBar(toolbar);
 //		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //		getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_launcher);
-		drawers = (ClickThroughDrawerLayout)findViewById(R.id.view$range$drawer_layout);
+		drawers = (ClickThroughDrawerLayout)findViewById(R.id.view__range__drawer_layout);
 		new DoAfterLayout(drawers, true) {
 			@Override protected void onLayout(@NonNull View view) {
 				// when the map has more than 40% of the screen, allow using it even when the drawer is open
@@ -81,16 +81,16 @@ public class RangeMapActivity extends MapActivity {
 		};
 
 		FragmentManager fm = getSupportFragmentManager();
-		nearestFragment = (RangeNearestFragment)fm.findFragmentById(R.id.view$range$bottom_sheet);
-		optionsFragment = (RangeOptionsFragment)fm.findFragmentById(R.id.view$range$drawer);
+		nearestFragment = (RangeNearestFragment)fm.findFragmentById(R.id.view__range__bottom_sheet);
+		optionsFragment = (RangeOptionsFragment)fm.findFragmentById(R.id.view__range__drawer);
 		optionsFragment.bindConfigs(genConfig, drawConfig);
 		optionsFragment.setConfigsUpdatedListener(new ConfigsUpdatedListener() {
 			@Override public void onConfigsUpdated() {
 				reDraw(lastStartPoint);
 			}
 		});
-		FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.view$range$fab);
-		behavior = BottomSheetBehavior.from(findViewById(R.id.view$range$bottom_sheet));
+		FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.view__range__fab);
+		behavior = BottomSheetBehavior.from(findViewById(R.id.view__range__bottom_sheet));
 		behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 		behavior.setBottomSheetCallback(new MultiBottomSheetCallback.Builder()
 				//.add(new LoggingBottomSheetCallback())
@@ -104,7 +104,7 @@ public class RangeMapActivity extends MapActivity {
 			}
 		});
 
-		searchFragment = (SupportPlaceAutocompleteFragment)fm.findFragmentById(R.id.view$range$search);
+		searchFragment = (SupportPlaceAutocompleteFragment)fm.findFragmentById(R.id.view__range__search);
 		searchFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
 			@Override public void onPlaceSelected(Place place) {
 				LOG.trace("Selected: {}", AndroidTools.toString(place));
@@ -133,7 +133,7 @@ public class RangeMapActivity extends MapActivity {
 
 	@Override protected void setupMap() {
 		SupportMapFragment mapFragment =
-				(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.view$map);
+				(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.view__map);
 		mapFragment.getMapAsync(new OnMapReadyCallback() {
 			@Override public void onMapReady(GoogleMap map) {
 				RangeMapActivity.this.map = map;
@@ -179,12 +179,12 @@ public class RangeMapActivity extends MapActivity {
 		Point screen = AndroidTools.getScreenSize(getWindowManager().getDefaultDisplay());
 		map.moveCamera(CameraUpdateFactory.newLatLngBounds(fullLondon, screen.x, screen.y, dipInt(this, -160)));
 		// TODO below doesn't work, even with latest GMS, negative padding above is a workaround
-//		map.moveCamera(CameraUpdateFactory.zoomIn()); 
+//		map.moveCamera(CameraUpdateFactory.zoomIn());
 	}
 
 	public void updateToolbarVisibility() {
-		boolean showToolbar = App.prefs().getBoolean(R.string.pref$show_toolbar, R.bool.pref$show_toolbar$default);
-		final View container = findViewById(R.id.view$range$toolbar_container);
+		boolean showToolbar = App.prefs().getBoolean(R.string.pref__show_toolbar, R.bool.pref__show_toolbar__default);
+		final View container = findViewById(R.id.view__range__toolbar_container);
 		AndroidTools.displayedIf(container, showToolbar);
 		new DoAfterLayout(drawers, true) {
 			@Override protected void onLayout(@NonNull View view) {
@@ -196,7 +196,7 @@ public class RangeMapActivity extends MapActivity {
 				UiSettings ui = map.getUiSettings();
 				int topMargin = 0;
 				if (ui.isMyLocationButtonEnabled() || ui.isCompassEnabled()) {
-					View bottomMostTopView = findViewById(R.id.view$range$toolbar_container);
+					View bottomMostTopView = findViewById(R.id.view__range__toolbar_container);
 					if (bottomMostTopView.getVisibility() != View.GONE) {
 						topMargin = bottomMostTopView.getBottom() + AndroidTools.getBottomMargin(bottomMostTopView);
 					} else {
@@ -205,7 +205,7 @@ public class RangeMapActivity extends MapActivity {
 				}
 				int bottomMargin = 0;
 				if (ui.isMapToolbarEnabled() || ui.isZoomControlsEnabled()/* || ui.isIndoorLevelPickerEnabled()*/) {
-					View topMostBottomView = findViewById(R.id.view$range$fab);
+					View topMostBottomView = findViewById(R.id.view__range__fab);
 					if (topMostBottomView.getVisibility() != View.GONE) {
 						bottomMargin = topMostBottomView.getTop() - AndroidTools.getTopMargin(topMostBottomView);
 						bottomMargin = ((View)topMostBottomView.getParent()).getHeight() - bottomMargin;
@@ -265,7 +265,7 @@ public class RangeMapActivity extends MapActivity {
 				.image(BitmapDescriptorFactory.fromBitmap(rangeDrawer.draw(emptyNetwork)))
 		);
 //		// tube map above
-		if (!App.prefs().getBoolean(R.string.pref$network_overlay, R.bool.pref$network_overlay$default)) {
+		if (!App.prefs().getBoolean(R.string.pref__network_overlay, R.bool.pref__network_overlay__default)) {
 			TubeMapDrawer tubeMapDrawer = new TubeMapDrawer(nodes);
 			DisplayMetrics metrics = getResources().getDisplayMetrics();
 			tubeMapDrawer.setSize(dip(this, 1024), dip(this, 1024));
@@ -361,7 +361,7 @@ public class RangeMapActivity extends MapActivity {
 
 	private void updateNearestStations(Collection<NetworkNode> startNodes) {
 		nearestFragment.updateNearestStations(startNodes, genConfig);
-		if (App.prefs().getBoolean(R.string.pref$show_nearest, R.bool.pref$show_nearest$default)) {
+		if (App.prefs().getBoolean(R.string.pref__show_nearest, R.bool.pref__show_nearest__default)) {
 			behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 		}
 	}

@@ -37,7 +37,7 @@ public class StatusActivity extends BaseActivity {
 		resetToList();
 
 		m_status = (TextView)findViewById(R.id.text_status);
-		m_refresh = (SwipeRefreshLayout)findViewById(R.id.layout$wrapper);
+		m_refresh = (SwipeRefreshLayout)findViewById(R.id.layout__wrapper);
 		SwipeRefreshLayout.OnRefreshListener refresher = new SwipeRefreshLayout.OnRefreshListener() {
 			@Override public void onRefresh() {
 				startLoadingData();

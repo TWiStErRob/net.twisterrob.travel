@@ -7,21 +7,21 @@
 	>
 
 	<include
-		android:id="@+id/layout$common_header"
+		android:id="@+id/layout__common_header"
 		layout="@layout/inc_common_header"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		/>
 
 	<FrameLayout
-		android:id="@+id/layout$common_content"
+		android:id="@+id/layout__common_content"
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:layout_weight="1"
 		/>
 
 	<include
-		android:id="@+id/layout$common_footer"
+		android:id="@+id/layout__common_footer"
 		layout="@layout/inc_common_footer"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

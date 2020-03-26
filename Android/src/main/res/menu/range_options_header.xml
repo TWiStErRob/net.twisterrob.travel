@@ -3,11 +3,11 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	>
 	<item
-		android:id="@+id/menu$action$range$reset_generator"
-		android:title="@string/menu$action$range$reset_generator"
+		android:id="@+id/menu__action__range__reset_generator"
+		android:title="@string/menu__action__range__reset_generator"
 		/>
 	<item
-		android:id="@+id/menu$action$range$reset_drawing"
-		android:title="@string/menu$action$range$reset_drawing"
+		android:id="@+id/menu__action__range__reset_drawing"
+		android:title="@string/menu__action__range__reset_drawing"
 		/>
 </menu>

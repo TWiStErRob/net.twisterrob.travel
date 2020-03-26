@@ -4,88 +4,88 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto">
 	<item
-		android:title="@string/range$config$header$generator"
+		android:title="@string/range__config__header__generator"
 		>
 		<menu>
-			<group android:id="@+id/group$range$config$generator">
+			<group android:id="@+id/group__range__config__generator">
 				<item
-					android:id="@+id/option$range$config$journey_time"
-					android:title="@string/range$config$journey_time"
+					android:id="@+id/option__range__config__journey_time"
+					android:title="@string/range__config__journey_time"
 					app:actionLayout="@layout/menu_widget_number" />
 				<item
-					android:id="@+id/option$range$config$journey_start"
-					android:title="@string/range$config$journey_start"
+					android:id="@+id/option__range__config__journey_start"
+					android:title="@string/range__config__journey_start"
 					app:actionLayout="@layout/menu_widget_number" />
 				<item
-					android:id="@+id/option$range$config$interchange_interstation"
-					android:title="@string/range$config$interchange_interstation"
+					android:id="@+id/option__range__config__interchange_interstation"
+					android:title="@string/range__config__interchange_interstation"
 					app:actionLayout="@layout/menu_widget_boolean" />
 				<item
-					android:id="@+id/option$range$config$walking_speed"
-					android:title="@string/range$config$walking_speed"
+					android:id="@+id/option__range__config__walking_speed"
+					android:title="@string/range__config__walking_speed"
 					app:actionLayout="@layout/menu_widget_number" />
 				<item
-					android:id="@+id/option$range$config$transfer_entry_exit"
-					android:title="@string/range$config$transfer_entry_exit"
+					android:id="@+id/option__range__config__transfer_entry_exit"
+					android:title="@string/range__config__transfer_entry_exit"
 					app:actionLayout="@layout/menu_widget_number" />
 				<item
-					android:id="@+id/option$range$config$interchange_intrastation"
-					android:title="@string/range$config$interchange_intrastation"
+					android:id="@+id/option__range__config__interchange_intrastation"
+					android:title="@string/range__config__interchange_intrastation"
 					app:actionLayout="@layout/menu_widget_boolean" />
 				<item
-					android:id="@+id/option$range$config$interchange_time"
-					android:title="@string/range$config$interchange_time"
+					android:id="@+id/option__range__config__interchange_time"
+					android:title="@string/range__config__interchange_time"
 					app:actionLayout="@layout/menu_widget_number" />
 			</group>
 		</menu>
 	</item>
 	<item
-		android:title="@string/range$config$header$draw"
+		android:title="@string/range__config__header__draw"
 		>
 		<menu>
-			<group android:id="@+id/group$range$config$draw">
+			<group android:id="@+id/group__range__config__draw">
 				<item
-					android:id="@+id/option$range$config$dynamic_color"
-					android:title="@string/range$config$dynamic_color"
+					android:id="@+id/option__range__config__dynamic_color"
+					android:title="@string/range__config__dynamic_color"
 					app:actionLayout="@layout/menu_widget_boolean" />
 				<item
-					android:id="@+id/option$range$config$range_color"
-					android:title="@string/range$config$range_color"
+					android:id="@+id/option__range__config__range_color"
+					android:title="@string/range__config__range_color"
 					app:actionLayout="@layout/menu_widget_color" />
 				<item
-					android:id="@+id/option$range$config$border_size"
-					android:title="@string/range$config$border_size"
+					android:id="@+id/option__range__config__border_size"
+					android:title="@string/range__config__border_size"
 					android:visible="@bool/in_test"
 					app:actionLayout="@layout/menu_widget_number" />
 				<item
-					android:id="@+id/option$range$config$border_color"
-					android:title="@string/range$config$border_color"
+					android:id="@+id/option__range__config__border_color"
+					android:title="@string/range__config__border_color"
 					android:visible="@bool/in_test"
 					app:actionLayout="@layout/menu_widget_color" />
 				<item
-					android:id="@+id/option$range$config$pixel_density"
-					android:title="@string/range$config$pixel_density"
+					android:id="@+id/option__range__config__pixel_density"
+					android:title="@string/range__config__pixel_density"
 					android:visible="@bool/in_test"
 					app:actionLayout="@layout/menu_widget_number" />
 			</group>
 		</menu>
 	</item>
 	<item
-		android:title="@string/range$config$header$ui"
+		android:title="@string/range__config__header__ui"
 		>
 		<menu>
-			<group android:id="@+id/group$range$config$ui">
+			<group android:id="@+id/group__range__config__ui">
 				<item
-					android:id="@+id/option$range$config$ui_show_stations"
-					android:title="@string/range$config$ui_show_stations"
+					android:id="@+id/option__range__config__ui_show_stations"
+					android:title="@string/range__config__ui_show_stations"
 					app:actionLayout="@layout/menu_widget_boolean" />
 				<item
-					android:id="@+id/option$range$config$ui_show_toolbar"
-					android:title="@string/range$config$ui_show_toolbar"
+					android:id="@+id/option__range__config__ui_show_toolbar"
+					android:title="@string/range__config__ui_show_toolbar"
 					app:actionLayout="@layout/menu_widget_boolean" />
 				<item
-					android:id="@+id/option$range$config$ui_network_overlay"
-					android:title="@string/range$config$ui_network_overlay"
+					android:id="@+id/option__range__config__ui_network_overlay"
+					android:title="@string/range__config__ui_network_overlay"
 					android:visible="@bool/in_test"
 					app:actionLayout="@layout/menu_widget_boolean" />
 			</group>

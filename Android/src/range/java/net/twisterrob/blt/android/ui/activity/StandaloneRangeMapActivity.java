@@ -16,7 +16,7 @@ public class StandaloneRangeMapActivity extends RangeMapActivity {
 	@Override public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-			case R.id.menu$action$about:
+			case R.id.menu__action__about:
 				startActivity(new Intent(getApplicationContext(), AboutActivity.class));
 				return true;
 		}

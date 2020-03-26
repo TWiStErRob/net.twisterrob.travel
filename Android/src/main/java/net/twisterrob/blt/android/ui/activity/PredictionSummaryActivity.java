@@ -59,7 +59,7 @@ public class PredictionSummaryActivity extends BaseActivity implements
 		onCreate_setupCompassButtons();
 
 		m_status = (TextView)findViewById(R.id.text_status);
-		m_refresh = (SwipeRefreshLayout)findViewById(R.id.layout$wrapper);
+		m_refresh = (SwipeRefreshLayout)findViewById(R.id.layout__wrapper);
 		SwipeRefreshLayout.OnRefreshListener refresher = new SwipeRefreshLayout.OnRefreshListener() {
 			@Override public void onRefresh() {
 				startLoadingData();
@@ -79,11 +79,11 @@ public class PredictionSummaryActivity extends BaseActivity implements
 	}
 
 	protected void onCreate_setupCompassButtons() {
-		buttons.put(PlatformDirection.East, (ToggleButton)this.findViewById(R.id.button$compass_east));
-		buttons.put(PlatformDirection.West, (ToggleButton)this.findViewById(R.id.button$compass_west));
-		buttons.put(PlatformDirection.North, (ToggleButton)this.findViewById(R.id.button$compass_north));
-		buttons.put(PlatformDirection.South, (ToggleButton)this.findViewById(R.id.button$compass_south));
-		buttons.put(PlatformDirection.Other, (ToggleButton)this.findViewById(R.id.button$compass_center));
+		buttons.put(PlatformDirection.East, (ToggleButton)this.findViewById(R.id.button__compass_east));
+		buttons.put(PlatformDirection.West, (ToggleButton)this.findViewById(R.id.button__compass_west));
+		buttons.put(PlatformDirection.North, (ToggleButton)this.findViewById(R.id.button__compass_north));
+		buttons.put(PlatformDirection.South, (ToggleButton)this.findViewById(R.id.button__compass_south));
+		buttons.put(PlatformDirection.Other, (ToggleButton)this.findViewById(R.id.button__compass_center));
 		for (final Entry<PlatformDirection, ToggleButton> buttonMap : buttons.entrySet()) {
 			// restore UI state (setChecked) before attaching the handler to prevent calling it
 			buttonMap.getValue().setChecked(m_directionsEnabled.contains(buttonMap.getKey()));
@@ -209,16 +209,16 @@ public class PredictionSummaryActivity extends BaseActivity implements
 
 	@Override public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.prediction_summary, menu);
-		menuIDs.put(R.id.menu$option$compass_east, PlatformDirection.East);
-		menuIDs.put(R.id.menu$option$compass_west, PlatformDirection.West);
-		menuIDs.put(R.id.menu$option$compass_north, PlatformDirection.North);
-		menuIDs.put(R.id.menu$option$compass_south, PlatformDirection.South);
-		menuIDs.put(R.id.menu$option$compass_others, PlatformDirection.Other);
-		menus.put(PlatformDirection.East, menu.findItem(R.id.menu$option$compass_east));
-		menus.put(PlatformDirection.West, menu.findItem(R.id.menu$option$compass_west));
-		menus.put(PlatformDirection.North, menu.findItem(R.id.menu$option$compass_north));
-		menus.put(PlatformDirection.South, menu.findItem(R.id.menu$option$compass_south));
-		menus.put(PlatformDirection.Other, menu.findItem(R.id.menu$option$compass_others));
+		menuIDs.put(R.id.menu__option__compass_east, PlatformDirection.East);
+		menuIDs.put(R.id.menu__option__compass_west, PlatformDirection.West);
+		menuIDs.put(R.id.menu__option__compass_north, PlatformDirection.North);
+		menuIDs.put(R.id.menu__option__compass_south, PlatformDirection.South);
+		menuIDs.put(R.id.menu__option__compass_others, PlatformDirection.Other);
+		menus.put(PlatformDirection.East, menu.findItem(R.id.menu__option__compass_east));
+		menus.put(PlatformDirection.West, menu.findItem(R.id.menu__option__compass_west));
+		menus.put(PlatformDirection.North, menu.findItem(R.id.menu__option__compass_north));
+		menus.put(PlatformDirection.South, menu.findItem(R.id.menu__option__compass_south));
+		menus.put(PlatformDirection.Other, menu.findItem(R.id.menu__option__compass_others));
 		// fix checkboxes
 		for (Entry<PlatformDirection, MenuItem> entry : menus.entrySet()) {
 			entry.getValue().setChecked(m_directionsEnabled.contains(entry.getKey()));
@@ -228,11 +228,11 @@ public class PredictionSummaryActivity extends BaseActivity implements
 
 	@Override public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.menu$option$compass_east:
-			case R.id.menu$option$compass_west:
-			case R.id.menu$option$compass_north:
-			case R.id.menu$option$compass_south:
-			case R.id.menu$option$compass_others:
+			case R.id.menu__option__compass_east:
+			case R.id.menu__option__compass_west:
+			case R.id.menu__option__compass_north:
+			case R.id.menu__option__compass_south:
+			case R.id.menu__option__compass_others:
 				toggleCompass(menuIDs.get(item.getItemId()));
 				return true;
 			default:

@@ -57,14 +57,14 @@ public class RangeOptionsFragment extends Fragment {
 
 	@Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		nav = (NavigationView)view.findViewById(R.id.view$range$navigation_view);
+		nav = (NavigationView)view.findViewById(R.id.view__range__navigation_view);
 		nav.setNavigationItemSelectedListener(new OnNavigationItemSelectedListener() {
 			@Override public boolean onNavigationItemSelected(MenuItem item) {
 				return onOptionsItemSelected(item);
 			}
 		});
 		AndroidTools.accountForStatusBar(nav.getHeaderView(0));
-		Toolbar toolbar = (Toolbar)nav.getHeaderView(0).findViewById(R.id.view$range$parameters_toolbar);
+		Toolbar toolbar = (Toolbar)nav.getHeaderView(0).findViewById(R.id.view__range__parameters_toolbar);
 		toolbar.inflateMenu(R.menu.range_options_header);
 		toolbar.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override public boolean onMenuItemClick(MenuItem item) {
@@ -72,30 +72,30 @@ public class RangeOptionsFragment extends Fragment {
 			}
 		});
 
-		bool(R.id.option$range$config$ui_show_stations, new OnCheckedChangeListener() {
+		bool(R.id.option__range__config__ui_show_stations, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (prefs.getBoolean(R.string.pref$show_nearest, R.bool.pref$show_nearest$default) != isChecked) {
-					prefs.setBoolean(R.string.pref$show_nearest, isChecked);
+				if (prefs.getBoolean(R.string.pref__show_nearest, R.bool.pref__show_nearest__default) != isChecked) {
+					prefs.setBoolean(R.string.pref__show_nearest, isChecked);
 				}
 			}
-		}).setChecked(prefs.getBoolean(R.string.pref$show_nearest, R.bool.pref$show_nearest$default));
-		bool(R.id.option$range$config$ui_show_toolbar, new OnCheckedChangeListener() {
+		}).setChecked(prefs.getBoolean(R.string.pref__show_nearest, R.bool.pref__show_nearest__default));
+		bool(R.id.option__range__config__ui_show_toolbar, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (prefs.getBoolean(R.string.pref$show_toolbar, R.bool.pref$show_toolbar$default) != isChecked) {
-					prefs.setBoolean(R.string.pref$show_toolbar, isChecked);
+				if (prefs.getBoolean(R.string.pref__show_toolbar, R.bool.pref__show_toolbar__default) != isChecked) {
+					prefs.setBoolean(R.string.pref__show_toolbar, isChecked);
 					((RangeMapActivity)getActivity()).updateToolbarVisibility();
 				}
 			}
-		}).setChecked(prefs.getBoolean(R.string.pref$show_toolbar, R.bool.pref$show_toolbar$default));
-		bool(R.id.option$range$config$ui_network_overlay, new OnCheckedChangeListener() {
+		}).setChecked(prefs.getBoolean(R.string.pref__show_toolbar, R.bool.pref__show_toolbar__default));
+		bool(R.id.option__range__config__ui_network_overlay, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (prefs.getBoolean(R.string.pref$network_overlay, R.bool.pref$network_overlay$default) != isChecked) {
-					prefs.setBoolean(R.string.pref$network_overlay, isChecked);
+				if (prefs.getBoolean(R.string.pref__network_overlay, R.bool.pref__network_overlay__default) != isChecked) {
+					prefs.setBoolean(R.string.pref__network_overlay, isChecked);
 				}
 			}
-		}).setChecked(prefs.getBoolean(R.string.pref$network_overlay, R.bool.pref$network_overlay$default));
+		}).setChecked(prefs.getBoolean(R.string.pref__network_overlay, R.bool.pref__network_overlay__default));
 
-		intraStation = bool(R.id.option$range$config$interchange_intrastation, new OnCheckedChangeListener() {
+		intraStation = bool(R.id.option__range__config__interchange_intrastation, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (genConfig.allowsIntraStationInterchange() != isChecked) {
 					genConfig.setIntraStationInterchange(isChecked);
@@ -103,7 +103,7 @@ public class RangeOptionsFragment extends Fragment {
 				}
 			}
 		});
-		interStation = bool(R.id.option$range$config$interchange_interstation, new OnCheckedChangeListener() {
+		interStation = bool(R.id.option__range__config__interchange_interstation, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (genConfig.allowsInterStationInterchange() != isChecked) {
 					genConfig.setInterStationInterchange(isChecked);
@@ -111,7 +111,7 @@ public class RangeOptionsFragment extends Fragment {
 				}
 			}
 		});
-		walkingSpeed = number(R.id.option$range$config$walking_speed,
+		walkingSpeed = number(R.id.option__range__config__walking_speed,
 				RangeMapGeneratorConfig.SPEED_ON_FOOT_MIN,
 				RangeMapGeneratorConfig.SPEED_ON_FOOT_MAX,
 				new OnValueChangeListener() {
@@ -122,7 +122,7 @@ public class RangeOptionsFragment extends Fragment {
 						}
 					}
 				});
-		interchangeTime = number(R.id.option$range$config$interchange_time,
+		interchangeTime = number(R.id.option__range__config__interchange_time,
 				RangeMapGeneratorConfig.TIME_TRANSFER_MIN,
 				RangeMapGeneratorConfig.TIME_TRANSFER_MAX,
 				new OnValueChangeListener() {
@@ -133,7 +133,7 @@ public class RangeOptionsFragment extends Fragment {
 						}
 					}
 				});
-		journeyTime = number(R.id.option$range$config$journey_time,
+		journeyTime = number(R.id.option__range__config__journey_time,
 				RangeMapGeneratorConfig.MINUTES_MIN,
 				RangeMapGeneratorConfig.MINUTES_MAX,
 				new OnValueChangeListener() {
@@ -144,7 +144,7 @@ public class RangeOptionsFragment extends Fragment {
 						}
 					}
 				});
-		platformStreet = number(R.id.option$range$config$transfer_entry_exit,
+		platformStreet = number(R.id.option__range__config__transfer_entry_exit,
 				RangeMapGeneratorConfig.TIME_PLATFORM_TO_STREET_MIN,
 				RangeMapGeneratorConfig.TIME_PLATFORM_TO_STREET_MAX,
 				new OnValueChangeListener() {
@@ -155,7 +155,7 @@ public class RangeOptionsFragment extends Fragment {
 						}
 					}
 				});
-		startWalk = number(R.id.option$range$config$journey_start,
+		startWalk = number(R.id.option__range__config__journey_start,
 				RangeMapGeneratorConfig.START_WALK_MIN,
 				RangeMapGeneratorConfig.START_WALK_MAX,
 				new OnValueChangeListener() {
@@ -167,7 +167,7 @@ public class RangeOptionsFragment extends Fragment {
 					}
 				});
 
-		dynamicColor = bool(R.id.option$range$config$dynamic_color, new OnCheckedChangeListener() {
+		dynamicColor = bool(R.id.option__range__config__dynamic_color, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (drawConfig.isDynamicColor() != isChecked) {
 					drawConfig.setDynamicColor(isChecked);
@@ -175,7 +175,7 @@ public class RangeOptionsFragment extends Fragment {
 				}
 			}
 		});
-		borderSize = number(R.id.option$range$config$border_size,
+		borderSize = number(R.id.option__range__config__border_size,
 				RangeMapDrawerConfig.BORDER_SIZE_MIN,
 				RangeMapDrawerConfig.BORDER_SIZE_MAX,
 				new OnValueChangeListener() {
@@ -186,7 +186,7 @@ public class RangeOptionsFragment extends Fragment {
 						}
 					}
 				});
-		borderColor = color(R.id.option$range$config$border_color,
+		borderColor = color(R.id.option__range__config__border_color,
 				new ColorPickerWidget.OnValueChangeListener() {
 					@Override public void onValueChange(
 							ColorPickerWidget picker, @ColorInt int oldVal, @ColorInt int newVal) {
@@ -196,7 +196,7 @@ public class RangeOptionsFragment extends Fragment {
 						}
 					}
 				});
-		distanceColor = color(R.id.option$range$config$range_color,
+		distanceColor = color(R.id.option__range__config__range_color,
 				new ColorPickerWidget.OnValueChangeListener() {
 					@Override public void onValueChange(
 							ColorPickerWidget picker, @ColorInt int oldVal, @ColorInt int newVal) {
@@ -206,7 +206,7 @@ public class RangeOptionsFragment extends Fragment {
 						}
 					}
 				});
-		pixelDensity = number(R.id.option$range$config$pixel_density,
+		pixelDensity = number(R.id.option__range__config__pixel_density,
 				RangeMapDrawerConfig.PIXEL_DENSITY_MIN,
 				RangeMapDrawerConfig.PIXEL_DENSITY_MAX,
 				new OnValueChangeListener() {
@@ -248,9 +248,9 @@ public class RangeOptionsFragment extends Fragment {
 	}
 
 	@Override public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getGroupId() == R.id.group$range$config$generator
-				|| item.getGroupId() == R.id.group$range$config$draw
-				|| item.getGroupId() == R.id.group$range$config$ui) {
+		if (item.getGroupId() == R.id.group__range__config__generator
+				|| item.getGroupId() == R.id.group__range__config__draw
+				|| item.getGroupId() == R.id.group__range__config__ui) {
 			@StringRes int tooltipID = getTooltip(item);
 			Spanned tooltip = HtmlParser.fromHtml(getString(tooltipID), null, new TubeHtmlHandler(getContext()));
 			AndroidTools
@@ -261,12 +261,12 @@ public class RangeOptionsFragment extends Fragment {
 			return true;
 		}
 		switch (item.getItemId()) {
-			case R.id.menu$action$range$reset_generator:
+			case R.id.menu__action__range__reset_generator:
 				genConfig.set(new RangeMapGeneratorConfig());
 				bindConfigs(genConfig, drawConfig); // update self UI
 				configsUpdatedListener.onConfigsUpdated();
 				return true;
-			case R.id.menu$action$range$reset_drawing:
+			case R.id.menu__action__range__reset_drawing:
 				drawConfig.set(new RangeMapDrawerConfig());
 				bindConfigs(genConfig, drawConfig); // update self UI
 				configsUpdatedListener.onConfigsUpdated();
@@ -283,7 +283,7 @@ public class RangeOptionsFragment extends Fragment {
 			id = AndroidTools.getStringResourceID(getContext(), name);
 		}
 		if (id == AndroidTools.INVALID_RESOURCE_ID) {
-			id = R.string.range$config$missing_tooltip;
+			id = R.string.range__config__missing_tooltip;
 		}
 		return id;
 	}

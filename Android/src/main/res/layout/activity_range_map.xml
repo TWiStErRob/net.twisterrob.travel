@@ -3,7 +3,7 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/view$range$drawer_layout"
+	android:id="@+id/view__range__drawer_layout"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	tools:openDrawer="end"
@@ -25,7 +25,7 @@
 		<!-- CONSIDER https://medium.com/google-developers/intercepting-everything-with-coordinatorlayout-behaviors-8c6adc140c26#4d59 -->
 		<android.support.v7.widget.CardView
 			xmlns:toolbar="http://schemas.android.com/apk/res-auto"
-			android:id="@+id/view$range$toolbar_container"
+			android:id="@+id/view__range__toolbar_container"
 			android:layout_width="340dp"
 			android:layout_height="wrap_content"
 			android:layout_gravity="top|center_horizontal"
@@ -50,16 +50,16 @@
 
 					>
 					<android.support.v7.widget.Toolbar
-						android:id="@+id/view$range$toolbar"
+						android:id="@+id/view__range__toolbar"
 						android:layout_width="match_parent"
 						android:layout_height="?attr/actionBarSize"
 						android:fitsSystemWindows="true"
 						toolbar:layout_collapseMode="pin"
-						toolbar:title="@string/launcher$range_map"
+						toolbar:title="@string/launcher__range_map"
 						toolbar:popupTheme="@style/ThemeOverlay.AppCompat.Light"
 						>
 						<fragment
-							android:id="@+id/view$range$search"
+							android:id="@+id/view__range__search"
 							class="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
 
 		<android.support.design.widget.FloatingActionButton
 			xmlns:fab="http://schemas.android.com/apk/res-auto"
-			android:id="@+id/view$range$fab"
+			android:id="@+id/view__range__fab"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:src="@android:drawable/ic_menu_preferences"
@@ -80,13 +80,13 @@
 			fab:fabSize="mini"
 			fab:useCompatPadding="true"
 			fab:backgroundTint="?colorPrimary"
-			coordinator:layout_anchor="@+id/view$range$bottom_sheet"
+			coordinator:layout_anchor="@+id/view__range__bottom_sheet"
 			coordinator:layout_anchorGravity="top|end"
 			/>
 
 		<!-- peekHeight = actionBarSize (56dp) + 1.5 * item_station height (~40dp) -->
 		<fragment
-			android:id="@+id/view$range$bottom_sheet"
+			android:id="@+id/view__range__bottom_sheet"
 			class="net.twisterrob.blt.android.ui.activity.RangeNearestFragment"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
 	</android.support.design.widget.CoordinatorLayout>
 
 	<fragment
-		android:id="@+id/view$range$drawer"
+		android:id="@+id/view__range__drawer"
 		class="net.twisterrob.blt.android.ui.activity.RangeOptionsFragment"
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="pref$show_toolbar$title">Show toolbar</string>
-	<string name="pref$show_toolbar" translatable="false">showToolbar</string>
-	<bool name="pref$show_toolbar$default" translatable="false">true</bool>
+	<string name="pref__show_toolbar__title">Show toolbar</string>
+	<string name="pref__show_toolbar" translatable="false">showToolbar</string>
+	<bool name="pref__show_toolbar__default" translatable="false">true</bool>
 
-	<string name="pref$show_nearest$title">Show stations</string>
-	<string name="pref$show_nearest" translatable="false">showNearest</string>
-	<bool name="pref$show_nearest$default" translatable="false">true</bool>
+	<string name="pref__show_nearest__title">Show stations</string>
+	<string name="pref__show_nearest" translatable="false">showNearest</string>
+	<bool name="pref__show_nearest__default" translatable="false">true</bool>
 
 	<!-- true means use tiles, false means use ground overlay -->
-	<string name="pref$network_overlay$title">Use Tile Overlay</string>
-	<string name="pref$network_overlay" translatable="false">networkOverlay</string>
-	<bool name="pref$network_overlay$default" translatable="false">true</bool>
+	<string name="pref__network_overlay__title">Use Tile Overlay</string>
+	<string name="pref__network_overlay" translatable="false">networkOverlay</string>
+	<bool name="pref__network_overlay__default" translatable="false">true</bool>
 
 </resources>

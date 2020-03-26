@@ -21,7 +21,7 @@ public class StationMapsActivity extends FragmentActivity {
 		setContentView(R.layout.inc_map);
 
 		SupportMapFragment mapFragment =
-				(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.view$map);
+				(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.view__map);
 		mapFragment.getMapAsync(new OnMapReadyCallback() {
 			@Override public void onMapReady(GoogleMap map) {
 				StationMapsActivity.this.map = map;

@@ -17,23 +17,23 @@ import net.twisterrob.blt.model.Line;
 public class MainActivity extends BaseActivity {
 
 	private static final List<LauncherItem> launcherItems = Arrays.asList(
-			new LauncherItem(R.string.launcher$line_status, StatusActivity.class),
-			new LauncherItem(R.string.launcher$station_list, StationListActivity.class),
-			new LauncherItem(R.string.launcher$prediction_summary, PredictionSummaryActivity.class) {
+			new LauncherItem(R.string.launcher__line_status, StatusActivity.class),
+			new LauncherItem(R.string.launcher__station_list, StationListActivity.class),
+			new LauncherItem(R.string.launcher__prediction_summary, PredictionSummaryActivity.class) {
 				@Override void addIntentParams(Intent intent) {
 					super.addIntentParams(intent);
 					intent.putExtra(PredictionSummaryActivity.EXTRA_LINE, Line.District);
 				}
 			},
-			new LauncherItem(R.string.launcher$station_info, StationInfoActivity.class) {
+			new LauncherItem(R.string.launcher__station_info, StationInfoActivity.class) {
 				@Override void addIntentParams(Intent intent) {
 					super.addIntentParams(intent);
 					intent.putExtra(StationInfoActivity.EXTRA_STATION_NAME, "King's Cross St.Pancras");
 				}
 			},
-			new LauncherItem(R.string.launcher$station_map, StationMapsActivity.class),
-			new LauncherItem(R.string.launcher$postcode_map, PostCodesActivity.class),
-			new LauncherItem(R.string.launcher$range_map, RangeMapActivity.class)
+			new LauncherItem(R.string.launcher__station_map, StationMapsActivity.class),
+			new LauncherItem(R.string.launcher__postcode_map, PostCodesActivity.class),
+			new LauncherItem(R.string.launcher__range_map, RangeMapActivity.class)
 	);
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +54,13 @@ public class MainActivity extends BaseActivity {
 
 	@Override public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
-		AndroidTools.prepareSearch(this, menu, R.id.menu$action$search);
+		AndroidTools.prepareSearch(this, menu, R.id.menu__action__search);
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.menu$action$about:
+			case R.id.menu__action__about:
 				startActivity(new Intent(getApplicationContext(), AboutActivity.class));
 				return true;
 		}

@@ -1,12 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 	<string name="app_name">Better London Travel</string>
-	<string name="launcher$station_list">Station List</string>
-	<string name="launcher$station_map">Station Map</string>
-	<string name="launcher$station_info">Station Info</string>
-	<string name="launcher$postcode_map">PostCode Map</string>
-	<string name="launcher$range_map">Tube Range Map</string>
-	<string name="launcher$line_status">Line Status</string>
-	<string name="launcher$prediction_summary">Train Predictions</string>
+	<string name="launcher__station_list">Station List</string>
+	<string name="launcher__station_map">Station Map</string>
+	<string name="launcher__station_info">Station Info</string>
+	<string name="launcher__postcode_map">PostCode Map</string>
+	<string name="launcher__range_map">Tube Range Map</string>
+	<string name="launcher__line_status">Line Status</string>
+	<string name="launcher__prediction_summary">Train Predictions</string>
 	<string name="label_search">Search</string>
 	<!-- yyyy-MM-dd HH:mm:ss -> %tY-%<tm-%<td %<tH:%<tM:%<tS -> %tF %<tT-->
 	<string name="last_updated">Last updated at %1$tF %1$tT</string>
@@ -18,8 +18,8 @@
 	<string name="station_lines">%1$s: %2$s</string>
 	<!-- CONSIDER dynamic content description based on icon -->
 	<string name="station_operator_contentDescription">Station operator icon</string>
-	<string name="range$nearest_location">Near %1$.4f, %2$.4f</string>
-	<string name="range$nearest_empty">No stations found around here.</string>
+	<string name="range__nearest_location">Near %1$.4f, %2$.4f</string>
+	<string name="range__nearest_empty">No stations found around here.</string>
 	<string name="compass_directions">Directions</string>
 	<string name="compass_north">Northbound</string>
 	<string name="compass_south">Southbound</string>
@@ -28,34 +28,34 @@
 	<string name="compass_center">Others</string>
 
 	<!-- Configuration Strings -->
-	<string name="range$config$header$generator">Range Generation</string>
-	<string name="range$config$header$draw">Map Overlay Drawing</string>
-	<string name="range$config$header$ui">User Interface</string>
-	<string name="menu$action$range$reset_generator">Reset generator defaults</string>
-	<string name="menu$action$range$reset_drawing">Reset drawing defaults</string>
+	<string name="range__config__header__generator">Range Generation</string>
+	<string name="range__config__header__draw">Map Overlay Drawing</string>
+	<string name="range__config__header__ui">User Interface</string>
+	<string name="menu__action__range__reset_generator">Reset generator defaults</string>
+	<string name="menu__action__range__reset_drawing">Reset drawing defaults</string>
 
-	<string name="range$config$missing_tooltip" process="HtmlParser" tools:ignore="TypographyQuotes"><![CDATA[ 
+	<string name="range__config__missing_tooltip" process="HtmlParser" tools:ignore="TypographyQuotes"><![CDATA[
 	<b>This item doesn\'t have help text.</b>
 	\n
 	\nPlease report the issue to the <a href="mailto:feedback@twisterrob.net">developer</a>!
 	]]></string>
 	<!-- If the below strings are injected as HTML make sure to set <station> as an inline element in the Code Style. -->
-	<string name="range$config$journey_time">Journey time</string>
-	<string name="range$config$journey_time$tooltip" process="HtmlParser"><![CDATA[
+	<string name="range__config__journey_time">Journey time</string>
+	<string name="range__config__journey_time__tooltip" process="HtmlParser"><![CDATA[
 	<b>How much time do you allow for the entire journey?</b>
 	(<i>measured in minutes</i>)
 	Including entering/exiting the station, interchanges, and sitting on the vehicles.
 	]]></string>
 
-	<string name="range$config$journey_start">Time to first station</string>
-	<string name="range$config$journey_start$tooltip" process="HtmlParser"><![CDATA[
+	<string name="range__config__journey_start">Time to first station</string>
+	<string name="range__config__journey_start__tooltip" process="HtmlParser"><![CDATA[
 	<b>How far are you willing to walk to enter the first station?</b>
 	(<i>measured in minutes</i>)
 	Think about it like going from home to the nearest station.
 	]]></string>
 
-	<string name="range$config$interchange_interstation">Allow station interchange</string>
-	<string name="range$config$interchange_interstation$tooltip" process="HtmlParser" tools:ignore="TypographyQuotes"><![CDATA[
+	<string name="range__config__interchange_interstation">Allow station interchange</string>
+	<string name="range__config__interchange_interstation__tooltip" process="HtmlParser" tools:ignore="TypographyQuotes"><![CDATA[
 	<b>When at a station, would you leave that station and walk to another nearby station?</b>
 	(<i>options are yes/no</i>)
 	Where there may be no nearby line interchanges possible, leaving the station may benefit your overall journey time.
@@ -82,15 +82,15 @@
 	However, to simplify these exceptions these are treated as inter-station interchanges by the algorithm.
 	]]></string>
 
-	<string name="range$config$walking_speed">Walking speed</string>
-	<string name="range$config$walking_speed$tooltip" process="HtmlParser"><![CDATA[
+	<string name="range__config__walking_speed">Walking speed</string>
+	<string name="range__config__walking_speed__tooltip" process="HtmlParser"><![CDATA[
 	<b>What is the average speed you walk during a journey?</b>
 	(<i>measured in km/h</i>)
 	This will be used to calculate how much time it would take to walk between two geographic locations where only the distance known.
 	]]></string>
 
-	<string name="range$config$transfer_entry_exit">Street ⇌ Platform time</string>
-	<string name="range$config$transfer_entry_exit$tooltip" process="HtmlParser"><![CDATA[
+	<string name="range__config__transfer_entry_exit">Street ⇌ Platform time</string>
+	<string name="range__config__transfer_entry_exit__tooltip" process="HtmlParser"><![CDATA[
 	<b>What is the average time it takes for you to enter/exit a station?</b>
 	(<i>measured in minutes</i>)
 	That is, to go from the street entrance to the platform to board a train,
@@ -98,15 +98,15 @@
 	Entering (street ⇀ platform) and exiting (platform ↽ street) is assumed to take the same amount of time.
 	]]></string>
 
-	<string name="range$config$interchange_intrastation">Allow line interchange</string>
-	<string name="range$config$interchange_intrastation$tooltip" process="HtmlParser"><![CDATA[
+	<string name="range__config__interchange_intrastation">Allow line interchange</string>
+	<string name="range__config__interchange_intrastation__tooltip" process="HtmlParser"><![CDATA[
 	<b>When at a station, would you want to transfer between trains without leaving the station?</b>
 	(<i>options are yes/no</i>)
 	You might want to disable this option to only allow direct journeys.
 	]]></string>
 
-	<string name="range$config$interchange_time">Interchange time</string>
-	<string name="range$config$interchange_time$tooltip" process="HtmlParser" tools:ignore="TypographyQuotes"><![CDATA[
+	<string name="range__config__interchange_time">Interchange time</string>
+	<string name="range__config__interchange_time__tooltip" process="HtmlParser" tools:ignore="TypographyQuotes"><![CDATA[
 	<b>How long does it take, on average, to alight a train and board another one?</b>
 	(<i>measured in minutes</i>)
 	This only applies within a single station, without going to the street.
@@ -115,42 +115,42 @@
 		for example interchanges at Bank, Charing Cross, Kings Cross will take over a 5 minute walk</a>.
 	]]></string>
 
-	<string name="range$config$dynamic_color">Use dynamic colors</string>
-	<string name="range$config$dynamic_color$tooltip" process="HtmlParser"><![CDATA[
+	<string name="range__config__dynamic_color">Use dynamic colors</string>
+	<string name="range__config__dynamic_color__tooltip" process="HtmlParser"><![CDATA[
 	<b>Do you want to use TfL line colors when drawing the range map?</b>
 	This can help to generate a visually pleasing and easily queriable map.
 	Looking at any part of the map it is easy to determine which tube station covers that area.
 	]]></string>
-	<string name="range$config$range_color">Range color</string>
-	<string name="range$config$range_color$tooltip" process="HtmlParser"><![CDATA[
+	<string name="range__config__range_color">Range color</string>
+	<string name="range__config__range_color__tooltip" process="HtmlParser"><![CDATA[
 	<b>Which color to use when drawing the map without dynamic colors?</b>
 	]]></string>
-	<string name="range$config$border_size">Border size</string>
-	<string name="range$config$border_size$tooltip" process="HtmlParser"><![CDATA[
+	<string name="range__config__border_size">Border size</string>
+	<string name="range__config__border_size__tooltip" process="HtmlParser"><![CDATA[
 	]]></string>
-	<string name="range$config$border_color">Border color</string>
-	<string name="range$config$border_color$tooltip" process="HtmlParser"><![CDATA[
+	<string name="range__config__border_color">Border color</string>
+	<string name="range__config__border_color__tooltip" process="HtmlParser"><![CDATA[
 	]]></string>
-	<string name="range$config$pixel_density">Pixel density</string>
-	<string name="range$config$pixel_density$tooltip" process="HtmlParser"><![CDATA[
+	<string name="range__config__pixel_density">Pixel density</string>
+	<string name="range__config__pixel_density__tooltip" process="HtmlParser"><![CDATA[
 	]]></string>
 
-	<string name="range$config$ui_show_stations">@string/pref$show_nearest$title</string>
-	<string name="range$config$ui_show_stations$tooltip" process="HtmlParser"><![CDATA[
+	<string name="range__config__ui_show_stations">@string/pref__show_nearest__title</string>
+	<string name="range__config__ui_show_stations__tooltip" process="HtmlParser"><![CDATA[
 	<b>When you select a location, do you want to automatically see the nearest stations?</b>
 	(<i>options are yes/no</i>)
 	This is useful if you have a small screen and want to play around with the options.
 	Disable to give more space for the map.
 	]]></string>
 
-	<string name="range$config$ui_show_toolbar">@string/pref$show_toolbar$title</string>
-	<string name="range$config$ui_show_toolbar$tooltip" process="HtmlParser"><![CDATA[
+	<string name="range__config__ui_show_toolbar">@string/pref__show_toolbar__title</string>
+	<string name="range__config__ui_show_toolbar__tooltip" process="HtmlParser"><![CDATA[
 	<b>Do you want to use the floating toolbar?</b>
 	(<i>options are yes/no</i>)
 	]]></string>
 
-	<string name="range$config$ui_network_overlay">@string/pref$network_overlay$title</string>
-	<string name="range$config$ui_network_overlay$tooltip" process="HtmlParser"><![CDATA[
+	<string name="range__config__ui_network_overlay">@string/pref__network_overlay__title</string>
+	<string name="range__config__ui_network_overlay__tooltip" process="HtmlParser"><![CDATA[
 	<b>Do you want to use tiles overlay or ground overlay for the tube network?</b>
 	(<i>options are yes/no</i>)
 	Yes, for tiles; when you zoom in they get smaller and nicer.

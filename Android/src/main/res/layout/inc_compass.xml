@@ -2,7 +2,7 @@
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/layout$compass_header"
+	android:id="@+id/layout__compass_header"
 	android:layout_width="70dp"
 	android:layout_height="70dp"
 	tools:layout_width="104dp"
@@ -12,7 +12,7 @@
 	tools:targetApi="HONEYCOMB"
 	>
 	<ToggleButton
-		android:id="@+id/button$compass_center"
+		android:id="@+id/button__compass_center"
 		android:layout_width="20dp"
 		android:layout_height="20dp"
 		android:layout_margin="7dp"
@@ -23,11 +23,11 @@
 		android:textSize="16sp"
 		/>
 	<ToggleButton
-		android:id="@+id/button$compass_north"
+		android:id="@+id/button__compass_north"
 		android:layout_width="35dp"
 		android:layout_height="35dp"
 		android:layout_marginTop="-35dp"
-		android:layout_above="@+id/button$compass_center"
+		android:layout_above="@+id/button__compass_center"
 		android:layout_centerHorizontal="true"
 		android:background="@drawable/compass_triangle"
 		android:textOn="N"
@@ -36,11 +36,11 @@
 		android:textSize="10dp"
 		/>
 	<ToggleButton
-		android:id="@+id/button$compass_south"
+		android:id="@+id/button__compass_south"
 		android:layout_width="35dp"
 		android:layout_height="35dp"
 		android:layout_marginBottom="-35dp"
-		android:layout_below="@+id/button$compass_center"
+		android:layout_below="@+id/button__compass_center"
 		android:layout_centerHorizontal="true"
 		android:background="@drawable/compass_triangle"
 		android:textOn="S"
@@ -50,11 +50,11 @@
 		android:textSize="10dp"
 		/>
 	<ToggleButton
-		android:id="@+id/button$compass_west"
+		android:id="@+id/button__compass_west"
 		android:layout_width="35dp"
 		android:layout_height="35dp"
 		android:layout_centerVertical="true"
-		android:layout_toLeftOf="@+id/button$compass_center"
+		android:layout_toLeftOf="@+id/button__compass_center"
 		android:background="@drawable/compass_triangle"
 		android:textOn="W"
 		android:textOff="W"
@@ -63,11 +63,11 @@
 		android:textSize="10dp"
 		/>
 	<ToggleButton
-		android:id="@+id/button$compass_east"
+		android:id="@+id/button__compass_east"
 		android:layout_width="35dp"
 		android:layout_height="35dp"
 		android:layout_centerVertical="true"
-		android:layout_toRightOf="@+id/button$compass_center"
+		android:layout_toRightOf="@+id/button__compass_center"
 		android:background="@drawable/compass_triangle"
 		android:textOn="E"
 		android:textOff="E"

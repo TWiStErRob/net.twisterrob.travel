@@ -34,7 +34,7 @@ public class StationListActivity extends BaseActivity implements FilterListener,
 
 		setContentView(R.layout.activity_stations);
 		resetToList();
-		findViewById(R.id.layout$wrapper).setEnabled(false);
+		findViewById(R.id.layout__wrapper).setEnabled(false);
 
 		m_list = (ListView)findViewById(android.R.id.list);
 		m_list.setOnItemClickListener(new OnItemClickListener() {
@@ -76,7 +76,7 @@ public class StationListActivity extends BaseActivity implements FilterListener,
 	@Override public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.stations_list, menu);
 
-		SearchView searchView = (SearchView)MenuItemCompat.getActionView(menu.findItem(R.id.menu$action$search));
+		SearchView searchView = (SearchView)MenuItemCompat.getActionView(menu.findItem(R.id.menu__action__search));
 		searchView.setOnQueryTextListener(new OnQueryTextListener() {
 			public boolean onQueryTextSubmit(String query) {
 				filter(query);

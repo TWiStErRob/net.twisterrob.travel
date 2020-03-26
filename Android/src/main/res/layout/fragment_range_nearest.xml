@@ -13,7 +13,7 @@
 		android:layout_height="?attr/actionBarSize"
 		>
 		<TextSwitcher
-			android:id="@+id/view$range$dropped_pin"
+			android:id="@+id/view__range__dropped_pin"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			>
@@ -43,7 +43,7 @@
 			android:layout_height="wrap_content"
 			/>
 		<LinearLayout
-			android:id="@+id/view$range$nearest_stations"
+			android:id="@+id/view__range__nearest_stations"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"

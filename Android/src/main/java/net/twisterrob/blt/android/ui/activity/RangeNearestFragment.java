@@ -43,11 +43,11 @@ public class RangeNearestFragment extends Fragment {
 	}
 	@Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		droppedPin = (TextSwitcher)view.findViewById(R.id.view$range$dropped_pin);
+		droppedPin = (TextSwitcher)view.findViewById(R.id.view__range__dropped_pin);
 		droppedPin.setInAnimation(getContext(), android.R.anim.fade_in);
 		droppedPin.setOutAnimation(getContext(), android.R.anim.fade_out);
 		droppedPinAutomation = new AutomatedViewSwitcher(droppedPin, SECONDS.toMillis(3), SECONDS.toMillis(15));
-		nearestStations = (ViewGroup)view.findViewById(R.id.view$range$nearest_stations);
+		nearestStations = (ViewGroup)view.findViewById(R.id.view__range__nearest_stations);
 		nearestStations.removeAllViews();
 	}
 	@Override public void onDestroyView() {
@@ -76,7 +76,7 @@ public class RangeNearestFragment extends Fragment {
 		LOG.trace("updateLocationInternal: {}, address: {}, task: {}",
 				latlng, address != null? "<received>" : null, AndroidTools.toString(m_geocoderTask));
 		String addressString = LocationUtils.getVagueAddress(address);
-		String pin = getString(R.string.range$nearest_location, latlng.latitude, latlng.longitude);
+		String pin = getString(R.string.range__nearest_location, latlng.latitude, latlng.longitude);
 		droppedPinAutomation.stop();
 		droppedPin.setCurrentText(pin);
 		if (addressString != null) {
@@ -105,7 +105,7 @@ public class RangeNearestFragment extends Fragment {
 		}
 		if (nearestStations.getChildCount() == 0) {
 			TextView empty = new TextView(getContext());
-			empty.setText(R.string.range$nearest_empty);
+			empty.setText(R.string.range__nearest_empty);
 			nearestStations.addView(empty);
 		}
 	}

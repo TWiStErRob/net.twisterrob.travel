@@ -22,7 +22,7 @@
 		<!-- Re-declare wanted items -->
 		<activity
 			android:name=".ui.activity.StandaloneRangeMapActivity"
-			android:label="@string/launcher$range_map"
+			android:label="@string/launcher__range_map"
 			android:theme="@style/AppTheme.NoActionBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
