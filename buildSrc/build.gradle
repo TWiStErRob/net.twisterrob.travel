@@ -1,0 +1,17 @@
+repositories {
+	google()
+	jcenter()
+	maven { name = "Gradle libs (for Kotlin-DSL)"; url = "https://repo.gradle.org/gradle/libs-releases-local/" }
+	maven { name = "twisterrob"; url = "http://localhost/maven" }
+}
+
+def props = new Properties()
+props.load(file("../gradle.properties").newInputStream())
+
+//configurations.implementation.resolutionStrategy.cacheChangingModulesFor 0, 'seconds' // -SNAPSHOT
+dependencies {
+	implementation "net.twisterrob.gradle:plugin:${props.VERSION_TWISTER_GRADLE}"
+	// https://github.com/GoogleCloudPlatform/app-gradle-plugin
+	implementation "com.google.cloud.tools:appengine-gradle-plugin:${props.VERSION_APPENGINE_PLUGIN}"
+	implementation "org.gretty:gretty:3.0.1"
+}

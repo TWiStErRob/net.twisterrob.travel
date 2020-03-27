@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<jsp:useBean id="feedChanges" scope="request" type="java.util.List<net.twisterrob.blt.gapp.viewmodel.ResultChange>"/>
+<jsp:useBean id="colors" scope="request" type="net.twisterrob.blt.gapp.viewmodel.LineColor.AllColors"/>
 <!DOCTYPE html>
 <html>
 <head>

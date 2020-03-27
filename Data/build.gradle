@@ -3,28 +3,33 @@ version = '0.0.1-SNAPSHOT'
 // <name>Better London Travel Data Generation</name>
 // <description>Standalone project to handle large feeds</description>
 
+apply plugin: 'java-library'
 apply plugin: 'net.twisterrob.java'
 
 dependencies {
-	//configurations.compile.resolutionStrategy.cacheChangingModulesFor 0, 'seconds' // -SNAPSHOT
-	compile project(':Shared')
-	compile 'org.slf4j:slf4j-simple:1.7.5'
-	compile 'org.xerial:sqlite-jdbc:3.7.15-M1'
+	//configurations.implementation.resolutionStrategy.cacheChangingModulesFor 0, 'seconds' // -SNAPSHOT
+	api project(':Shared')
+	runtimeOnly "org.slf4j:slf4j-simple:${VERSION_SLF4J}"
+	implementation 'org.xerial:sqlite-jdbc:3.7.15-M1'
 
 	apply from: "${rootDir}/gradle/testCompile.gradle", to: project
 }
 
-apply plugin: 'jetty'
+apply plugin: 'org.gretty'
 // TODO logging doesn't work with org.eclipse nor org.mortbay package names
 // -Dorg.mortbay.log.class=org.eclipse.jetty.util.log.StrErrLog changes the logger, but no output
 // --debug logs, but too much and not configurable
-JettyRun jettyRun = tasks[JettyPlugin.JETTY_RUN] as JettyRun
-jettyRun.classpath = files([ ]) // to prevent running :Data:classes task
-jettyRun.daemon = true
-jettyRun.reload = JettyPlugin.RELOAD_MANUAL
-jettyRun.webAppSourceDirectory = file('src/data')
-jettyRun.httpPort = 8081
-//jettyRun.additionalRuntimeJars = configurations.compile.findAll { it.name.contains('slf4j-simple') }
+gretty { // org.akhikhl.gretty.GrettyExtension
+	//daemon = true
+	extraResourceBase(file('src/data'))
+
+	// + Magic @Delegate org.akhikhl.gretty.ServerConfig through GrettyExtension implements GrettyConfig
+	httpPort = 8081
+	liveReloadEnabled = false
+	managedClassReload = false
+
+	// + Magic @Delegate org.akhikhl.gretty.WebAppConfig through GrettyExtension implements GrettyConfig
+}
 
 apply plugin: 'idea'
 idea {

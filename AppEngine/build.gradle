@@ -1,17 +1,10 @@
-buildscript {
-	dependencies {
-		// https://github.com/GoogleCloudPlatform/gradle-appengine-plugin
-		classpath "com.google.appengine:gradle-appengine-plugin:${VERSION_APPENGINE}"
-	}
-}
-
 apply plugin: 'java'
 apply plugin: 'war'
-apply plugin: 'appengine'
+apply plugin: 'com.google.cloud.tools.appengine'
 apply plugin: 'idea'
 
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 configurations {
 	provided
@@ -23,21 +16,14 @@ idea {
 }
 
 dependencies {
-	appengineSdk "com.google.appengine:appengine-java-sdk:${VERSION_APPENGINE}"
 	// com.google.appengine.api.datastore
 	compile "com.google.appengine:appengine-api-1.0-sdk:${VERSION_APPENGINE}"
 	// com.google.api.server.spi.SystemServiceServlet
 	compile "com.google.appengine:appengine-endpoints:${VERSION_APPENGINE}"
 
-	def appengineRoot = "p:\\tools\\sdk\\appengine-java-sdk-${VERSION_APPENGINE}";
-	provided fileTree(dir: "${appengineRoot}/lib/shared", include: '**/*.jar')
-	provided fileTree(dir: "${appengineRoot}/lib/tools", include: '**/*.jar')
-	provided fileTree(dir: "${appengineRoot}/lib/override", include: '**/*.jar')
-	// The above should be equivalent to something like:
-	//provided 'javax.servlet:servlet-api:2.5'
-	//provided 'javax.servlet.jsp:jsp-api:2.2'
-	//provided 'taglibs:standard:1.1.2'
-	//provided 'jstl:jstl:1.2'
+	providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+	provided "org.apache.taglibs:taglibs-standard-impl:1.2.5" // DEV only
+	provided "javax.servlet.jsp.jstl:jstl-api:1.2" // DEV only
 
 	compile project(':Shared')
 
@@ -70,21 +56,21 @@ sourceSets {
 	}
 }
 
-appengine { // com.google.appengine.AppEnginePluginExtension
-	httpPort = 8888
-	downloadSdk = true
-	app {
-		id = 'twisterrob-london'
+appengine { com.google.cloud.tools.gradle.appengine.standard.AppEngineStandardExtension ext ->
+	deploy {
+		projectId = 'twisterrob-london'
 	}
-	appcfg {
-		email = 'papp.robert.s@gmail.com'
-		oauth2 = true
-	}
-	def logDependencyFilter = { Dependency d -> d.group?.contains('slf4j') || d.group?.contains('log4j') };
-	def deps = configurations.provided.dependencies.findAll logDependencyFilter;
-	configurations.provided.files(deps as Dependency[]).each { jvmFlags.add("-Xbootclasspath/p:${it.absolutePath}") }
-}
+	run {
+		port = 8888
+		automaticRestart = true
 
-appengineDownloadApp {
-	outputDirectory = file('build/downloaded')
+		def logDependencyFilter = { Dependency d -> d.group?.contains('slf4j') || d.group?.contains('log4j') };
+		def deps = configurations.provided.dependencies.findAll logDependencyFilter;
+		def flags = configurations.provided.files(deps as Dependency[]).collect { "-Xbootclasspath/p:${it.absolutePath}".toString() }
+		jvmFlags = (jvmFlags ?: []) + flags
+	}
+	tools {
+		cloudSdkHome = System.getenv("GCLOUD_HOME") ?: file("build/downloaded/gcloud-sdk")
+		cloudSdkVersion = "286.0.0"
+	}
 }

@@ -2,21 +2,21 @@ if (project.hasProperty('libFromSources')) {
 	evaluationDependsOn ':twister-lib-java'
 }
 
+apply plugin: 'java-library'
 apply plugin: 'net.twisterrob.java'
-//apply plugin: 'java'
-//sourceCompatibility = JavaVersion.VERSION_1_7
-//targetCompatibility = JavaVersion.VERSION_1_7
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 // <name>Better London Travel Shared</name>
 // <description>Shared model and surrounding classes</description>
 //name = 'twister-travel-shared'
 version = '0.0.1-SNAPSHOT'
 dependencies {
 	if (project.hasProperty('libFromSources')) {
-		compile project(':twister-lib-java')
+		api project(':twister-lib-java')
 	} else {
-		compile('net.twisterrob:twister-lib-java:1.0-SNAPSHOT')
+		api('net.twisterrob:twister-lib-java:1.0-SNAPSHOT')
 	}
-	compile project(':Shared:android-polyfill')
+	implementation project(':Shared:android-polyfill')
 
 	apply from: "${rootDir}/gradle/testCompile.gradle", to: project
 }

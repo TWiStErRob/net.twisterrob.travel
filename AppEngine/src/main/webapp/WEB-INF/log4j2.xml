@@ -102,6 +102,11 @@ To bridge/route all JUL log records to the SLF4J API org.slf4j.bridge.SLF4JBridg
 		<!-- DEBUG/request JSP compiler: class loaders and classpath -->
 		<Logger name="org.apache.jasper.compiler.JspRuntimeContext" level="INFO" />
 
+		<!-- DEBUG org.apache.tomcat.util.digester.Digester.sax(DirectJDKLog.java:180) startElement(http://java.sun.com/JSP/TagLibraryDescriptor,name,name) -->
+		<!-- DEBUG org.apache.tomcat.util.IntrospectionUtils -->
+		<!-- DEBUG org.apache.tomcat.util.compat.Jre9Compat(DirectJDKLog.java:182) Class not found so assuming code is running on a pre-Java 9 JVM -->
+		<Logger name="org.apache.tomcat.util" level="INFO" />
+
 		<!-- DEBUG/request authentication internals
 		     authenticate() returning new principal for test@example.com
 		     Ignoring disassociate call for: test@example.com

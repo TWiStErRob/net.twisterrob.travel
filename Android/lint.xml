@@ -32,4 +32,8 @@
 	<issue id="IconLocation" severity="ignore" />
 	<!-- STOPSHIP Leave me alone for now, we'll see when I'm ready to publish -->
 	<issue id="IconMissingDensityFolder" severity="ignore" />
+
+	<issue id="UnknownNullness" severity="ignore">
+		<!-- Not Kotlin yet, reduce lint warning count -->
+	</issue>
 </lint>
