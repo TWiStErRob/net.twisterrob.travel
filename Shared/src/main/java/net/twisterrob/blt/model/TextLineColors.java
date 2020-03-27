@@ -116,6 +116,12 @@ public class TextLineColors extends LineColors {
 	@Override public int getTfLRailForeground() {
 		return colors.getTfLRailBackground();
 	}
+	@Override public int getElizabethBackground() {
+		return background;
+	}
+	@Override public int getElizabethForeground() {
+		return colors.getElizabethBackground();
+	}
 	@Override public int getUnknownBackground() {
 		return background;
 	}

@@ -147,6 +147,15 @@ public enum Line {
 		@Override public int getForeground(LineColors colors) {
 			return colors.getTfLRailForeground();
 		}
+	},
+	// TODO what is the tracker net code and line ID?
+	Elizabeth('?', -1, StopType.Underground, "Elizabeth", "Crossrail") {
+		@Override public int getBackground(LineColors colors) {
+			return colors.getElizabethBackground();
+		}
+		@Override public int getForeground(LineColors colors) {
+			return colors.getElizabethForeground();
+		}
 	};
 	private static final int NO_ID = 0;
 

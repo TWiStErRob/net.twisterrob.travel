@@ -123,6 +123,13 @@ public abstract class LineColors {
 		return getUnknownForeground();
 	}
 
+	public int getElizabethBackground() {
+		return getUnknownBackground();
+	}
+	public int getElizabethForeground() {
+		return getUnknownForeground();
+	}
+
 	public int getUnknownBackground() {
 		return makeColor(255, 255, 255);
 	}

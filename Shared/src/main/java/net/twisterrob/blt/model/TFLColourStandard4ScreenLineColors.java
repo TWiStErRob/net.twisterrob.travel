@@ -3,6 +3,10 @@ package net.twisterrob.blt.model;
 import java.util.*;
 
 public class TFLColourStandard4ScreenLineColors extends LineColors {
+
+	/**
+	 * https://tfl.gov.uk/info-for/suppliers-and-contractors/design-standards#tfl-corporate-design-standards-heading
+	 */
 	@Override public String getLineColorsSource() {
 		// https://tfl.gov.uk/cdn/static/cms/documents/tfl-colour-standards-issue04.pdf
 		return "http://content.tfl.gov.uk/tfl-colour-standards-issue04.pdf";
@@ -79,5 +83,9 @@ public class TFLColourStandard4ScreenLineColors extends LineColors {
 
 	@Override public int getTfLRailBackground() {
 		return makeColor(0, 25, 168);
+	}
+
+	@Override public int getElizabethBackground() {
+		return makeColor(147, 100, 204);
 	}
 }

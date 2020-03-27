@@ -124,7 +124,39 @@ public class TubeStatusPresentationLineColors extends LineColors {
 		return 0xFF7ac141; // TODO real value
 	}
 
+	@Override public int getTramForeground() {
+		return 0xFF000000;
+	}
+
 	@Override public int getEmiratesBackground() {
 		return 0xFFe91e3d; // TODO real value
+	}
+
+	@Override public int getEmiratesForeground() {
+		return 0xFF000000;
+	}
+
+	/**
+	 * Header of TfL Rail timetables:
+	 * http://content.tfl.gov.uk/tfl-rail-liverpool-street-shenfield-timetable-15-dec-2019-to-16-may-2020.pdf
+	 */
+	@Override public int getTfLRailBackground() {
+		return 0xFF243588; // TODO real value
+	}
+
+	@Override public int getTfLRailForeground() {
+		return 0xFFFFFFFF;
+	}
+
+	/**
+	 * Header of Elizabeth line map:
+	 * http://content.tfl.gov.uk/elizabeth-line-when-fully-open.pdf
+	 */
+	@Override public int getElizabethBackground() {
+		return 0xFF603e99; // TODO real value
+	}
+
+	@Override public int getElizabethForeground() {
+		return 0xFFFFFFFF;
 	}
 }
