@@ -1,58 +1,59 @@
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'com.google.cloud.tools.appengine'
+apply plugin: 'com.google.cloud.tools.endpoints-framework-server'
 apply plugin: 'idea'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 configurations {
-	provided
+	dev
 }
 idea {
 	module {
-		scopes.PROVIDED.plus += [ configurations.provided ]
+		scopes.PROVIDED.plus += [ configurations.dev ]
 	}
 }
 
 dependencies {
 	// com.google.appengine.api.datastore
-	compile "com.google.appengine:appengine-api-1.0-sdk:${VERSION_APPENGINE}"
-	// com.google.api.server.spi.SystemServiceServlet
-	compile "com.google.appengine:appengine-endpoints:${VERSION_APPENGINE}"
+	implementation("com.google.appengine:appengine-api-1.0-sdk:${VERSION_APPENGINE}")
+	// com.google.api.server.spi.EndpointsServlet
+	implementation("com.google.endpoints:endpoints-framework:${VERSION_GCLOUD_ENDPOINTS}")
 
 	providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
-	provided "org.apache.taglibs:taglibs-standard-impl:1.2.5" // DEV only
-	provided "javax.servlet.jsp.jstl:jstl-api:1.2" // DEV only
+	dev("org.apache.taglibs:taglibs-standard-impl:1.2.5")
+	dev("javax.servlet.jsp.jstl:jstl-api:1.2")
 
-	compile project(':Shared')
+	implementation project(':Shared')
 
 	// See java.util.logging.properties and log4j2.xml
-	compile "org.slf4j:slf4j-api:${VERSION_SLF4J}"
-	compile "org.slf4j:slf4j-jdk14:${VERSION_SLF4J}" // route apps SLF4J logging to JUL
-	provided "org.slf4j:jul-to-slf4j:${VERSION_SLF4J}" // DEV only
-	provided "org.apache.logging.log4j:log4j-api:${VERSION_LOG4J}" // DEV only
-	provided "org.apache.logging.log4j:log4j-core:${VERSION_LOG4J}" // DEV only
-	provided "org.apache.logging.log4j:log4j-slf4j-impl:${VERSION_LOG4J}" // DEV only
+	implementation("org.slf4j:slf4j-api:${VERSION_SLF4J}")
+	// route apps SLF4J logging to JUL
+	implementation("org.slf4j:slf4j-jdk14:${VERSION_SLF4J}")
+	dev("org.slf4j:jul-to-slf4j:${VERSION_SLF4J}")
+	dev("org.apache.logging.log4j:log4j-api:${VERSION_LOG4J}")
+	dev("org.apache.logging.log4j:log4j-core:${VERSION_LOG4J}")
+	dev("org.apache.logging.log4j:log4j-slf4j-impl:${VERSION_LOG4J}")
 
-	compile "ant:ant:1.6.5" // for org.apache.tools.ant.filters.StringInputStream
-//	compile "com.google.guava:guava:14.0.1"
-//	compile "joda-time:joda-time:2.3"
+	// for org.apache.tools.ant.filters.StringInputStream
+	implementation("ant:ant:1.6.5")
 
 	apply from: "${rootDir}/gradle/testCompile.gradle", to: project
-//	testCompile "com.google.appengine:appengine-testing:${VERSION_APPENGINE}"
-//	testCompile "com.google.appengine:appengine-api-stubs:${VERSION_APPENGINE}"
-//	testCompile "com.google.appengine:appengine-api-labs:${VERSION_APPENGINE}"
+	testImplementation("com.google.appengine:appengine-testing:${VERSION_APPENGINE}")
+	testImplementation("com.google.appengine:appengine-api-stubs:${VERSION_APPENGINE}")
+	testImplementation("com.google.appengine:appengine-api-labs:${VERSION_APPENGINE}")
 }
 
 sourceSets {
 	main {
 		java.srcDir 'src/main/diff'
-		compileClasspath += configurations.provided
+		compileClasspath += configurations.dev
 	}
 	test {
 		java.srcDir 'src/test/diff'
-		compileClasspath += configurations.provided
+		compileClasspath += configurations.dev
 	}
 }
 
@@ -65,12 +66,17 @@ appengine { com.google.cloud.tools.gradle.appengine.standard.AppEngineStandardEx
 		automaticRestart = true
 
 		def logDependencyFilter = { Dependency d -> d.group?.contains('slf4j') || d.group?.contains('log4j') };
-		def deps = configurations.provided.dependencies.findAll logDependencyFilter;
-		def flags = configurations.provided.files(deps as Dependency[]).collect { "-Xbootclasspath/p:${it.absolutePath}".toString() }
-		jvmFlags = (jvmFlags ?: []) + flags
+		def deps = configurations.dev.dependencies.findAll logDependencyFilter
+		def flags = configurations.dev.files(deps as Dependency[]) \
+				.collect { "-Xbootclasspath/p:${it.absolutePath}".toString() }
+		jvmFlags = (jvmFlags?: [ ]) + flags
 	}
 	tools {
-		cloudSdkHome = System.getenv("GCLOUD_HOME") ?: file("build/downloaded/gcloud-sdk")
+		cloudSdkHome = System.getenv("GCLOUD_HOME")?: file("build/downloaded/gcloud-sdk")
 		cloudSdkVersion = "286.0.0"
 	}
+}
+
+endpointsServer {
+	hostname = "twisterrob-london.appspot.com"
 }
