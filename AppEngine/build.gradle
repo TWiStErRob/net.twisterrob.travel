@@ -59,7 +59,8 @@ sourceSets {
 
 appengine { com.google.cloud.tools.gradle.appengine.standard.AppEngineStandardExtension ext ->
 	deploy {
-		projectId = 'twisterrob-london'
+		projectId = "twisterrob-london"
+		version = "GCLOUD_CONFIG"
 	}
 	run {
 		port = 8888

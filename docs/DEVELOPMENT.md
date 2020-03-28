@@ -25,3 +25,9 @@ Android full compilation
 ```
 gradlew :Android:assembleDebug :Android:asFDAT :Android:asRDAT :Android:compileFDebugUnitTestSources :Android:compileRDebugUnitTestSources
 ```
+
+## Deploy to production
+Direct, creates a new version and activates it as 100%.
+```
+gradlew appengineDeploy
+```
