@@ -1,7 +1,3 @@
-if (project.hasProperty('libFromSources')) {
-	evaluationDependsOn ':twister-lib-java'
-}
-
 apply plugin: 'java-library'
 apply plugin: 'net.twisterrob.java'
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -11,12 +7,10 @@ targetCompatibility = JavaVersion.VERSION_1_8
 //name = 'twister-travel-shared'
 version = '0.0.1-SNAPSHOT'
 dependencies {
-	if (project.hasProperty('libFromSources')) {
-		api project(':twister-lib-java')
-	} else {
-		api('net.twisterrob:twister-lib-java:1.0-SNAPSHOT')
-	}
+	api('net.twisterrob.lib:twister-libs-java')
+
 	implementation project(':Shared:android-polyfill')
+	implementation('net.twisterrob.lib:twister-lib-java_desktop')
 
 	apply from: "${rootDir}/gradle/testCompile.gradle", to: project
 }

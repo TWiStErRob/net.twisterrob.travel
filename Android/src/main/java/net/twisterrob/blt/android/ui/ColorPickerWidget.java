@@ -4,8 +4,8 @@ import android.support.annotation.ColorInt;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import net.twisterrob.android.utils.tools.AndroidTools;
-import net.twisterrob.android.utils.tools.AndroidTools.PopupCallbacks;
+import net.twisterrob.android.utils.tools.DialogTools;
+import net.twisterrob.android.utils.tools.DialogTools.PopupCallbacks;
 
 public class ColorPickerWidget {
 	private final View display;
@@ -28,7 +28,7 @@ public class ColorPickerWidget {
 		this.display = view;
 		this.display.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View v) {
-				AndroidTools.pickColor(v.getContext(), value, new PopupCallbacks<Integer>() {
+				DialogTools.pickColor(v.getContext(), value, new PopupCallbacks<Integer>() {
 					@Override public void finished(Integer value) {
 						if (value != null) {
 							setValueInternal(value, true);

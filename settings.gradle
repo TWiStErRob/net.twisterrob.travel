@@ -6,9 +6,10 @@ include ':AppEngine'
 include ':Shared:android-polyfill'
 include ':Data'
 
-if (hasProperty('libFromSources')) {
-	include ':twister-lib-java'
-	project(':twister-lib-java').projectDir = file('libs/twister-lib-java')
-	include ':twister-lib-android'
-	project(':twister-lib-android').projectDir = file('libs/twister-lib-android')
+includeBuild("libs/twister-lib-java") { build ->
+	apply from: new File(build.projectDir, "settings.substitutions.gradle"), to: build
+}
+
+includeBuild("libs/twister-lib-android") { build ->
+	apply from: new File(build.projectDir, "settings.substitutions.gradle"), to: build
 }

@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import net.twisterrob.android.utils.concurrent.SimpleSafeAsyncTask;
 import net.twisterrob.android.utils.tools.AndroidTools;
+import net.twisterrob.android.utils.tools.StringerTools;
 import net.twisterrob.android.utils.tostring.stringers.name.AddressNameStringer;
 import net.twisterrob.android.view.AutomatedViewSwitcher;
 import net.twisterrob.blt.android.R;
@@ -60,7 +61,7 @@ public class RangeNearestFragment extends Fragment {
 	public void updateLocation(@NonNull LatLng latlng, @Nullable Address address) {
 		ToStringer addressString = new ToStringer(StringerRepo.INSTANCE, address, new AddressNameStringer());
 		LOG.trace("updateLocation: {}, address: {}, task {}",
-				latlng, addressString, AndroidTools.toString(m_geocoderTask));
+				latlng, addressString, StringerTools.toString(m_geocoderTask));
 		if (address == null) {
 			if (m_geocoderTask != null) {
 				m_geocoderTask.cancel(true);
@@ -74,7 +75,7 @@ public class RangeNearestFragment extends Fragment {
 	private void updateLocationInternal(@NonNull LatLng latlng, @Nullable Address address) {
 		lastStartPoint = latlng;
 		LOG.trace("updateLocationInternal: {}, address: {}, task: {}",
-				latlng, address != null? "<received>" : null, AndroidTools.toString(m_geocoderTask));
+				latlng, address != null? "<received>" : null, StringerTools.toString(m_geocoderTask));
 		String addressString = LocationUtils.getVagueAddress(address);
 		String pin = getString(R.string.range__nearest_location, latlng.latitude, latlng.longitude);
 		droppedPinAutomation.stop();

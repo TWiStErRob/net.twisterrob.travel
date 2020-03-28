@@ -15,10 +15,13 @@ import android.view.*;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
+import net.twisterrob.android.AndroidConstants;
 import net.twisterrob.android.content.HtmlParser;
 import net.twisterrob.android.content.pref.ResourcePreferences;
 import net.twisterrob.android.utils.tools.AndroidTools;
-import net.twisterrob.android.utils.tools.AndroidTools.PopupCallbacks;
+import net.twisterrob.android.utils.tools.DialogTools;
+import net.twisterrob.android.utils.tools.DialogTools.PopupCallbacks;
+import net.twisterrob.android.utils.tools.ResourceTools;
 import net.twisterrob.android.wiring.NumberPickerWidget;
 import net.twisterrob.android.wiring.NumberPickerWidget.OnValueChangeListener;
 import net.twisterrob.blt.android.*;
@@ -254,7 +257,7 @@ public class RangeOptionsFragment extends Fragment {
 				|| item.getGroupId() == R.id.group__range__config__ui) {
 			@StringRes int tooltipID = getTooltip(item);
 			Spanned tooltip = HtmlParser.fromHtml(getString(tooltipID), null, new TubeHtmlHandler(getContext()));
-			AndroidTools
+			DialogTools
 					.notify(getContext(), PopupCallbacks.DoNothing.<Boolean>instance())
 					.setTitle(item.getTitle())
 					.setMessage(tooltip)
@@ -277,13 +280,13 @@ public class RangeOptionsFragment extends Fragment {
 	}
 
 	private int getTooltip(MenuItem item) {
-		int id = AndroidTools.INVALID_RESOURCE_ID;
+		int id = AndroidConstants.INVALID_RESOURCE_ID;
 		String name = getResources().getResourceEntryName(item.getItemId());
 		if (name != null) {
 			name = name.substring("option$".length()) + "$tooltip";
-			id = AndroidTools.getStringResourceID(getContext(), name);
+			id = ResourceTools.getStringResourceID(getContext(), name);
 		}
-		if (id == AndroidTools.INVALID_RESOURCE_ID) {
+		if (id == AndroidConstants.INVALID_RESOURCE_ID) {
 			id = R.string.range__config__missing_tooltip;
 		}
 		return id;

@@ -29,6 +29,8 @@ import com.google.android.gms.maps.model.Marker;
 
 import net.twisterrob.android.utils.concurrent.SimpleAsyncTask;
 import net.twisterrob.android.utils.tools.AndroidTools;
+import net.twisterrob.android.utils.tools.StringerTools;
+import net.twisterrob.android.utils.tools.ViewTools;
 import net.twisterrob.android.view.*;
 import net.twisterrob.android.view.layout.DoAfterLayout;
 import net.twisterrob.blt.android.*;
@@ -41,7 +43,7 @@ import net.twisterrob.blt.android.ui.activity.RangeOptionsFragment.ConfigsUpdate
 import net.twisterrob.blt.android.ui.activity.main.MapActivity;
 import net.twisterrob.blt.model.StopType;
 
-import static net.twisterrob.android.utils.tools.AndroidTools.*;
+import static net.twisterrob.android.utils.tools.ResourceTools.*;
 
 public class RangeMapActivity extends MapActivity {
 	private static final Logger LOG = LoggerFactory.getLogger(RangeMapActivity.class);
@@ -108,12 +110,12 @@ public class RangeMapActivity extends MapActivity {
 		searchFragment = (SupportPlaceAutocompleteFragment)fm.findFragmentById(R.id.view__range__search);
 		searchFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
 			@Override public void onPlaceSelected(Place place) {
-				LOG.trace("Selected: {}", AndroidTools.toString(place));
+				LOG.trace("Selected: {}", StringerTools.toString(place));
 				reDraw(place.getLatLng());
 			}
 
 			@Override public void onError(Status status) {
-				LOG.warn("Cannot search: {}", AndroidTools.toString(status));
+				LOG.warn("Cannot search: {}", StringerTools.toString(status));
 				String message = String.format(Locale.getDefault(), "Sorry, cannot search: %d/%s",
 						status.getStatusCode(), status.getStatusMessage());
 				Toast.makeText(RangeMapActivity.this, message, Toast.LENGTH_LONG).show();
@@ -186,7 +188,7 @@ public class RangeMapActivity extends MapActivity {
 	public void updateToolbarVisibility() {
 		boolean showToolbar = App.prefs().getBoolean(R.string.pref__show_toolbar, R.bool.pref__show_toolbar__default);
 		final View container = findViewById(R.id.view__range__toolbar_container);
-		AndroidTools.displayedIf(container, showToolbar);
+		ViewTools.displayedIf(container, showToolbar);
 		new DoAfterLayout(drawers, true) {
 			@Override protected void onLayout(@NonNull View view) {
 				if (map == null) {
@@ -199,7 +201,7 @@ public class RangeMapActivity extends MapActivity {
 				if (ui.isMyLocationButtonEnabled() || ui.isCompassEnabled()) {
 					View bottomMostTopView = findViewById(R.id.view__range__toolbar_container);
 					if (bottomMostTopView.getVisibility() != View.GONE) {
-						topMargin = bottomMostTopView.getBottom() + AndroidTools.getBottomMargin(bottomMostTopView);
+						topMargin = bottomMostTopView.getBottom() + ViewTools.getBottomMargin(bottomMostTopView);
 					} else {
 						topMargin = AndroidTools.getStatusBarHeight(RangeMapActivity.this);
 					}
@@ -208,7 +210,7 @@ public class RangeMapActivity extends MapActivity {
 				if (ui.isMapToolbarEnabled() || ui.isZoomControlsEnabled()/* || ui.isIndoorLevelPickerEnabled()*/) {
 					View topMostBottomView = findViewById(R.id.view__range__fab);
 					if (topMostBottomView.getVisibility() != View.GONE) {
-						bottomMargin = topMostBottomView.getTop() - AndroidTools.getTopMargin(topMostBottomView);
+						bottomMargin = topMostBottomView.getTop() - ViewTools.getTopMargin(topMostBottomView);
 						bottomMargin = ((View)topMostBottomView.getParent()).getHeight() - bottomMargin;
 					}
 				}
@@ -312,7 +314,7 @@ public class RangeMapActivity extends MapActivity {
 		}
 		nearestFragment.updateLocation(latlng, null);
 
-		LOG.trace("reDraw({}) / task: {}", latlng, AndroidTools.toString(drawTask));
+		LOG.trace("reDraw({}) / task: {}", latlng, StringerTools.toString(drawTask));
 		killTask();
 		if (tubeNetwork == null) {
 			String message = "Someone has quick fingers, Tube network is not ready, please wait and try again.";

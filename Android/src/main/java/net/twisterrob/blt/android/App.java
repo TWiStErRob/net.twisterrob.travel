@@ -1,7 +1,6 @@
 package net.twisterrob.blt.android;
 
 import org.slf4j.*;
-import org.slf4j.impl.AndroidLoggerFactory;
 
 import android.support.annotation.NonNull;
 import android.widget.Toast;
@@ -10,9 +9,10 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.*;
 
+import net.twisterrob.android.AndroidConstants;
 import net.twisterrob.android.app.BaseApp;
+import net.twisterrob.android.log.AndroidLoggerFactory;
 import net.twisterrob.android.utils.concurrent.*;
-import net.twisterrob.android.utils.tools.AndroidTools;
 import net.twisterrob.android.utils.tostring.stringers.detailed.*;
 import net.twisterrob.blt.android.data.*;
 import net.twisterrob.blt.android.db.DataBaseHelper;
@@ -34,7 +34,7 @@ public class App extends BaseApp {
 			"papp.robert.s@gmail.com");
 
 	public App() {
-		super(BuildConfig.DEBUG, AndroidTools.INVALID_RESOURCE_ID);
+		super(BuildConfig.DEBUG, AndroidConstants.INVALID_RESOURCE_ID);
 	}
 
 	public static @NonNull App getInstance() {
@@ -42,7 +42,7 @@ public class App extends BaseApp {
 	}
 
 	public static @NonNull DataBaseHelper db() {
-		return (DataBaseHelper)getInstance().database;
+		return getInstance().getDatabase();
 	}
 
 	@Override public void onCreate() {

@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 
-import net.twisterrob.android.utils.tools.AndroidTools;
+import net.twisterrob.android.utils.tools.ViewTools;
 
 public class ListViewHandler {
 
@@ -19,7 +19,7 @@ public class ListViewHandler {
 
 		m_emptyText = (TextView)activity.findViewById(emptyViewID);
 		m_listView.setEmptyView(m_emptyText);
-		AndroidTools.visibleIfHasText(m_emptyText);
+		ViewTools.visibleIfHasText(m_emptyText);
 
 		if (refreshListener != null) {
 			m_emptyText.setOnClickListener(new OnClickListener() {
@@ -41,7 +41,7 @@ public class ListViewHandler {
 	}
 	private void setMessage(String message) {
 		m_emptyText.setText(message);
-		AndroidTools.visibleIfHasText(m_emptyText);
+		ViewTools.visibleIfHasText(m_emptyText);
 	}
 
 	public void empty(String message) {

@@ -6,7 +6,6 @@ allprojects {
 	repositories {
 		google()
 		jcenter()
-		maven { name = "twisterrob"; url = "http://localhost/maven" }
 	}
 
 	afterEvaluate {

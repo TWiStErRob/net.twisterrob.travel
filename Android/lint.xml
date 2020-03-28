@@ -27,7 +27,7 @@
 		<ignore regexp="R\.string\.range\$config\$(.+)\$tooltip" />
 	</issue>
 	<!-- STOPSHIP Leave me alone for now, we'll see when I'm ready to publish -->
-	<issue id="IconDensity" severity="ignore" />
+	<!--<issue id="IconDensity" severity="ignore" /> non-existent in 3.4.2? -->
 	<!-- STOPSHIP Leave me alone for now, we'll see when I'm ready to publish -->
 	<issue id="IconLocation" severity="ignore" />
 	<!-- STOPSHIP Leave me alone for now, we'll see when I'm ready to publish -->
