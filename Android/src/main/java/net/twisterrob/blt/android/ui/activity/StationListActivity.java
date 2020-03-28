@@ -7,7 +7,6 @@ import org.slf4j.*;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.*;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.text.SpannableString;
