@@ -44,16 +44,18 @@ public class FeedCronServlet extends HttpServlet {
 		if (oldEntry != null) {
 			if (sameProp(DS_PROP_CONTENT, oldEntry, newEntry)) {
 				LOG.info(marker, "They have the same content.");
-				resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+				resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
 			} else if (sameProp(DS_PROP_ERROR, oldEntry, newEntry)) {
 				LOG.info(marker, "They have the same error.");
-				resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+				resp.setStatus(HttpServletResponse.SC_NON_AUTHORITATIVE_INFORMATION);
 			} else {
 				LOG.info(marker, "They're different, storing...");
+				resp.setStatus(HttpServletResponse.SC_ACCEPTED);
 				datastore.put(newEntry);
 			}
 		} else {
 			LOG.info(marker, "It's new, storing...");
+			resp.setStatus(HttpServletResponse.SC_CREATED);
 			datastore.put(newEntry);
 		}
 	}
