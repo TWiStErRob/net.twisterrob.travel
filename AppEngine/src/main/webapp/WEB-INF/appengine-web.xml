@@ -20,9 +20,6 @@
 		<property name="log4j.configurationFile" value="WEB-INF/log4j2.xml" />
 		<!-- Helps diagnose when logs don't appear correctly -->
 		<property name="log4j.debug" value="false" />
-		<!-- Allow ${foo.new} EL expression (new is a Java keyword) -->
-		<!-- See also https://thinkinginsoftware.blogspot.com/2011/10/tomcat-7-jstl-failed-to-parse.html -->
-		<property name="org.apache.el.parser.SKIP_IDENTIFIER_CHECK" value="true" />
 	</system-properties>
 
 	<!-- HTTP Sessions are disabled by default. To enable HTTP sessions specify: -->

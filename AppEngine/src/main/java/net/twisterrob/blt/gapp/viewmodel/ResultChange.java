@@ -21,10 +21,10 @@ public class ResultChange {
 		descChanges = new EnumMap<>(Line.class);
 		diff();
 	}
-	public Result getOld() {
+	public Result getPrevious() {
 		return oldResult;
 	}
-	public Result getNew() {
+	public Result getCurrent() {
 		return newResult;
 	}
 	public ErrorChange getError() {

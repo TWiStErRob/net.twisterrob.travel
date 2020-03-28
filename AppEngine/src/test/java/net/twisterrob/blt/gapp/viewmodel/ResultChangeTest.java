@@ -15,8 +15,8 @@ public class ResultChangeTest {
 
 		ResultChange change = new ResultChange(result1, result2);
 
-		assertEquals(result1, change.getOld());
-		assertEquals(result2, change.getNew());
+		assertEquals(result1, change.getPrevious());
+		assertEquals(result2, change.getCurrent());
 	}
 
 	@Test public void testStatusChange() {

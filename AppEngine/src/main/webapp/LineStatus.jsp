@@ -77,7 +77,7 @@
 </head>
 <body>
 	<c:forEach var="feedChange" items="${feedChanges}" varStatus="status">
-	<c:set var="feed" value="${feedChange.new}" />
+	<c:set var="feed" value="${feedChange.current}" />
         <table class="info">
 		<thead>
 			<tr>
