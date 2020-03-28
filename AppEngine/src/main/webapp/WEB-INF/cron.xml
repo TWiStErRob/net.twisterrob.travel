@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:noNamespaceSchemaLocation="https://googleappengine.googlecode.com/svn-history/r376/trunk/java/src/main/com/google/appengine/tools/development/cron.xsd"
+		xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/GoogleCloudPlatform/google-cloud-eclipse/master/plugins/com.google.cloud.tools.eclipse.appengine.validation/xsd/cron.xsd"
 	>
 	<cron>
 		<url>/FeedCron?feed=TubeDepartureBoardsLineStatus</url>

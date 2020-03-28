@@ -3,7 +3,7 @@
 <appengine-web-app
 		xmlns="http://appengine.google.com/ns/1.0"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:schemaLocation="http://appengine.google.com/ns/1.0 https://raw.githubusercontent.com/greghaskins/googleappengine/master/java/src/main/com/google/appengine/tools/development/appengine-web.xsd"
+		xsi:schemaLocation="http://appengine.google.com/ns/1.0 https://raw.githubusercontent.com/GoogleCloudPlatform/google-cloud-eclipse/master/plugins/com.google.cloud.tools.eclipse.appengine.validation/xsd/appengine-web.xsd"
 	>
 	<application>twisterrob-london</application>
 	<version>live</version>
