@@ -20,7 +20,7 @@ import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.db.model.Station;
 import net.twisterrob.blt.android.ui.adapter.StationAdapter;
 
-public class StationListActivity extends BaseActivity implements FilterListener, Filter.Delayer {
+public class StationListActivity extends BaseActivity implements FilterListener {
 	private static final Logger LOG = LoggerFactory.getLogger(StationListActivity.class);
 
 	private ListView m_list;
@@ -98,13 +98,7 @@ public class StationListActivity extends BaseActivity implements FilterListener,
 		if (m_adapter == null) {
 			return;
 		}
-		Filter filter = m_adapter.getFilter();
-		filter.setDelayer(this);
-		filter.filter(query, this);
-	}
-
-	public long getPostingDelay(CharSequence constraint) {
-		return 500;
+		m_adapter.getFilter().filter(query, this);
 	}
 
 	public void onFilterComplete(int count) {

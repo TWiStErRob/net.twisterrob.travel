@@ -60,11 +60,6 @@ android {
 			dimension "app-build"
 		}
 	}
-
-	sourceSets {
-		// STOPSHIP figure out another way
-		main.java.srcDir 'src/main/hack'
-	}
 }
 
 def generateDataBase = tasks.register("generateDataBase", Copy.class) {
