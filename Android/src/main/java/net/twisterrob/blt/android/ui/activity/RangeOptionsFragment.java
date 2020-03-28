@@ -226,7 +226,7 @@ public class RangeOptionsFragment extends Fragment {
 	@SuppressWarnings("unchecked")
 	private <T extends View> T getAction(@IdRes int menuItemId) {
 		MenuItem switchItem = nav.getMenu().findItem(menuItemId);
-		return (T)MenuItemCompat.getActionView(switchItem);
+		return (T)switchItem.getActionView();
 	}
 
 	private CompoundButton bool(@IdRes int menuItemId, OnCheckedChangeListener listener) {

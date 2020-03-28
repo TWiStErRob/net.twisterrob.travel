@@ -16,7 +16,12 @@ After this runs hit:
  * http://localhost:8888 for examples, or
  * http://localhost:8888/LineStatusHistory?current=true&errors=true for live data
 
-## Full Build without lint
+## Build commands
+Full Build without lint
 ```
 gradlew build --continue -x :Android:lint -x :Android:lintVitalRangeRelease -x :Android:lintVitalFullRelease -x :twister-lib-android:lint
+```
+Android full compilation
+```
+gradlew :Android:assembleDebug :Android:asFDAT :Android:asRDAT :Android:compileFDebugUnitTestSources :Android:compileRDebugUnitTestSources
 ```

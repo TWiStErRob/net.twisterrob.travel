@@ -13,18 +13,18 @@ dependencies {
 	implementation(project(':Shared')) {
 		exclude module: 'android-polyfill'
 	}
-	implementation 'com.google.android.gms:play-services-maps:9.2.1'
-	implementation 'com.google.android.gms:play-services-places:9.2.1'
-	implementation "com.android.support:support-v4:${VERSION_SUPPORT}"
-	implementation "com.android.support:appcompat-v7:${VERSION_SUPPORT}"
-	implementation "com.android.support:design:${VERSION_SUPPORT}"
-	implementation "com.github.bumptech.glide:glide:${VERSION_GLIDE}"
+	implementation("com.google.android.gms:play-services-maps:${VERSION_MAPS}")
+	implementation("com.google.android.gms:play-services-places:${VERSION_MAPS}")
+	implementation("com.android.support:support-v4:${VERSION_SUPPORT}")
+	implementation("com.android.support:appcompat-v7:${VERSION_SUPPORT}")
+	implementation("com.android.support:design:${VERSION_SUPPORT}")
+	implementation("com.github.bumptech.glide:glide:${VERSION_GLIDE}")
 
 	apply from: "${rootDir}/gradle/testCompile.gradle", to: project
 }
 
 android {
-	compileSdkVersion 24
+	compileSdkVersion 28
 	defaultConfig {
 		targetSdkVersion 19
 		applicationId 'net.twisterrob.blt'

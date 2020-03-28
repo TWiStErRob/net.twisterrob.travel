@@ -77,7 +77,7 @@ public class StationListActivity extends BaseActivity implements FilterListener,
 	@Override public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.stations_list, menu);
 
-		SearchView searchView = (SearchView)MenuItemCompat.getActionView(menu.findItem(R.id.menu__action__search));
+		SearchView searchView = (SearchView)menu.findItem(R.id.menu__action__search).getActionView();
 		searchView.setOnQueryTextListener(new OnQueryTextListener() {
 			public boolean onQueryTextSubmit(String query) {
 				filter(query);
