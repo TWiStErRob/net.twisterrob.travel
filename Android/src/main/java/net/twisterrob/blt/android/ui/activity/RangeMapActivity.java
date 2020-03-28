@@ -8,6 +8,7 @@ import android.graphics.*;
 import android.os.*;
 import android.support.annotation.*;
 import android.support.design.widget.*;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
@@ -60,6 +61,7 @@ public class RangeMapActivity extends MapActivity {
 	private Set<NetworkNode> tubeNetwork;
 	private DrawAsyncTask drawTask;
 	private LatLng lastStartPoint;
+	@SuppressWarnings("deprecation")
 	private SupportPlaceAutocompleteFragment searchFragment;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +109,24 @@ public class RangeMapActivity extends MapActivity {
 			}
 		});
 
-		searchFragment = (SupportPlaceAutocompleteFragment)fm.findFragmentById(R.id.view__range__search);
-		searchFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+		setupSearch(fm.findFragmentById(R.id.view__range__search));
+
+		updateToolbarVisibility();
+		new AsyncTask<Void, Void, Set<NetworkNode>>() {
+			@Override protected Set<NetworkNode> doInBackground(Void... params) {
+				return App.db().getTubeNetwork();
+			}
+			@Override protected void onPostExecute(Set<NetworkNode> nodes) {
+				super.onPostExecute(nodes);
+				setNodes(nodes);
+			}
+		}.execute((Void[])null);
+	}
+
+	@SuppressWarnings("deprecation")
+	private void setupSearch(Fragment searchFragment) {
+		this.searchFragment = (SupportPlaceAutocompleteFragment)searchFragment;
+		this.searchFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
 			@Override public void onPlaceSelected(Place place) {
 				LOG.trace("Selected: {}", StringerTools.toString(place));
 				reDraw(place.getLatLng());
@@ -121,17 +139,6 @@ public class RangeMapActivity extends MapActivity {
 				Toast.makeText(RangeMapActivity.this, message, Toast.LENGTH_LONG).show();
 			}
 		});
-
-		updateToolbarVisibility();
-		new AsyncTask<Void, Void, Set<NetworkNode>>() {
-			@Override protected Set<NetworkNode> doInBackground(Void... params) {
-				return App.db().getTubeNetwork();
-			}
-			@Override protected void onPostExecute(Set<NetworkNode> nodes) {
-				super.onPostExecute(nodes);
-				setNodes(nodes);
-			}
-		}.execute((Void[])null);
 	}
 
 	@Override protected void setupMap() {
