@@ -83,16 +83,23 @@ public class ResultChange {
 		String newDesc = newStatus.getDescription();
 		if (oldDesc != null && newDesc != null) { // after this check fails one of them must be null
 			if (oldDesc.equals(newDesc)) {
-				statusChanges.put(line, StatusChange.SameDescriptionSame);
+				String oldBranches = oldStatus.getBranchDescription();
+				String newBranches = newStatus.getBranchDescription();
+				if (oldBranches.equals(newBranches)) {
+					statusChanges.put(line, StatusChange.SameDescriptionSame);
+				} else {
+					statusChanges.put(line, StatusChange.BranchesChange);
+					descChanges.put(line, diffDesc(oldBranches, newBranches));
+				}
 			} else {
 				statusChanges.put(line, StatusChange.SameDescriptionChange);
 				descChanges.put(line, diffDesc(oldDesc, newDesc));
 			}
-		} else if (newDesc != null) {
+		} else if (oldDesc == null && newDesc != null) {
 			statusChanges.put(line, StatusChange.SameDescriptionAdd);
-		} else if (oldDesc != null) {
+		} else if (oldDesc != null && newDesc == null) {
 			statusChanges.put(line, StatusChange.SameDescriptionDel);
-		} else {
+		} else if (oldDesc == null && newDesc == null) {
 			statusChanges.put(line, StatusChange.SameDescriptionSame);
 		}
 	}
@@ -126,7 +133,8 @@ public class ResultChange {
 		SameDescriptionSame("", "status-same-desc-same"),
 		SameDescriptionChange("descr.", "status-same-desc-change"),
 		SameDescriptionAdd("+ descr.", "status-same-desc-add"),
-		SameDescriptionDel("- descr.", "status-same-desc-del");
+		SameDescriptionDel("- descr.", "status-same-desc-del"),
+		BranchesChange("branches", "status-same-branch-change");
 		private final String title;
 		private final String cssClass;
 		StatusChange(String humanReadable, String cssClass) {

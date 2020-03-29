@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfLineStatus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://webservices.lul.co.uk/">
+	<LineStatus ID="1" StatusDetails="Desc1">
+		<BranchDisruptions />
+		<Line ID="1" Name="Bakerloo" />
+		<Status ID="SS" CssClass="DisruptedService" Description="Special Service" IsActive="true">
+			<StatusType ID="1" Description="Line" />
+		</Status>
+	</LineStatus>
+	<LineStatus ID="2" StatusDetails="Desc2">
+		<BranchDisruptions>
+			<BranchDisruption>
+				<StationTo ID="244" Name="Uxbridge" />
+				<StationFrom ID="224" Name="Stratford" />
+				<Status ID="SS" CssClass="DisruptedService" Description="Special Service" IsActive="true">
+					<StatusType ID="1" Description="Line" />
+				</Status>
+			</BranchDisruption>
+		</BranchDisruptions>
+		<Line ID="2" Name="Central" />
+		<Status ID="SS" CssClass="DisruptedService" Description="Special Service" IsActive="true">
+			<StatusType ID="1" Description="Line" />
+		</Status>
+	</LineStatus>
+	<LineStatus ID="3" StatusDetails="Desc3">
+		<BranchDisruptions>
+			<BranchDisruption>
+				<StationTo ID="190" Name="Richmond" />
+				<StationFrom ID="236" Name="Tower Hill" />
+				<Status ID="SS" CssClass="DisruptedService" Description="Special Service" IsActive="true">
+					<StatusType ID="1" Description="Line" />
+				</Status>
+			</BranchDisruption>
+			<BranchDisruption>
+				<StationTo ID="61" Name="Ealing Broadway" />
+				<StationFrom ID="10" Name="Baker Street" />
+				<Status ID="SS" CssClass="DisruptedService" Description="Special Service" IsActive="true">
+					<StatusType ID="1" Description="Line" />
+				</Status>
+			</BranchDisruption>
+			<BranchDisruption>
+				<StationTo ID="380" Name="Cheshunt" />
+				<StationFrom ID="240" Name="Upminster" />
+				<Status ID="SS" CssClass="DisruptedService" Description="Special Service" IsActive="true">
+					<StatusType ID="1" Description="Line" />
+				</Status>
+			</BranchDisruption>
+		</BranchDisruptions>
+		<Line ID="9" Name="District" />
+		<Status ID="SS" CssClass="DisruptedService" Description="Special Service" IsActive="true">
+			<StatusType ID="1" Description="Line" />
+		</Status>
+	</LineStatus>
+</ArrayOfLineStatus>

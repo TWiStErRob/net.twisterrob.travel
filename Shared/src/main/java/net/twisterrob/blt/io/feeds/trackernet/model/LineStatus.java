@@ -1,5 +1,9 @@
 package net.twisterrob.blt.io.feeds.trackernet.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import net.twisterrob.blt.model.Line;
 
 public class LineStatus {
@@ -7,6 +11,7 @@ public class LineStatus {
 	private DelayType m_type;
 	private String m_description;
 	private boolean m_active;
+	private List<BranchStatus> m_branches = new ArrayList<>();
 
 	public Line getLine() {
 		return m_line;
@@ -38,5 +43,53 @@ public class LineStatus {
 	}
 	public void setActive(boolean isActive) {
 		m_active = isActive;
+	}
+
+	public void addBranchStatus(BranchStatus lineStatus) {
+		m_branches.add(lineStatus);
+	}
+
+	public List<BranchStatus> getBranchStatuses() {
+		return Collections.unmodifiableList(m_branches);
+	}
+
+	public String getBranchDescription() {
+		StringBuilder sb = new StringBuilder();
+		if (!getBranchStatuses().isEmpty()) {
+			sb.append("Affected branches:\n");
+		}
+		for (BranchStatus branch : getBranchStatuses()) {
+			sb.append(branch.getFromStation());
+			sb.append(" - ");
+			sb.append(branch.getToStation());
+			sb.append(";\n");
+		}
+		return sb.toString();
+	}
+
+	public static class BranchStatus {
+		private String fromStation;
+		private String toStation;
+
+		public BranchStatus() {}
+
+		public BranchStatus(String fromStation, String toStation) {
+			this.fromStation = fromStation;
+			this.toStation = toStation;
+		}
+
+		public String getFromStation() {
+			return fromStation;
+		}
+		public void setFromStation(String name) {
+			this.fromStation = name;
+		}
+
+		public String getToStation() {
+			return toStation;
+		}
+		public void setToStation(String name) {
+			this.toStation = name;
+		}
 	}
 }

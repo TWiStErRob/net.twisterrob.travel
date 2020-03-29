@@ -8,6 +8,7 @@ import com.shazam.gwen.collaborators.Arranger;
 
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
 import net.twisterrob.blt.io.feeds.trackernet.model.*;
+import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus.BranchStatus;
 import net.twisterrob.blt.model.Line;
 
 class GwenStatus implements Arranger {
@@ -19,6 +20,18 @@ class GwenStatus implements Arranger {
 		status.setLine(line);
 		status.setType(DelayType.Unknown);
 		status.setDescription(description);
+		statuses.put(line, status);
+		return this;
+	}
+
+	public GwenStatus contains(Line line, String description, BranchStatus... branches) {
+		LineStatus status = new LineStatus();
+		status.setLine(line);
+		status.setType(DelayType.Unknown);
+		status.setDescription(description);
+		for (BranchStatus branch : branches) {
+			status.addBranchStatus(branch);
+		}
 		statuses.put(line, status);
 		return this;
 	}

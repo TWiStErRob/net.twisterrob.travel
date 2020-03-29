@@ -3,9 +3,11 @@ package net.twisterrob.blt.io.feeds.trackernet;
 import net.twisterrob.blt.io.feeds.FeedXmlDescriptor;
 
 /**
- * The feed structure of the TrackerNet line status API.
+ * The feed structure of the TrackerNet line status API.http://content.tfl.gov.uk/trackernet-data-services-guide-beta.pdf
  * @see <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">
- *     Trackernet_Data_Services_Guide_Beta_0_2.pdf > 3.4.5</a>
+ *     Trackernet_Data_Services_Guide_Beta_0_2.pdf @ 08/12/2010 > 3.4.5</a>
+ * @see <a href="http://content.tfl.gov.uk/trackernet-data-services-guide-beta.pdf">
+ *     In 2020: Trackernet_Data_Services_Guide_Beta_0_2.pdf @ 08/12/2010 > 3.4.5</a>
  * @see net.twisterrob.blt.io.feeds.Feed#TubeDepartureBoardsLineStatus
  * @see net.twisterrob.blt.io.feeds.Feed#TubeDepartureBoardsLineStatusIncidents
  */
@@ -38,9 +40,22 @@ import net.twisterrob.blt.io.feeds.FeedXmlDescriptor;
 		String ELEMENT = "BranchDisruptions";
 	}
 
+	// TODO compiler keeps bailing on this
+	//@Children({Status.class, StationTo.class, StationFrom.class})
 	public interface BranchDisruption {
 		String ELEMENT = "BranchDisruption";
-		// TODO
+
+		public interface StationTo {
+			String ELEMENT = "StationTo";
+			@Attribute String id = "ID";
+			@Attribute String name = "Name";
+		}
+
+		public interface StationFrom {
+			String ELEMENT = "StationFrom";
+			@Attribute String id = "ID";
+			@Attribute String name = "Name";
+		}
 	}
 
 	public interface Line {

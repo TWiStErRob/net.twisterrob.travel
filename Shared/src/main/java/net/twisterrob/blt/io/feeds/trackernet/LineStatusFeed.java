@@ -7,13 +7,8 @@ import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus;
 import net.twisterrob.blt.model.Line;
 
 public class LineStatusFeed extends BaseFeed<LineStatusFeed> {
-	private final List<LineStatus> m_lineStatuses;
-	private final Map<Line, LineStatus> m_statusMap;
-
-	public LineStatusFeed() {
-		m_lineStatuses = new LinkedList<>();
-		m_statusMap = new LinkedHashMap<>();
-	}
+	private final List<LineStatus> m_lineStatuses = new LinkedList<>();
+	private final Map<Line, LineStatus> m_statusMap = new LinkedHashMap<>();
 
 	public Map<Line, LineStatus> getStatusMap() {
 		return Collections.unmodifiableMap(m_statusMap);

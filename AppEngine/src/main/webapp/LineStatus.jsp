@@ -105,12 +105,15 @@
                     <td class="line-${lineStatus.line}">${lineStatus.line.title}</td>
 					<td class="delay ${feedChange.statuses[lineStatus.line].cssClass} ${delayStyle}">
 					<c:choose>
-							<c:when test="${empty lineStatus.description}">
+							<c:when test="${empty lineStatus.description || empty lineStatus.branchDescription}">
 								${lineStatus.type.title}
 							</c:when>
 							<c:otherwise>
 								<a rel="htmltooltip">${lineStatus.type.title}</a>
-								<div class="htmltooltip">${lineStatus.description}</div>
+								<div class="htmltooltip">
+									<p>${lineStatus.description}</p>
+									<p>${lineStatus.branchDescription}</p>
+								</div>
 							</c:otherwise>
 						</c:choose>
 					</td>
