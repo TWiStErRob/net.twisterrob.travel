@@ -97,8 +97,10 @@ public class ResultChange {
 			}
 		} else if (oldDesc == null && newDesc != null) {
 			statusChanges.put(line, StatusChange.SameDescriptionAdd);
+			descChanges.put(line, diffDesc("", newDesc));
 		} else if (oldDesc != null && newDesc == null) {
 			statusChanges.put(line, StatusChange.SameDescriptionDel);
+			descChanges.put(line, diffDesc(oldDesc, ""));
 		} else if (oldDesc == null && newDesc == null) {
 			statusChanges.put(line, StatusChange.SameDescriptionSame);
 		}

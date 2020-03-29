@@ -44,7 +44,7 @@ public class ResultChangeTest_Descriptions {
 		then(change)
 				.has(Line.Northern, StatusChange.SameDescriptionAdd)
 				.hasNoErrorChange()
-				.hasNoDescriptionChangeFor(Line.Northern)
+				.hasDescriptionChangeFor(Line.Northern)
 		;
 	}
 
@@ -57,7 +57,7 @@ public class ResultChangeTest_Descriptions {
 		then(change)
 				.has(Line.Northern, StatusChange.SameDescriptionDel)
 				.hasNoErrorChange()
-				.hasNoDescriptionChangeFor(Line.Northern)
+				.hasDescriptionChangeFor(Line.Northern)
 		;
 	}
 
