@@ -39,7 +39,7 @@ gcloud config set project twisterrob-london
 
 Directly creates a new version and activates it as 100%.
 ```
-gradlew appengineDeploy
+gradlew appengineDeployAll
 ```
 
 Verify new version at https://twisterrob-london.appspot.com/

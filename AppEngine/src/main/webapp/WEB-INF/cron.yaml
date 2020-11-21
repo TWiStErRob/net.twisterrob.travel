@@ -1,0 +1,12 @@
+# https://cloud.google.com/appengine/docs/standard/java/config/cron-yaml
+cron:
+
+  - description: 'Retrieve latest Line Status'
+    url: /FeedCron?feed=TubeDepartureBoardsLineStatus
+    schedule: every 5 minutes
+    timezone: Europe/London
+
+  - description: 'Retrieve latest Station Incidents'
+    url: /FeedCron?feed=TubeDepartureBoardsStationStatusIncidents
+    schedule: every 5 minutes
+    timezone: Europe/London
