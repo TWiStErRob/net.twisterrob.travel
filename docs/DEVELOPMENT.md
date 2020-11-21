@@ -27,7 +27,21 @@ gradlew :Android:assembleDebug :Android:assembleFullDebugAndroidTest :Android:as
 ```
 
 ## Deploy to production
-Direct, creates a new version and activates it as 100%.
+May need to log in with papp.robert.s@gmail.com.
+```
+gcloud auth login
+```
+
+Make sure the right project is selected!
+```
+gcloud config set project twisterrob-london
+```
+
+Directly creates a new version and activates it as 100%.
 ```
 gradlew appengineDeploy
 ```
+
+Verify new version at https://twisterrob-london.appspot.com/
+and delete old version at [Google Cloud Platform > App Engine > Versions](
+https://console.cloud.google.com/appengine/versions?project=twisterrob-london).
