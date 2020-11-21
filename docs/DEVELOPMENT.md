@@ -19,11 +19,11 @@ After this runs hit:
 ## Build commands
 Full Build without lint
 ```
-gradlew build --continue -x :Android:lint -x :Android:lintVitalRangeRelease -x :Android:lintVitalFullRelease -x :twister-lib-android:lint
+gradlew build --continue -x :Android:lint -x :Android:lintVitalRangeRelease -x :Android:lintVitalFullRelease
 ```
 Android full compilation
 ```
-gradlew :Android:assembleDebug :Android:asFDAT :Android:asRDAT :Android:compileFDebugUnitTestSources :Android:compileRDebugUnitTestSources
+gradlew :Android:assembleDebug :Android:assembleFullDebugAndroidTest :Android:assembleRangeDebugAndroidTest :Android:compileFullDebugUnitTestSources :Android:compileRangeDebugUnitTestSources
 ```
 
 ## Deploy to production

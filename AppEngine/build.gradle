@@ -74,7 +74,9 @@ appengine { com.google.cloud.tools.gradle.appengine.standard.AppEngineStandardEx
 	}
 	tools {
 		cloudSdkHome = System.getenv("GCLOUD_HOME")?: file("build/downloaded/gcloud-sdk")
-		cloudSdkVersion = "286.0.0"
+		cloudSdkVersion = VERSION_GCLOUD_SDK as String
+		// https://cloud.google.com/sdk/gcloud/reference#--verbosity
+		verbosity = "info"
 	}
 }
 
