@@ -12,6 +12,12 @@
 	<!-- Allows App Engine to send multiple requests to one instance in parallel. -->
 	<threadsafe>true</threadsafe>
 
+	<instance-class>F1</instance-class>
+	<automatic-scaling>
+		<min-instances>0</min-instances>
+		<max-instances>1</max-instances>
+	</automatic-scaling>
+
 	<system-properties>
 		<property name="appengine.file.encoding" value="UTF-8"/>
 		<!-- Configure JUL -> SLF4J -> Log4J routing, see config files for more -->
