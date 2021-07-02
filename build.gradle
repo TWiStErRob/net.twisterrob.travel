@@ -11,6 +11,13 @@ allprojects {
 	afterEvaluate {
 		tasks.withType(JavaCompile) {
 			options.encoding = 'UTF-8'
+			options.compilerArgs += [
+				"-Werror",
+				"-Xmaxwarns", "1000",
+				"-Xmaxerrs", "1000",
+				"-Xlint:deprecation",
+				"-Xlint:unchecked",
+			]
 		}
 	}
 }
