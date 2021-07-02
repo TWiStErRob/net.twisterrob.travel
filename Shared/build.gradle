@@ -7,7 +7,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 //name = 'twister-travel-shared'
 version = '0.0.1-SNAPSHOT'
 dependencies {
-	api('net.twisterrob.lib:twister-libs-java')
+	api('net.twisterrob.lib:twister-lib-general')
 
 	implementation project(':Shared:android-polyfill')
 	implementation('net.twisterrob.lib:twister-lib-java_desktop')

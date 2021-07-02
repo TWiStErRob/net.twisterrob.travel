@@ -3,12 +3,13 @@ apply plugin: 'net.twisterrob.android-app'
 apply plugin: 'com.android.application'
 
 dependencies {
-	implementation("net.twisterrob.lib:twister-libs-android")
+	implementation("net.twisterrob.lib:twister-lib-android-monolith")
 	implementation("net.twisterrob.lib:twister-lib-android-basics")
 	implementation("net.twisterrob.lib:twister-lib-android-slf4j")
 	implementation("net.twisterrob.lib:twister-lib-android-widgets")
 	implementation("net.twisterrob.lib:twister-lib-android-stringers")
 	implementation("net.twisterrob.lib:twister-lib-android-about")
+	implementation("net.twisterrob.lib:twister-lib-android-settings")
 
 	implementation(project(':Shared')) {
 		exclude module: 'android-polyfill'

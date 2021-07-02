@@ -2,7 +2,7 @@ repositories {
 	google()
 	jcenter()
 	maven { name = "Gradle libs (for Kotlin-DSL)"; url = "https://repo.gradle.org/gradle/libs-releases-local/" }
-	maven { name = "twisterrob"; url = "http://localhost/maven" }
+	maven { name = "twisterrob"; url = "http://localhost/maven"; allowInsecureProtocol = true }
 }
 
 def props = new Properties()
@@ -14,5 +14,5 @@ dependencies {
 	// https://github.com/GoogleCloudPlatform/app-gradle-plugin
 	implementation "com.google.cloud.tools:appengine-gradle-plugin:${props.VERSION_APPENGINE_PLUGIN}"
 	implementation "com.google.cloud.tools:endpoints-framework-gradle-plugin:${props.VERSION_GCLOUD_ENDPOINTS_PLUGIN}"
-	implementation "org.gretty:gretty:3.0.1"
+	implementation "org.gretty:gretty:3.0.5"
 }
