@@ -1,6 +1,6 @@
 package net.twisterrob.blt.android.ui;
 
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
 import android.view.View;
 import android.view.View.OnClickListener;
 

@@ -1,7 +1,7 @@
 package net.twisterrob.blt.android.ui.activity;
 
-import android.support.annotation.LayoutRes;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.LayoutRes;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.*;
 import android.widget.ListView;
 

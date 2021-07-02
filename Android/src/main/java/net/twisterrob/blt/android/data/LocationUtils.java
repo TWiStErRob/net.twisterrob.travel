@@ -1,7 +1,7 @@
 package net.twisterrob.blt.android.data;
 
 import android.location.Address;
-import android.support.annotation.*;
+import androidx.annotation.*;
 
 import com.google.android.gms.maps.model.LatLng;
 

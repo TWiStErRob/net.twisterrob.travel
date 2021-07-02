@@ -9,7 +9,7 @@ import android.content.*;
 import android.database.*;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.db.model.Station;

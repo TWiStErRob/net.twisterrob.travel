@@ -2,7 +2,7 @@ package net.twisterrob.blt.android.ui.activity.main;
 
 import android.content.*;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.google.android.gms.common.*;

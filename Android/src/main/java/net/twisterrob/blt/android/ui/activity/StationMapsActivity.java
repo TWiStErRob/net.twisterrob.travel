@@ -3,7 +3,7 @@ package net.twisterrob.blt.android.ui.activity;
 import java.util.*;
 
 import android.os.*;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;

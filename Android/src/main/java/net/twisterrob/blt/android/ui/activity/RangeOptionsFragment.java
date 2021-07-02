@@ -3,12 +3,12 @@ package net.twisterrob.blt.android.ui.activity;
 import org.slf4j.*;
 
 import android.os.Bundle;
-import android.support.annotation.*;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.Toolbar.OnMenuItemClickListener;
+import androidx.annotation.*;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar.OnMenuItemClickListener;
 import android.text.Spanned;
 import android.view.*;
 import android.widget.CompoundButton;

@@ -7,10 +7,6 @@
 		<ignore path="src/main/AndroidManifest.xml" />
 		<ignore regexp="is only used in API level" />
 	</issue>
-	<issue id="MissingRegistered">
-		<!-- Possibly a LINT bug, because it works in both IDEA/runtime -->
-		<ignore path="res/layout/activity_stations_map.xml" />
-	</issue>
 	<!-- <![CDATA[<a href=""></a>]]> triggers it -->
 	<issue id="TypographyQuotes">
 		<!-- TOFIX report that these are not suppressible by resource, only by file -->

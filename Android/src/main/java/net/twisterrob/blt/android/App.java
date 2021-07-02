@@ -2,7 +2,7 @@ package net.twisterrob.blt.android;
 
 import org.slf4j.*;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;

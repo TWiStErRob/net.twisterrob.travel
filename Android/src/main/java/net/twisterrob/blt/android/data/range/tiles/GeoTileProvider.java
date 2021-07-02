@@ -2,7 +2,7 @@ package net.twisterrob.blt.android.data.range.tiles;
 
 import org.maptiler.*;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 public abstract class GeoTileProvider extends SafeTileProvider {
 	private final GlobalMercator converter;

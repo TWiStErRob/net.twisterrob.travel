@@ -6,15 +6,16 @@ import org.slf4j.*;
 
 import android.graphics.*;
 import android.os.*;
-import android.support.annotation.*;
-import android.support.design.widget.*;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.ColorUtils;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.*;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.*;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.ColorUtils;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.*;
+import androidx.appcompat.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.*;
 import android.view.View.OnClickListener;
@@ -97,7 +98,7 @@ public class RangeMapActivity extends MapActivity {
 		FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.view__range__fab);
 		behavior = BottomSheetBehavior.from(findViewById(R.id.view__range__bottom_sheet));
 		behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-		behavior.setBottomSheetCallback(new MultiBottomSheetCallback.Builder()
+		behavior.addBottomSheetCallback(new MultiBottomSheetCallback.Builder()
 				//.add(new LoggingBottomSheetCallback())
 				.add(new ShowOnlyWhenSheetNotExpandedFAB(fab))
 				//.add(new BottomMarginAdjuster(new SupportFragmentViewProvider(mapFragment), false))

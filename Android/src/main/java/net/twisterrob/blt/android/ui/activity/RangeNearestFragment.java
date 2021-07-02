@@ -9,8 +9,8 @@ import org.slf4j.*;
 import android.content.Context;
 import android.location.*;
 import android.os.Bundle;
-import android.support.annotation.*;
-import android.support.v4.app.Fragment;
+import androidx.annotation.*;
+import androidx.fragment.app.Fragment;
 import android.view.*;
 import android.widget.*;
 

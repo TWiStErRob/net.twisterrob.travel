@@ -4,8 +4,8 @@ import java.util.*;
 
 import android.graphics.*;
 import android.graphics.Paint.*;
-import android.support.v4.graphics.ColorUtils;
-import android.support.v4.util.Pools;
+import androidx.core.graphics.ColorUtils;
+import androidx.core.util.Pools;
 import android.text.TextPaint;
 
 import net.twisterrob.blt.android.App;

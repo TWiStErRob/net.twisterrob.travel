@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="5" by="lint 3.4.2" client="gradle" variant="all" version="3.4.2">
+<issues format="5" by="lint 4.1.1" client="gradle" variant="all" version="4.1.1">
 
     <issue
-        id="MissingRegistered"
-        message="Class referenced in the manifest, `net.twisterrob.android.activity.AboutActivity`, was not found in the project or the libraries"
-        errorLine1="  &lt;activity"
-        errorLine2="  ^"
-        includedVariants="rangeDebug,rangeRelease"
-        excludedVariants="fullDebug,fullRelease">
+        id="Instantiatable"
+        message="`App` must extend android.app.Application"
+        errorLine1="  android:name=&quot;net.twisterrob.blt.android.App&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src\range\AndroidManifest.xml"
-            line="32"
-            column="3"/>
+            file="src\main\AndroidManifest.xml"
+            line="12"
+            column="17"/>
     </issue>
 
     <issue
@@ -21,7 +19,7 @@
         errorLine2="  ~~~~~~~~~~~~~~~~~~~">
         <location
             file="build.gradle"
-            line="29"
+            line="30"
             column="3"/>
     </issue>
 

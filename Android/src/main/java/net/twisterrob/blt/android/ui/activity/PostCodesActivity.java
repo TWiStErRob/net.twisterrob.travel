@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 
 import android.graphics.Color;
 import android.os.*;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;

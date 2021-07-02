@@ -4,8 +4,8 @@ import java.io.ByteArrayOutputStream;
 
 import android.graphics.*;
 import android.graphics.Bitmap.CompressFormat;
-import android.support.annotation.*;
-import android.support.v4.util.Pools;
+import androidx.annotation.*;
+import androidx.core.util.Pools;
 import android.text.TextPaint;
 
 import com.bumptech.glide.util.Util;
