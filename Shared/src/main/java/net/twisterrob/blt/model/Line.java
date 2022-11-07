@@ -155,8 +155,9 @@ public enum Line {
 	},
 	// "Elizabeth line" first to display it (match https://tfl.gov.uk/tube-dlr-overground/status/)
 	// "Elizabeth Line" comes from XML feed (http://cloud.tfl.gov.uk/TrackerNet/LineStatus)
+	// "Elizabeth" came from XML feed before 2022-11-07 so required to parse historical data.
 	// TODO what is the tracker net code?
-	ElizabethLine('?', 83, StopType.Rail, "Elizabeth line", "Elizabeth Line") {
+	ElizabethLine('?', 83, StopType.Rail, "Elizabeth line", "Elizabeth Line", "Elizabeth") {
 		@Override public int getBackground(LineColors colors) {
 			return colors.getElizabethLineBackground();
 		}
