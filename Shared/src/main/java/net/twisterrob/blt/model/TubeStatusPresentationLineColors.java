@@ -13,6 +13,7 @@ public class TubeStatusPresentationLineColors extends LineColors {
 		return "TfL Online User Guide Version 2";
 	}
 	@Override public Date getLineColorsDate() {
+		// Not updated yet on 2022-11-07.
 		return new GregorianCalendar(2012, Calendar.MARCH, 0).getTime();
 	}
 
@@ -140,10 +141,12 @@ public class TubeStatusPresentationLineColors extends LineColors {
 	 * Header of TfL Rail timetables:
 	 * http://content.tfl.gov.uk/tfl-rail-liverpool-street-shenfield-timetable-15-dec-2019-to-16-may-2020.pdf
 	 */
+	@Deprecated
 	@Override public int getTfLRailBackground() {
 		return 0xFF243588; // TODO real value
 	}
 
+	@Deprecated
 	@Override public int getTfLRailForeground() {
 		return 0xFFFFFFFF;
 	}
@@ -152,11 +155,11 @@ public class TubeStatusPresentationLineColors extends LineColors {
 	 * Header of Elizabeth line map:
 	 * http://content.tfl.gov.uk/elizabeth-line-when-fully-open.pdf
 	 */
-	@Override public int getElizabethBackground() {
+	@Override public int getElizabethLineBackground() {
 		return 0xFF603e99; // TODO real value
 	}
 
-	@Override public int getElizabethForeground() {
+	@Override public int getElizabethLineForeground() {
 		return 0xFFFFFFFF;
 	}
 }

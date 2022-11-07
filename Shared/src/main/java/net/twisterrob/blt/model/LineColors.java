@@ -116,17 +116,25 @@ public abstract class LineColors {
 		return getUnknownForeground();
 	}
 
+	/**
+	 * @deprecated Use {@link #getElizabethLineBackground()} instead.
+	 */
+	@Deprecated
 	public int getTfLRailBackground() {
 		return getUnknownBackground();
 	}
+	/**
+	 * @deprecated Use {@link #getElizabethLineForeground()} instead.
+	 */
+	@Deprecated
 	public int getTfLRailForeground() {
 		return getUnknownForeground();
 	}
 
-	public int getElizabethBackground() {
+	public int getElizabethLineBackground() {
 		return getUnknownBackground();
 	}
-	public int getElizabethForeground() {
+	public int getElizabethLineForeground() {
 		return getUnknownForeground();
 	}
 

@@ -110,17 +110,19 @@ public class TextLineColors extends LineColors {
 	@Override public int getEmiratesForeground() {
 		return colors.getEmiratesBackground();
 	}
+	@Deprecated
 	@Override public int getTfLRailBackground() {
 		return background;
 	}
+	@Deprecated
 	@Override public int getTfLRailForeground() {
 		return colors.getTfLRailBackground();
 	}
-	@Override public int getElizabethBackground() {
+	@Override public int getElizabethLineBackground() {
 		return background;
 	}
-	@Override public int getElizabethForeground() {
-		return colors.getElizabethBackground();
+	@Override public int getElizabethLineForeground() {
+		return colors.getElizabethLineBackground();
 	}
 	@Override public int getUnknownBackground() {
 		return background;

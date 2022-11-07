@@ -1,24 +1,25 @@
 package net.twisterrob.blt.model;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
-public class TFLColourStandard4ScreenLineColors extends LineColors {
+public class TFLColourStandard6ScreenLineColors extends LineColors {
 
 	/**
 	 * https://tfl.gov.uk/info-for/suppliers-and-contractors/design-standards#tfl-corporate-design-standards-heading
 	 */
 	@Override public String getLineColorsSource() {
-		// https://tfl.gov.uk/cdn/static/cms/documents/tfl-colour-standards-issue04.pdf
-		return "http://content.tfl.gov.uk/tfl-colour-standards-issue04.pdf";
+		return "https://content.tfl.gov.uk/tfl-colour-standard-issue-06.pdf";
 	}
 	@Override public String getLineColorsName() {
 		return "TfL Colour Standard";
 	}
 	@Override public String getLineColorsVersion() {
-		return "Issue 4 / RGB for screen";
+		return "Issue 6 / RGB";
 	}
 	@Override public Date getLineColorsDate() {
-		return new GregorianCalendar(2016, Calendar.MAY, 0x00).getTime();
+		return new GregorianCalendar(2021, Calendar.AUGUST, 0x00).getTime();
 	}
 
 	@Override public int getBakerlooBackground() {
@@ -30,11 +31,11 @@ public class TFLColourStandard4ScreenLineColors extends LineColors {
 	}
 
 	@Override public int getCircleBackground() {
-		return makeColor(255, 211, 41);
+		return makeColor(255, 206, 0);
 	}
 
 	@Override public int getDistrictBackground() {
-		return makeColor(0, 125, 50);
+		return makeColor(0, 114, 41);
 	}
 
 	@Override public int getHammersmithAndCityBackground() {
@@ -58,7 +59,7 @@ public class TFLColourStandard4ScreenLineColors extends LineColors {
 	}
 
 	@Override public int getVictoriaBackground() {
-		return makeColor(0, 152, 216);
+		return makeColor(0, 160, 226);
 	}
 
 	@Override public int getWaterlooAndCityBackground() {
@@ -79,11 +80,6 @@ public class TFLColourStandard4ScreenLineColors extends LineColors {
 
 	@Override public int getEmiratesBackground() {
 		return makeColor(220, 36, 31);
-	}
-
-	@Deprecated
-	@Override public int getTfLRailBackground() {
-		return makeColor(0, 25, 168);
 	}
 
 	@Override public int getElizabethLineBackground() {

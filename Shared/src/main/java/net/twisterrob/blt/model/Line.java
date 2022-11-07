@@ -140,6 +140,11 @@ public enum Line {
 		}
 	},
 	// TODO what is the tracker net code?
+	/**
+	 * It has been rebranded to {@link #ElizabethLine}.
+	 * @see <a href="https://tfl.gov.uk/info-for/media/press-releases/2022/may/elizabeth-line-to-open-on-24-may-2022">News</a>
+	 */
+	@Deprecated
 	TflRail('?', 83, StopType.Rail, "TfL Rail") {
 		@Override public int getBackground(LineColors colors) {
 			return colors.getTfLRailBackground();
@@ -148,15 +153,18 @@ public enum Line {
 			return colors.getTfLRailForeground();
 		}
 	},
-	// TODO what is the tracker net code and line ID?
-	Elizabeth('?', -1, StopType.Underground, "Elizabeth", "Crossrail") {
+	// "Elizabeth line" first to display it (match https://tfl.gov.uk/tube-dlr-overground/status/)
+	// "Elizabeth Line" comes from XML feed (http://cloud.tfl.gov.uk/TrackerNet/LineStatus)
+	// TODO what is the tracker net code?
+	ElizabethLine('?', 83, StopType.Rail, "Elizabeth line", "Elizabeth Line") {
 		@Override public int getBackground(LineColors colors) {
-			return colors.getElizabethBackground();
+			return colors.getElizabethLineBackground();
 		}
 		@Override public int getForeground(LineColors colors) {
-			return colors.getElizabethForeground();
+			return colors.getElizabethLineForeground();
 		}
-	};
+	},
+	;
 	private static final int NO_ID = 0;
 
 	/**
