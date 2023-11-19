@@ -6,12 +6,6 @@ include ':AppEngine'
 include ':Shared:android-polyfill'
 include ':Data'
 
-includeBuild("libs/twister-lib-java") { build ->
-	name = "twister-libs-java"
-	apply from: new File(build.projectDir, "settings.substitutions.gradle"), to: build
-}
-
-includeBuild("libs/twister-lib-android") { build ->
-	name = "twister-libs-android"
-	apply from: new File(build.projectDir, "settings.substitutions.gradle"), to: build
+includeBuild("libs") { build ->
+	apply from: new File(build.projectDir, "gradle/settings.substitutions.gradle"), to: build
 }
