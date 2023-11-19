@@ -4,7 +4,7 @@ version = '0.0.1-SNAPSHOT'
 // <description>Standalone project to handle large feeds</description>
 
 apply plugin: 'java-library'
-apply plugin: 'net.twisterrob.java'
+apply plugin: 'net.twisterrob.gradle.plugin.java'
 
 dependencies {
 	//configurations.implementation.resolutionStrategy.cacheChangingModulesFor 0, 'seconds' // -SNAPSHOT

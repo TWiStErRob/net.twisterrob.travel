@@ -1,4 +1,4 @@
-apply plugin: 'net.twisterrob.java'
+apply plugin: 'net.twisterrob.gradle.plugin.java'
 
 dependencies {
 	implementation 'net.sf.kxml:kxml2:2.3.0'

@@ -1,5 +1,5 @@
 //name = 'Better London Travel Android App'
-apply plugin: 'net.twisterrob.android-app'
+apply plugin: 'net.twisterrob.gradle.plugin.android-app'
 apply plugin: 'com.android.application'
 
 repositories {
