@@ -48,7 +48,7 @@ task runNetwork(type: JavaExec) {
 	outputs.dir outputDir
 	group = ApplicationPlugin.APPLICATION_GROUP
 	classpath = sourceSets.main.runtimeClasspath
-	main = 'net.twisterrob.blt.data.apps.TravelNetworkParser'
+	mainClass = 'net.twisterrob.blt.data.apps.TravelNetworkParser'
 	args = [ inputDir, outputDir ]
 	enableAssertions = true
 }
@@ -60,14 +60,14 @@ task runPostCode(type: JavaExec) {
 	outputs.file outputFile
 	group = ApplicationPlugin.APPLICATION_GROUP
 	classpath = sourceSets.main.runtimeClasspath
-	main = 'net.twisterrob.blt.data.apps.PostCodeAreas'
+	mainClass = 'net.twisterrob.blt.data.apps.PostCodeAreas'
 	enableAssertions = true
 }
 
 task runDisplay(type: JavaExec) {
 	group = ApplicationPlugin.APPLICATION_GROUP
 	classpath = sourceSets.main.runtimeClasspath
-	main = 'net.twisterrob.blt.data.apps.DisplayLine'
+	mainClass = 'net.twisterrob.blt.data.apps.DisplayLine'
 	args = [ 'DLR' ]
 	if (project.hasProperty('lines')) {
 		args = project.property('lines').toString().split(',') as List;
