@@ -55,7 +55,7 @@ jobs:
           --stacktrace
           --continue
           --no-build-cache
-          build -x :Android:lint
+          build
 
       - name: "Upload 'Unit Test Results' artifact."
         if: success() || failure()

@@ -38,10 +38,11 @@ dependencies {
 }
 
 android {
-	compileSdkVersion 28
+	namespace = "net.twisterrob.blt.android"
+	compileSdk = 34
 	defaultConfig {
-		targetSdkVersion 19
-		applicationId 'net.twisterrob.blt'
+		minSdk = 21
+		targetSdk = 21
 		version {
 			major = 1
 		}
@@ -56,17 +57,21 @@ android {
 			matchingFallbacks = ['release']
 		}
 	}
-	lintOptions {
+	buildFeatures {
+		buildConfig = true
+	}
+	lint {
 		checkAllWarnings = true
 		checkDependencies = true
+		abortOnError = false
 		lintConfig = file("lint.xml")
 		baseline file("lint-baseline.xml")
-
 	}
-	flavorDimensions "app-build"
+	flavorDimensions += "app-build"
 	productFlavors {
 		full {
 			// default
+			applicationId 'net.twisterrob.blt'
 			dimension "app-build"
 		}
 		range {
