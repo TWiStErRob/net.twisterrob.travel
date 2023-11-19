@@ -2,6 +2,16 @@
 apply plugin: 'net.twisterrob.android-app'
 apply plugin: 'com.android.application'
 
+repositories {
+	maven { // jcenter() deprecated
+		name = "jcenter"
+		setUrl("https://jcenter.bintray.com/")
+		content {
+			includeModule("com.rarepebble", "colorpicker")
+		}
+	}
+}
+
 dependencies {
 	implementation("net.twisterrob.lib:twister-lib-android-monolith")
 	implementation("net.twisterrob.lib:twister-lib-android-basics")
