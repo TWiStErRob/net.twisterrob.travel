@@ -81,13 +81,19 @@ android {
 	}
 }
 
-def generateDataBase = tasks.register("generateDataBase", Copy.class) {
+abstract class GenerateDatabase extends Copy {
+	abstract DirectoryProperty getOutput()
+}
+def generateDataBase = tasks.register("generateDataBase", GenerateDatabase.class) {
 	dependsOn(":Data:runNetwork", ":Data:runPostCode")
 	from(new File(project(':Data').projectDir, 'output')) {
 		include '*.data.*.sql'
 	}
-	into android.sourceSets.main.assets.srcDirs[0]
+	output.value(project.layout.buildDirectory.dir("generated/database"))
+	into(output)
 }
-android.applicationVariants.all { com.android.build.gradle.api.ApplicationVariant variant ->
-	variant.mergeAssetsProvider.configure { dependsOn(generateDataBase) }
+androidComponents {
+	onVariants(selector().all()) { variant ->
+		variant.sources.assets.addGeneratedSourceDirectory(generateDataBase, { it.output })
+	}
 }
