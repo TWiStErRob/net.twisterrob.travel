@@ -5,7 +5,7 @@ apply plugin: 'com.google.cloud.tools.endpoints-framework-server'
 apply plugin: 'idea'
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_1_7
+	sourceCompatibility = JavaVersion.VERSION_1_8
 	targetCompatibility = JavaVersion.VERSION_1_8
 }
 
