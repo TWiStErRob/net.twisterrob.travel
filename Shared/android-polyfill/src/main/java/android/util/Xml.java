@@ -18,9 +18,11 @@ package android.util;
 
 import java.io.*;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.kxml2.io.KXmlParser;
 import org.xml.sax.*;
-import org.xml.sax.helpers.XMLReaderFactory;
 import org.xmlpull.v1.*;
 
 /**
@@ -41,14 +43,10 @@ public class Xml {
      * Parses the given xml string and fires events on the given SAX handler.
      */
     public static void parse(String xml, ContentHandler contentHandler)
-            throws SAXException {
-        try {
-            XMLReader reader = XMLReaderFactory.createXMLReader();
-            reader.setContentHandler(contentHandler);
-            reader.parse(new InputSource(new StringReader(xml)));
-        } catch (IOException e) {
-            throw new AssertionError(e);
-        }
+            throws IOException, SAXException {
+        XMLReader reader = newXMLReader();
+        reader.setContentHandler(contentHandler);
+        reader.parse(new InputSource(new StringReader(xml)));
     }
 
     /**
@@ -57,7 +55,7 @@ public class Xml {
      */
     public static void parse(Reader in, ContentHandler contentHandler)
             throws IOException, SAXException {
-        XMLReader reader = XMLReaderFactory.createXMLReader();
+        XMLReader reader = newXMLReader();
         reader.setContentHandler(contentHandler);
         reader.parse(new InputSource(in));
     }
@@ -66,13 +64,23 @@ public class Xml {
      * Parses xml from the given input stream and fires events on the given SAX
      * handler.
      */
-    public static void parse(InputStream in, Encoding encoding,
-            ContentHandler contentHandler) throws IOException, SAXException {
-        XMLReader reader = XMLReaderFactory.createXMLReader();
+    public static void parse(InputStream in, Encoding encoding, ContentHandler contentHandler)
+            throws IOException, SAXException {
+        XMLReader reader = newXMLReader();
         reader.setContentHandler(contentHandler);
         InputSource source = new InputSource(in);
         source.setEncoding(encoding.expatName);
         reader.parse(source);
+    }
+
+    private static XMLReader newXMLReader() throws SAXException {
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        try {
+            factory.setFeature("http://xml.org/sax/features/namespaces", true);
+            return factory.newSAXParser().getXMLReader();
+        } catch (ParserConfigurationException e) {
+            throw new SAXException("Cannot initialize SAX parser", e);
+        }
     }
 
     /**
