@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'war'
-apply plugin: 'com.google.cloud.tools.appengine'
-apply plugin: 'com.google.cloud.tools.endpoints-framework-server'
+apply plugin: 'com.google.cloud.tools.appengine-appenginewebxml'
+//apply plugin: 'com.google.cloud.tools.endpoints-framework-server'
 apply plugin: 'idea'
 
 java {
@@ -82,6 +82,6 @@ appengine { com.google.cloud.tools.gradle.appengine.standard.AppEngineStandardEx
 	}
 }
 
-endpointsServer {
-	hostname = "twisterrob-london.appspot.com"
-}
+//endpointsServer {
+//	hostname = "twisterrob-london.appspot.com"
+//}
