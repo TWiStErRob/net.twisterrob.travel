@@ -263,17 +263,17 @@ public class RangeOptionsFragment extends Fragment {
 					.show();
 			return true;
 		}
-		switch (item.getItemId()) {
-			case R.id.menu__action__range__reset_generator:
-				genConfig.set(new RangeMapGeneratorConfig());
-				bindConfigs(genConfig, drawConfig); // update self UI
-				configsUpdatedListener.onConfigsUpdated();
-				return true;
-			case R.id.menu__action__range__reset_drawing:
-				drawConfig.set(new RangeMapDrawerConfig());
-				bindConfigs(genConfig, drawConfig); // update self UI
-				configsUpdatedListener.onConfigsUpdated();
-				return true;
+		int id = item.getItemId();
+		if (id == R.id.menu__action__range__reset_generator) {
+			genConfig.set(new RangeMapGeneratorConfig());
+			bindConfigs(genConfig, drawConfig); // update self UI
+			configsUpdatedListener.onConfigsUpdated();
+			return true;
+		} else if (id == R.id.menu__action__range__reset_drawing) {
+			drawConfig.set(new RangeMapDrawerConfig());
+			bindConfigs(genConfig, drawConfig); // update self UI
+			configsUpdatedListener.onConfigsUpdated();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

@@ -227,17 +227,16 @@ public class PredictionSummaryActivity extends BaseActivity implements
 	}
 
 	@Override public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu__option__compass_east:
-			case R.id.menu__option__compass_west:
-			case R.id.menu__option__compass_north:
-			case R.id.menu__option__compass_south:
-			case R.id.menu__option__compass_others:
-				toggleCompass(menuIDs.get(item.getItemId()));
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
+		int id = item.getItemId();
+		if (id == R.id.menu__option__compass_east
+				|| id == R.id.menu__option__compass_west
+				|| id == R.id.menu__option__compass_north
+				|| id == R.id.menu__option__compass_south
+				|| id == R.id.menu__option__compass_others) {
+			toggleCompass(menuIDs.get(item.getItemId()));
+			return true;
 		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	protected final Set<PlatformDirection> m_directionsEnabled = EnumSet.noneOf(PlatformDirection.class);
