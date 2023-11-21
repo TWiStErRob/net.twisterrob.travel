@@ -28,9 +28,6 @@ dependencies {
 	}
 	implementation("com.google.android.gms:play-services-maps:${VERSION_MAPS}")
 	implementation("com.google.android.gms:play-services-places:${VERSION_MAPS}")
-	implementation("com.android.support:support-v4:${VERSION_SUPPORT}")
-	implementation("com.android.support:appcompat-v7:${VERSION_SUPPORT}")
-	implementation("com.android.support:design:${VERSION_SUPPORT}")
 	implementation("com.google.code.findbugs:jsr305:${VERSION_JSR305}")
 	implementation("com.github.bumptech.glide:glide:${VERSION_GLIDE}")
 
