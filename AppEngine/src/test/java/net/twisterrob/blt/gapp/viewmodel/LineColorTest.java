@@ -4,6 +4,8 @@ import java.util.*;
 
 import org.junit.*;
 import org.mockito.*;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -14,11 +16,9 @@ import net.twisterrob.blt.gapp.viewmodel.LineColor.AllColors;
 import net.twisterrob.blt.model.*;
 
 public class LineColorTest {
-	@Mock LineColors colors;
+	@Rule public final MockitoRule mockito = MockitoJUnit.rule();
 
-	@Before public void setUp() {
-		MockitoAnnotations.initMocks(this);
-	}
+	@Mock LineColors colors;
 
 	@Test public void testShortColor() {
 		testColors(0x000000AB, "#0000AB", 0x000000CD, "#0000CD");
@@ -54,7 +54,7 @@ public class LineColorTest {
 			}
 		}
 		assertThat(seen, hasSize(Line.values().length));
-		verifyZeroInteractions(colors);
+		verifyNoInteractions(colors);
 	}
 
 	@Test(expected = UnsupportedOperationException.class) public void testAllColorsCannotRemove() {
