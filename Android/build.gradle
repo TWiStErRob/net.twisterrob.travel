@@ -3,11 +3,11 @@ apply plugin: 'net.twisterrob.android-app'
 apply plugin: 'com.android.application'
 
 repositories {
-	maven { // jcenter() deprecated
-		name = "jcenter"
-		setUrl("https://jcenter.bintray.com/")
+	maven {
+		name = "jitpack.io"
+		url = uri("https://jitpack.io/")
 		content {
-			includeModule("com.rarepebble", "colorpicker")
+			includeModule("com.github.martin-stone", "hsv-alpha-color-picker-android")
 		}
 	}
 }
@@ -18,7 +18,9 @@ dependencies {
 	implementation("net.twisterrob.lib:twister-lib-android-slf4j")
 	implementation("net.twisterrob.lib:twister-lib-android-widgets")
 	implementation("net.twisterrob.lib:twister-lib-android-stringers")
+
 	implementation("net.twisterrob.lib:twister-lib-android-about")
+	implementation("net.twisterrob.lib:twister-lib-android-color_picker")
 	implementation("net.twisterrob.lib:twister-lib-android-settings")
 
 	implementation(project(':Shared')) {
@@ -29,6 +31,7 @@ dependencies {
 	implementation("com.android.support:support-v4:${VERSION_SUPPORT}")
 	implementation("com.android.support:appcompat-v7:${VERSION_SUPPORT}")
 	implementation("com.android.support:design:${VERSION_SUPPORT}")
+	implementation("com.google.code.findbugs:jsr305:${VERSION_JSR305}")
 	implementation("com.github.bumptech.glide:glide:${VERSION_GLIDE}")
 
 	apply from: "${rootDir}/gradle/testCompile.gradle", to: project

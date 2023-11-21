@@ -9,4 +9,5 @@ dependencies {
 	}
 	testImplementation("org.mockito:mockito-core:${VERSION_MOCKITO}") {}
 	testImplementation 'com.shazam:gwen:1.0.2'
+	testRuntimeOnly("org.slf4j:slf4j-simple:${VERSION_SLF4J}")
 }

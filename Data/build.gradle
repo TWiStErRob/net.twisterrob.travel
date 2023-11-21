@@ -9,6 +9,8 @@ apply plugin: 'net.twisterrob.java'
 dependencies {
 	//configurations.implementation.resolutionStrategy.cacheChangingModulesFor 0, 'seconds' // -SNAPSHOT
 	api project(':Shared')
+	implementation("com.google.code.findbugs:jsr305:${VERSION_JSR305}")
+	implementation("org.slf4j:slf4j-api:${VERSION_SLF4J}")
 	runtimeOnly "org.slf4j:slf4j-simple:${VERSION_SLF4J}"
 	implementation 'org.xerial:sqlite-jdbc:3.7.15-M1'
 

@@ -8,7 +8,10 @@ targetCompatibility = JavaVersion.VERSION_1_8
 version = '0.0.1-SNAPSHOT'
 dependencies {
 	api('net.twisterrob.lib:twister-lib-general')
+	api('net.twisterrob.lib:twister-lib-core')
 
+	implementation("com.google.code.findbugs:jsr305:${VERSION_JSR305}")
+	implementation("org.slf4j:slf4j-api:${VERSION_SLF4J}")
 	implementation project(':Shared:android-polyfill')
 	implementation('net.twisterrob.lib:twister-lib-java_desktop')
 
