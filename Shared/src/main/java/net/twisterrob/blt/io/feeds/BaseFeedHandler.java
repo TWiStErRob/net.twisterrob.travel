@@ -13,7 +13,7 @@ public abstract class BaseFeedHandler<T extends BaseFeed<T>> extends DefaultHand
 		MailSender sender = new MailSender();
 		sender.setSubject("Better London Travel");
 		sender.setFrom("better-london-travel@twisterrob.net");
-		sender.setTo("papp.robert.s@gmail.com");
+		sender.setTos("papp.robert.s@gmail.com");
 		sender.setBody(body);
 		try {
 			sender.send();

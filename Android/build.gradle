@@ -1,13 +1,13 @@
 //name = 'Better London Travel Android App'
-apply plugin: 'net.twisterrob.android-app'
+apply plugin: 'net.twisterrob.gradle.plugin.android-app'
 apply plugin: 'com.android.application'
 
 repositories {
-	maven { // jcenter() deprecated
-		name = "jcenter"
-		setUrl("https://jcenter.bintray.com/")
+	maven {
+		name = "jitpack.io"
+		url = uri("https://jitpack.io/")
 		content {
-			includeModule("com.rarepebble", "colorpicker")
+			includeModule("com.github.martin-stone", "hsv-alpha-color-picker-android")
 		}
 	}
 }
@@ -18,7 +18,9 @@ dependencies {
 	implementation("net.twisterrob.lib:twister-lib-android-slf4j")
 	implementation("net.twisterrob.lib:twister-lib-android-widgets")
 	implementation("net.twisterrob.lib:twister-lib-android-stringers")
+
 	implementation("net.twisterrob.lib:twister-lib-android-about")
+	implementation("net.twisterrob.lib:twister-lib-android-color_picker")
 	implementation("net.twisterrob.lib:twister-lib-android-settings")
 
 	implementation(project(':Shared')) {
@@ -26,19 +28,18 @@ dependencies {
 	}
 	implementation("com.google.android.gms:play-services-maps:${VERSION_MAPS}")
 	implementation("com.google.android.gms:play-services-places:${VERSION_MAPS}")
-	implementation("com.android.support:support-v4:${VERSION_SUPPORT}")
-	implementation("com.android.support:appcompat-v7:${VERSION_SUPPORT}")
-	implementation("com.android.support:design:${VERSION_SUPPORT}")
+	implementation("com.google.code.findbugs:jsr305:${VERSION_JSR305}")
 	implementation("com.github.bumptech.glide:glide:${VERSION_GLIDE}")
 
 	apply from: "${rootDir}/gradle/testCompile.gradle", to: project
 }
 
 android {
-	compileSdkVersion 28
+	namespace = "net.twisterrob.blt.android"
+	compileSdk = 34
 	defaultConfig {
-		targetSdkVersion 19
-		applicationId 'net.twisterrob.blt'
+		minSdk = 21
+		targetSdk = 21
 		version {
 			major = 1
 		}
@@ -53,33 +54,49 @@ android {
 			matchingFallbacks = ['release']
 		}
 	}
-	lintOptions {
+	buildFeatures {
+		buildConfig = true
+	}
+	lint {
 		checkAllWarnings = true
 		checkDependencies = true
+		abortOnError = false
 		lintConfig = file("lint.xml")
 		baseline file("lint-baseline.xml")
-
 	}
-	flavorDimensions "app-build"
+	flavorDimensions += "app-build"
 	productFlavors {
 		full {
 			// default
+			applicationId = 'net.twisterrob.blt'
 			dimension "app-build"
 		}
 		range {
-			applicationId 'net.twisterrob.blt.range'
+			applicationId = 'net.twisterrob.blt.range'
 			dimension "app-build"
 		}
 	}
 }
 
-def generateDataBase = tasks.register("generateDataBase", Copy.class) {
+abstract class GenerateDatabase extends Copy {
+	@Internal("An intermediate property to satisfy AGP, tracked in destination.")
+	abstract DirectoryProperty getOutput()
+}
+def generateDataBase = tasks.register("generateDataBase", GenerateDatabase.class) {
 	dependsOn(":Data:runNetwork", ":Data:runPostCode")
 	from(new File(project(':Data').projectDir, 'output')) {
 		include '*.data.*.sql'
 	}
-	into android.sourceSets.main.assets.srcDirs[0]
+	into(output)
 }
-android.applicationVariants.all { com.android.build.gradle.api.ApplicationVariant variant ->
-	variant.mergeAssetsProvider.configure { dependsOn(generateDataBase) }
+androidComponents {
+	onVariants(selector().all()) { variant ->
+		variant.sources.assets.addGeneratedSourceDirectory(generateDataBase, { it.output })
+		afterEvaluate {
+			tasks.named("generate${variant.name.capitalize()}Assets").configure {
+				// This should be not necessary with addGeneratedSourceDirectory, but without this, it doesn't work.
+				dependsOn(generateDataBase)
+			}
+		}
+	}
 }

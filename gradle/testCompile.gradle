@@ -8,16 +8,6 @@ dependencies {
 		exclude module: 'junit'
 	}
 	testImplementation("org.mockito:mockito-core:${VERSION_MOCKITO}") {}
-	testImplementation("org.powermock:powermock-api-mockito2:${VERSION_POWERMOCK}") {
-		// this depends on hamcrest-core too which we don't want
-		exclude module: 'hamcrest-core'
-	}
-	testImplementation("org.powermock:powermock-module-junit4:${VERSION_POWERMOCK}") {
-		// this needs to be excluded because otherwise the hamcrest-core exclusion above doesn't work
-		exclude module: 'junit'
-	}
 	testImplementation 'com.shazam:gwen:1.0.2'
-//	testImplementation 'cglib:cglib:3.2.4'
-//	testImplementation 'pl.pragmatists:JUnitParams:1.0.4'
-//	testImplementation 'nl.jqno.equalsverifier:equalsverifier:1.7.2'
+	testRuntimeOnly("org.slf4j:slf4j-simple:${VERSION_SLF4J}")
 }

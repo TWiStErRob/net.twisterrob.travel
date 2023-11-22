@@ -3,7 +3,7 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
-	package="net.twisterrob.blt.android">
+	>
 
 	<!-- Not required per se, but it might be a good idea to keep it for future, not to nag the users again. -->
 	<!--<uses-permission android:name="android.permission.INTERNET" tools:node="remove" />-->
