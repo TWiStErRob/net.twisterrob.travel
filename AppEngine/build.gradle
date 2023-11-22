@@ -22,7 +22,9 @@ dependencies {
 	// com.google.appengine.api.datastore
 	implementation("com.google.appengine:appengine-api-1.0-sdk:${VERSION_APPENGINE}")
 	// com.google.api.server.spi.EndpointsServlet
-	implementation("com.google.endpoints:endpoints-framework:${VERSION_GCLOUD_ENDPOINTS}")
+	implementation("com.google.endpoints:endpoints-framework:${VERSION_GCLOUD_ENDPOINTS}") {
+		exclude group: 'org.slf4j', module: 'slf4j-nop'
+	}
 
 	//noinspection GradleDeprecatedConfiguration
 	providedCompile("javax.servlet:javax.servlet-api:3.1.0")
@@ -36,8 +38,9 @@ dependencies {
 	// route apps SLF4J logging to JUL
 	implementation("org.slf4j:slf4j-jdk14:${VERSION_SLF4J}")
 	dev("org.slf4j:jul-to-slf4j:${VERSION_SLF4J}")
-	dev("org.apache.logging.log4j:log4j-api:${VERSION_LOG4J}")
-	dev("org.apache.logging.log4j:log4j-core:${VERSION_LOG4J}")
+	//dev("org.apache.logging.log4j:log4j-web:${VERSION_LOG4J}")
+	implementation("org.apache.logging.log4j:log4j-api:${VERSION_LOG4J}")
+	implementation("org.apache.logging.log4j:log4j-core:${VERSION_LOG4J}")
 	dev("org.apache.logging.log4j:log4j-slf4j-impl:${VERSION_LOG4J}")
 
 	// for org.apache.tools.ant.filters.StringInputStream
@@ -53,10 +56,12 @@ sourceSets {
 	main {
 		java.srcDir 'src/main/diff'
 		compileClasspath += configurations.dev
+		runtimeClasspath += configurations.dev
 	}
 	test {
 		java.srcDir 'src/test/diff'
 		compileClasspath += configurations.dev
+		runtimeClasspath += configurations.dev
 	}
 }
 
@@ -74,8 +79,18 @@ appengine { com.google.cloud.tools.gradle.appengine.standard.AppEngineStandardEx
 		def logDependencyFilter = { Dependency d -> d.group?.contains('slf4j') || d.group?.contains('log4j') };
 		def deps = configurations.dev.dependencies.findAll logDependencyFilter
 		def flags = configurations.dev.files(deps as Dependency[]) \
-				.collect { "-Xbootclasspath/p:${it.absolutePath}".toString() }
-		jvmFlags = (jvmFlags?: [ ]) + flags
+				.collect { "${it.absolutePath}".toString() }
+				.join(";")
+		jvmFlags = (jvmFlags?: [ ]) + [
+				"--patch-module", "java.logging=${flags}".toString(),
+				"--add-exports", "java.logging/org.slf4j=ALL-UNNAMED", // org.slf4j.LoggerFactory
+				"--add-exports", "java.logging/org.slf4j.spi=ALL-UNNAMED", // org.slf4j.impl.StaticLoggerBinder
+				"--add-opens", "java.logging/org.slf4j.impl=ALL-UNNAMED", // java.lang.ClassLoader
+				"--add-reads", "java.logging=/org.apache.logging.log4j.util=ALL-UNNAMED", // java.lang.ClassLoader
+				// for debug
+				//"--add-opens", "java.base/jdk.internal.loader=java.logging",
+				//"-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+		]
 	}
 	tools {
 		System.getenv("GCLOUD_HOME")?.tap { cloudSdkHome = it }
