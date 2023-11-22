@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 To use this configuration, deploy it into your application's WEB-INF directory.
-To make everything work in DEV mode AppEngine needs the following parameters:
-	-Xbootclasspath/p:P:\caches\gradle\caches\modules-2\files-2.1\org.slf4j\jul-to-slf4j\1.7.21\2f22c882ffa479d1e9ff4eb0e8e2c29f2a0871ed\jul-to-slf4j-1.7.21.jar
-	-Xbootclasspath/p:P:\caches\gradle\caches\modules-2\files-2.1\org.slf4j\slf4j-api\1.7.21\139535a69a4239db087de9bab0bee568bf8e0b70\slf4j-api-1.7.21.jar
-	-Xbootclasspath/p:P:\caches\gradle\caches\modules-2\files-2.1\org.apache.logging.log4j\log4j-slf4j-impl\2.6.2\71d6c56133e0548e07434add048d7a7a2db53512\log4j-slf4j-impl-2.6.2.jar
-	-Xbootclasspath/p:P:\caches\gradle\caches\modules-2\files-2.1\org.apache.logging.log4j\log4j-api\2.6.2\bd1b74a5d170686362091c7cf596bbc3adf5c09b\log4j-api-2.6.2.jar
-	-Xbootclasspath/p:P:\caches\gradle\caches\modules-2\files-2.1\org.apache.logging.log4j\log4j-core\2.6.2\a91369f655eb1639c6aece5c5eb5108db18306\log4j-core-2.6.2.jar
-
-To bridge/route all JUL log records to the SLF4J API org.slf4j.bridge.SLF4JBridgeHandler is registered in java.util.logging.properties
-	J.U.L.  -> Log4J
-	ALL     -> ALL
-	FINEST  -> TRACE
-	FINER   -> DEBUG
-	FINE    -> DEBUG
-	INFO    -> INFO
-	WARNING -> WARN
-	SEVERE  -> ERROR
-	        -> FATAL
-	        -> OFF
 -->
 <Configuration
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

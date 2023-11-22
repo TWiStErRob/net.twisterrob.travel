@@ -20,12 +20,6 @@
 
 	<system-properties>
 		<property name="appengine.file.encoding" value="UTF-8"/>
-		<!-- Configure JUL -> SLF4J -> Log4J routing, see config files for more -->
-		<!-- TODO figure out how to add this property only at dev time -->
-		<property name="java.util.logging.config.file" value="WEB-INF/java.util.logging.properties" />
-		<property name="log4j.configurationFile" value="WEB-INF/log4j2.xml" />
-		<!-- Helps diagnose when logs don't appear correctly -->
-		<property name="log4j.debug" value="false" />
 	</system-properties>
 
 	<!-- HTTP Sessions are disabled by default. To enable HTTP sessions specify: -->
