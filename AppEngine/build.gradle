@@ -24,7 +24,8 @@ dependencies {
 	// com.google.api.server.spi.EndpointsServlet
 	implementation("com.google.endpoints:endpoints-framework:${VERSION_GCLOUD_ENDPOINTS}")
 
-	providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+	//noinspection GradleDeprecatedConfiguration
+	providedCompile("javax.servlet:javax.servlet-api:3.1.0")
 	dev("org.apache.taglibs:taglibs-standard-impl:1.2.5")
 	dev("javax.servlet.jsp.jstl:jstl-api:1.2")
 
@@ -59,8 +60,10 @@ sourceSets {
 	}
 }
 
+//noinspection UnnecessaryQualifiedReference
 appengine { com.google.cloud.tools.gradle.appengine.standard.AppEngineStandardExtension ext ->
 	deploy {
+		// Live: https://twisterrob-london.appspot.com/
 		projectId = "twisterrob-london"
 		version = "GCLOUD_CONFIG"
 	}
@@ -75,13 +78,12 @@ appengine { com.google.cloud.tools.gradle.appengine.standard.AppEngineStandardEx
 		jvmFlags = (jvmFlags?: [ ]) + flags
 	}
 	tools {
-		cloudSdkHome = System.getenv("GCLOUD_HOME")?: file("build/downloaded/gcloud-sdk")
+		System.getenv("GCLOUD_HOME")?.tap { cloudSdkHome = it }
 		cloudSdkVersion = VERSION_GCLOUD_SDK as String
 		// https://cloud.google.com/sdk/gcloud/reference#--verbosity
 		verbosity = "info"
 	}
 }
 
-//endpointsServer {
-//	hostname = "twisterrob-london.appspot.com"
-//}
+tasks.named("explodeWar").configure { mustRunAfter("appengineStop") }
+tasks.named("appengineRun").configure { mustRunAfter("appengineStop") }
