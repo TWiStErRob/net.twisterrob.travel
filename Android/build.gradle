@@ -68,17 +68,18 @@ android {
 	productFlavors {
 		full {
 			// default
-			applicationId 'net.twisterrob.blt'
+			applicationId = 'net.twisterrob.blt'
 			dimension "app-build"
 		}
 		range {
-			applicationId 'net.twisterrob.blt.range'
+			applicationId = 'net.twisterrob.blt.range'
 			dimension "app-build"
 		}
 	}
 }
 
 abstract class GenerateDatabase extends Copy {
+	@Internal("An intermediate property to satisfy AGP, tracked in destination.")
 	abstract DirectoryProperty getOutput()
 }
 def generateDataBase = tasks.register("generateDataBase", GenerateDatabase.class) {
@@ -86,11 +87,16 @@ def generateDataBase = tasks.register("generateDataBase", GenerateDatabase.class
 	from(new File(project(':Data').projectDir, 'output')) {
 		include '*.data.*.sql'
 	}
-	output.value(project.layout.buildDirectory.dir("generated/database"))
 	into(output)
 }
 androidComponents {
 	onVariants(selector().all()) { variant ->
 		variant.sources.assets.addGeneratedSourceDirectory(generateDataBase, { it.output })
+		afterEvaluate {
+			tasks.named("generate${variant.name.capitalize()}Assets").configure {
+				// This should be not necessary with addGeneratedSourceDirectory, but without this, it doesn't work.
+				dependsOn(generateDataBase)
+			}
+		}
 	}
 }
