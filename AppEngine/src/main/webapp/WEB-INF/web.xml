@@ -21,15 +21,4 @@
 		<url-pattern>/_ah/api/*</url-pattern>
 	</servlet-mapping>
 
-	<!-- Other stuff -->
-	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
-	</welcome-file-list>
-
-	<jsp-config>
-		<jsp-property-group>
-			<url-pattern>*.jsp</url-pattern>
-			<trim-directive-whitespaces>true</trim-directive-whitespaces>
-		</jsp-property-group>
-	</jsp-config>
 </web-app>
