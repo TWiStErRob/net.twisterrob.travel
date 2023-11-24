@@ -8,8 +8,9 @@ import javax.servlet.http.*;
 
 import org.slf4j.*;
 
-import com.google.appengine.api.datastore.*;
-import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.cloud.Timestamp;
+import com.google.cloud.datastore.*;
+import com.google.cloud.datastore.StructuredQuery.OrderBy;
 
 import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.java.io.IOTools;
@@ -23,7 +24,7 @@ public class FeedCronServlet extends HttpServlet {
 
 	private static final String QUERY_FEED = "feed";
 
-	private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+	private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
 	@Override public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String feedString = String.valueOf(req.getParameter(QUERY_FEED));
@@ -39,7 +40,7 @@ public class FeedCronServlet extends HttpServlet {
 		}
 		Marker marker = MarkerFactory.getMarker(feed.name());
 
-		Entity newEntry = downloadNewEntry(feed);
+		FullEntity<IncompleteKey> newEntry = downloadNewEntry(datastore, feed);
 		Entity oldEntry = readLatest(datastore, feed);
 		if (oldEntry != null) {
 			if (sameProp(DS_PROP_CONTENT, oldEntry, newEntry)) {
@@ -60,29 +61,39 @@ public class FeedCronServlet extends HttpServlet {
 		}
 	}
 
-	private static Entity readLatest(DatastoreService datastore, Feed feed) {
-		// we're only concerned about the latest one, if any
-		Query q = new Query(feed.name()).addSort(DS_PROP_RETRIEVED_DATE, SortDirection.DESCENDING);
-		Iterator<Entity> result = datastore.prepare(q).asIterator();
+	private static Entity readLatest(Datastore datastore, Feed feed) {
+		Query<Entity> q = Query
+				.newEntityQueryBuilder()
+				.setKind(feed.name())
+				.addOrderBy(OrderBy.desc(DS_PROP_RETRIEVED_DATE))
+				.build()
+				;
+		// We're only concerned about the latest one, if any.
+		QueryResults<Entity> result = datastore.run(q);
 		return result.hasNext()? result.next() : null;
 	}
 
-	private static boolean sameProp(String propName, Entity oldEntry, Entity newEntry) {
-		return oldEntry.hasProperty(propName) && newEntry.hasProperty(propName)
-				&& ObjectTools.equals(oldEntry.getProperty(propName), newEntry.getProperty(propName));
+	private static boolean sameProp(String propName, BaseEntity<?> oldEntry, BaseEntity<?> newEntry) {
+		return hasProperty(oldEntry, propName) && hasProperty(newEntry, propName)
+				&& ObjectTools.equals(oldEntry.getValue(propName), newEntry.getValue(propName));
 	}
 
-	public static Entity downloadNewEntry(Feed feed) {
-		Entity newEntry = new Entity(feed.name());
+	private static boolean hasProperty(BaseEntity<?> entry, String propName) {
+		return entry.getProperties().containsKey(propName);
+	}
+
+	public static FullEntity<IncompleteKey> downloadNewEntry(Datastore datastore, Feed feed) {
+		KeyFactory keyFactory = datastore.newKeyFactory().setKind(feed.name());
+		FullEntity.Builder<IncompleteKey> newEntry = Entity.newBuilder(keyFactory.newKey());
 		try {
 			String feedResult = downloadFeed(feed);
-			newEntry.setProperty(DS_PROP_CONTENT, new Text(feedResult));
+			newEntry.set(DS_PROP_CONTENT, feedResult);
 		} catch (Exception ex) {
 			LOG.error("Cannot load '{}'!", feed, ex);
-			newEntry.setProperty(DS_PROP_ERROR, new Text(ObjectTools.getFullStackTrace(ex)));
+			newEntry.set(DS_PROP_ERROR, ObjectTools.getFullStackTrace(ex));
 		}
-		newEntry.setProperty(DS_PROP_RETRIEVED_DATE, new Date());
-		return newEntry;
+		newEntry.set(DS_PROP_RETRIEVED_DATE, Timestamp.now());
+		return newEntry.build();
 	}
 
 	public static String downloadFeed(Feed feed) throws IOException {
