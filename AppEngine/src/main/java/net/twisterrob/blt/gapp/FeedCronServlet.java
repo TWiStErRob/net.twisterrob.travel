@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Get;
 import jakarta.servlet.http.*;
 
 import org.slf4j.*;
@@ -18,6 +20,7 @@ import net.twisterrob.java.utils.ObjectTools;
 
 import static net.twisterrob.blt.gapp.FeedConsts.*;
 
+@Controller
 @SuppressWarnings("serial")
 public class FeedCronServlet extends HttpServlet {
 	private static final Logger LOG = LoggerFactory.getLogger(FeedCronServlet.class);
@@ -26,6 +29,7 @@ public class FeedCronServlet extends HttpServlet {
 
 	private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
+	@Get("/FeedCron")
 	@Override public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String feedString = String.valueOf(req.getParameter(QUERY_FEED));
 		Feed feed;

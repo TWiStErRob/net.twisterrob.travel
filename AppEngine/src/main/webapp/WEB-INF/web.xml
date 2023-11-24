@@ -8,34 +8,6 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 >
 
-	<!-- Servlets -->
-	<servlet>
-		<servlet-name>LineStatusHistory</servlet-name>
-		<servlet-class>net.twisterrob.blt.gapp.LineStatusHistoryServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>LineStatusHistory</servlet-name>
-		<url-pattern>/LineStatusHistory</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>FeedCron</servlet-name>
-		<servlet-class>net.twisterrob.blt.gapp.FeedCronServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>FeedCron</servlet-name>
-		<url-pattern>/FeedCron</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>InternalFeedback</servlet-name>
-		<servlet-class>net.twisterrob.blt.gapp.InternalFeedbackServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>InternalFeedback</servlet-name>
-		<url-pattern>/InternalFeedback</url-pattern>
-	</servlet-mapping>
-
 	<servlet>
 		<servlet-name>EndpointsServlet</servlet-name>
 		<servlet-class>com.google.api.server.spi.EndpointsServlet</servlet-class>

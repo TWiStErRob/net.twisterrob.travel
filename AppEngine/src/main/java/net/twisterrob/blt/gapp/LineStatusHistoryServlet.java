@@ -3,6 +3,10 @@ package net.twisterrob.blt.gapp;
 import java.io.*;
 import java.util.*;
 
+import io.micronaut.http.MediaType;
+import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Produces;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 
@@ -18,6 +22,7 @@ import net.twisterrob.java.utils.ObjectTools;
 
 import static net.twisterrob.blt.gapp.FeedConsts.*;
 
+@Controller
 @SuppressWarnings("serial")
 public class LineStatusHistoryServlet extends HttpServlet {
 	//private static final Logger LOG = LoggerFactory.getLogger(LineStatusHistoryServlet.class);
@@ -29,6 +34,8 @@ public class LineStatusHistoryServlet extends HttpServlet {
 
 	private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
+	@Get("/LineStatusHistory")
+	@Produces(MediaType.TEXT_HTML)
 	@Override public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Feed feed = Feed.TubeDepartureBoardsLineStatus;
 		List<Result> results = new LinkedList<>();
