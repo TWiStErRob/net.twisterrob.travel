@@ -1,7 +1,5 @@
 apply plugin: 'java'
-apply plugin: 'war'
-apply plugin: 'com.google.cloud.tools.appengine-appenginewebxml'
-//apply plugin: 'com.google.cloud.tools.endpoints-framework-server'
+apply plugin: 'com.google.cloud.tools.appengine-appyaml'
 apply plugin: 'idea'
 
 java {
@@ -41,19 +39,37 @@ sourceSets {
 	}
 }
 
+dependencies {
+	annotationProcessor("io.micronaut:micronaut-http-validation")
+	annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+	implementation("io.micronaut.serde:micronaut-serde-jackson")
+	implementation("io.micronaut.servlet:micronaut-servlet-engine")
+	compileOnly("io.micronaut:micronaut-http-client")
+	runtimeOnly("ch.qos.logback:logback-classic")
+	testImplementation("io.micronaut:micronaut-http-client")
+}
+
+application {
+	mainClass.set("net.twisterrob.blt.gapp.Application")
+}
+
+graalvmNative.toolchainDetection = false
+micronaut {
+	//version = VERSION_MICRONAUT as String
+	runtime("tomcat")
+	testRuntime("junit4")
+	processing {
+		incremental(true)
+		annotations("net.twisterrob.blt.gapp.*")
+	}
+}
+
 //noinspection UnnecessaryQualifiedReference
-appengine { com.google.cloud.tools.gradle.appengine.standard.AppEngineStandardExtension ext ->
+appengine { com.google.cloud.tools.gradle.appengine.appyaml.AppEngineAppYamlExtension ext ->
 	deploy {
 		// Live: https://twisterrob-london.appspot.com/
 		projectId = "twisterrob-london"
 		version = "GCLOUD_CONFIG"
-	}
-	run {
-		port = 8888
-		automaticRestart = true
-		jvmFlags = (jvmFlags?: [ ]) + [
-				//"-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
-		]
 	}
 	tools {
 		System.getenv("GCLOUD_HOME")?.tap { cloudSdkHome = it }
@@ -62,6 +78,3 @@ appengine { com.google.cloud.tools.gradle.appengine.standard.AppEngineStandardEx
 		verbosity = "info"
 	}
 }
-
-tasks.named("explodeWar").configure { mustRunAfter("appengineStop") }
-tasks.named("appengineRun").configure { mustRunAfter("appengineStop") }
