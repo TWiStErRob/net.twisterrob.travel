@@ -58,11 +58,36 @@ application {
 graalvmNative.toolchainDetection = false
 micronaut {
 	//version = VERSION_MICRONAUT as String
-	runtime("tomcat")
+	runtime("jetty")
 	testRuntime("junit4")
 	processing {
 		incremental(true)
 		annotations("net.twisterrob.blt.gapp.*")
+	}
+}
+
+tasks.named("run").configure { JavaExec task ->
+	if (gradle.startParameter.continuous) {
+		task.systemProperties(
+				"micronaut.io.watch.restart": true,
+				"micronaut.io.watch.enabled": true,
+				"micronaut.io.watch.paths": "src/main",
+		)
+	}
+	doFirst {
+		def stream = new ByteArrayOutputStream()
+		exec {
+			commandLine("gcloud.cmd", "beta", "emulators", "datastore", "env-init")
+			standardOutput = stream
+		}
+		Map<String, String> env = stream.toString().split("\r?\n").collectEntries { line ->
+			if (!line.startsWith("set ")) {
+				throw new IllegalStateException("Unexpected line: $line in \n${stream.toString()}")
+			}
+			def (key, value) = line.substring(4).split("=", 2)
+			[ key, value ]
+		}
+		task.environment(env)
 	}
 }
 
