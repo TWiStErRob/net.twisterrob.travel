@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'io.micronaut.application'
 apply plugin: 'com.google.cloud.tools.appengine-appyaml'
 apply plugin: 'idea'
 
@@ -14,9 +15,9 @@ dependencies {
 	implementation("com.google.cloud:google-cloud-datastore")
 
 	//noinspection GradleDeprecatedConfiguration
-	providedCompile("javax.servlet:javax.servlet-api:3.1.0")
-	runtimeOnly("org.apache.taglibs:taglibs-standard-impl:1.2.5")
-	runtimeOnly("javax.servlet.jsp.jstl:jstl-api:1.2")
+	//providedCompile("javax.servlet:javax.servlet-api:3.1.0")
+	//runtimeOnly("org.apache.taglibs:taglibs-standard-impl:1.2.5")
+	//runtimeOnly("javax.servlet.jsp.jstl:jstl-api:1.2")
 
 	implementation project(':Shared')
 
@@ -25,9 +26,9 @@ dependencies {
 	implementation("ant:ant:1.6.5")
 
 	apply from: "${rootDir}/gradle/testCompile.gradle", to: project
-	testImplementation("com.google.appengine:appengine-testing:${VERSION_APPENGINE}")
-	testImplementation("com.google.appengine:appengine-api-stubs:${VERSION_APPENGINE}")
-	testImplementation("com.google.appengine:appengine-api-labs:${VERSION_APPENGINE}")
+//	testImplementation("com.google.appengine:appengine-testing:${VERSION_APPENGINE}")
+//	testImplementation("com.google.appengine:appengine-api-stubs:${VERSION_APPENGINE}")
+//	testImplementation("com.google.appengine:appengine-api-labs:${VERSION_APPENGINE}")
 }
 
 sourceSets {

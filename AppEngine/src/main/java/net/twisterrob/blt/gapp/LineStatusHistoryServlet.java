@@ -3,8 +3,8 @@ package net.twisterrob.blt.gapp;
 import java.io.*;
 import java.util.*;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
 
 import org.apache.tools.ant.filters.StringInputStream;
 
