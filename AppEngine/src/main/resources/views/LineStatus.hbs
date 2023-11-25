@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<title>Line Status</title>
 	<script type="text/javascript" src="/static/jquery-1.10.2.min.js"></script>
 	<script type="text/javascript" src="/static/htmltooltip.js"></script>
-	<style type="text/css">
+	<!--suppress CssUnusedSymbol -->
+	<style>
 		div.htmltooltip {
 			position: absolute; /*leave this and next 3 values alone*/
 			z-index: 1000;
@@ -99,23 +100,23 @@
 			<tr>
 				<td class="line-{{lineStatus.line}}">{{lineStatus.line.title}}</td>
 				<td class="delay {{changeStatus.cssClass}} {{delayStyle}}">
-						{{#if (or (empty lineStatus.description) (empty lineStatus.branchDescription))}}
-							{{lineStatus.type.title}}
-						{{else}}
-							<a rel="htmltooltip">{{lineStatus.type.title}}</a>
-							<div class="htmltooltip">
-								<p>{{lineStatus.description}}</p>
-								<p>{{lineStatus.branchDescription}}</p>
-							</div>
-						{{/if}}
+					{{#if (or (empty lineStatus.description) (empty lineStatus.branchDescription))}}
+						{{lineStatus.type.title}}
+					{{else}}
+						<a rel="htmltooltip">{{lineStatus.type.title}}</a>
+						<div class="htmltooltip">
+							<p>{{lineStatus.description}}</p>
+							<p>{{lineStatus.branchDescription}}</p>
+						</div>
+					{{/if}}
 				</td>
 				<td class="change {{changeStatus.cssClass}}">
-						{{#if (empty changeDescription)}}
-							{{changeStatus.title}}
-						{{else}}
-							<a rel="htmltooltip">{{changeStatus.title}}</a>
-							<div class="htmltooltip">{{{changeDescription}}}</div>
-						{{/if}}
+					{{#if (empty changeDescription)}}
+						{{changeStatus.title}}
+					{{else}}
+						<a rel="htmltooltip">{{changeStatus.title}}</a>
+						<div class="htmltooltip">{{{changeDescription}}}</div>
+					{{/if}}
 				</td>
 			</tr>
 		{{/each}}
@@ -123,17 +124,17 @@
 		<tfoot>
 		<tr>
 			<td colspan="3">
-					{{#if (not (empty feed.errorHeader))}}
-						<a rel="htmltooltip">{{feedChange.error.title}}: {{feed.errorHeader}}</a>
-						<div class="htmltooltip">
-							<pre style="font-size: xx-small;">{{feed.fullError}}</pre>
-						</div>
-					{{else if (not (empty feedChange.error.title))}}
-						{{feedChange.error.title}}
+				{{#if (not (empty feed.errorHeader))}}
+					<a rel="htmltooltip">{{feedChange.error.title}}: {{feed.errorHeader}}</a>
+					<div class="htmltooltip">
+						<pre style="font-size: xx-small;">{{feed.fullError}}</pre>
+					</div>
+				{{else if (not (empty feedChange.error.title))}}
+					{{feedChange.error.title}}
+				{{else}}
 					{{!-- Make sure there's always content, otherwise the height of the tables is not the same --}}
-					{{else}}
-						&nbsp;
-					{{/if}}
+					&nbsp;
+				{{/if}}
 			</td>
 		</tr>
 		</tfoot>
