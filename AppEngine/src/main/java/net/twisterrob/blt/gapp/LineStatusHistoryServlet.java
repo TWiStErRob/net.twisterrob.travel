@@ -21,6 +21,7 @@ import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
 import net.twisterrob.java.utils.ObjectTools;
 
 import static net.twisterrob.blt.gapp.FeedConsts.*;
+import static net.twisterrob.blt.gapp.FeedCronServlet.hasProperty;
 
 @Controller
 @SuppressWarnings("serial")
@@ -78,8 +79,8 @@ public class LineStatusHistoryServlet extends HttpServlet {
 
 	private static Result toResult(BaseEntity<?> entry) {
 		Result result;
-		String content = entry.getString(DS_PROP_CONTENT);
-		String error = entry.getString(DS_PROP_ERROR);
+		String content = hasProperty(entry, DS_PROP_CONTENT) ? entry.getString(DS_PROP_CONTENT) : null;
+		String error = hasProperty(entry, DS_PROP_ERROR) ? entry.getString(DS_PROP_ERROR) : null;
 		Date date = entry.getTimestamp(DS_PROP_RETRIEVED_DATE).toDate();
 		if (content != null) {
 			try {

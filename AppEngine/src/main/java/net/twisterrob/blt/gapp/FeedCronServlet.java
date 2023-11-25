@@ -82,7 +82,7 @@ public class FeedCronServlet extends HttpServlet {
 				&& ObjectTools.equals(oldEntry.getValue(propName), newEntry.getValue(propName));
 	}
 
-	private static boolean hasProperty(BaseEntity<?> entry, String propName) {
+	static boolean hasProperty(BaseEntity<?> entry, String propName) {
 		return entry.getProperties().containsKey(propName);
 	}
 
@@ -91,13 +91,23 @@ public class FeedCronServlet extends HttpServlet {
 		FullEntity.Builder<IncompleteKey> newEntry = Entity.newBuilder(keyFactory.newKey());
 		try {
 			String feedResult = downloadFeed(feed);
-			newEntry.set(DS_PROP_CONTENT, feedResult);
+			newEntry.set(DS_PROP_CONTENT, unindexedString(feedResult));
 		} catch (Exception ex) {
 			LOG.error("Cannot load '{}'!", feed, ex);
-			newEntry.set(DS_PROP_ERROR, ObjectTools.getFullStackTrace(ex));
+			newEntry.set(DS_PROP_ERROR, unindexedString(ObjectTools.getFullStackTrace(ex)));
 		}
 		newEntry.set(DS_PROP_RETRIEVED_DATE, Timestamp.now());
 		return newEntry.build();
+	}
+
+	/**
+	 * Strings have a limitation of 1500 bytes when indexed. This removes that limitation.
+	 * @see https://cloud.google.com/datastore/docs/concepts/entities#text_string
+	 */
+	private static Value<?> unindexedString(String value) {
+		return value == null
+				? NullValue.of()
+				: StringValue.newBuilder(value).setExcludeFromIndexes(true).build();
 	}
 
 	public static String downloadFeed(Feed feed) throws IOException {
