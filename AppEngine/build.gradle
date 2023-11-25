@@ -1,5 +1,5 @@
 apply plugin: 'java'
-apply plugin: 'io.micronaut.application'
+apply plugin: 'io.micronaut.minimal.application'
 apply plugin: 'com.google.cloud.tools.appengine-appyaml'
 apply plugin: 'idea'
 
@@ -55,7 +55,6 @@ application {
 	mainClass.set("net.twisterrob.blt.gapp.Application")
 }
 
-graalvmNative.toolchainDetection = false
 micronaut {
 	//version = VERSION_MICRONAUT as String
 	runtime("jetty")
