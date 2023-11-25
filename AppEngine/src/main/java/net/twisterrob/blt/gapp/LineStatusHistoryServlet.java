@@ -3,11 +3,12 @@ package net.twisterrob.blt.gapp;
 import java.io.*;
 import java.util.*;
 
+import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Produces;
-import jakarta.servlet.*;
+import io.micronaut.views.View;
 import jakarta.servlet.http.*;
 
 import org.apache.tools.ant.filters.StringInputStream;
@@ -25,7 +26,7 @@ import static net.twisterrob.blt.gapp.FeedCronServlet.hasProperty;
 
 @Controller
 @SuppressWarnings("serial")
-public class LineStatusHistoryServlet extends HttpServlet {
+public class LineStatusHistoryServlet {
 	//private static final Logger LOG = LoggerFactory.getLogger(LineStatusHistoryServlet.class);
 
 	private static final String QUERY_DISPLAY_CURRENT = "current";
@@ -36,8 +37,9 @@ public class LineStatusHistoryServlet extends HttpServlet {
 	private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
 	@Get("/LineStatusHistory")
+	@View("LineStatus")
 	@Produces(MediaType.TEXT_HTML)
-	@Override public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public HttpResponse<?> doGet(HttpServletRequest req, HttpServletResponse resp) {
 		Feed feed = Feed.TubeDepartureBoardsLineStatus;
 		List<Result> results = new LinkedList<>();
 
@@ -70,11 +72,19 @@ public class LineStatusHistoryServlet extends HttpServlet {
 
 		List<ResultChange> differences = getDifferences(results, skipErrors);
 
-		// display them
-		req.setAttribute("feedChanges", differences);
-		req.setAttribute("colors", new LineColor.AllColors(FeedConsts.STATIC_DATA.getLineColors()));
-		RequestDispatcher view = req.getRequestDispatcher("/LineStatus.jsp");
-		view.forward(req, resp);
+		return HttpResponse.ok(
+				new LineStatusHistoryModel(
+						differences,
+						new LineColor.AllColors(FeedConsts.STATIC_DATA.getLineColors())
+				)
+		);
+	}
+
+	private record LineStatusHistoryModel(
+			List<ResultChange> feedChanges,
+			Iterable<LineColor> colors
+	) {
+
 	}
 
 	private static Result toResult(BaseEntity<?> entry) {
