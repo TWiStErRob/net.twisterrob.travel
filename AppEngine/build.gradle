@@ -68,6 +68,7 @@ micronaut {
 tasks.named("run").configure { JavaExec task ->
 	if (gradle.startParameter.continuous) {
 		task.systemProperties(
+				// TODO use https://docs.micronaut.io/latest/guide/index.html#environments to create overrides for debug.
 				"micronaut.io.watch.restart": true,
 				"micronaut.io.watch.enabled": true,
 				"micronaut.io.watch.paths": "src/main",
