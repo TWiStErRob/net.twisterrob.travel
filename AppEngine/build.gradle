@@ -11,11 +11,11 @@ java {
 }
 
 dependencies {
-	//noinspection GradleDeprecatedConfiguration
-	//providedCompile("com.google.appengine:appengine:${VERSION_APPENGINE}")
-	implementation platform('com.google.cloud:libraries-bom:26.27.0')
+	implementation(platform('com.google.cloud:libraries-bom:26.27.0'))
 	implementation("com.google.cloud:google-cloud-datastore")
 
+	runtimeOnly("org.yaml:snakeyaml")
+	runtimeOnly("io.micronaut.serde:micronaut-serde-jackson")
 	implementation("io.micronaut.views:micronaut-views-handlebars")
 
 	implementation project(':Shared')
@@ -40,14 +40,19 @@ sourceSets {
 	}
 }
 
-dependencies {
-	annotationProcessor("io.micronaut:micronaut-http-validation")
-	annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
-	implementation("io.micronaut.serde:micronaut-serde-jackson")
-	implementation("io.micronaut.servlet:micronaut-servlet-engine")
-	compileOnly("io.micronaut:micronaut-http-client")
-	runtimeOnly("org.yaml:snakeyaml")
-	testImplementation("io.micronaut:micronaut-http-client")
+//noinspection UnnecessaryQualifiedReference
+appengine { com.google.cloud.tools.gradle.appengine.appyaml.AppEngineAppYamlExtension ext ->
+	deploy {
+		// Live: https://twisterrob-london.appspot.com/
+		projectId = "twisterrob-london"
+		version = "GCLOUD_CONFIG"
+	}
+	tools {
+		System.getenv("GCLOUD_HOME")?.tap { cloudSdkHome = it }
+		cloudSdkVersion = VERSION_GCLOUD_SDK as String
+		// https://cloud.google.com/sdk/gcloud/reference#--verbosity
+		verbosity = "info"
+	}
 }
 
 application {
@@ -71,8 +76,8 @@ tasks.named("run").configure { JavaExec task ->
 	if (gradle.startParameter.continuous) {
 		task.systemProperties(
 				// TODO use https://docs.micronaut.io/latest/guide/index.html#environments to create overrides for debug.
-				"micronaut.io.watch.restart": true,
 				"micronaut.io.watch.enabled": true,
+				"micronaut.io.watch.restart": true,
 				"micronaut.io.watch.paths": "src/main",
 		)
 	}
@@ -90,20 +95,5 @@ tasks.named("run").configure { JavaExec task ->
 			[ key, value ]
 		}
 		task.environment(env)
-	}
-}
-
-//noinspection UnnecessaryQualifiedReference
-appengine { com.google.cloud.tools.gradle.appengine.appyaml.AppEngineAppYamlExtension ext ->
-	deploy {
-		// Live: https://twisterrob-london.appspot.com/
-		projectId = "twisterrob-london"
-		version = "GCLOUD_CONFIG"
-	}
-	tools {
-		System.getenv("GCLOUD_HOME")?.tap { cloudSdkHome = it }
-		cloudSdkVersion = VERSION_GCLOUD_SDK as String
-		// https://cloud.google.com/sdk/gcloud/reference#--verbosity
-		verbosity = "info"
 	}
 }

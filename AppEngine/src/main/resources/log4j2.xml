@@ -41,6 +41,7 @@ To use this configuration, deploy it into your application's WEB-INF directory.
 		<Logger name="io.micronaut" level="INFO" />
 		<Logger name="io.netty" level="INFO" />
 		<Logger name="com.github.jknack.handlebars" level="INFO" />
+		<Logger name="reactor" level="INFO" />
 
 		<!-- Application specific logs. -->
 		<Logger name="net.twisterrob" level="ALL" />
