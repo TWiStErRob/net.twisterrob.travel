@@ -1,3 +1,5 @@
+import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
+
 apply plugin: 'java'
 apply plugin: 'io.micronaut.minimal.application'
 apply plugin: 'com.google.cloud.tools.appengine-appyaml'
@@ -22,6 +24,7 @@ dependencies {
 	implementation project(':Shared')
 
 	implementation("org.slf4j:slf4j-api:${VERSION_SLF4J}")
+	runtimeOnly("org.apache.logging.log4j:log4j-slf4j2-impl:${VERSION_LOG4J}")
 	// for org.apache.tools.ant.filters.StringInputStream
 	implementation("ant:ant:1.6.5")
 
@@ -47,7 +50,6 @@ dependencies {
 	implementation("io.micronaut.servlet:micronaut-servlet-engine")
 	implementation("io.micronaut.views:micronaut-views-handlebars")
 	compileOnly("io.micronaut:micronaut-http-client")
-	runtimeOnly("ch.qos.logback:logback-classic")
 	runtimeOnly("org.yaml:snakeyaml")
 	testImplementation("io.micronaut:micronaut-http-client")
 }
@@ -67,6 +69,9 @@ micronaut {
 }
 
 tasks.named("run").configure { JavaExec task ->
+	if (DefaultNativePlatform.getCurrentOperatingSystem().isWindows()) {
+		task.systemProperty("log4j.skipJansi", false)
+	}
 	if (gradle.startParameter.continuous) {
 		task.systemProperties(
 				// TODO use https://docs.micronaut.io/latest/guide/index.html#environments to create overrides for debug.
