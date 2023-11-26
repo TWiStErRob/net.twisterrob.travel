@@ -59,7 +59,7 @@ application {
 }
 
 micronaut {
-	//version = VERSION_MICRONAUT as String
+	version = VERSION_MICRONAUT as String
 	runtime("jetty")
 	testRuntime("junit4")
 	processing {
