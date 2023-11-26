@@ -22,7 +22,7 @@ public class IndexController {
 	@Get("/favicon.ico")
 	public StreamedFile favicon() {
 		return new StreamedFile(
-				IndexController.class.getClassLoader().getResourceAsStream("content/favicon.ico"),
+				IndexController.class.getClassLoader().getResourceAsStream("public/favicon.ico"),
 				MediaType.IMAGE_PNG_TYPE
 		);
 	}

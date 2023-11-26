@@ -62,7 +62,7 @@ public class IndexControllerTest {
 		byte[] body = client.toBlocking().retrieve(request, byte[].class);
 
 		assertNotNull(body);
-		byte[] expected = IOTools.readBytes(IndexController.class.getResourceAsStream("/content/favicon.ico"));
+		byte[] expected = IOTools.readBytes(IndexController.class.getResourceAsStream("/public/favicon.ico"));
 		assertArrayEquals(expected, body);
 	}
 }

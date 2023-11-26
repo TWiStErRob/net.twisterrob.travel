@@ -3,4 +3,4 @@ micronaut:
     static-resources:
       default:
         mapping: "/static/**"
-        paths: classpath:content/static
+        paths: classpath:public/static
