@@ -1,46 +1,45 @@
 package net.twisterrob.blt.gapp.viewmodel;
 
 /**
- * Last old deployment.
+ * Last {@code java8} legacy deployment.
  * <pre><code>
  * applicationId: com.google.appengine.application.id=twisterrob-london
  * applicationVersion: com.google.appengine.application.version=20221107t101946.447701058168130218
  * environment: com.google.appengine.runtime.environment=Production
  * version: com.google.appengine.runtime.version=Google App Engine/1.9.98
  * </code></pre>
- * TODO if it doesn't work, try https://cloud.google.com/appengine/docs/standard/java-gen2/runtime#environment_variables
  */
 public class Versions {
 
 	public String getEnvironmentKey() {
-		return "com.google.appengine.runtime.environment";
+		return "NODE_ENV";
 	}
 
 	public String getEnvironment() {
-		return System.getProperty(getEnvironmentKey());
+		return System.getenv(getEnvironmentKey());
 	}
 
 	public String getVersionKey() {
-		return "com.google.appengine.runtime.version";
+		return "GAE_DEPLOYMENT_ID";
 	}
 
 	public String getVersion() {
-		return System.getProperty(getVersionKey());
+		return System.getenv(getVersionKey());
 	}
 
 	public String getApplicationIdKey() {
-		return "com.google.appengine.application.id";
+		return "GAE_APPLICATION";
 	}
 
 	public String getApplicationId() {
-		return System.getProperty(getApplicationIdKey());
+		return System.getenv(getApplicationIdKey());
 	}
 
 	public String getApplicationVersionKey() {
-		return "com.google.appengine.application.version";
+		return "GAE_VERSION";
 	}
 
 	public String getApplicationVersion() {
-		return System.getProperty(getApplicationVersionKey());
+		return System.getenv(getApplicationVersionKey());
 	}
 }
