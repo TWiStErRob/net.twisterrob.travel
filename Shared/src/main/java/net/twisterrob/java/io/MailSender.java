@@ -14,7 +14,7 @@ public class MailSender {
 
 	public void send() throws IOException {
 		try {
-			URL url = new URL("http://twisterrob-london.appspot.com/InternalFeedback");
+			URL url = new URL("https://twisterrob-london.appspot.com/InternalFeedback");
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 			conn.setDoInput(true);
 			conn.setDoOutput(true);

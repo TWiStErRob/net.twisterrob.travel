@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Line Status</title>
+	<script type="text/javascript" src="/static/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="/static/htmltooltip.js"></script>
+	<!--suppress CssUnusedSymbol -->
+	<style>
+		div.htmltooltip {
+			position: absolute; /*leave this and next 3 values alone*/
+			z-index: 1000;
+			left: -1000px;
+			top: -1000px;
+			background: #fafaaa;
+			border: 1px solid black;
+			padding: 3px;
+			width: 700px; /*width of tooltip*/
+		}
+
+		table.info {
+			float: left;
+			width: 325px;
+			border: 1px solid black;
+			border-spacing: 0;
+			border-collapse: collapse;
+		}
+
+		table.info > thead > tr > th {
+			background-color: lightgray;
+			border: 1px solid black;
+		}
+
+		table.info > thead > tr > th.title {
+			font-style: italic;
+		}
+
+		table.info > * > tr > td,
+		table.info > * > tr > th {
+			padding: 2px;
+		}
+
+		.delay.hasDetails {
+			font-weight: bold;
+		}
+
+		.delay.inactive {
+			color: lightgray;
+		}
+
+		.delay.status-better {
+			color: green;
+			font-weight: bold;
+		}
+
+		.delay.status-worse {
+			color: red;
+			font-weight: bold;
+		}
+
+		.change.status-same {
+			color: white;
+		}
+
+		{{#each colors as | lineColor | }}
+		.line-{{lineColor.line}} {
+			color: {{lineColor.foregroundColor}};
+			background-color: {{lineColor.backgroundColor}};
+		}
+		{{/each}}
+	</style>
+</head>
+<body>
+{{#each feedChanges as | feedChange | }}
+	{{assign "feed" feedChange.current}}
+	<table class="info">
+		<thead>
+		<tr>
+			<th colspan="3" class="title">
+				{{add @index 1}}/{{../feedChanges.length}}:
+				{{formatDate feed.when "yyyy-MM-dd HH:mm:ss"}}
+			</th>
+		</tr>
+		<tr>
+			<th>Line</th>
+			<th>Disruption Type</th>
+			<th>Change</th>
+		</tr>
+		</thead>
+		<tbody>
+		{{#each feed.content.lineStatuses as | lineStatus | }}
+			{{assign "changeStatus" (lookupEnumMap feedChange.statuses lineStatus.line)}}
+			{{assign "changeDescription" (lookupEnumMap feedChange.descriptions lineStatus.line)}}
+			{{assign "delayStyle" ""}}
+			{{#if (not (empty lineStatus.description))}}
+				{{assign "delayStyle" (concat delayStyle " hasDetails")}}
+			{{/if}}
+			{{#if (not lineStatus.active)}}
+				{{assign "delayStyle" (concat delayStyle " inactive")}}
+			{{/if}}
+			<tr>
+				<td class="line-{{lineStatus.line}}">{{lineStatus.line.title}}</td>
+				<td class="delay {{changeStatus.cssClass}} {{delayStyle}}">
+					{{#if (or (empty lineStatus.description) (empty lineStatus.branchDescription))}}
+						{{lineStatus.type.title}}
+					{{else}}
+						<a rel="htmltooltip">{{lineStatus.type.title}}</a>
+						<div class="htmltooltip">
+							<p>{{lineStatus.description}}</p>
+							<p>{{lineStatus.branchDescription}}</p>
+						</div>
+					{{/if}}
+				</td>
+				<td class="change {{changeStatus.cssClass}}">
+					{{#if (empty changeDescription)}}
+						{{changeStatus.title}}
+					{{else}}
+						<a rel="htmltooltip">{{changeStatus.title}}</a>
+						<div class="htmltooltip">{{{changeDescription}}}</div>
+					{{/if}}
+				</td>
+			</tr>
+		{{/each}}
+		</tbody>
+		<tfoot>
+		<tr>
+			<td colspan="3">
+				{{#if (not (empty feed.errorHeader))}}
+					<a rel="htmltooltip">{{feedChange.error.title}}: {{feed.errorHeader}}</a>
+					<div class="htmltooltip">
+						<pre style="font-size: xx-small;">{{feed.fullError}}</pre>
+					</div>
+				{{else if (not (empty feedChange.error.title))}}
+					{{feedChange.error.title}}
+				{{else}}
+					{{!-- Make sure there's always content, otherwise the height of the tables is not the same --}}
+					&nbsp;
+				{{/if}}
+			</td>
+		</tr>
+		</tfoot>
+	</table>
+{{/each}}
+</body>
+</html>

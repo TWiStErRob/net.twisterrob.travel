@@ -1,0 +1,8 @@
+micronaut:
+  server:
+    port: ${PORT:8080}
+  router:
+    static-resources:
+      default:
+        mapping: "/static/**"
+        paths: classpath:public/static

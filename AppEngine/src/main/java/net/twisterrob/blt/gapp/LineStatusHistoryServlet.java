@@ -3,13 +3,18 @@ package net.twisterrob.blt.gapp;
 import java.io.*;
 import java.util.*;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.MediaType;
+import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Produces;
+import io.micronaut.views.View;
+import jakarta.servlet.http.*;
 
 import org.apache.tools.ant.filters.StringInputStream;
 
-import com.google.appengine.api.datastore.*;
-import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.cloud.datastore.*;
+import com.google.cloud.datastore.StructuredQuery.OrderBy;
 
 import net.twisterrob.blt.gapp.viewmodel.*;
 import net.twisterrob.blt.io.feeds.Feed;
@@ -17,9 +22,11 @@ import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
 import net.twisterrob.java.utils.ObjectTools;
 
 import static net.twisterrob.blt.gapp.FeedConsts.*;
+import static net.twisterrob.blt.gapp.FeedCronServlet.hasProperty;
 
+@Controller
 @SuppressWarnings("serial")
-public class LineStatusHistoryServlet extends HttpServlet {
+public class LineStatusHistoryServlet {
 	//private static final Logger LOG = LoggerFactory.getLogger(LineStatusHistoryServlet.class);
 
 	private static final String QUERY_DISPLAY_CURRENT = "current";
@@ -27,9 +34,12 @@ public class LineStatusHistoryServlet extends HttpServlet {
 	private static final String QUERY_DISPLAY_MAX = "max";
 	private static final int DISPLAY_MAX_DEFAULT = 100;
 
-	private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+	private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
-	@Override public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@Get("/LineStatusHistory")
+	@View("LineStatus")
+	@Produces(MediaType.TEXT_HTML)
+	public HttpResponse<?> doGet(HttpServletRequest req, HttpServletResponse resp) {
 		Feed feed = Feed.TubeDepartureBoardsLineStatus;
 		List<Result> results = new LinkedList<>();
 
@@ -41,7 +51,7 @@ public class LineStatusHistoryServlet extends HttpServlet {
 			max = DISPLAY_MAX_DEFAULT;
 		}
 		if (Boolean.parseBoolean(req.getParameter(QUERY_DISPLAY_CURRENT))) {
-			Entity entry = FeedCronServlet.downloadNewEntry(feed);
+			FullEntity<IncompleteKey> entry = FeedCronServlet.downloadNewEntry(datastore, feed);
 			results.add(toResult(entry));
 		}
 		boolean skipErrors = true;
@@ -50,8 +60,9 @@ public class LineStatusHistoryServlet extends HttpServlet {
 		}
 
 		// process them
-		Iterable<Entity> entries = fetchEntries(feed);
-		for (Entity entry : entries) {
+		Iterator<Entity> entries = fetchEntries(feed);
+		while (entries.hasNext()) {
+			Entity entry = entries.next();
 			if (--max < 0) {
 				break; // we've had enough
 			}
@@ -61,38 +72,52 @@ public class LineStatusHistoryServlet extends HttpServlet {
 
 		List<ResultChange> differences = getDifferences(results, skipErrors);
 
-		// display them
-		req.setAttribute("feedChanges", differences);
-		req.setAttribute("colors", new LineColor.AllColors(FeedConsts.STATIC_DATA.getLineColors()));
-		RequestDispatcher view = req.getRequestDispatcher("/LineStatus.jsp");
-		view.forward(req, resp);
+		return HttpResponse.ok(
+				new LineStatusHistoryModel(
+						differences,
+						new LineColor.AllColors(FeedConsts.STATIC_DATA.getLineColors())
+				)
+		);
 	}
 
-	private static Result toResult(Entity entry) {
+	private record LineStatusHistoryModel(
+			List<ResultChange> feedChanges,
+			Iterable<LineColor> colors
+	) {
+
+	}
+
+	private static Result toResult(BaseEntity<?> entry) {
 		Result result;
-		Text content = (Text)entry.getProperty(DS_PROP_CONTENT);
-		Text error = (Text)entry.getProperty(DS_PROP_ERROR);
-		Date date = (Date)entry.getProperty(DS_PROP_RETRIEVED_DATE);
+		String content = hasProperty(entry, DS_PROP_CONTENT) ? entry.getString(DS_PROP_CONTENT) : null;
+		String error = hasProperty(entry, DS_PROP_ERROR) ? entry.getString(DS_PROP_ERROR) : null;
+		Date date = entry.getTimestamp(DS_PROP_RETRIEVED_DATE).toDate();
 		if (content != null) {
 			try {
-				Feed feed = Feed.valueOf(entry.getKind());
-				InputStream stream = new StringInputStream(content.getValue(), ENCODING);
+				Feed feed = Feed.valueOf(entry.getKey().getKind());
+				InputStream stream = new StringInputStream(content, ENCODING);
+				@SuppressWarnings({"RedundantTypeArguments", "RedundantSuppression"}) // False positive.
 				LineStatusFeed feedContents = feed.<LineStatusFeed>getHandler().parse(stream);
 				result = new Result(date, feedContents);
 			} catch (Exception ex) {
 				result = new Result(date, "Error while displaying loaded XML: " + ObjectTools.getFullStackTrace(ex));
 			}
 		} else if (error != null) {
-			result = new Result(date, error.getValue());
+			result = new Result(date, error);
 		} else {
 			result = new Result(date, "Empty entity");
 		}
 		return result;
 	}
 
-	protected Iterable<Entity> fetchEntries(Feed feed) {
-		Query q = new Query(feed.name()).addSort(DS_PROP_RETRIEVED_DATE, SortDirection.DESCENDING);
-		Iterable<Entity> results = datastore.prepare(q).asIterable();
+	protected Iterator<Entity> fetchEntries(Feed feed) {
+		Query<Entity> q = Query
+				.newEntityQueryBuilder()
+				.setKind(feed.name())
+				.addOrderBy(OrderBy.desc(DS_PROP_RETRIEVED_DATE))
+				.build()
+				;
+		QueryResults<Entity> results = datastore.run(q);
 		return results;
 	}
 

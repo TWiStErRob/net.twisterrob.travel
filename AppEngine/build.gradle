@@ -1,87 +1,109 @@
+import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
+
 apply plugin: 'java'
-apply plugin: 'war'
-apply plugin: 'com.google.cloud.tools.appengine-appenginewebxml'
-//apply plugin: 'com.google.cloud.tools.endpoints-framework-server'
+apply plugin: 'io.micronaut.minimal.application'
+apply plugin: 'com.google.cloud.tools.appengine-appyaml'
 apply plugin: 'idea'
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_1_8
-	targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-configurations {
-	dev
-}
-idea {
-	module {
-		scopes.PROVIDED.plus += [ configurations.dev ]
-	}
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
 }
 
 dependencies {
-	// com.google.appengine.api.datastore
-	implementation("com.google.appengine:appengine-api-1.0-sdk:${VERSION_APPENGINE}")
-	// com.google.api.server.spi.EndpointsServlet
-	implementation("com.google.endpoints:endpoints-framework:${VERSION_GCLOUD_ENDPOINTS}")
+	implementation("com.google.appengine:appengine-api-1.0-sdk:2.0.12")
+	implementation(platform("com.google.cloud:libraries-bom:${VERSION_GCLOUD}"))
+	implementation("com.google.cloud:google-cloud-datastore")
 
-	providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
-	dev("org.apache.taglibs:taglibs-standard-impl:1.2.5")
-	dev("javax.servlet.jsp.jstl:jstl-api:1.2")
+	runtimeOnly("org.yaml:snakeyaml")
+	runtimeOnly("io.micronaut.serde:micronaut-serde-jackson")
+	implementation("io.micronaut.views:micronaut-views-handlebars")
 
 	implementation project(':Shared')
 
-	// See java.util.logging.properties and log4j2.xml
 	implementation("org.slf4j:slf4j-api:${VERSION_SLF4J}")
-	// route apps SLF4J logging to JUL
-	implementation("org.slf4j:slf4j-jdk14:${VERSION_SLF4J}")
-	dev("org.slf4j:jul-to-slf4j:${VERSION_SLF4J}")
-	dev("org.apache.logging.log4j:log4j-api:${VERSION_LOG4J}")
-	dev("org.apache.logging.log4j:log4j-core:${VERSION_LOG4J}")
-	dev("org.apache.logging.log4j:log4j-slf4j-impl:${VERSION_LOG4J}")
-
+	runtimeOnly("org.apache.logging.log4j:log4j-slf4j2-impl:${VERSION_LOG4J}")
 	// for org.apache.tools.ant.filters.StringInputStream
 	implementation("ant:ant:1.6.5")
 
 	apply from: "${rootDir}/gradle/testCompile.gradle", to: project
-	testImplementation("com.google.appengine:appengine-testing:${VERSION_APPENGINE}")
-	testImplementation("com.google.appengine:appengine-api-stubs:${VERSION_APPENGINE}")
-	testImplementation("com.google.appengine:appengine-api-labs:${VERSION_APPENGINE}")
+	testImplementation("io.micronaut:micronaut-http-client")
+	testImplementation("com.github.jtidy:jtidy:${VERSION_JTIDY}")
 }
 
 sourceSets {
 	main {
 		java.srcDir 'src/main/diff'
-		compileClasspath += configurations.dev
 	}
 	test {
 		java.srcDir 'src/test/diff'
-		compileClasspath += configurations.dev
 	}
 }
 
-appengine { com.google.cloud.tools.gradle.appengine.standard.AppEngineStandardExtension ext ->
+//noinspection UnnecessaryQualifiedReference
+appengine { com.google.cloud.tools.gradle.appengine.appyaml.AppEngineAppYamlExtension ext ->
+	stage {
+		artifact = file("src/main/appengine/placeholder.txt")
+		// AppEngine plugin can't handle laziness, wire manually.
+		tasks.appengineStage.dependsOn(tasks.installDist)
+		extraFilesDirectories = tasks.installDist
+	}
 	deploy {
+		// Live: https://twisterrob-london.appspot.com/
 		projectId = "twisterrob-london"
 		version = "GCLOUD_CONFIG"
-	}
-	run {
-		port = 8888
-		automaticRestart = true
-
-		def logDependencyFilter = { Dependency d -> d.group?.contains('slf4j') || d.group?.contains('log4j') };
-		def deps = configurations.dev.dependencies.findAll logDependencyFilter
-		def flags = configurations.dev.files(deps as Dependency[]) \
-				.collect { "-Xbootclasspath/p:${it.absolutePath}".toString() }
-		jvmFlags = (jvmFlags?: [ ]) + flags
+		// Test deployment:
+		//version = "test"
+		//stopPreviousVersion = false
+		//promote = false
 	}
 	tools {
-		cloudSdkHome = System.getenv("GCLOUD_HOME")?: file("build/downloaded/gcloud-sdk")
+		System.getenv("GCLOUD_HOME")?.tap { cloudSdkHome = it }
 		cloudSdkVersion = VERSION_GCLOUD_SDK as String
 		// https://cloud.google.com/sdk/gcloud/reference#--verbosity
 		verbosity = "info"
 	}
 }
 
-//endpointsServer {
-//	hostname = "twisterrob-london.appspot.com"
-//}
+application {
+	mainClass.set("net.twisterrob.blt.gapp.Application")
+}
+
+micronaut {
+	version = VERSION_MICRONAUT as String
+	runtime("jetty")
+	testRuntime("junit4")
+	processing {
+		incremental(true)
+		annotations("net.twisterrob.blt.gapp.*")
+	}
+}
+
+tasks.named("run").configure { JavaExec task ->
+	if (DefaultNativePlatform.getCurrentOperatingSystem().isWindows()) {
+		task.systemProperty("log4j.skipJansi", false)
+	}
+	if (gradle.startParameter.continuous) {
+		task.systemProperties(
+				// TODO use https://docs.micronaut.io/latest/guide/index.html#environments to create overrides for debug.
+				"micronaut.io.watch.enabled": true,
+				"micronaut.io.watch.restart": true,
+				"micronaut.io.watch.paths": "src/main",
+		)
+	}
+	doFirst {
+		def stream = new ByteArrayOutputStream()
+		exec {
+			commandLine("gcloud.cmd", "beta", "emulators", "datastore", "env-init")
+			standardOutput = stream
+		}
+		Map<String, String> env = stream.toString().split("\r?\n").collectEntries { line ->
+			if (!line.startsWith("set ")) {
+				throw new IllegalStateException("Unexpected line: $line in \n${stream.toString()}")
+			}
+			def (key, value) = line.substring(4).split("=", 2)
+			[ key, value ]
+		}
+		task.environment(env)
+	}
+}

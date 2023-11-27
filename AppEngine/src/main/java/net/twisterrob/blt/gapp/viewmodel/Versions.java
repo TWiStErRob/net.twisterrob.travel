@@ -1,38 +1,45 @@
 package net.twisterrob.blt.gapp.viewmodel;
 
-import com.google.appengine.api.utils.SystemProperty;
-
+/**
+ * Last {@code java8} legacy deployment.
+ * <pre><code>
+ * applicationId: com.google.appengine.application.id=twisterrob-london
+ * applicationVersion: com.google.appengine.application.version=20221107t101946.447701058168130218
+ * environment: com.google.appengine.runtime.environment=Production
+ * version: com.google.appengine.runtime.version=Google App Engine/1.9.98
+ * </code></pre>
+ */
 public class Versions {
 
 	public String getEnvironmentKey() {
-		return SystemProperty.environment.key();
+		return "NODE_ENV";
 	}
 
 	public String getEnvironment() {
-		return SystemProperty.environment.get();
+		return System.getenv(getEnvironmentKey());
 	}
 
 	public String getVersionKey() {
-		return SystemProperty.version.key();
+		return "GAE_DEPLOYMENT_ID";
 	}
 
 	public String getVersion() {
-		return SystemProperty.version.get();
+		return System.getenv(getVersionKey());
 	}
 
 	public String getApplicationIdKey() {
-		return SystemProperty.applicationId.key();
+		return "GAE_APPLICATION";
 	}
 
 	public String getApplicationId() {
-		return SystemProperty.applicationId.get();
+		return System.getenv(getApplicationIdKey());
 	}
 
 	public String getApplicationVersionKey() {
-		return SystemProperty.applicationVersion.key();
+		return "GAE_VERSION";
 	}
 
 	public String getApplicationVersion() {
-		return SystemProperty.applicationVersion.get();
+		return System.getenv(getApplicationVersionKey());
 	}
 }
