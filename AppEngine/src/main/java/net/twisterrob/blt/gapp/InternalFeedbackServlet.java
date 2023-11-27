@@ -3,8 +3,8 @@ package net.twisterrob.blt.gapp;
 import java.io.IOException;
 import java.util.Properties;
 
-//import javax.mail.*;
-//import javax.mail.internet.*;
+import javax.mail.*;
+import javax.mail.internet.*;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
 import jakarta.servlet.http.*;
@@ -21,17 +21,16 @@ public class InternalFeedbackServlet extends HttpServlet {
 	@Post("/InternalFeedback")
 	@Override public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		Properties props = new Properties();
-		//STOPSHIP use GitHub API to raise an issue
-		//Session session = Session.getDefaultInstance(props, null);
-		//Message msg = new MimeMessage(session);
-		//try {
-		//	msg.setFrom(new InternetAddress("feedback@twisterrob-london.appspotmail.com", "BLT Internal Feedback"));
-		//	msg.addRecipient(Message.RecipientType.TO, new InternetAddress("papp.robert.s@gmail.com", "Me"));
-		//	msg.setSubject("Better London Travel automated internal feedback");
-		//	msg.setText(IOTools.readAll(req.getInputStream(), IOTools.ENCODING));
-		//	Transport.send(msg);
-		//} catch (MessagingException e) {
-		//	throw new IOException("Cannot send mail", e);
-		//}
+		Session session = Session.getDefaultInstance(props, null);
+		Message msg = new MimeMessage(session);
+		try {
+			msg.setFrom(new InternetAddress("feedback@twisterrob-london.appspotmail.com", "BLT Internal Feedback"));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("papp.robert.s@gmail.com", "Me"));
+			msg.setSubject("Better London Travel automated internal feedback");
+			msg.setText(IOTools.readAll(req.getInputStream(), IOTools.ENCODING));
+			Transport.send(msg);
+		} catch (MessagingException e) {
+			throw new IOException("Cannot send mail", e);
+		}
 	}
 }

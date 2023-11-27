@@ -11,6 +11,7 @@ java {
 }
 
 dependencies {
+	implementation("com.google.appengine:appengine-api-1.0-sdk:2.0.12")
 	implementation(platform("com.google.cloud:libraries-bom:${VERSION_GCLOUD}"))
 	implementation("com.google.cloud:google-cloud-datastore")
 
