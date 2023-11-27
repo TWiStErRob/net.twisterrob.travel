@@ -41,10 +41,20 @@ sourceSets {
 
 //noinspection UnnecessaryQualifiedReference
 appengine { com.google.cloud.tools.gradle.appengine.appyaml.AppEngineAppYamlExtension ext ->
+	stage {
+		artifact = file("src/main/appengine/placeholder.txt")
+		// AppEngine plugin can't handle laziness, wire manually.
+		tasks.appengineStage.dependsOn(tasks.installDist)
+		extraFilesDirectories = tasks.installDist
+	}
 	deploy {
 		// Live: https://twisterrob-london.appspot.com/
 		projectId = "twisterrob-london"
 		version = "GCLOUD_CONFIG"
+		// Test deployment:
+		//version = "test"
+		//stopPreviousVersion = false
+		//promote = false
 	}
 	tools {
 		System.getenv("GCLOUD_HOME")?.tap { cloudSdkHome = it }

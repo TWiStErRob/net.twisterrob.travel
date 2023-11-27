@@ -1,0 +1,2 @@
+This file exists to replace the mandatory "artifact" in AppEngine YAML plugin.
+The real files come from the `org.gradle.application` plugin's `installDist` task (build/install/AppEngine).
