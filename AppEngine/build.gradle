@@ -1,6 +1,7 @@
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
 plugins {
+	id("net.twisterrob.blt.convention")
 	id("org.gradle.java")
 	id("io.micronaut.minimal.application")
 	id("com.google.cloud.tools.appengine-appyaml")

@@ -1,5 +1,6 @@
 //name = "Better London Travel Android App"
 plugins {
+	id("net.twisterrob.blt.convention")
 	id("net.twisterrob.gradle.plugin.android-app")
 	id("com.android.application")
 }

@@ -1,4 +1,5 @@
 plugins {
+	id("net.twisterrob.blt.convention")
 	id("org.gradle.java")
 	id("net.twisterrob.gradle.plugin.java")
 }

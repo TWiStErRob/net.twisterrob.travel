@@ -1,0 +1,12 @@
+group = "net.twisterrob.travel"
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = "UTF-8"
+	options.compilerArgs += [
+			"-Werror",
+			"-Xmaxwarns", "1000",
+			"-Xmaxerrs", "1000",
+			"-Xlint:-deprecation",
+			"-Xlint:unchecked",
+	]
+}

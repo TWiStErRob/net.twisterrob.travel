@@ -1,22 +1,6 @@
 plugins {
+	id("net.twisterrob.blt.convention")
 	id("org.gradle.idea")
-}
-
-allprojects {
-	group = "net.twisterrob.travel"
-
-	afterEvaluate {
-		tasks.withType(JavaCompile).configureEach {
-			options.encoding = "UTF-8"
-			options.compilerArgs += [
-				"-Werror",
-				"-Xmaxwarns", "1000",
-				"-Xmaxerrs", "1000",
-				"-Xlint:-deprecation",
-				"-Xlint:unchecked",
-			]
-		}
-	}
 }
 
 idea {

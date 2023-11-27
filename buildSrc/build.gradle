@@ -1,3 +1,7 @@
+plugins {
+	id("org.gradle.groovy-gradle-plugin")
+}
+
 def props = new Properties()
 props.load(file("../gradle.properties").newInputStream())
 
