@@ -1,4 +1,7 @@
-apply plugin: 'net.twisterrob.gradle.plugin.java'
+plugins {
+	id("org.gradle.java")
+	id("net.twisterrob.gradle.plugin.java")
+}
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_1_8
@@ -6,5 +9,5 @@ java {
 }
 
 dependencies {
-	implementation 'net.sf.kxml:kxml2:2.3.0'
+	implementation("net.sf.kxml:kxml2:2.3.0")
 }

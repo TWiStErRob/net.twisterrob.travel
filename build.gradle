@@ -1,7 +1,9 @@
-allprojects {
-	//configurations.implementation.resolutionStrategy.cacheChangingModulesFor 0, 'seconds' // -SNAPSHOT
+plugins {
+	id("org.gradle.idea")
+}
 
-	group = 'net.twisterrob.travel'
+allprojects {
+	group = "net.twisterrob.travel"
 
 	repositories {
 		google()
@@ -9,8 +11,8 @@ allprojects {
 	}
 
 	afterEvaluate {
-		tasks.withType(JavaCompile) {
-			options.encoding = 'UTF-8'
+		tasks.withType(JavaCompile).configureEach {
+			options.encoding = "UTF-8"
 			options.compilerArgs += [
 				"-Werror",
 				"-Xmaxwarns", "1000",
@@ -22,9 +24,12 @@ allprojects {
 	}
 }
 
-apply plugin: 'idea'
 idea {
 	module {
-		excludeDirs = [ file(".gradle"), file('.idea'), file('temp') ]
+		excludeDirs = [
+			file(".gradle"),
+			file(".idea"),
+			file("temp"),
+		]
 	}
 }

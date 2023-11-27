@@ -1,9 +1,11 @@
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
-apply plugin: 'java'
-apply plugin: 'io.micronaut.minimal.application'
-apply plugin: 'com.google.cloud.tools.appengine-appyaml'
-apply plugin: 'idea'
+plugins {
+	id("org.gradle.java")
+	id("io.micronaut.minimal.application")
+	id("com.google.cloud.tools.appengine-appyaml")
+	id("org.gradle.idea")
+}
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_17
@@ -19,7 +21,7 @@ dependencies {
 	runtimeOnly("io.micronaut.serde:micronaut-serde-jackson")
 	implementation("io.micronaut.views:micronaut-views-handlebars")
 
-	implementation project(':Shared')
+	implementation project(":Shared")
 	implementation(project(":Shared:diff"))
 
 	implementation("org.slf4j:slf4j-api:${VERSION_SLF4J}")
@@ -56,7 +58,7 @@ appengine { com.google.cloud.tools.gradle.appengine.appyaml.AppEngineAppYamlExte
 }
 
 application {
-	mainClass.set("net.twisterrob.blt.gapp.Application")
+	mainClass = "net.twisterrob.blt.gapp.Application"
 }
 
 micronaut {

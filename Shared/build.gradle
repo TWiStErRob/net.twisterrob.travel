@@ -1,5 +1,7 @@
-apply plugin: 'java-library'
-apply plugin: 'net.twisterrob.gradle.plugin.java'
+plugins {
+	id("org.gradle.java-library")
+	id("net.twisterrob.gradle.plugin.java")
+}
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_1_8
@@ -8,16 +10,16 @@ java {
 
 // <name>Better London Travel Shared</name>
 // <description>Shared model and surrounding classes</description>
-//name = 'twister-travel-shared'
-version = '0.0.1-SNAPSHOT'
+//name = "twister-travel-shared"
+version = "0.0.1-SNAPSHOT"
 dependencies {
-	api('net.twisterrob.lib:twister-lib-general')
-	api('net.twisterrob.lib:twister-lib-core')
+	api("net.twisterrob.lib:twister-lib-general")
+	api("net.twisterrob.lib:twister-lib-core")
 
 	implementation("com.google.code.findbugs:jsr305:${VERSION_JSR305}")
 	implementation("org.slf4j:slf4j-api:${VERSION_SLF4J}")
-	implementation project(':Shared:android-polyfill')
-	implementation('net.twisterrob.lib:twister-lib-java_desktop')
+	implementation(project(":Shared:android-polyfill"))
+	implementation("net.twisterrob.lib:twister-lib-java_desktop")
 
 	apply from: "${rootDir}/gradle/testCompile.gradle", to: project
 }

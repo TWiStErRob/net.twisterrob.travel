@@ -1,11 +1,11 @@
-rootProject.name = 'Better London Travel'
+rootProject.name = "Better London Travel"
 
-include ':Android'
-include ':Shared'
-include ':AppEngine'
-include ':Shared:android-polyfill'
-include ':Shared:diff'
-include ':Data'
+include(":Android")
+include(":Shared")
+include(":AppEngine")
+include(":Shared:android-polyfill")
+include(":Shared:diff")
+include(":Data")
 
 includeBuild("libs") { build ->
 	apply from: new File(build.projectDir, "gradle/settings.substitutions.gradle"), to: build
