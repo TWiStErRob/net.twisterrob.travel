@@ -4,6 +4,7 @@ include ':Android'
 include ':Shared'
 include ':AppEngine'
 include ':Shared:android-polyfill'
+include ':Shared:diff'
 include ':Data'
 
 includeBuild("libs") { build ->

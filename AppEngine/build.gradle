@@ -20,6 +20,7 @@ dependencies {
 	implementation("io.micronaut.views:micronaut-views-handlebars")
 
 	implementation project(':Shared')
+	implementation(project(":Shared:diff"))
 
 	implementation("org.slf4j:slf4j-api:${VERSION_SLF4J}")
 	runtimeOnly("org.apache.logging.log4j:log4j-slf4j2-impl:${VERSION_LOG4J}")
@@ -27,15 +28,6 @@ dependencies {
 	apply from: "${rootDir}/gradle/testCompile.gradle", to: project
 	testImplementation("io.micronaut:micronaut-http-client")
 	testImplementation("com.github.jtidy:jtidy:${VERSION_JTIDY}")
-}
-
-sourceSets {
-	main {
-		java.srcDir 'src/main/diff'
-	}
-	test {
-		java.srcDir 'src/test/diff'
-	}
 }
 
 //noinspection UnnecessaryQualifiedReference
