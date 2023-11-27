@@ -27,7 +27,7 @@ dependencies {
 	implementation("org.slf4j:slf4j-api:${VERSION_SLF4J}")
 	runtimeOnly("org.apache.logging.log4j:log4j-slf4j2-impl:${VERSION_LOG4J}")
 
-	apply from: "${rootDir}/gradle/testCompile.gradle", to: project
+	testImplementation(project(":Shared:test-helpers"))
 	testImplementation("io.micronaut:micronaut-http-client")
 	testImplementation("com.github.jtidy:jtidy:${VERSION_JTIDY}")
 }

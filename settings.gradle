@@ -5,6 +5,7 @@ include(":Shared")
 include(":AppEngine")
 include(":Shared:android-polyfill")
 include(":Shared:diff")
+include(":Shared:test-helpers")
 include(":Data")
 
 dependencyResolutionManagement {

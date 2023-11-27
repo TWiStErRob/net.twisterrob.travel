@@ -22,7 +22,7 @@ dependencies {
 	runtimeOnly("org.slf4j:slf4j-simple:${VERSION_SLF4J}")
 	implementation("org.xerial:sqlite-jdbc:3.7.15-M1")
 
-	apply from: "${rootDir}/gradle/testCompile.gradle", to: project
+	testImplementation(project(":Shared:test-helpers"))
 }
 
 // TODO logging doesn't work with org.eclipse nor org.mortbay package names
