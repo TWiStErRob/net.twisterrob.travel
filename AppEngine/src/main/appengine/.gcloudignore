@@ -1,4 +1,0 @@
-# The staging directory is well-controlled by the Google AppEngine Gradle Plugin.
-
-# Remove artifact hack.
-placeholder.txt
