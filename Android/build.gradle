@@ -4,16 +4,6 @@ plugins {
 	id("com.android.application")
 }
 
-repositories {
-	maven {
-		name = "jitpack.io"
-		url = uri("https://jitpack.io/")
-		content {
-			includeModule("com.github.martin-stone", "hsv-alpha-color-picker-android")
-		}
-	}
-}
-
 dependencies {
 	implementation("net.twisterrob.lib:twister-lib-android-monolith")
 	implementation("net.twisterrob.lib:twister-lib-android-basics")
