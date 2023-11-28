@@ -1,3 +1,9 @@
+import static net.twisterrob.gradle.settings.SettingsUtils.enableFeaturePreviewQuietly
+
+plugins {
+	id("net.twisterrob.gradle.plugin.settings") version "0.16"
+}
+
 rootProject.name = "net-twisterrob-blt"
 
 include(":Android")
@@ -8,7 +14,7 @@ include(":Shared:android-polyfill")
 include(":Shared:diff")
 include(":Shared:test-helpers")
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+enableFeaturePreviewQuietly(settings, "TYPESAFE_PROJECT_ACCESSORS", "Type-safe project accessors")
 
 dependencyResolutionManagement {
 	repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
