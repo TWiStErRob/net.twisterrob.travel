@@ -1,0 +1,77 @@
+[versions]
+java = "1.8"
+java-android = "17"
+java-appengine = "17"
+
+agp = "8.1.1"
+twisterrob = "0.16"
+gretty = "3.0.5"
+
+jsr305 = "3.0.2"
+kxml2 = "2.3.0"
+sqlite-jdbc = "3.7.15-M1"
+glide = "3.8.0"
+
+slf4j = "2.0.9"
+# https://logging.apache.org/log4j/2.x/release-notes.html
+log4j  ="2.22.0"
+
+google-cloud = "26.27.0"
+# Run `gcloud components update` to get the new available version.
+# (or `gcloud components update --version <version>` to revert)
+# https://cloud.google.com/sdk/docs/release-notes
+google-cloud-sdk = "455.0.0"
+# https://cloud.google.com/appengine/docs/standard/java/release-notes
+google-appengine = "2.0.12"
+google-appengine-plugin = "2.5.0"
+# TODO replace SupportPlaceAutocompleteFragment when updating to AndroidX
+# TODO update to 17.0.0 when using AndroidX
+google-maps = "16.1.0"
+google-datastore = "2.17.5"
+
+micronaut = "4.2.0"
+micronaut-jackson = "2.4.0"
+micronaut-handlebars = "5.0.1"
+snakeyaml = "2.0"
+
+junit4 = "4.13.2"
+mockito = "5.7.0"
+# Use this instead of 1.3
+# If `hamcrest-1.3` appears in the dependency list, check if it's excluded from all usages.
+hamcrest = "2.0.0.0"
+gwen = "1.0.2"
+jtidy = "1.0.5"
+
+[libraries]
+plugin-agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+# https://github.com/GoogleCloudPlatform/app-gradle-plugin/blob/master/CHANGELOG.md
+plugin-appengine = { module = "com.google.cloud.tools:appengine-gradle-plugin", version.ref = "google-appengine-plugin" }
+plugin-twisterrob = { module = "net.twisterrob.gradle:twister-convention-plugins", version.ref = "twisterrob" }
+plugin-gretty = { module = "org.gretty:gretty", version.ref = "gretty" }
+
+plugin-micronaut = { module = "io.micronaut.application:io.micronaut.application.gradle.plugin", version.ref = "micronaut" }
+micronaut-httpClient = { module = "io.micronaut:micronaut-http-client", version.ref = "micronaut" }
+micronaut-jackson = { module = "io.micronaut.serde:micronaut-serde-jackson", version.ref = "micronaut-jackson" }
+micronaut-handlebars = { module = "io.micronaut.views:micronaut-views-handlebars", version.ref = "micronaut-handlebars" }
+snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
+
+jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
+kxml2 = { module = "net.sf.kxml:kxml2", version.ref = "kxml2" }
+sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite-jdbc" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+log4j-slf4j2 = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j" }
+
+google-cloud = { module = "com.google.cloud:libraries-bom", version.ref = "google-cloud" }
+google-cloud-datastore = { module = "com.google.cloud:google-cloud-datastore", version.ref = "google-datastore" }
+appengine-api = { module = "com.google.appengine:appengine-api-1.0-sdk", version.ref = "google-appengine" }
+gms-places = { module = "com.google.android.gms:play-services-places", version.ref = "google-maps" }
+gms-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "google-maps" }
+
+test-junit4 = { module = "junit:junit", version.ref = "junit4" }
+test-mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+test-hamcrest = { module = "org.hamcrest:hamcrest-junit", version.ref = "hamcrest" }
+test-gwen = { module = "com.shazam:gwen", version.ref = "gwen" }
+jtidy = { module = "com.github.jtidy:jtidy", version.ref = "jtidy" }

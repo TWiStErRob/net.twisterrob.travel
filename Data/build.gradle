@@ -7,8 +7,8 @@ plugins {
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_1_8
-	targetCompatibility = JavaVersion.VERSION_1_8
+	sourceCompatibility = libs.versions.java.asProvider().get()
+	targetCompatibility = libs.versions.java.asProvider().get()
 }
 
 // name = "twister-travel-data"
@@ -18,10 +18,10 @@ version = "0.0.1-SNAPSHOT"
 
 dependencies {
 	api(project(":Shared"))
-	implementation("com.google.code.findbugs:jsr305:${VERSION_JSR305}")
-	implementation("org.slf4j:slf4j-api:${VERSION_SLF4J}")
-	runtimeOnly("org.slf4j:slf4j-simple:${VERSION_SLF4J}")
-	implementation("org.xerial:sqlite-jdbc:3.7.15-M1")
+	implementation(libs.jsr305)
+	implementation(libs.slf4j.api)
+	implementation(libs.slf4j.simple)
+	implementation(libs.sqlite.jdbc)
 
 	testImplementation(project(":Shared:test-helpers"))
 }

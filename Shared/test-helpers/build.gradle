@@ -4,20 +4,20 @@ plugins {
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_1_8
-	targetCompatibility = JavaVersion.VERSION_1_8
+	sourceCompatibility = libs.versions.java.asProvider().get()
+	targetCompatibility = libs.versions.java.asProvider().get()
 }
 
 dependencies {
-	api("junit:junit:${VERSION_JUNIT}") {
+	api(libs.test.junit4) {
 		// we don't need this because we use org.hamcrest v2
 		exclude module: "hamcrest-core"
 	}
-	api("org.hamcrest:hamcrest-junit:${VERSION_HAMCREST}") {
+	api(libs.test.hamcrest){
 		// this needs to be excluded because otherwise the hamcrest-core exclusion above doesn't work
 		exclude module: "junit"
 	}
-	api("org.mockito:mockito-core:${VERSION_MOCKITO}")
-	api("com.shazam:gwen:1.0.2")
-	runtimeOnly("org.slf4j:slf4j-simple:${VERSION_SLF4J}")
+	api(libs.test.mockito)
+	api(libs.test.gwen)
+	runtimeOnly(libs.slf4j.simple)
 }

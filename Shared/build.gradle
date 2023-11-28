@@ -5,8 +5,8 @@ plugins {
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_1_8
-	targetCompatibility = JavaVersion.VERSION_1_8
+	sourceCompatibility = libs.versions.java.asProvider().get()
+	targetCompatibility = libs.versions.java.asProvider().get()
 }
 
 // <name>Better London Travel Shared</name>
@@ -17,8 +17,8 @@ dependencies {
 	api("net.twisterrob.lib:twister-lib-general")
 	api("net.twisterrob.lib:twister-lib-core")
 
-	implementation("com.google.code.findbugs:jsr305:${VERSION_JSR305}")
-	implementation("org.slf4j:slf4j-api:${VERSION_SLF4J}")
+	implementation(libs.jsr305)
+	implementation(libs.slf4j.api)
 	implementation(project(":Shared:android-polyfill"))
 	implementation("net.twisterrob.lib:twister-lib-java_desktop")
 

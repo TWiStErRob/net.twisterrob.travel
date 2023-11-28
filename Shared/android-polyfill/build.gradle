@@ -5,10 +5,10 @@ plugins {
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_1_8
-	targetCompatibility = JavaVersion.VERSION_1_8
+	sourceCompatibility = libs.versions.java.asProvider().get()
+	targetCompatibility = libs.versions.java.asProvider().get()
 }
 
 dependencies {
-	implementation("net.sf.kxml:kxml2:2.3.0")
+	implementation(libs.kxml2)
 }
