@@ -1,12 +1,12 @@
 rootProject.name = "Better London Travel"
 
 include(":Android")
-include(":Shared")
 include(":AppEngine")
+include(":Data")
+include(":Shared")
 include(":Shared:android-polyfill")
 include(":Shared:diff")
 include(":Shared:test-helpers")
-include(":Data")
 
 dependencyResolutionManagement {
 	repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
