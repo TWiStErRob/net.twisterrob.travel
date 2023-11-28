@@ -19,8 +19,8 @@ dependencies {
 
 	implementation(libs.jsr305)
 	implementation(libs.slf4j.api)
-	implementation(project(":Shared:android-polyfill"))
+	implementation(projects.shared.androidPolyfill)
 	implementation("net.twisterrob.lib:twister-lib-java_desktop")
 
-	testImplementation(project(":Shared:test-helpers"))
+	testImplementation(projects.shared.testHelpers)
 }

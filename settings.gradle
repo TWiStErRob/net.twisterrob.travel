@@ -1,4 +1,4 @@
-rootProject.name = "Better London Travel"
+rootProject.name = "net-twisterrob-blt"
 
 include(":Android")
 include(":AppEngine")
@@ -7,6 +7,8 @@ include(":Shared")
 include(":Shared:android-polyfill")
 include(":Shared:diff")
 include(":Shared:test-helpers")
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 dependencyResolutionManagement {
 	repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS

@@ -17,13 +17,13 @@ version = "0.0.1-SNAPSHOT"
 // <description>Standalone project to handle large feeds</description>
 
 dependencies {
-	api(project(":Shared"))
+	api(projects.shared)
 	implementation(libs.jsr305)
 	implementation(libs.slf4j.api)
 	implementation(libs.slf4j.simple)
 	implementation(libs.sqlite.jdbc)
 
-	testImplementation(project(":Shared:test-helpers"))
+	testImplementation(projects.shared.testHelpers)
 }
 
 // TODO logging doesn't work with org.eclipse nor org.mortbay package names
