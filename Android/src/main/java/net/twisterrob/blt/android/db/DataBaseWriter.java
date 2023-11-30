@@ -188,7 +188,7 @@ class DataBaseWriter extends DataBaseAccess {
 	@SuppressWarnings("unused")
 	private long getStationTypeID(final String stationTypeName) {
 		SQLiteDatabase database = m_dataBaseHelper.getReadableDatabase();
-		return longForQuery(database, "SELECT _id FROM StationType WHERE name = ?", new String[] {stationTypeName});
+		return longForQuery(database, "SELECT _id FROM StationType WHERE name = ?", stationTypeName);
 	}
 
 	public void updateTypes(Map<String, String> styles) {

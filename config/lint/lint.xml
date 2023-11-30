@@ -7,6 +7,9 @@
 		<ignore path="src/main/AndroidManifest.xml" />
 		<ignore regexp="is only used in API level" />
 	</issue>
+	<issue id="StringFormatTrivial" severity="ignore">
+		<!-- In most cases there's a reason for using it, e.g. it helps with readability; keep until Kotlin. -->
+	</issue>
 	<!-- <![CDATA[<a href=""></a>]]> triggers it -->
 	<issue id="TypographyQuotes">
 		<!-- TOFIX report that these are not suppressible by resource, only by file -->
@@ -37,5 +40,6 @@
 	</issue>
 	<issue id="InvalidPackage">
 		<ignore regexp="Invalid package reference in .*; not included in Android: `javax\.xml\.stream`\. Referenced from `net\.twisterrob\.blt\.io\.feeds\.timetable\.JourneyPlannerTimetableFeedKmlOut`\." />
+		<ignore regexp="Invalid package reference in .*; not included in Android: `javax\.xml\.stream`\. Referenced from `net\.twisterrob\.java\.io\.IndentingXMLStreamWriter`\." />
 	</issue>
 </lint>

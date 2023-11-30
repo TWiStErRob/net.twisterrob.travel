@@ -2,11 +2,13 @@ package net.twisterrob.blt.android.db;
 
 import java.io.PrintStream;
 
-import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.database.*;
 import android.database.sqlite.*;
 
+/**
+ * TODO what is the point of this class?
+ */
 public class DataBaseAccess {
 	public static void bindObjectToProgram(SQLiteProgram prog, int index, Object value) {
 		DatabaseUtils.bindObjectToProgram(prog, index, value);
@@ -17,7 +19,6 @@ public class DataBaseAccess {
 	public static String sqlEscapeString(String value) {
 		return DatabaseUtils.sqlEscapeString(value);
 	}
-	@TargetApi(11)
 	public static String concatenateWhere(String a, String b) {
 		return DatabaseUtils.concatenateWhere(a, b);
 	}
@@ -57,31 +58,27 @@ public class DataBaseAccess {
 	public static void cursorRowToContentValues(Cursor cursor, ContentValues values) {
 		DatabaseUtils.cursorRowToContentValues(cursor, values);
 	}
-	@TargetApi(11)
 	public static long queryNumEntries(SQLiteDatabase db, String table) {
 		return DatabaseUtils.queryNumEntries(db, table);
 	}
-	@TargetApi(11)
 	public static long queryNumEntries(SQLiteDatabase db, String table, String selection) {
 		return DatabaseUtils.queryNumEntries(db, table, selection);
 	}
-	public static long longForQuery(SQLiteDatabase db, String query, String[] selectionArgs) {
+	public static long longForQuery(SQLiteDatabase db, String query, String... selectionArgs) {
 		return DatabaseUtils.longForQuery(db, query, selectionArgs);
 	}
-	public static long longForQuery(SQLiteStatement prog, String[] selectionArgs) {
+	public static long longForQuery(SQLiteStatement prog, String... selectionArgs) {
 		return DatabaseUtils.longForQuery(prog, selectionArgs);
 	}
-	public static String stringForQuery(SQLiteDatabase db, String query, String[] selectionArgs) {
+	public static String stringForQuery(SQLiteDatabase db, String query, String... selectionArgs) {
 		return DatabaseUtils.stringForQuery(db, query, selectionArgs);
 	}
-	public static String stringForQuery(SQLiteStatement prog, String[] selectionArgs) {
+	public static String stringForQuery(SQLiteStatement prog, String... selectionArgs) {
 		return DatabaseUtils.stringForQuery(prog, selectionArgs);
 	}
-	@TargetApi(11)
 	public static int getSqlStatementType(String sql) {
 		return DatabaseUtils.getSqlStatementType(sql);
 	}
-	@TargetApi(11)
 	public static String[] appendSelectionArgs(String[] originalValues, String[] newValues) {
 		return DatabaseUtils.appendSelectionArgs(originalValues, newValues);
 	}

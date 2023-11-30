@@ -101,7 +101,7 @@ public class RangeOptionsFragment extends Fragment {
 		intraStation = bool(R.id.option__range__config__interchange_intrastation, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (genConfig.isAllowIntraStationInterchange() != isChecked) {
-					genConfig.setIntraStationInterchange(isChecked);
+					genConfig.setAllowIntraStationInterchange(isChecked);
 					configsUpdatedListener.onConfigsUpdated();
 				}
 			}
@@ -109,7 +109,7 @@ public class RangeOptionsFragment extends Fragment {
 		interStation = bool(R.id.option__range__config__interchange_interstation, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (genConfig.isAllowInterStationInterchange() != isChecked) {
-					genConfig.setInterStationInterchange(isChecked);
+					genConfig.setAllowInterStationInterchange(isChecked);
 					configsUpdatedListener.onConfigsUpdated();
 				}
 			}
