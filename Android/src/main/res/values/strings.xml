@@ -132,13 +132,13 @@
 	<b>Which color to use when drawing the map without dynamic colors?</b>
 	]]></string>
 	<string name="range__config__border_size">Border size</string>
-	<string name="range__config__border_size__tooltip" process="HtmlParser"><![CDATA[
+	<string name="range__config__border_size__tooltip" process="HtmlParser" tools:ignore="DuplicateStrings"><![CDATA[
 	]]></string>
 	<string name="range__config__border_color">Border color</string>
-	<string name="range__config__border_color__tooltip" process="HtmlParser"><![CDATA[
+	<string name="range__config__border_color__tooltip" process="HtmlParser" tools:ignore="DuplicateStrings"><![CDATA[
 	]]></string>
 	<string name="range__config__pixel_density">Pixel density</string>
-	<string name="range__config__pixel_density__tooltip" process="HtmlParser"><![CDATA[
+	<string name="range__config__pixel_density__tooltip" process="HtmlParser" tools:ignore="DuplicateStrings"><![CDATA[
 	]]></string>
 
 	<string name="range__config__ui_show_stations">@string/pref__show_nearest__title</string>

@@ -9,7 +9,6 @@
 	tools:layout_height="104dp"
 	android:gravity="start"
 	tools:ignore="RtlHardcoded,NegativeMargin,SpUsage"
-	tools:targetApi="HONEYCOMB"
 	>
 	<ToggleButton
 		android:id="@+id/button__compass_center"

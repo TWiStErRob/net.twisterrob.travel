@@ -100,7 +100,7 @@ public class RangeOptionsFragment extends Fragment {
 
 		intraStation = bool(R.id.option__range__config__interchange_intrastation, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (genConfig.allowsIntraStationInterchange() != isChecked) {
+				if (genConfig.isAllowIntraStationInterchange() != isChecked) {
 					genConfig.setIntraStationInterchange(isChecked);
 					configsUpdatedListener.onConfigsUpdated();
 				}
@@ -108,7 +108,7 @@ public class RangeOptionsFragment extends Fragment {
 		});
 		interStation = bool(R.id.option__range__config__interchange_interstation, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (genConfig.allowsInterStationInterchange() != isChecked) {
+				if (genConfig.isAllowInterStationInterchange() != isChecked) {
 					genConfig.setInterStationInterchange(isChecked);
 					configsUpdatedListener.onConfigsUpdated();
 				}
@@ -294,8 +294,8 @@ public class RangeOptionsFragment extends Fragment {
 	public void bindConfigs(RangeMapGeneratorConfig genConfig, RangeMapDrawerConfig drawConfig) {
 		this.genConfig = genConfig;
 		this.drawConfig = drawConfig;
-		interStation.setChecked(genConfig.allowsInterStationInterchange());
-		intraStation.setChecked(genConfig.allowsIntraStationInterchange());
+		interStation.setChecked(genConfig.isAllowInterStationInterchange());
+		intraStation.setChecked(genConfig.isAllowIntraStationInterchange());
 		journeyTime.setValue(genConfig.getTotalAllottedTime());
 		startWalk.setValue(genConfig.getInitialAllottedWalkTime());
 		interchangeTime.setValue(genConfig.getIntraStationInterchangeTime());

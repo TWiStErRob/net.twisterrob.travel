@@ -167,10 +167,10 @@ public class RangeMapGeneratorConfig {
 	public DistanceStrategy getTubingStrategy() {
 		return tubingStrategy;
 	}
-	public boolean allowsIntraStationInterchange() {
+	public boolean isAllowIntraStationInterchange() {
 		return allowIntraStationInterchange;
 	}
-	public boolean allowsInterStationInterchange() {
+	public boolean isAllowInterStationInterchange() {
 		return allowInterStationInterchange;
 	}
 

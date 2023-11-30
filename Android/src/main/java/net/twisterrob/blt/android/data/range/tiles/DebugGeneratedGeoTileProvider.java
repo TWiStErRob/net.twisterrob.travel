@@ -48,12 +48,12 @@ public class DebugGeneratedGeoTileProvider extends GeneratedGeoTileProvider impl
 			double py = (midLat - minLat) / (maxLat - minLat) * getTileSize();
 			canvas.drawPoint((float)px, (float)py, pointPaint);
 			int line = -3;
-			canvas.drawText(String.format("%s", minLon), (float)px, (float)py + ++line * textHeight, textPaint);
-			canvas.drawText(String.format("%s", minLat), (float)px, (float)py + ++line * textHeight, textPaint);
-			canvas.drawText(String.format("%s", midLon), (float)px, (float)py + ++line * textHeight, textPaint);
-			canvas.drawText(String.format("%s", midLat), (float)px, (float)py + ++line * textHeight, textPaint);
-			canvas.drawText(String.format("%s", maxLon), (float)px, (float)py + ++line * textHeight, textPaint);
-			canvas.drawText(String.format("%s", maxLat), (float)px, (float)py + ++line * textHeight, textPaint);
+			canvas.drawText(Double.toString(minLon), (float)px, (float)py + ++line * textHeight, textPaint);
+			canvas.drawText(Double.toString(minLat), (float)px, (float)py + ++line * textHeight, textPaint);
+			canvas.drawText(Double.toString(midLon), (float)px, (float)py + ++line * textHeight, textPaint);
+			canvas.drawText(Double.toString(midLat), (float)px, (float)py + ++line * textHeight, textPaint);
+			canvas.drawText(Double.toString(maxLon), (float)px, (float)py + ++line * textHeight, textPaint);
+			canvas.drawText(Double.toString(maxLat), (float)px, (float)py + ++line * textHeight, textPaint);
 
 //			String fullDetails = String.format(Locale.ROOT, "%d,%d @ %d; %s,%s - %s,%s (mid = %s,%s)",
 //					x, y, zoom, minLon, minLat, maxLon, maxLat, midLon, midLat);

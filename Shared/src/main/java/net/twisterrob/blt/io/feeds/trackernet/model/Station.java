@@ -15,7 +15,7 @@ public class Station {
 	private String m_trackerNetCode;
 
 	@Override public String toString() {
-		return String.format(Locale.ROOT, "%s", m_name);
+		return m_name;
 	}
 
 	public String getName() {
