@@ -10,7 +10,7 @@
 		android:id="@+id/view__range__parameters_toolbar"
 		android:layout_width="match_parent"
 		android:layout_height="?attr/actionBarSize"
-		app:title="Parameters"
+		app:title="@string/range__config__title"
 		>
 	</androidx.appcompat.widget.Toolbar>
 </LinearLayout>
