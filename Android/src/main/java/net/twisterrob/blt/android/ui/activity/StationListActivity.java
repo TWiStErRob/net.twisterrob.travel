@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.slf4j.*;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.*;
@@ -49,7 +50,9 @@ public class StationListActivity extends BaseActivity implements FilterListener 
 			}
 		});
 
-		new AsyncTask<Void, Void, List<Station>>() {
+		@SuppressWarnings("unused")
+		@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+		Object task = new AsyncTask<Void, Void, List<Station>>() {
 			@Override protected List<Station> doInBackground(Void... params) {
 				return App.db().getStations();
 			}
