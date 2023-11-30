@@ -5,11 +5,11 @@ java-appengine = "17"
 
 agp = "8.1.1"
 twisterrob = "0.16"
-gretty = "3.0.5"
+gretty = "4.1.1"
 
 jsr305 = "3.0.2"
 kxml2 = "2.3.0"
-sqlite-jdbc = "3.7.15-M1"
+sqlite-jdbc = "3.44.1.0"
 glide = "3.8.0"
 
 slf4j = "2.0.9"
@@ -22,17 +22,17 @@ google-cloud = "26.27.0"
 # https://cloud.google.com/sdk/docs/release-notes
 google-cloud-sdk = "455.0.0"
 # https://cloud.google.com/appengine/docs/standard/java/release-notes
-google-appengine = "2.0.12"
+google-appengine = "2.0.22"
 google-appengine-plugin = "2.5.0"
 # TODO replace SupportPlaceAutocompleteFragment when updating to AndroidX
 # TODO update to 17.0.0 when using AndroidX
 google-maps = "16.1.0"
-google-datastore = "2.17.5"
+google-datastore = "2.17.6"
 
 micronaut = "4.2.0"
 micronaut-jackson = "2.4.0"
 micronaut-handlebars = "5.0.1"
-snakeyaml = "2.0"
+snakeyaml = "2.2"
 
 junit4 = "4.13.2"
 mockito = "5.7.0"

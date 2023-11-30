@@ -35,10 +35,10 @@ gretty { // org.akhikhl.gretty.GrettyExtension
 
 	// + Magic @Delegate org.akhikhl.gretty.ServerConfig through GrettyExtension implements GrettyConfig
 	httpPort = 8081
-	liveReloadEnabled = false
 	managedClassReload = false
 
 	// + Magic @Delegate org.akhikhl.gretty.WebAppConfig through GrettyExtension implements GrettyConfig
+	//...
 }
 
 idea {
