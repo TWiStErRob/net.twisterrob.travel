@@ -15,6 +15,9 @@ import net.twisterrob.blt.io.feeds.BaseFeedHandler;
 import net.twisterrob.blt.io.feeds.trackernet.PredictionDetailedFeedXml.*;
 import net.twisterrob.blt.model.Line;
 
+/**
+ * @see net.twisterrob.blt.io.feeds.Feed#TubeDepartureBoardsPredictionDetailed
+ */
 @NotThreadSafe
 public class PredictionDetailedFeedHandler extends BaseFeedHandler<PredictionSummaryFeed> {
 	PredictionSummaryFeed m_root;
