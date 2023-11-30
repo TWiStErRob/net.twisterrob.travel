@@ -54,8 +54,8 @@ android {
 		checkAllWarnings = true
 		checkDependencies = true
 		abortOnError = false
-		lintConfig = file("lint.xml")
-		baseline = file("lint-baseline.xml")
+		lintConfig = rootProject.file("config/lint/lint.xml")
+		baseline = rootProject.file("config/lint/lint-baseline.xml")
 	}
 	flavorDimensions += "app-build"
 	productFlavors {

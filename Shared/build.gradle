@@ -25,3 +25,8 @@ dependencies {
 
 	testImplementation(projects.shared.testHelpers)
 }
+
+lint {
+	checkAllWarnings = true
+	lintConfig = rootProject.file("config/lint/lint.xml")
+}
