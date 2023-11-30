@@ -28,6 +28,7 @@ dependencies {
 
 lint {
 	checkAllWarnings = true
+	warningsAsErrors = true
 	lintConfig = rootProject.file("config/lint/lint.xml")
 	enable += "StopShip"
 }
