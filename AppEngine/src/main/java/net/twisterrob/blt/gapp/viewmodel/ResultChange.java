@@ -2,9 +2,7 @@ package net.twisterrob.blt.gapp.viewmodel;
 
 import java.util.*;
 
-import name.fraser.neil.plaintext.diff_match_patch;
-import name.fraser.neil.plaintext.diff_match_patch.Diff;
-
+import net.twisterrob.blt.diff.HtmlDiff;
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus;
 import net.twisterrob.blt.model.Line;
 
@@ -107,10 +105,7 @@ public class ResultChange {
 	}
 
 	private static String diffDesc(String oldDesc, String newDesc) {
-		diff_match_patch differ = new diff_match_patch();
-		LinkedList<Diff> diff = differ.diff_main(oldDesc, newDesc);
-		differ.diff_cleanupSemantic(diff);
-		return differ.diff_prettyHtml(diff);
+		return new HtmlDiff().diff(oldDesc, newDesc);
 	}
 
 	protected void diffError() {

@@ -1,18 +1,11 @@
-repositories {
-	google()
-	mavenCentral()
-	gradlePluginPortal()
+plugins {
+	id("org.gradle.groovy-gradle-plugin")
 }
 
-def props = new Properties()
-props.load(file("../gradle.properties").newInputStream())
-
-//configurations.implementation.resolutionStrategy.cacheChangingModulesFor 0, 'seconds' // -SNAPSHOT
 dependencies {
-	implementation "net.twisterrob.gradle:twister-convention-plugins:${props.VERSION_TWISTER_GRADLE}"
-	implementation "com.android.tools.build:gradle:${props.VERSION_AGP}"
-	// https://github.com/GoogleCloudPlatform/app-gradle-plugin
-	implementation "com.google.cloud.tools:appengine-gradle-plugin:${props.VERSION_APPENGINE_PLUGIN}"
-	implementation "io.micronaut.application:io.micronaut.application.gradle.plugin:${props.VERSION_MICRONAUT}"
-	implementation "org.gretty:gretty:3.0.5"
+	implementation(libs.plugin.twisterrob)
+	implementation(libs.plugin.agp)
+	implementation(libs.plugin.appengine)
+	implementation(libs.plugin.micronaut)
+	implementation(libs.plugin.gretty)
 }

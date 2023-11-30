@@ -36,6 +36,7 @@ import java.util.regex.*;
  * Class containing the diff, match and patch methods.
  * Also contains the behaviour settings.
  */
+// TODO replace with https://github.com/google/diff-match-patch/tree/master/java
 public class diff_match_patch {
 
   // Defaults.

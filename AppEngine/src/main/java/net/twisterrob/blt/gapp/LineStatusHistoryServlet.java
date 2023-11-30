@@ -11,8 +11,6 @@ import io.micronaut.http.annotation.Produces;
 import io.micronaut.views.View;
 import jakarta.servlet.http.*;
 
-import org.apache.tools.ant.filters.StringInputStream;
-
 import com.google.cloud.datastore.*;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
 
@@ -95,7 +93,7 @@ public class LineStatusHistoryServlet {
 		if (content != null) {
 			try {
 				Feed feed = Feed.valueOf(entry.getKey().getKind());
-				InputStream stream = new StringInputStream(content, ENCODING);
+				InputStream stream = new ByteArrayInputStream(content.getBytes(ENCODING));
 				@SuppressWarnings({"RedundantTypeArguments", "RedundantSuppression"}) // False positive.
 				LineStatusFeed feedContents = feed.<LineStatusFeed>getHandler().parse(stream);
 				result = new Result(date, feedContents);

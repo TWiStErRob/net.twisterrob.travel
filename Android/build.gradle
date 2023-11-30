@@ -1,15 +1,8 @@
-//name = 'Better London Travel Android App'
-apply plugin: 'net.twisterrob.gradle.plugin.android-app'
-apply plugin: 'com.android.application'
-
-repositories {
-	maven {
-		name = "jitpack.io"
-		url = uri("https://jitpack.io/")
-		content {
-			includeModule("com.github.martin-stone", "hsv-alpha-color-picker-android")
-		}
-	}
+//name = "Better London Travel Android App"
+plugins {
+	id("net.twisterrob.blt.convention")
+	id("net.twisterrob.gradle.plugin.android-app")
+	id("com.android.application")
 }
 
 dependencies {
@@ -23,15 +16,15 @@ dependencies {
 	implementation("net.twisterrob.lib:twister-lib-android-color_picker")
 	implementation("net.twisterrob.lib:twister-lib-android-settings")
 
-	implementation(project(':Shared')) {
-		exclude module: 'android-polyfill'
+	implementation(projects.shared) {
+		exclude module: "android-polyfill"
 	}
-	implementation("com.google.android.gms:play-services-maps:${VERSION_MAPS}")
-	implementation("com.google.android.gms:play-services-places:${VERSION_MAPS}")
-	implementation("com.google.code.findbugs:jsr305:${VERSION_JSR305}")
-	implementation("com.github.bumptech.glide:glide:${VERSION_GLIDE}")
+	implementation(libs.gms.maps)
+	implementation(libs.gms.places)
+	implementation(libs.jsr305)
+	implementation(libs.glide)
 
-	apply from: "${rootDir}/gradle/testCompile.gradle", to: project
+	testImplementation(projects.shared.testHelpers)
 }
 
 android {
@@ -51,7 +44,7 @@ android {
 		}
 		debug {
 			// twister-lib-android only has release build type
-			matchingFallbacks = ['release']
+			matchingFallbacks = [ "release" ]
 		}
 	}
 	buildFeatures {
@@ -62,30 +55,32 @@ android {
 		checkDependencies = true
 		abortOnError = false
 		lintConfig = file("lint.xml")
-		baseline file("lint-baseline.xml")
+		baseline = file("lint-baseline.xml")
 	}
 	flavorDimensions += "app-build"
 	productFlavors {
 		full {
 			// default
-			applicationId = 'net.twisterrob.blt'
-			dimension "app-build"
+			applicationId = "net.twisterrob.blt"
+			dimension("app-build")
 		}
 		range {
-			applicationId = 'net.twisterrob.blt.range'
-			dimension "app-build"
+			applicationId = "net.twisterrob.blt.range"
+			dimension("app-build")
 		}
 	}
 }
 
 abstract class GenerateDatabase extends Copy {
+
 	@Internal("An intermediate property to satisfy AGP, tracked in destination.")
 	abstract DirectoryProperty getOutput()
 }
+
 def generateDataBase = tasks.register("generateDataBase", GenerateDatabase.class) {
 	dependsOn(":Data:runNetwork", ":Data:runPostCode")
-	from(new File(project(':Data').projectDir, 'output')) {
-		include '*.data.*.sql'
+	from(new File(projects.data.dependencyProject.projectDir, "output")) {
+		include("*.data.*.sql")
 	}
 	into(output)
 }

@@ -1,43 +1,36 @@
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
-apply plugin: 'java'
-apply plugin: 'io.micronaut.minimal.application'
-apply plugin: 'com.google.cloud.tools.appengine-appyaml'
-apply plugin: 'idea'
+plugins {
+	id("net.twisterrob.blt.convention")
+	id("org.gradle.java")
+	id("io.micronaut.minimal.application")
+	id("com.google.cloud.tools.appengine-appyaml")
+	id("org.gradle.idea")
+}
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
+	sourceCompatibility = libs.versions.java.appengine.get()
+	targetCompatibility = libs.versions.java.appengine.get()
 }
 
 dependencies {
-	implementation("com.google.appengine:appengine-api-1.0-sdk:2.0.12")
-	implementation(platform("com.google.cloud:libraries-bom:${VERSION_GCLOUD}"))
-	implementation("com.google.cloud:google-cloud-datastore")
+	implementation(libs.appengine.api)
+	implementation(platform(libs.google.cloud))
+	implementation(libs.google.cloud.datastore)
 
-	runtimeOnly("org.yaml:snakeyaml")
-	runtimeOnly("io.micronaut.serde:micronaut-serde-jackson")
-	implementation("io.micronaut.views:micronaut-views-handlebars")
+	runtimeOnly(libs.snakeyaml)
+	runtimeOnly(libs.micronaut.jackson)
+	implementation(libs.micronaut.handlebars)
 
-	implementation project(':Shared')
+	implementation(projects.shared)
+	implementation(projects.shared.diff)
 
-	implementation("org.slf4j:slf4j-api:${VERSION_SLF4J}")
-	runtimeOnly("org.apache.logging.log4j:log4j-slf4j2-impl:${VERSION_LOG4J}")
-	// for org.apache.tools.ant.filters.StringInputStream
-	implementation("ant:ant:1.6.5")
+	implementation(libs.slf4j.api)
+	runtimeOnly(libs.log4j.slf4j2)
 
-	apply from: "${rootDir}/gradle/testCompile.gradle", to: project
-	testImplementation("io.micronaut:micronaut-http-client")
-	testImplementation("com.github.jtidy:jtidy:${VERSION_JTIDY}")
-}
-
-sourceSets {
-	main {
-		java.srcDir 'src/main/diff'
-	}
-	test {
-		java.srcDir 'src/test/diff'
-	}
+	testImplementation(projects.shared.testHelpers)
+	testImplementation(libs.micronaut.httpClient)
+	testImplementation(libs.jtidy)
 }
 
 //noinspection UnnecessaryQualifiedReference
@@ -59,18 +52,18 @@ appengine { com.google.cloud.tools.gradle.appengine.appyaml.AppEngineAppYamlExte
 	}
 	tools {
 		System.getenv("GCLOUD_HOME")?.tap { cloudSdkHome = it }
-		cloudSdkVersion = VERSION_GCLOUD_SDK as String
+		cloudSdkVersion = libs.versions.google.cloud.sdk.get()
 		// https://cloud.google.com/sdk/gcloud/reference#--verbosity
 		verbosity = "info"
 	}
 }
 
 application {
-	mainClass.set("net.twisterrob.blt.gapp.Application")
+	mainClass = "net.twisterrob.blt.gapp.Application"
 }
 
 micronaut {
-	version = VERSION_MICRONAUT as String
+	version = libs.versions.micronaut.asProvider().get()
 	runtime("jetty")
 	testRuntime("junit4")
 	processing {

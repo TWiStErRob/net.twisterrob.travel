@@ -1,10 +1,35 @@
-rootProject.name = 'Better London Travel'
+import static net.twisterrob.gradle.settings.SettingsUtils.enableFeaturePreviewQuietly
 
-include ':Android'
-include ':Shared'
-include ':AppEngine'
-include ':Shared:android-polyfill'
-include ':Data'
+plugins {
+	id("net.twisterrob.gradle.plugin.settings") version "0.16"
+}
+
+rootProject.name = "net-twisterrob-blt"
+
+include(":Android")
+include(":AppEngine")
+include(":Data")
+include(":Shared")
+include(":Shared:android-polyfill")
+include(":Shared:diff")
+include(":Shared:test-helpers")
+
+enableFeaturePreviewQuietly(settings, "TYPESAFE_PROJECT_ACCESSORS", "Type-safe project accessors")
+
+dependencyResolutionManagement {
+	repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
+	repositories {
+		google()
+		mavenCentral()
+		maven {
+			name = "jitpack.io"
+			url = uri("https://jitpack.io/")
+			content {
+				includeModule("com.github.martin-stone", "hsv-alpha-color-picker-android")
+			}
+		}
+	}
+}
 
 includeBuild("libs") { build ->
 	apply from: new File(build.projectDir, "gradle/settings.substitutions.gradle"), to: build
