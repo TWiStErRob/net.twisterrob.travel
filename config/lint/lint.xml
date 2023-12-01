@@ -45,4 +45,12 @@
 		<ignore regexp="Invalid package reference in .*; not included in Android: `javax\.xml\.stream`\. Referenced from `net\.twisterrob\.blt\.io\.feeds\.timetable\.JourneyPlannerTimetableFeedKmlOut`\." />
 		<ignore regexp="Invalid package reference in .*; not included in Android: `javax\.xml\.stream`\. Referenced from `net\.twisterrob\.java\.io\.IndentingXMLStreamWriter`\." />
 	</issue>
+	<issue id="UseTomlInstead">
+		<ignore path="**/Shared/build.gradle" />
+	</issue>
+	<issue id="NewerVersionAvailable">
+		<!-- REPORT not suppressible in TOML. -->
+		<!-- TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/11 -->
+		<ignore regexp="com.github.bumptech.glide:glide" />
+	</issue>
 </lint>
