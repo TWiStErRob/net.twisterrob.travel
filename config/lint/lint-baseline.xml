@@ -1,4 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <issues format="6" by="lint 8.1.1" type="baseline" client="gradle" dependencies="true" name="AGP (8.1.1)" variant="all" version="8.1.1">
 
+    <issue
+        id="FragmentTagUsage"
+        message="Replace the &lt;fragment> tag with FragmentContainerView."
+        errorLine1="      &lt;fragment"
+        errorLine2="       ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_range_map.xml"
+            line="61"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="FragmentTagUsage"
+        message="Replace the &lt;fragment> tag with FragmentContainerView."
+        errorLine1="  &lt;fragment"
+        errorLine2="   ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_range_map.xml"
+            line="89"
+            column="4"/>
+    </issue>
+
+    <issue
+        id="FragmentTagUsage"
+        message="Replace the &lt;fragment> tag with FragmentContainerView."
+        errorLine1=" &lt;fragment"
+        errorLine2="  ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_range_map.xml"
+            line="104"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="FragmentTagUsage"
+        message="Replace the &lt;fragment> tag with FragmentContainerView."
+        errorLine1="&lt;fragment"
+        errorLine2=" ~~~~~~~~">
+        <location
+            file="src/main/res/layout/inc_map.xml"
+            line="2"
+            column="2"/>
+    </issue>
+
 </issues>
