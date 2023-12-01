@@ -7,7 +7,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	tools:openDrawer="end"
-	tools:context=".ui.activity.RangeMapActivity"
+	tools:context="net.twisterrob.blt.android.ui.activity.RangeMapActivity"
 	>
 	<androidx.coordinatorlayout.widget.CoordinatorLayout
 		xmlns:coordinator="http://schemas.android.com/apk/res-auto"
