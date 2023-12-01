@@ -60,7 +60,7 @@
 						>
 						<androidx.fragment.app.FragmentContainerView
 							android:id="@+id/view__range__search"
-							app:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
+							android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							tools:layout="@layout/inc_empty"
@@ -88,7 +88,7 @@
 		<!-- peekHeight = actionBarSize (56dp) + 1.5 * item_station height (~40dp) -->
 		<androidx.fragment.app.FragmentContainerView
 			android:id="@+id/view__range__bottom_sheet"
-			app:name="net.twisterrob.blt.android.ui.activity.RangeNearestFragment"
+			android:name="net.twisterrob.blt.android.ui.activity.RangeNearestFragment"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:elevation="4dp"
@@ -103,7 +103,7 @@
 
 	<androidx.fragment.app.FragmentContainerView
 		android:id="@+id/view__range__drawer"
-		app:name="net.twisterrob.blt.android.ui.activity.RangeOptionsFragment"
+		android:name="net.twisterrob.blt.android.ui.activity.RangeOptionsFragment"
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
 		android:layout_gravity="end"
