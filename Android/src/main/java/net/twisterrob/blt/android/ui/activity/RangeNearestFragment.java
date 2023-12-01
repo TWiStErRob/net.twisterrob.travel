@@ -6,6 +6,7 @@ import static java.util.concurrent.TimeUnit.*;
 
 import org.slf4j.*;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.*;
 import android.os.Bundle;
@@ -149,6 +150,7 @@ public class RangeNearestFragment extends Fragment {
 		return result;
 	}
 
+	@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 	private final class GeocoderTask extends SimpleSafeAsyncTask<LatLng, Void, Address> {
 		private final Geocoder geocoder;
 		private GeocoderTask(Context context) {

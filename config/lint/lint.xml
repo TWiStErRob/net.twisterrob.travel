@@ -7,10 +7,13 @@
 		<ignore path="src/main/AndroidManifest.xml" />
 		<ignore regexp="is only used in API level" />
 	</issue>
+	<issue id="StringFormatTrivial" severity="ignore">
+		<!-- In most cases there's a reason for using it, e.g. it helps with readability; keep until Kotlin. -->
+	</issue>
 	<!-- <![CDATA[<a href=""></a>]]> triggers it -->
 	<issue id="TypographyQuotes">
 		<!-- TOFIX report that these are not suppressible by resource, only by file -->
-		<ignore regexp="R\.string\.range\$config\$(.+)\$tooltip" />
+		<ignore regexp="R\.string\.range__config__(.+)__tooltip" />
 	</issue>
 	<!-- They give increased readability -->
 	<issue id="UnusedIds" severity="ignore" />
@@ -20,7 +23,7 @@
 		<ignore regexp="R\.string\.app_package" />
 		<ignore regexp="R\.bool\.in_prod" />
 		<ignore regexp="R\.bool\.in_test" />
-		<ignore regexp="R\.string\.range\$config\$(.+)\$tooltip" />
+		<ignore regexp="R\.string\.range__config__(.+)__tooltip" />
 	</issue>
 	<!-- STOPSHIP Leave me alone for now, we'll see when I'm ready to publish -->
 	<!--<issue id="IconDensity" severity="ignore" /> non-existent in 3.4.2? -->
@@ -28,8 +31,18 @@
 	<issue id="IconLocation" severity="ignore" />
 	<!-- STOPSHIP Leave me alone for now, we'll see when I'm ready to publish -->
 	<issue id="IconMissingDensityFolder" severity="ignore" />
+	<issue id="ConvertToWebp">
+		<ignore path="**/src/main/res/drawable/tfl_roundel_*.jpg" />
+	</issue>
 
+	<issue id="SyntheticAccessor" severity="ignore">
+		<!-- ProGuard will take care of it, hopefully. -->
+	</issue>
 	<issue id="UnknownNullness" severity="ignore">
-		<!-- Not Kotlin yet, reduce lint warning count -->
+		<!-- Not Kotlin yet, reduce lint warning count. -->
+	</issue>
+	<issue id="InvalidPackage">
+		<ignore regexp="Invalid package reference in .*; not included in Android: `javax\.xml\.stream`\. Referenced from `net\.twisterrob\.blt\.io\.feeds\.timetable\.JourneyPlannerTimetableFeedKmlOut`\." />
+		<ignore regexp="Invalid package reference in .*; not included in Android: `javax\.xml\.stream`\. Referenced from `net\.twisterrob\.java\.io\.IndentingXMLStreamWriter`\." />
 	</issue>
 </lint>

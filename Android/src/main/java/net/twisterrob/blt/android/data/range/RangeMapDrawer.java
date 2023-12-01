@@ -7,6 +7,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import org.slf4j.*;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 
 import net.twisterrob.blt.android.db.model.NetworkNode;
@@ -28,6 +29,7 @@ public abstract class RangeMapDrawer<T> {
 
 	private int[] pixels;
 
+	@SuppressLint("LambdaLast")
 	public RangeMapDrawer(Iterable<NetworkNode> nodes, RangeMapDrawerConfig config, RenderedGeoSize size) {
 		this.config = config;
 		double minX = Double.POSITIVE_INFINITY, maxX = Double.NEGATIVE_INFINITY;

@@ -22,8 +22,8 @@
 	</string-array>
 
 
-	<string name="about_tips">@string/empty</string>
-	<string name="about_faq">@string/empty</string>
+	<string name="about_tips" tools:ignore="DuplicateStrings">@string/empty</string>
+	<string name="about_faq" tools:ignore="DuplicateStrings">@string/empty</string>
 	<string name="about_help"
 		><big><b>Usage</b></big>
 		\nFor more information read the <a href="https://play.google.com/store/apps/details?id=net.twisterrob.blt.range">Google Play Store</a> description.

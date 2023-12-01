@@ -66,7 +66,7 @@ public class RangeMapGeneratorConfig {
 	/**
 	 * Average time it takes in minutes to transfer from one train to another without leaving the station.
 	 * Only valid if {@link #allowIntraStationInterchange} is allowed.
-	 * @see #setIntraStationInterchange(boolean)
+	 * @see #setAllowIntraStationInterchange(boolean)
 	 * @see #TIME_TRANSFER_MIN
 	 * @see #TIME_TRANSFER_MAX
 	 */
@@ -121,7 +121,7 @@ public class RangeMapGeneratorConfig {
 	 * Allow transfers without leaving the station. {@link #intraStationInterchangeTime} determines how long it takes to transfer.
 	 * @see #setIntraStationInterchangeTime(float)
 	 */
-	public RangeMapGeneratorConfig setIntraStationInterchange(boolean allow) {
+	public RangeMapGeneratorConfig setAllowIntraStationInterchange(boolean allow) {
 		this.allowIntraStationInterchange = allow;
 		return this;
 	}
@@ -133,7 +133,7 @@ public class RangeMapGeneratorConfig {
 	 * @see #START_WALK_MIN
 	 * @see #START_WALK_MAX
 	 */
-	public RangeMapGeneratorConfig setInterStationInterchange(boolean allow) {
+	public RangeMapGeneratorConfig setAllowInterStationInterchange(boolean allow) {
 		this.allowInterStationInterchange = allow;
 		return this;
 	}
@@ -167,10 +167,10 @@ public class RangeMapGeneratorConfig {
 	public DistanceStrategy getTubingStrategy() {
 		return tubingStrategy;
 	}
-	public boolean allowsIntraStationInterchange() {
+	public boolean isAllowIntraStationInterchange() {
 		return allowIntraStationInterchange;
 	}
-	public boolean allowsInterStationInterchange() {
+	public boolean isAllowInterStationInterchange() {
 		return allowInterStationInterchange;
 	}
 

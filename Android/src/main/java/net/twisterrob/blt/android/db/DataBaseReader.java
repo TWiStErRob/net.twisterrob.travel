@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 
 import org.slf4j.*;
 
+import android.annotation.SuppressLint;
 import android.database.*;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -14,8 +15,8 @@ import net.twisterrob.blt.model.*;
 import net.twisterrob.java.collections.MultiKey;
 import net.twisterrob.java.model.Location;
 
-@SuppressWarnings("resource")
-// TODO fix resource leaks
+@SuppressLint("Range")
+@SuppressWarnings("resource") // TODO fix resource leaks
 class DataBaseReader {
 	private static final Logger LOG = LoggerFactory.getLogger(DataBaseReader.class);
 

@@ -1,24 +1,26 @@
 package net.twisterrob.blt.model;
 
+import java.util.Locale;
+
 public enum PlatformDirection {
 	West() {
 		@Override public boolean matches(String input) {
-			return input.toLowerCase().contains("westbound");
+			return input.toLowerCase(Locale.UK).contains("westbound");
 		}
 	},
 	East() {
 		@Override public boolean matches(String input) {
-			return input.toLowerCase().contains("eastbound");
+			return input.toLowerCase(Locale.UK).contains("eastbound");
 		}
 	},
 	North() {
 		@Override public boolean matches(String input) {
-			return input.toLowerCase().contains("northbound");
+			return input.toLowerCase(Locale.UK).contains("northbound");
 		}
 	},
 	South() {
 		@Override public boolean matches(String input) {
-			return input.toLowerCase().contains("southbound");
+			return input.toLowerCase(Locale.UK).contains("southbound");
 		}
 	},
 	Other() {

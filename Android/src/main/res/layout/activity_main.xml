@@ -11,4 +11,5 @@
 	android:stretchMode="columnWidth"
 	android:verticalSpacing="10dip"
 	tools:listitem="@layout/item_main_launcher"
+	tools:context="net.twisterrob.blt.android.ui.activity.main.MainActivity"
 	/>

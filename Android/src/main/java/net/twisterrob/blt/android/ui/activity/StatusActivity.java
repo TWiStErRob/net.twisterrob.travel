@@ -2,6 +2,7 @@ package net.twisterrob.blt.android.ui.activity;
 
 import java.util.*;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -69,7 +70,9 @@ public class StatusActivity extends BaseActivity {
 	}
 
 	private void delayedGetRoot() {
-		new DownloadFeedTask<LineStatusFeed>() {
+		@SuppressWarnings("unused")
+		@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+		Object task = new DownloadFeedTask<LineStatusFeed>() {
 			@Override protected void onPostExecute(AsyncTaskResult<Feed, LineStatusFeed> result) {
 				if (result.getError() != null) {
 					LOG.warn("Cannot load line statuses", result.getError());

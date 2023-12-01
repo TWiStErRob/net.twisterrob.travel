@@ -22,7 +22,7 @@
 					android:title="@string/compass_east" />
 				<item
 					android:id="@+id/menu__option__compass_others"
-					android:title="@string/compass_center" />
+					android:title="@string/compass_other" />
 			</group>
 		</menu>
 	</item>

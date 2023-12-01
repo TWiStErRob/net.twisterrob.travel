@@ -2,6 +2,8 @@ package net.twisterrob.blt.android.db.model;
 
 import java.util.*;
 
+import android.annotation.SuppressLint;
+
 import net.twisterrob.blt.model.Line;
 import net.twisterrob.java.model.Location;
 
@@ -82,6 +84,7 @@ public class NetworkNode {
 		return true;
 	}
 
+	@SuppressLint("LambdaLast")
 	public static NetworkNode find(Iterable<NetworkNode> nodes, String name, Line line) {
 		for (NetworkNode node : nodes) {
 			if (node.getName().equals(name) && node.getLine() == line) {

@@ -3,6 +3,7 @@ package net.twisterrob.blt.android.ui.activity;
 import java.util.*;
 import java.util.Map.Entry;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -141,7 +142,9 @@ public class PredictionSummaryActivity extends BaseActivity implements
 	private void delayedGetRoot() {
 		Map<String, Object> args = new HashMap<>();
 		args.put("line", m_line);
-		new DownloadFeedTask<PredictionSummaryFeed>(args) {
+		@SuppressWarnings("unused")
+		@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+		Object task = new DownloadFeedTask<PredictionSummaryFeed>(args) {
 			@Override protected void onPostExecute(AsyncTaskResult<Feed, PredictionSummaryFeed> result) {
 				if (result.getError() != null) {
 					LOG.warn("Cannot load line prediction summary", result.getError());

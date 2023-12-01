@@ -14,6 +14,9 @@ import android.util.Xml;
 import net.twisterrob.blt.io.feeds.BaseFeedHandler;
 import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeedXml.*;
 
+/**
+ * @see net.twisterrob.blt.io.feeds.Feed#TubeDepartureBoardsPredictionSummary
+ */
 @NotThreadSafe
 public class PredictionSummaryFeedHandler extends BaseFeedHandler<PredictionSummaryFeed> {
 	PredictionSummaryFeed m_root = new PredictionSummaryFeed();

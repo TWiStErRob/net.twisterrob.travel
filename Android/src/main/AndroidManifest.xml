@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	>
 
 	<!-- App required -->
@@ -14,7 +15,9 @@
 		android:icon="@mipmap/ic_launcher"
 		android:allowBackup="true"
 		android:largeHeap="true"
-		android:theme="@style/AppTheme.Default">
+		android:supportsRtl="false"
+		android:theme="@style/AppTheme.Default"
+		>
 
 		<meta-data
 			android:name="com.google.android.geo.API_KEY"
@@ -27,11 +30,15 @@
 			android:name=".ui.StationSuggestProvider"
 			android:authorities="${applicationId}.suggest_station"
 			android:exported="false"
-			android:syncable="false" />
+			android:syncable="false"
+			/>
 
 		<activity
 			android:name=".ui.activity.main.MainActivity"
-			android:label="@string/app_name">
+			android:exported="true"
+			android:label="@string/app_name"
+			tools:ignore="RedundantLabel"
+			>
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -43,7 +50,9 @@
 
 		<activity
 			android:name=".ui.activity.StatusActivity"
-			android:label="@string/launcher__line_status">
+			android:exported="false"
+			android:label="@string/launcher__line_status"
+			>
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="net.twisterrob.blt.android.ui.activity.main.MainActivity" />
@@ -51,7 +60,9 @@
 
 		<activity
 			android:name=".ui.activity.PredictionSummaryActivity"
-			android:label="@string/launcher__prediction_summary">
+			android:exported="false"
+			android:label="@string/launcher__prediction_summary"
+			>
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="net.twisterrob.blt.android.ui.activity.StatusActivity" />
@@ -59,7 +70,9 @@
 
 		<activity
 			android:name=".ui.activity.StationListActivity"
-			android:label="@string/launcher__station_list">
+			android:exported="false"
+			android:label="@string/launcher__station_list"
+			>
 			<intent-filter>
 				<action android:name="android.intent.action.SEARCH" />
 			</intent-filter>
@@ -73,7 +86,9 @@
 
 		<activity
 			android:name=".ui.activity.StationInfoActivity"
-			android:label="@string/launcher__station_info">
+			android:exported="false"
+			android:label="@string/launcher__station_info"
+			>
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="net.twisterrob.blt.android.ui.activity.StationListActivity" />
@@ -81,7 +96,9 @@
 
 		<activity
 			android:name=".ui.activity.StationMapsActivity"
-			android:label="@string/launcher__station_map">
+			android:exported="false"
+			android:label="@string/launcher__station_map"
+			>
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="net.twisterrob.blt.android.ui.activity.main.MainActivity" />
@@ -89,7 +106,9 @@
 
 		<activity
 			android:name=".ui.activity.PostCodesActivity"
-			android:label="@string/launcher__postcode_map">
+			android:exported="false"
+			android:label="@string/launcher__postcode_map"
+			>
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="net.twisterrob.blt.android.ui.activity.main.MainActivity" />
@@ -97,8 +116,10 @@
 
 		<activity
 			android:name=".ui.activity.RangeMapActivity"
+			android:exported="false"
 			android:label="@string/launcher__range_map"
-			android:theme="@style/AppTheme.NoActionBar">
+			android:theme="@style/AppTheme.NoActionBar"
+			>
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="net.twisterrob.blt.android.ui.activity.main.MainActivity" />

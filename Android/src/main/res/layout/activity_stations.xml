@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge>
+<merge
+	xmlns:tools="http://schemas.android.com/tools"
+	tools:context="net.twisterrob.blt.android.ui.activity.StationListActivity"
+	>
 	<include layout="@layout/inc_refreshable_empty_list" />
 </merge>

@@ -59,6 +59,13 @@ jobs:
           name: 'Unit Test Results'
           path: ${{ github.workspace }}/**/build/reports/tests/*/
 
+      - name: "Upload 'Android Lint Results' artifact."
+        if: success() || failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: 'Android Lint Results'
+          path: ${{ github.workspace }}/**/build/reports/lint-results*
+
       - name: "Publish 'Unit Results' check suite."
         if: success() || failure()
         uses: EnricoMi/publish-unit-test-result-action@v2

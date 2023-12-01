@@ -4,6 +4,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import org.slf4j.*;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 
 import com.google.android.gms.maps.model.*;
@@ -14,6 +15,7 @@ import net.twisterrob.blt.android.db.model.NetworkNode;
 public class RangeMapDrawerAndroid extends RangeMapDrawer<Bitmap> {
 	private static final Logger LOG = LoggerFactory.getLogger(RangeMapDrawerAndroid.class);
 
+	@SuppressLint("LambdaLast")
 	public RangeMapDrawerAndroid(Iterable<NetworkNode> nodes, RangeMapDrawerConfig config) {
 		super(nodes, config, new AndroidOpenGLRenderedGeoSize());
 	}

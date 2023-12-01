@@ -7,7 +7,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	tools:openDrawer="end"
-	tools:context=".ui.activity.RangeMapActivity"
+	tools:context="net.twisterrob.blt.android.ui.activity.RangeMapActivity"
 	>
 	<androidx.coordinatorlayout.widget.CoordinatorLayout
 		xmlns:coordinator="http://schemas.android.com/apk/res-auto"
@@ -80,6 +80,7 @@
 			fab:fabSize="mini"
 			fab:useCompatPadding="true"
 			fab:backgroundTint="?colorPrimary"
+			android:contentDescription="@string/range__config__title"
 			coordinator:layout_anchor="@+id/view__range__bottom_sheet"
 			coordinator:layout_anchorGravity="top|end"
 			/>

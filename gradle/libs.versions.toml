@@ -3,6 +3,7 @@ java = "1.8"
 java-android = "17"
 java-appengine = "17"
 
+#noinspection AndroidGradlePluginVersion https://github.com/TWiStErRob/net.twisterrob.travel/issues/13
 agp = "8.1.1"
 twisterrob = "0.16"
 gretty = "4.1.1"
@@ -10,6 +11,7 @@ gretty = "4.1.1"
 jsr305 = "3.0.2"
 kxml2 = "2.3.0"
 sqlite-jdbc = "3.44.1.0"
+#noinspection GradleDependency https://github.com/TWiStErRob/net.twisterrob.travel/issues/11
 glide = "3.8.0"
 
 slf4j = "2.0.9"
@@ -26,6 +28,7 @@ google-appengine = "2.0.22"
 google-appengine-plugin = "2.5.0"
 # TODO replace SupportPlaceAutocompleteFragment when updating to AndroidX
 # TODO update to 17.0.0 when using AndroidX
+#noinspection GradleDependency,OutdatedLibrary https://github.com/TWiStErRob/net.twisterrob.travel/issues/12
 google-maps = "16.1.0"
 google-datastore = "2.17.6"
 

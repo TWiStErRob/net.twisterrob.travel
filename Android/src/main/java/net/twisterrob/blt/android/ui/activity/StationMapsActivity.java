@@ -2,6 +2,7 @@ package net.twisterrob.blt.android.ui.activity;
 
 import java.util.*;
 
+import android.annotation.SuppressLint;
 import android.os.*;
 import androidx.fragment.app.FragmentActivity;
 
@@ -34,6 +35,7 @@ public class StationMapsActivity extends FragmentActivity {
 		});
 	}
 
+	@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 	private class LoadStationsTask extends AsyncTask<Void, Void, List<Station>> {
 		@Override protected List<Station> doInBackground(Void... params) {
 			return App.db().getStations();

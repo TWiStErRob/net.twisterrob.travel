@@ -3,6 +3,7 @@ package net.twisterrob.blt.android.ui.activity;
 import java.util.*;
 import java.util.Map.Entry;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.*;
 import androidx.fragment.app.FragmentActivity;
@@ -36,6 +37,7 @@ public class PostCodesActivity extends FragmentActivity {
 		});
 	}
 
+	@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 	private class LoadPostCodesTask extends AsyncTask<Void, Void, Map<String, List<AreaHullPoint>>> {
 		@Override protected Map<String, List<AreaHullPoint>> doInBackground(Void... params) {
 			return App.db().getAreas();
