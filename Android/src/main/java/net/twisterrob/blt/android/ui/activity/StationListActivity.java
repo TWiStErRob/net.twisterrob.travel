@@ -70,7 +70,7 @@ public class StationListActivity extends BaseActivity implements FilterListener 
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			filter(query);
 		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-			SpannableString querySpan = (SpannableString)intent.getExtras().get(SearchManager.USER_QUERY);
+			SpannableString querySpan = (SpannableString)intent.getCharSequenceExtra(SearchManager.USER_QUERY);
 			String query = querySpan.toString();
 			filter(query);
 		}

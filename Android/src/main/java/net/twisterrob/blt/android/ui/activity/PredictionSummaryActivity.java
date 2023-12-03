@@ -14,6 +14,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ExpandableListView.*;
 
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
+import net.twisterrob.android.utils.tools.BundleTools;
+import net.twisterrob.android.utils.tools.IntentTools;
 import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
 import net.twisterrob.blt.android.ui.ListViewHandler;
@@ -75,7 +77,7 @@ public class PredictionSummaryActivity extends BaseActivity implements
 
 		// gather params
 		Intent intent = getIntent();
-		m_line = (Line)intent.getSerializableExtra(EXTRA_LINE);
+		m_line = IntentTools.getSerializableExtra(intent, EXTRA_LINE, Line.class);
 		getSupportActionBar().setSubtitle(m_line.getTitle());
 	}
 
@@ -127,7 +129,7 @@ public class PredictionSummaryActivity extends BaseActivity implements
 		}
 
 		m_directionsEnabled.clear();
-		PlatformDirection[] dirs = (PlatformDirection[])state.getSerializable("dirs");
+		PlatformDirection[] dirs = BundleTools.getSerializable(state, "dirs", PlatformDirection[].class);
 		if (dirs != null) {
 			m_directionsEnabled.addAll(Arrays.asList(dirs));
 		}

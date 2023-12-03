@@ -10,6 +10,7 @@ import android.widget.*;
 import android.widget.ExpandableListView.*;
 
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
+import net.twisterrob.android.utils.tools.IntentTools;
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
@@ -73,7 +74,7 @@ public class StationInfoActivity extends BaseActivity implements
 
 		// gather params
 		Intent intent = getIntent();
-		String name = (String)intent.getSerializableExtra(EXTRA_STATION_NAME);
+		String name = IntentTools.getSerializableExtra(intent, EXTRA_STATION_NAME, String.class);
 		m_station = App.db().getStation(name);
 
 		getSupportActionBar().setSubtitle(name);
