@@ -67,12 +67,11 @@ public class RangeMapActivity extends MapActivity {
 	private SupportPlaceAutocompleteFragment searchFragment;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
-		int statusBarColor = ColorUtils.setAlphaComponent(ContextCompat.getColor(this, R.color.accent), 0x66);
-		AndroidTools.setTranslucentStatusBar(getWindow(), statusBarColor);
+		setTranslucentStatusBar();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_range_map);
 
-		AndroidTools.accountForStatusBar(findViewById(R.id.view__range__toolbar_container));
+		accountForStatusBar();
 		Toolbar toolbar = (Toolbar)findViewById(R.id.view__range__toolbar);
 		setSupportActionBar(toolbar);
 //		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -125,6 +124,17 @@ public class RangeMapActivity extends MapActivity {
 				setNodes(nodes);
 			}
 		}.execute((Void[])null);
+	}
+
+	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/12
+	private void setTranslucentStatusBar() {
+		int statusBarColor = ColorUtils.setAlphaComponent(ContextCompat.getColor(this, R.color.accent), 0x66);
+		AndroidTools.setTranslucentStatusBar(getWindow(), statusBarColor);
+	}
+
+	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/12
+	private void accountForStatusBar() {
+		AndroidTools.accountForStatusBar(findViewById(R.id.view__range__toolbar_container));
 	}
 
 	@SuppressWarnings("deprecation")
@@ -190,7 +200,7 @@ public class RangeMapActivity extends MapActivity {
 
 	private void zoomFullLondon() {
 		LatLngBounds fullLondon = new LatLngBounds(new LatLng(51.342889, -0.611361), new LatLng(51.705232, 0.251388));
-		Point screen = AndroidTools.getScreenSize(getWindowManager().getDefaultDisplay());
+		Point screen = AndroidTools.getScreenSize(ContextCompat.getDisplayOrDefault(this));
 		map.moveCamera(CameraUpdateFactory.newLatLngBounds(fullLondon, screen.x, screen.y, dipInt(this, -160)));
 		// TODO below doesn't work, even with latest GMS, negative padding above is a workaround
 //		map.moveCamera(CameraUpdateFactory.zoomIn());
@@ -214,7 +224,9 @@ public class RangeMapActivity extends MapActivity {
 					if (bottomMostTopView.getVisibility() != View.GONE) {
 						topMargin = bottomMostTopView.getBottom() + ViewTools.getBottomMargin(bottomMostTopView);
 					} else {
-						topMargin = AndroidTools.getStatusBarHeight(RangeMapActivity.this);
+						@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/12
+						int height = AndroidTools.getStatusBarHeight(RangeMapActivity.this);
+						topMargin = height;
 					}
 				}
 				int bottomMargin = 0;

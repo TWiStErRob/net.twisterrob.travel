@@ -175,6 +175,7 @@ public class RangeNearestFragment extends Fragment {
 
 		@Override protected @Nullable Address doInBackground(LatLng latlng) throws Exception {
 			if (geocoder != null) {
+				@SuppressWarnings("deprecation") // We're already in background.
 				List<Address> location = geocoder.getFromLocation(latlng.latitude, latlng.longitude, 1);
 				if (location != null && !location.isEmpty()) {
 					return location.get(0);
