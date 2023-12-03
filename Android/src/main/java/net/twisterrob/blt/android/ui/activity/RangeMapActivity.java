@@ -56,7 +56,7 @@ public class RangeMapActivity extends MapActivity {
 	private List<Marker> markers = new LinkedList<>();
 	private RangeMapGeneratorConfig genConfig = new RangeMapGeneratorConfig();
 	private RangeMapDrawerConfig drawConfig = new RangeMapDrawerConfig();
-	private BottomSheetBehavior behavior;
+	private BottomSheetBehavior<?> behavior;
 	private RangeNearestFragment nearestFragment;
 	private RangeOptionsFragment optionsFragment;
 	private ClickThroughDrawerLayout drawers;
