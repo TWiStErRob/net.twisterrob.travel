@@ -10,6 +10,9 @@ import android.os.*;
 import androidx.annotation.*;
 
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.Fragment;
@@ -25,7 +28,6 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.ui.*;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.GoogleMap.*;
 import com.google.android.gms.maps.model.*;
@@ -64,8 +66,7 @@ public class RangeMapActivity extends MapActivity {
 	private Set<NetworkNode> tubeNetwork;
 	private DrawAsyncTask drawTask;
 	private LatLng lastStartPoint;
-	@SuppressWarnings("deprecation")
-	private SupportPlaceAutocompleteFragment searchFragment;
+	private AutocompleteSupportFragment searchFragment;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		setTranslucentStatusBar();
@@ -140,7 +141,7 @@ public class RangeMapActivity extends MapActivity {
 
 	@SuppressWarnings("deprecation")
 	private void setupSearch(Fragment searchFragment) {
-		this.searchFragment = (SupportPlaceAutocompleteFragment)searchFragment;
+		this.searchFragment = (AutocompleteSupportFragment)searchFragment;
 		this.searchFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
 			@Override public void onPlaceSelected(Place place) {
 				LOG.trace("Selected: {}", StringerTools.toString(place));
@@ -283,7 +284,7 @@ public class RangeMapActivity extends MapActivity {
 		RangeMapDrawerAndroid rangeDrawer = new RangeMapDrawerAndroid(tubeNetwork, drawConfig);
 		// disabled for now, the bounds are hardcoded
 //		map.moveCamera(CameraUpdateFactory.newLatLngBounds(rangeDrawer.getBounds(), 0));
-		searchFragment.setBoundsBias(rangeDrawer.getBounds());
+		searchFragment.setLocationBias(RectangularBounds.newInstance(rangeDrawer.getBounds()));
 		// range map below
 		Map<NetworkNode, Double> emptyNetwork = Collections.emptyMap();
 		mapOverlay = map.addGroundOverlay(new GroundOverlayOptions()
