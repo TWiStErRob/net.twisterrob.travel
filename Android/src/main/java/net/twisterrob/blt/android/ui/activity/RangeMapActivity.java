@@ -114,8 +114,8 @@ public class RangeMapActivity extends MapActivity {
 		setupSearch(fm.findFragmentById(R.id.view__range__search));
 
 		updateToolbarVisibility();
-		@SuppressWarnings("unused")
 		@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+		@SuppressWarnings({"unused", "deprecation"}) // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 		Object task = new AsyncTask<Void, Void, Set<NetworkNode>>() {
 			@Override protected Set<NetworkNode> doInBackground(Void... params) {
 				return App.db().getTubeNetwork();
@@ -254,7 +254,7 @@ public class RangeMapActivity extends MapActivity {
 	}
 	private void killTask() {
 		if (drawTask != null) {
-			drawTask.cancel(true);
+			drawTask.cancel();
 			drawTask = null;
 		}
 	}
@@ -389,6 +389,7 @@ public class RangeMapActivity extends MapActivity {
 	}
 
 	@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+	@SuppressWarnings({"unused", "deprecation"}) // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 	private final class DrawAsyncTask extends SimpleAsyncTask<LatLng, DrawAsyncTask.Result, DrawAsyncTask.Result> {
 		private final Set<NetworkNode> nodes;
 		private final RangeMapGeneratorConfig config;
@@ -427,6 +428,10 @@ public class RangeMapActivity extends MapActivity {
 		}
 		@Override protected void onPostExecute(Result result) {
 			updateMap(result.overlay, result.startNodes);
+		}
+
+		public void cancel() {
+			super.cancel(true);
 		}
 
 		class Result {

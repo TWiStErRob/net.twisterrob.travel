@@ -50,8 +50,8 @@ public class StationListActivity extends BaseActivity implements FilterListener 
 			}
 		});
 
-		@SuppressWarnings("unused")
 		@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+		@SuppressWarnings({"unused", "deprecation"}) // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 		Object task = new AsyncTask<Void, Void, List<Station>>() {
 			@Override protected List<Station> doInBackground(Void... params) {
 				return App.db().getStations();

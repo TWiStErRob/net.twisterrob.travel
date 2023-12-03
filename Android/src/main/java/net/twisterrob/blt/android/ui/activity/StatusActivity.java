@@ -70,8 +70,8 @@ public class StatusActivity extends BaseActivity {
 	}
 
 	private void delayedGetRoot() {
-		@SuppressWarnings("unused")
 		@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+		@SuppressWarnings({"unused", "deprecation"}) // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 		Object task = new DownloadFeedTask<LineStatusFeed>() {
 			@Override protected void onPostExecute(AsyncTaskResult<Feed, LineStatusFeed> result) {
 				if (result.getError() != null) {

@@ -142,8 +142,8 @@ public class PredictionSummaryActivity extends BaseActivity implements
 	private void delayedGetRoot() {
 		Map<String, Object> args = new HashMap<>();
 		args.put("line", m_line);
-		@SuppressWarnings("unused")
 		@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+		@SuppressWarnings({"unused", "deprecation"}) // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 		Object task = new DownloadFeedTask<PredictionSummaryFeed>(args) {
 			@Override protected void onPostExecute(AsyncTaskResult<Feed, PredictionSummaryFeed> result) {
 				if (result.getError() != null) {

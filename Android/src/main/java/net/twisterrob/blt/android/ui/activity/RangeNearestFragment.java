@@ -55,7 +55,7 @@ public class RangeNearestFragment extends Fragment {
 	@Override public void onDestroyView() {
 		super.onDestroyView();
 		if (m_geocoderTask != null) {
-			m_geocoderTask.cancel(true);
+			m_geocoderTask.cancel();
 			m_geocoderTask = null;
 		}
 	}
@@ -65,7 +65,7 @@ public class RangeNearestFragment extends Fragment {
 				latlng, addressString, StringerTools.toString(m_geocoderTask));
 		if (address == null) {
 			if (m_geocoderTask != null) {
-				m_geocoderTask.cancel(true);
+				m_geocoderTask.cancel();
 				m_geocoderTask = null;
 			}
 			m_geocoderTask = new GeocoderTask(getContext());
@@ -188,6 +188,11 @@ public class RangeNearestFragment extends Fragment {
 		@Override protected void onError(@NonNull Exception ex, LatLng latlng) {
 			LOG.warn("Cannot determine location for {}", latlng, ex);
 			updateLocationInternal(latlng, null);
+		}
+		
+		@SuppressWarnings("deprecation") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+		public void cancel() {
+			super.cancel(true);
 		}
 	}
 
