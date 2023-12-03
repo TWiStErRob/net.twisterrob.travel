@@ -1,5 +1,6 @@
 package net.twisterrob.blt.io.feeds;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.*;
 
 import net.twisterrob.blt.io.feeds.facilities.FacilitiesFeedHandler;
@@ -437,11 +438,15 @@ public enum Feed {
 			if (m_handler == null) {
 				throw new IllegalArgumentException(this + " does not have a handler registered");
 			}
-			return (FeedHandler<T>)m_handler.newInstance();
+			return (FeedHandler<T>)m_handler.getDeclaredConstructor().newInstance();
 		} catch (InstantiationException ex) {
 			throw new RuntimeException(ex);
 		} catch (IllegalAccessException ex) {
 			throw new RuntimeException(ex);
+		} catch (InvocationTargetException e) {
+			throw new RuntimeException(e.getTargetException());
+		} catch (NoSuchMethodException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
