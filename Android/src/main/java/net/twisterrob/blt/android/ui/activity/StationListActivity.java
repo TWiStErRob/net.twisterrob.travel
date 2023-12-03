@@ -50,8 +50,8 @@ public class StationListActivity extends BaseActivity implements FilterListener 
 			}
 		});
 
-		@SuppressWarnings("unused")
-		@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+		@SuppressLint("StaticFieldLeak") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+		@SuppressWarnings({"unused", "deprecation"}) // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 		Object task = new AsyncTask<Void, Void, List<Station>>() {
 			@Override protected List<Station> doInBackground(Void... params) {
 				return App.db().getStations();
@@ -70,7 +70,7 @@ public class StationListActivity extends BaseActivity implements FilterListener 
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			filter(query);
 		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-			SpannableString querySpan = (SpannableString)intent.getExtras().get(SearchManager.USER_QUERY);
+			SpannableString querySpan = (SpannableString)intent.getCharSequenceExtra(SearchManager.USER_QUERY);
 			String query = querySpan.toString();
 			filter(query);
 		}

@@ -32,13 +32,17 @@ public class PostCodesActivity extends FragmentActivity {
 				map.setMyLocationEnabled(true);
 				LatLng cityOfLondon = new LatLng(51.512161, -0.090981);
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(cityOfLondon, 13));
-				new LoadPostCodesTask().execute((Void[])null);
+				new LoadPostCodesTask().execute();
 			}
 		});
 	}
 
-	@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+	@SuppressLint("StaticFieldLeak") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 	private class LoadPostCodesTask extends AsyncTask<Void, Void, Map<String, List<AreaHullPoint>>> {
+		public void execute() {
+			execute((Void[])null);
+		}
 		@Override protected Map<String, List<AreaHullPoint>> doInBackground(Void... params) {
 			return App.db().getAreas();
 		}

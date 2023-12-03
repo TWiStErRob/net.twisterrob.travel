@@ -10,6 +10,7 @@ import android.widget.*;
 import android.widget.ExpandableListView.*;
 
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
+import net.twisterrob.android.utils.tools.IntentTools;
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
@@ -73,7 +74,7 @@ public class StationInfoActivity extends BaseActivity implements
 
 		// gather params
 		Intent intent = getIntent();
-		String name = (String)intent.getSerializableExtra(EXTRA_STATION_NAME);
+		String name = IntentTools.getSerializableExtra(intent, EXTRA_STATION_NAME, String.class);
 		m_station = App.db().getStation(name);
 
 		getSupportActionBar().setSubtitle(name);
@@ -97,8 +98,8 @@ public class StationInfoActivity extends BaseActivity implements
 			Map<String, Object> args = new HashMap<>();
 			args.put("line", line);
 			args.put("station", m_station.getTrackerNetCode(line));
-			@SuppressWarnings("unused")
-			@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+			@SuppressLint("StaticFieldLeak") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+			@SuppressWarnings({"unused", "deprecation"}) // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 			Object task = new DownloadFeedTask<PredictionSummaryFeed>(args) {
 				@Override protected void onPostExecute(AsyncTaskResult<Feed, PredictionSummaryFeed> result) {
 					if (result.getError() != null) {

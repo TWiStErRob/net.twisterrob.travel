@@ -55,7 +55,7 @@ public class RangeNearestFragment extends Fragment {
 	@Override public void onDestroyView() {
 		super.onDestroyView();
 		if (m_geocoderTask != null) {
-			m_geocoderTask.cancel(true);
+			m_geocoderTask.cancel();
 			m_geocoderTask = null;
 		}
 	}
@@ -65,7 +65,7 @@ public class RangeNearestFragment extends Fragment {
 				latlng, addressString, StringerTools.toString(m_geocoderTask));
 		if (address == null) {
 			if (m_geocoderTask != null) {
-				m_geocoderTask.cancel(true);
+				m_geocoderTask.cancel();
 				m_geocoderTask = null;
 			}
 			m_geocoderTask = new GeocoderTask(getContext());
@@ -150,7 +150,7 @@ public class RangeNearestFragment extends Fragment {
 		return result;
 	}
 
-	@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+	@SuppressLint("StaticFieldLeak") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 	private final class GeocoderTask extends SimpleSafeAsyncTask<LatLng, Void, Address> {
 		private final Geocoder geocoder;
 		private GeocoderTask(Context context) {
@@ -175,6 +175,7 @@ public class RangeNearestFragment extends Fragment {
 
 		@Override protected @Nullable Address doInBackground(LatLng latlng) throws Exception {
 			if (geocoder != null) {
+				@SuppressWarnings("deprecation") // We're already in background. TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 				List<Address> location = geocoder.getFromLocation(latlng.latitude, latlng.longitude, 1);
 				if (location != null && !location.isEmpty()) {
 					return location.get(0);
@@ -188,6 +189,11 @@ public class RangeNearestFragment extends Fragment {
 		@Override protected void onError(@NonNull Exception ex, LatLng latlng) {
 			LOG.warn("Cannot determine location for {}", latlng, ex);
 			updateLocationInternal(latlng, null);
+		}
+		
+		@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+		public void cancel() {
+			super.cancel(true);
 		}
 	}
 

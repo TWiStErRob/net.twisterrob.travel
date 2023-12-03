@@ -7,14 +7,13 @@ import java.util.*;
 import org.slf4j.*;
 import org.xml.sax.SAXException;
 
-import android.os.AsyncTask;
-
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
 import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.java.io.IOTools;
 
-public class DownloadFeedTask<T extends BaseFeed<T>> extends AsyncTask<Feed, Integer, AsyncTaskResult<Feed, T>> {
+@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+public class DownloadFeedTask<T extends BaseFeed<T>> extends android.os.AsyncTask<Feed, Integer, AsyncTaskResult<Feed, T>> {
 	protected final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	private Map<String, ?> m_args;
