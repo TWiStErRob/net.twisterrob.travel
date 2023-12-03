@@ -66,7 +66,7 @@ public class RangeOptionsFragment extends Fragment {
 				return onOptionsItemSelected(item);
 			}
 		});
-		AndroidTools.accountForStatusBar(nav.getHeaderView(0));
+		accountForStatusBar();
 		Toolbar toolbar = (Toolbar)nav.getHeaderView(0).findViewById(R.id.view__range__parameters_toolbar);
 		toolbar.inflateMenu(R.menu.range_options_header);
 		toolbar.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -222,6 +222,11 @@ public class RangeOptionsFragment extends Fragment {
 				});
 	}
 
+	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/12
+	private void accountForStatusBar() {
+		AndroidTools.accountForStatusBar(nav.getHeaderView(0));
+	}
+
 	@SuppressWarnings("unchecked")
 	private <T extends View> T getAction(@IdRes int menuItemId) {
 		MenuItem switchItem = nav.getMenu().findItem(menuItemId);
@@ -250,6 +255,7 @@ public class RangeOptionsFragment extends Fragment {
 		return picker;
 	}
 
+	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/21
 	@Override public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getGroupId() == R.id.group__range__config__generator
 				|| item.getGroupId() == R.id.group__range__config__draw

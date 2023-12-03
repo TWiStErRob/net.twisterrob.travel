@@ -3,11 +3,10 @@ package net.twisterrob.android.utils.concurrent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import android.os.AsyncTask;
-
 import net.twisterrob.java.io.MailSender;
 
-public class MailSenderAsyncTask extends AsyncTask<String, Void, Boolean> {
+@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+public class MailSenderAsyncTask extends android.os.AsyncTask<String, Void, Boolean> {
 	private static final Logger LOG = LoggerFactory.getLogger(MailSenderAsyncTask.class);
 
 	private final MailSender m = new MailSender();

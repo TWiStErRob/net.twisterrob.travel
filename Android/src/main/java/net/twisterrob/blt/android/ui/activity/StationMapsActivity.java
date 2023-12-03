@@ -30,13 +30,17 @@ public class StationMapsActivity extends FragmentActivity {
 				map.setMyLocationEnabled(true);
 				LatLng cityOfLondon = new LatLng(51.512161, -0.090981);
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(cityOfLondon, 13));
-				new LoadStationsTask().execute((Void[])null);
+				new LoadStationsTask().execute();
 			}
 		});
 	}
 
-	@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+	@SuppressLint("StaticFieldLeak") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 	private class LoadStationsTask extends AsyncTask<Void, Void, List<Station>> {
+		public void execute() {
+			execute((Void[])null);
+		}
 		@Override protected List<Station> doInBackground(Void... params) {
 			return App.db().getStations();
 		}

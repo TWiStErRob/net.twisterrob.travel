@@ -23,6 +23,8 @@ import org.xml.sax.*;
  */
 class BadXmlException extends SAXParseException {
 
+    private static final long serialVersionUID = 6815921751302316816L;
+
     public BadXmlException(String message, Locator locator) {
         super(message, locator);
     }

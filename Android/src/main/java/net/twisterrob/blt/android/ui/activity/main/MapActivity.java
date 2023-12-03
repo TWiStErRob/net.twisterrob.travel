@@ -27,6 +27,7 @@ public abstract class MapActivity extends AppCompatActivity {
 		}
 	}
 
+	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/12
 	@Override public void startActivityForResult(Intent intent, int requestCode) {
 		try {
 			super.startActivityForResult(intent, requestCode);
@@ -34,22 +35,30 @@ public abstract class MapActivity extends AppCompatActivity {
 			// http://stackoverflow.com/a/20905954/253468
 			onActivityResult(requestCode, RESULT_CANCELED, null);
 		} catch (ActivityNotFoundException ex) {
-			// CONSIDER AndroidTools?
-			if (intent != null && Intent.ACTION_VIEW.equals(intent.getAction())) {
-				Uri data = intent.getData();
-				if (data != null && "mailto".equals(data.getScheme())) {
-					String message = "You don't have an email app, send an email to: " + data.getSchemeSpecificPart();
-					Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-					return;
-				} else if (data != null && ("http".equals(data.getScheme()) || "https".equals(data.getScheme()))) {
-					String message = "You don't have a web browser app, can't display link.";
-					Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-					return;
-				}
+			if (handle(intent)) {
+				return;
 			}
 			throw ex;
 		}
 	}
+
+	private boolean handle(Intent intent) {
+		// CONSIDER AndroidTools?
+		if (intent != null && Intent.ACTION_VIEW.equals(intent.getAction())) {
+			Uri data = intent.getData();
+			if (data != null && "mailto".equals(data.getScheme())) {
+				String message = "You don't have an email app, send an email to: " + data.getSchemeSpecificPart();
+				Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+				return true;
+			} else if (data != null && ("http".equals(data.getScheme()) || "https".equals(data.getScheme()))) {
+				String message = "You don't have a web browser app, can't display link.";
+				Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
 			case PLAY_SERVICES_RESOLUTION_REQUEST:

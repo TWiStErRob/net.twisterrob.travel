@@ -4,6 +4,7 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.runtime.Micronaut;
 
 public class Application {
+	@SuppressWarnings("try")
 	public static void main(String... args) {
 		Micronaut micronaut = Micronaut
 				.build(args)
