@@ -61,7 +61,7 @@ tasks.register("runNetwork", JavaExec.class) {
 	mainClass = "net.twisterrob.blt.data.apps.TravelNetworkParser"
 	args = [ inputDir, outputDir ]
 	enableAssertions = true
-	logging.captureStandardOutput LogLevel.INFO
+	standardOutput = new File(outputDir, 'runNetwork.log').newOutputStream()
 }
 
 tasks.register("runPostCode", JavaExec.class) {
