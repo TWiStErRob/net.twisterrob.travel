@@ -26,10 +26,8 @@ google-cloud-sdk = "455.0.0"
 # https://cloud.google.com/appengine/docs/standard/java/release-notes
 google-appengine = "2.0.22"
 google-appengine-plugin = "2.5.0"
-# TODO replace SupportPlaceAutocompleteFragment when updating to AndroidX
-# TODO update to 17.0.0 when using AndroidX
-#noinspection GradleDependency,OutdatedLibrary TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/12
-google-maps = "16.1.0"
+google-maps = "18.2.0"
+google-places = "3.3.0"
 google-datastore = "2.17.6"
 
 micronaut = "4.2.0"
@@ -73,7 +71,7 @@ log4j-slf4j2 = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.
 google-cloud = { module = "com.google.cloud:libraries-bom", version.ref = "google-cloud" }
 google-cloud-datastore = { module = "com.google.cloud:google-cloud-datastore", version.ref = "google-datastore" }
 appengine-api = { module = "com.google.appengine:appengine-api-1.0-sdk", version.ref = "google-appengine" }
-gms-places = { module = "com.google.android.gms:play-services-places", version.ref = "google-maps" }
+gms-places = { module = "com.google.android.libraries.places:places", version.ref = "google-places" }
 gms-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "google-maps" }
 
 test-junit4 = { module = "junit:junit", version.ref = "junit4" }
