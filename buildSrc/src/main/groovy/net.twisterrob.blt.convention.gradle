@@ -6,7 +6,7 @@ tasks.withType(JavaCompile).configureEach {
 			"-Werror",
 			"-Xmaxwarns", "1000",
 			"-Xmaxerrs", "1000",
-			"-Xlint:-deprecation",
+			"-Xlint:deprecation",
 			"-Xlint:unchecked",
 	]
 }
