@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import net.twisterrob.java.io.MailSender;
 
-@SuppressWarnings("deprecation") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 public class MailSenderAsyncTask extends android.os.AsyncTask<String, Void, Boolean> {
 	private static final Logger LOG = LoggerFactory.getLogger(MailSenderAsyncTask.class);
 

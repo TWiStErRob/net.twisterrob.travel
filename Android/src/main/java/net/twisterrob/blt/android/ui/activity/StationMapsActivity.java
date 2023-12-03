@@ -35,8 +35,8 @@ public class StationMapsActivity extends FragmentActivity {
 		});
 	}
 
-	@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
-	@SuppressWarnings("deprecation") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+	@SuppressLint("StaticFieldLeak") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 	private class LoadStationsTask extends AsyncTask<Void, Void, List<Station>> {
 		public void execute() {
 			execute((Void[])null);

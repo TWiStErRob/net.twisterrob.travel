@@ -37,8 +37,8 @@ public class PostCodesActivity extends FragmentActivity {
 		});
 	}
 
-	@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
-	@SuppressWarnings("deprecation") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+	@SuppressLint("StaticFieldLeak") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 	private class LoadPostCodesTask extends AsyncTask<Void, Void, Map<String, List<AreaHullPoint>>> {
 		public void execute() {
 			execute((Void[])null);

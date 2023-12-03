@@ -27,7 +27,7 @@ public abstract class MapActivity extends AppCompatActivity {
 		}
 	}
 
-	@SuppressWarnings("deprecation") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/12
+	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/12
 	@Override public void startActivityForResult(Intent intent, int requestCode) {
 		try {
 			super.startActivityForResult(intent, requestCode);

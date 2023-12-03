@@ -175,7 +175,7 @@ public class RangeNearestFragment extends Fragment {
 
 		@Override protected @Nullable Address doInBackground(LatLng latlng) throws Exception {
 			if (geocoder != null) {
-				@SuppressWarnings("deprecation") // We're already in background.
+				@SuppressWarnings("deprecation") // We're already in background. TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 				List<Address> location = geocoder.getFromLocation(latlng.latitude, latlng.longitude, 1);
 				if (location != null && !location.isEmpty()) {
 					return location.get(0);
@@ -191,7 +191,7 @@ public class RangeNearestFragment extends Fragment {
 			updateLocationInternal(latlng, null);
 		}
 		
-		@SuppressWarnings("deprecation") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+		@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 		public void cancel() {
 			super.cancel(true);
 		}

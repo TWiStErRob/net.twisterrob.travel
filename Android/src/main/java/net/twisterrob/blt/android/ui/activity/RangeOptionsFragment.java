@@ -255,7 +255,7 @@ public class RangeOptionsFragment extends Fragment {
 		return picker;
 	}
 
-	@SuppressWarnings("deprecation") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/21
+	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/21
 	@Override public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getGroupId() == R.id.group__range__config__generator
 				|| item.getGroupId() == R.id.group__range__config__draw

@@ -9,7 +9,7 @@ import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
 import net.twisterrob.blt.io.feeds.facilities.*;
 import net.twisterrob.java.io.IOTools;
 
-@SuppressWarnings("deprecation") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 class DownloadFilesTask extends android.os.AsyncTask<URL, Integer, AsyncTaskResult<URL, FacilitiesFeed>> {
 	@SuppressWarnings("resource")
 	@Override protected AsyncTaskResult<URL, FacilitiesFeed> doInBackground(URL... urls) {

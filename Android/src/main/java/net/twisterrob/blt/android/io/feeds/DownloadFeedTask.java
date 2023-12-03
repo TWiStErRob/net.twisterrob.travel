@@ -12,7 +12,7 @@ import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.java.io.IOTools;
 
-@SuppressWarnings("deprecation") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 public class DownloadFeedTask<T extends BaseFeed<T>> extends android.os.AsyncTask<Feed, Integer, AsyncTaskResult<Feed, T>> {
 	protected final Logger LOG = LoggerFactory.getLogger(getClass());
 
