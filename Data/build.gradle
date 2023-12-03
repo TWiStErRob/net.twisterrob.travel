@@ -51,8 +51,8 @@ idea {
 }
 
 tasks.register("runNetwork", JavaExec.class) {
-	def inputDir = "../temp/feed15/LULDLRRiverTramCable"
-	def outputDir = "output"
+	File inputDir = file("../temp/feed15/LULDLRRiverTramCable")
+	File outputDir = file("output")
 	inputs.dir(inputDir).withPathSensitivity(PathSensitivity.RELATIVE)
 	inputs.dir("src/data/PredictionSummary")
 	outputs.dir(outputDir)
@@ -61,6 +61,13 @@ tasks.register("runNetwork", JavaExec.class) {
 	mainClass = "net.twisterrob.blt.data.apps.TravelNetworkParser"
 	args = [ inputDir, outputDir ]
 	enableAssertions = true
+	doFirst {
+		outputDir.mkdirs()
+		standardOutput = new File(outputDir, "runNetwork.log").newOutputStream()
+	}
+	doLast {
+		standardOutput.close()
+	}
 }
 
 tasks.register("runPostCode", JavaExec.class) {

@@ -37,6 +37,9 @@ android {
 			major = 1
 		}
 	}
+	twisterrob {
+		decorateBuildConfig = false
+	}
 	buildTypes {
 		release {
 			minifyEnabled true
