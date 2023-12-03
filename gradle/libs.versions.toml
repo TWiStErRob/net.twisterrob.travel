@@ -33,6 +33,7 @@ google-maps = "16.1.0"
 google-datastore = "2.17.6"
 
 micronaut = "4.2.0"
+micronaut-http = "4.2.1"
 micronaut-jackson = "2.4.0"
 micronaut-handlebars = "5.0.1"
 snakeyaml = "2.2"
@@ -53,7 +54,9 @@ plugin-twisterrob = { module = "net.twisterrob.gradle:twister-convention-plugins
 plugin-gretty = { module = "org.gretty:gretty", version.ref = "gretty" }
 
 plugin-micronaut = { module = "io.micronaut.application:io.micronaut.application.gradle.plugin", version.ref = "micronaut" }
-micronaut-httpClient = { module = "io.micronaut:micronaut-http-client", version.ref = "micronaut" }
+#noinspection unused versions.micronaut is used for micronaut { version = ... }, micronaut-platform is added here to help Renovate.
+micronaut-platform = { module = "io.micronaut:micronaut-platform", version.ref = "micronaut" }
+micronaut-httpClient = { module = "io.micronaut:micronaut-http-client", version.ref = "micronaut-http" }
 micronaut-jackson = { module = "io.micronaut.serde:micronaut-serde-jackson", version.ref = "micronaut-jackson" }
 micronaut-handlebars = { module = "io.micronaut.views:micronaut-views-handlebars", version.ref = "micronaut-handlebars" }
 snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
