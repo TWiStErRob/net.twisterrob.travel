@@ -56,7 +56,7 @@ public class App extends BaseApp {
 
 	@Override protected Object createDatabase() {
 		DataBaseHelper db = new DataBaseHelper(this);
-		@SuppressWarnings({"unused", "deprecation"}) // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+		@SuppressWarnings({"unused", "deprecation"}) // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 		Object task = new BackgroundExecution(new Runnable() {
 			@Override public void run() {
 				db().openDB();
@@ -78,7 +78,7 @@ public class App extends BaseApp {
 	}
 
 	public static void sendMail(String body) {
-		@SuppressWarnings({"unused", "deprecation"}) // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+		@SuppressWarnings({"unused", "deprecation"}) // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 		Object task = new MailSenderAsyncTask("Better London Travel",
 				"better-london-travel@twisterrob.net", "papp.robert.s@gmail.com") {
 			@Override protected void onPostExecute(Boolean result) {

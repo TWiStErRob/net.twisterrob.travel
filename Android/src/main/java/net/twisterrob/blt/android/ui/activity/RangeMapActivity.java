@@ -113,8 +113,8 @@ public class RangeMapActivity extends MapActivity {
 		setupSearch(fm.findFragmentById(R.id.view__range__search));
 
 		updateToolbarVisibility();
-		@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
-		@SuppressWarnings({"unused", "deprecation"}) // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+		@SuppressLint("StaticFieldLeak") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+		@SuppressWarnings({"unused", "deprecation"}) // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 		Object task = new AsyncTask<Void, Void, Set<NetworkNode>>() {
 			@Override protected Set<NetworkNode> doInBackground(Void... params) {
 				return App.db().getTubeNetwork();
@@ -400,8 +400,8 @@ public class RangeMapActivity extends MapActivity {
 		}
 	}
 
-	@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
-	@SuppressWarnings({"unused", "deprecation"}) // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+	@SuppressLint("StaticFieldLeak") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+	@SuppressWarnings({"unused", "deprecation"}) // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 	private final class DrawAsyncTask extends SimpleAsyncTask<LatLng, DrawAsyncTask.Result, DrawAsyncTask.Result> {
 		private final Set<NetworkNode> nodes;
 		private final RangeMapGeneratorConfig config;

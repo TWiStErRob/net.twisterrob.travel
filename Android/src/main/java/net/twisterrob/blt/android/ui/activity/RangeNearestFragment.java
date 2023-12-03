@@ -150,7 +150,7 @@ public class RangeNearestFragment extends Fragment {
 		return result;
 	}
 
-	@SuppressLint("StaticFieldLeak") // https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
+	@SuppressLint("StaticFieldLeak") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 	private final class GeocoderTask extends SimpleSafeAsyncTask<LatLng, Void, Address> {
 		private final Geocoder geocoder;
 		private GeocoderTask(Context context) {
