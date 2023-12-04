@@ -60,9 +60,9 @@ public class RangeMapActivity extends MapActivity {
 
 	private GoogleMap map;
 	private GroundOverlay mapOverlay;
-	private List<Marker> markers = new LinkedList<>();
-	private RangeMapGeneratorConfig genConfig = new RangeMapGeneratorConfig();
-	private RangeMapDrawerConfig drawConfig = new RangeMapDrawerConfig();
+	private final List<Marker> markers = new LinkedList<>();
+	private final RangeMapGeneratorConfig genConfig = new RangeMapGeneratorConfig();
+	private final RangeMapDrawerConfig drawConfig = new RangeMapDrawerConfig();
 	private BottomSheetBehavior<?> behavior;
 	private RangeNearestFragment nearestFragment;
 	private RangeOptionsFragment optionsFragment;
@@ -148,14 +148,14 @@ public class RangeMapActivity extends MapActivity {
 
 	private void setupSearch(Fragment searchFragment) {
 		this.searchFragment = (AutocompleteSupportFragment)searchFragment;
-		this.searchFragment.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG));
+		this.searchFragment.setPlaceFields(Collections.singletonList(Place.Field.LAT_LNG));
 		this.searchFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-			@Override public void onPlaceSelected(Place place) {
+			@Override public void onPlaceSelected(@NonNull Place place) {
 				LOG.trace("Selected: {}", StringerTools.toString(place));
 				reDraw(place.getLatLng());
 			}
 
-			@Override public void onError(Status status) {
+			@Override public void onError(@NonNull Status status) {
 				LOG.warn("Cannot search: {}", StringerTools.toString(status));
 				String message = String.format(Locale.getDefault(), "Sorry, cannot search: %d/%s",
 						status.getStatusCode(), status.getStatusMessage());
@@ -168,7 +168,7 @@ public class RangeMapActivity extends MapActivity {
 		SupportMapFragment mapFragment =
 				(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.view__map);
 		mapFragment.getMapAsync(new OnMapReadyCallback() {
-			@Override public void onMapReady(GoogleMap map) {
+			@Override public void onMapReady(@NonNull GoogleMap map) {
 				RangeMapActivity.this.map = map;
 				map.setMyLocationEnabled(true);
 				zoomFullLondon();
@@ -176,21 +176,21 @@ public class RangeMapActivity extends MapActivity {
 				class MapInteractorListener
 						implements OnMapClickListener, OnMarkerClickListener, OnMapLongClickListener {
 					private Marker currentMarker;
-					@Override public void onMapLongClick(LatLng latlng) {
+					@Override public void onMapLongClick(@NonNull LatLng latlng) {
 						if (currentMarker != null) {
 							currentMarker.hideInfoWindow();
 							currentMarker = null;
 						}
 						reDraw(latlng);
 					}
-					@Override public void onMapClick(LatLng latlng) {
+					@Override public void onMapClick(@NonNull LatLng latlng) {
 						if (currentMarker != null) {
 							currentMarker = null;
 							return;
 						}
 						reDraw(latlng);
 					}
-					@Override public boolean onMarkerClick(Marker marker) {
+					@Override public boolean onMarkerClick(@NonNull Marker marker) {
 						currentMarker = marker;
 						if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
 							behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
