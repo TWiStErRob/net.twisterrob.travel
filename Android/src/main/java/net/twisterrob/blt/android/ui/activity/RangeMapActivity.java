@@ -5,10 +5,14 @@ import java.util.*;
 import org.slf4j.*;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.*;
 import android.os.*;
 import androidx.annotation.*;
 
+import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
@@ -69,6 +73,9 @@ public class RangeMapActivity extends MapActivity {
 	private AutocompleteSupportFragment searchFragment;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
+		String apiKey = getApplicationInfoWithMetadata(this).metaData.getString("com.google.android.geo.API_KEY");
+		Places.initialize(getApplicationContext(), apiKey);
+
 		setTranslucentStatusBar();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_range_map);
@@ -399,6 +406,18 @@ public class RangeMapActivity extends MapActivity {
 		for (NetworkNode node : nodes) {
 			LatLng ll = LocationUtils.toLatLng(node.getLocation());
 			map.addMarker(new MarkerOptions().title(String.valueOf(node.getID())).position(ll));
+		}
+	}
+
+	private static ApplicationInfo getApplicationInfoWithMetadata(@NonNull Context context) {
+		try {
+			PackageManager pm = context.getPackageManager();
+			return pm.getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+		} catch (PackageManager.NameNotFoundException e) {
+			InternalError error = new InternalError("Application cannot read its own package");
+			//noinspection UnnecessaryInitCause InternalError(String, Throwable) is API 24, need to split.
+			error.initCause( e);
+			throw error;
 		}
 	}
 
