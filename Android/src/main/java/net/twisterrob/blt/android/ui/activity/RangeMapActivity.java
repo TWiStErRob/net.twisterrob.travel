@@ -146,9 +146,9 @@ public class RangeMapActivity extends MapActivity {
 		AndroidTools.accountForStatusBar(findViewById(R.id.view__range__toolbar_container));
 	}
 
-	@SuppressWarnings("deprecation")
 	private void setupSearch(Fragment searchFragment) {
 		this.searchFragment = (AutocompleteSupportFragment)searchFragment;
+		this.searchFragment.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG));
 		this.searchFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
 			@Override public void onPlaceSelected(Place place) {
 				LOG.trace("Selected: {}", StringerTools.toString(place));
