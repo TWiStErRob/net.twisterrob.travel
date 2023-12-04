@@ -156,6 +156,9 @@ public class RangeMapActivity extends MapActivity {
 			}
 
 			@Override public void onError(@NonNull Status status) {
+				if (Status.RESULT_CANCELED.equals(status)) {
+					return;
+				}
 				LOG.warn("Cannot search: {}", StringerTools.toString(status));
 				String message = String.format(Locale.getDefault(), "Sorry, cannot search: %d/%s",
 						status.getStatusCode(), status.getStatusMessage());
