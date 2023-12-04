@@ -73,6 +73,11 @@ android {
 			dimension("app-build")
 		}
 	}
+	packagingOptions {
+		// https://issuetracker.google.com/issues/312677256
+		exclude("META-INF/services/io.grpc.LoadBalancerProvider")
+		exclude("META-INF/services/io.grpc.NameResolverProvider")
+	}
 }
 
 abstract class GenerateDatabase extends Copy {
