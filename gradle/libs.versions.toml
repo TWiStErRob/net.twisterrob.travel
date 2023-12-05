@@ -32,7 +32,7 @@ google-maps = "18.2.0"
 google-places = "3.3.0"
 google-datastore = "2.17.6"
 
-micronaut = "4.2.0"
+micronaut = "4.2.1"
 micronaut-http = "4.2.1"
 micronaut-jackson = "2.4.0"
 micronaut-handlebars = "5.0.1"
