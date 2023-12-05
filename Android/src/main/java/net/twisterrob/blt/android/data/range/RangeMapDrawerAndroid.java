@@ -2,12 +2,14 @@ package net.twisterrob.blt.android.data.range;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 
-import com.google.android.gms.maps.model.*;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import net.twisterrob.blt.android.db.model.NetworkNode;
 

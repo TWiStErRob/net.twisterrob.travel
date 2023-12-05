@@ -23,6 +23,7 @@ dependencies {
 	implementation(libs.gms.places)
 	implementation(libs.jsr305)
 	implementation(libs.glide)
+	implementation(libs.androidx.swiperefreshlayout)
 
 	testImplementation(projects.shared.testHelpers)
 }
@@ -71,6 +72,11 @@ android {
 			applicationId = "net.twisterrob.blt.range"
 			dimension("app-build")
 		}
+	}
+	packagingOptions {
+		// TODEL https://issuetracker.google.com/issues/312677256
+		exclude("META-INF/services/io.grpc.LoadBalancerProvider")
+		exclude("META-INF/services/io.grpc.NameResolverProvider")
 	}
 }
 

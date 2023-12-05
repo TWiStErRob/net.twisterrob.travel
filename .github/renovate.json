@@ -12,15 +12,6 @@
 			"enabled": false
 		},
 		{
-			"description": "https://github.com/TWiStErRob/net.twisterrob.travel/issues/12",
-			"matchPackageNames": [
-				"com.google.android.gms:play-services-maps",
-				"com.google.android.gms:play-services-places",
-				"google.maps"
-			],
-			"enabled": false
-		},
-		{
 			"description": "https://github.com/TWiStErRob/net.twisterrob.travel/issues/13",
 			"matchPackageNames": [
 				"com.android.tools.build:gradle",

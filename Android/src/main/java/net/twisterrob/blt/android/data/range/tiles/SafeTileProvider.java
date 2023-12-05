@@ -1,10 +1,12 @@
 package net.twisterrob.blt.android.data.range.tiles;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.maps.model.*;
+import com.google.android.gms.maps.model.Tile;
+import com.google.android.gms.maps.model.TileProvider;
 
 public abstract class SafeTileProvider implements TileProvider {
 	protected final Logger LOG = LoggerFactory.getLogger(getClass());

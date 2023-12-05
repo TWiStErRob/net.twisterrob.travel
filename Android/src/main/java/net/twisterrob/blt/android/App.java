@@ -6,8 +6,9 @@ import androidx.annotation.NonNull;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.maps.model.*;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.libraries.places.api.model.Place;
 
 import net.twisterrob.android.AndroidConstants;
 import net.twisterrob.android.app.BaseApp;

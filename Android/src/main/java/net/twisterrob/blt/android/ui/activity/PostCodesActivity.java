@@ -6,10 +6,18 @@ import java.util.Map.Entry;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.*;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
-import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.model.*;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
 
 import net.twisterrob.blt.android.*;
 import net.twisterrob.blt.android.R;
@@ -27,7 +35,7 @@ public class PostCodesActivity extends FragmentActivity {
 		SupportMapFragment mapFragment =
 				(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.view__map);
 		mapFragment.getMapAsync(new OnMapReadyCallback() {
-			@Override public void onMapReady(GoogleMap map) {
+			@Override public void onMapReady(@NonNull GoogleMap map) {
 				PostCodesActivity.this.map = map;
 				map.setMyLocationEnabled(true);
 				LatLng cityOfLondon = new LatLng(51.512161, -0.090981);
