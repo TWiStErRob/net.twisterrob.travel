@@ -12,13 +12,6 @@ import android.graphics.*;
 import android.os.*;
 import androidx.annotation.*;
 
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.core.content.ContextCompat;
@@ -32,10 +25,30 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.GoogleMap.*;
-import com.google.android.gms.maps.model.*;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.GroundOverlay;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import net.twisterrob.android.utils.concurrent.SimpleAsyncTask;
 import net.twisterrob.android.utils.tools.AndroidTools;
@@ -168,16 +181,14 @@ public class RangeMapActivity extends MapActivity {
 	}
 
 	@Override protected void setupMap() {
-		SupportMapFragment mapFragment =
-				(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.view__map);
+		SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.view__map);
 		mapFragment.getMapAsync(new OnMapReadyCallback() {
 			@Override public void onMapReady(@NonNull GoogleMap map) {
 				RangeMapActivity.this.map = map;
 				map.setMyLocationEnabled(true);
 				zoomFullLondon();
 				updateToolbarVisibility();
-				class MapInteractorListener
-						implements OnMapClickListener, OnMarkerClickListener, OnMapLongClickListener {
+				class MapInteractorListener implements OnMapClickListener, OnMarkerClickListener, OnMapLongClickListener {
 					private Marker currentMarker;
 					@Override public void onMapLongClick(@NonNull LatLng latlng) {
 						if (currentMarker != null) {

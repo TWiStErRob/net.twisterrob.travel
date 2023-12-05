@@ -74,7 +74,7 @@ android {
 		}
 	}
 	packagingOptions {
-		// https://issuetracker.google.com/issues/312677256
+		// TODEL https://issuetracker.google.com/issues/312677256
 		exclude("META-INF/services/io.grpc.LoadBalancerProvider")
 		exclude("META-INF/services/io.grpc.NameResolverProvider")
 	}

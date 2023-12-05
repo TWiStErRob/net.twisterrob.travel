@@ -4,12 +4,19 @@ import java.util.*;
 
 import android.annotation.SuppressLint;
 import android.os.*;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
-import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.model.*;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-import net.twisterrob.blt.android.*;
+import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.db.model.Station;
@@ -22,10 +29,9 @@ public class StationMapsActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.inc_map);
 
-		SupportMapFragment mapFragment =
-				(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.view__map);
+		SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.view__map);
 		mapFragment.getMapAsync(new OnMapReadyCallback() {
-			@Override public void onMapReady(GoogleMap map) {
+			@Override public void onMapReady(@NonNull GoogleMap map) {
 				StationMapsActivity.this.map = map;
 				map.setMyLocationEnabled(true);
 				LatLng cityOfLondon = new LatLng(51.512161, -0.090981);
