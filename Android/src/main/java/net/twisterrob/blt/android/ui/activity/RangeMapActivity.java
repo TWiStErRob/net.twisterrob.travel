@@ -111,7 +111,6 @@ public class RangeMapActivity extends MapActivity {
 		FragmentManager fm = getSupportFragmentManager();
 		nearestFragment = (RangeNearestFragment)fm.findFragmentById(R.id.view__range__bottom_sheet);
 		optionsFragment = (RangeOptionsFragment)fm.findFragmentById(R.id.view__range__drawer);
-		optionsFragment.bindConfigs(genConfig, drawConfig);
 		optionsFragment.setConfigsUpdatedListener(new ConfigsUpdatedListener() {
 			@Override public void onConfigsUpdated() {
 				reDraw(lastStartPoint);
@@ -127,8 +126,8 @@ public class RangeMapActivity extends MapActivity {
 				.build());
 		fab.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View v) {
-				//noinspection WrongConstant it's not a constant, and it is a gravity field
-				drawers.openDrawer(((DrawerLayout.LayoutParams)optionsFragment.getView().getLayoutParams()).gravity);
+				View drawerContents = findViewById(R.id.view__range__drawer);
+				drawers.openDrawer(((DrawerLayout.LayoutParams)drawerContents.getLayoutParams()).gravity);
 			}
 		});
 
@@ -146,6 +145,11 @@ public class RangeMapActivity extends MapActivity {
 				setNodes(nodes);
 			}
 		}.execute((Void[])null);
+	}
+
+	@Override protected void onStart() {
+		super.onStart();
+		optionsFragment.bindConfigs(genConfig, drawConfig);
 	}
 
 	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/12
