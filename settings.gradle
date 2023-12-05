@@ -1,5 +1,14 @@
 import static net.twisterrob.gradle.settings.SettingsUtils.enableFeaturePreviewQuietly
 
+pluginManagement {
+	includeBuild("gradle/plugins")
+	repositories {
+		google()
+		mavenCentral()
+		gradlePluginPortal()
+	}
+}
+
 plugins {
 	id("net.twisterrob.gradle.plugin.settings") version "0.16"
 }
