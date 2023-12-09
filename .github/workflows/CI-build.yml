@@ -50,7 +50,7 @@ jobs:
           --continue
           --no-build-cache
           build
-          :AppEngine:appengineStage
+          :web:status-history:appengineStage
 
       - name: "Upload 'Unit Test Results' artifact."
         if: success() || failure()

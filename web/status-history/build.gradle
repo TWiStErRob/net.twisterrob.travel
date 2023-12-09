@@ -22,7 +22,7 @@ dependencies {
 	runtimeOnly(libs.micronaut.jackson)
 	implementation(libs.micronaut.handlebars)
 
-	implementation(projects.shared)
+	implementation(projects.shared.model)
 	implementation(projects.shared.diff)
 
 	implementation(libs.slf4j.api)

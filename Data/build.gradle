@@ -17,7 +17,7 @@ version = "0.0.1-SNAPSHOT"
 // <description>Standalone project to handle large feeds</description>
 
 dependencies {
-	api(projects.shared)
+	api(projects.shared.model)
 	implementation(libs.jsr305)
 	implementation(libs.slf4j.api)
 	implementation(libs.slf4j.simple)

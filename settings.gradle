@@ -15,13 +15,21 @@ plugins {
 
 rootProject.name = "net-twisterrob-blt"
 
-include(":Android")
-include(":AppEngine")
-include(":Data")
-include(":Shared")
-include(":Shared:android-polyfill")
-include(":Shared:diff")
-include(":Shared:test-helpers")
+include(":android:app:full")
+include(":android:app:range")
+include(":android:feature:range")
+include(":desktop:routes")
+include(":web:status-history")
+include(":data:network")
+include(":data:routes")
+include(":data:postcodes")
+include(":data:feed:timetable")
+include(":data:feed:trackernet")
+include(":data:feed:facilities")
+include(":shared:android-polyfill")
+include(":shared:model")
+include(":shared:diff")
+include(":shared:test-helpers")
 
 enableFeaturePreviewQuietly(settings, "TYPESAFE_PROJECT_ACCESSORS", "Type-safe project accessors")
 

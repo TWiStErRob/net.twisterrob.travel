@@ -16,7 +16,7 @@ dependencies {
 	implementation("net.twisterrob.lib:twister-lib-android-color_picker")
 	implementation("net.twisterrob.lib:twister-lib-android-settings")
 
-	implementation(projects.shared) {
+	implementation(projects.shared.model) {
 		exclude module: "android-polyfill"
 	}
 	implementation(libs.gms.maps)
@@ -87,7 +87,7 @@ abstract class GenerateDatabase extends Copy {
 }
 
 def generateDataBase = tasks.register("generateDataBase", GenerateDatabase.class) {
-	dependsOn(":Data:runNetwork", ":Data:runPostCode")
+	dependsOn(":data:runNetwork", ":data:runPostCode")
 	from(new File(projects.data.dependencyProject.projectDir, "output")) {
 		include("*.data.*.sql")
 	}
