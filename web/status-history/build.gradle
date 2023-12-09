@@ -22,13 +22,13 @@ dependencies {
 	runtimeOnly(libs.micronaut.jackson)
 	implementation(libs.micronaut.handlebars)
 
-	implementation(projects.shared.model)
-	implementation(projects.shared.diff)
+	implementation(projects.common.model)
+	implementation(projects.common.diff)
 
 	implementation(libs.slf4j.api)
 	runtimeOnly(libs.log4j.slf4j2)
 
-	testImplementation(projects.shared.testHelpers)
+	testImplementation(projects.common.testHelpers)
 	testImplementation(libs.micronaut.httpClient)
 	testImplementation(libs.jtidy)
 }

@@ -20,10 +20,10 @@ dependencies {
 
 	implementation(libs.jsr305)
 	implementation(libs.slf4j.api)
-	implementation(projects.shared.androidPolyfill)
+	implementation(projects.common.androidPolyfill)
 	implementation("net.twisterrob.lib:twister-lib-java_desktop")
 
-	testImplementation(projects.shared.testHelpers)
+	testImplementation(projects.common.testHelpers)
 }
 
 lint {
