@@ -17,6 +17,7 @@ import net.twisterrob.android.utils.concurrent.*;
 import net.twisterrob.android.utils.tostring.stringers.detailed.*;
 import net.twisterrob.blt.android.data.*;
 import net.twisterrob.blt.android.db.DataBaseHelper;
+import net.twisterrob.blt.android.full.BuildConfig;
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.java.utils.tostring.StringerRepo;
 
@@ -56,7 +57,7 @@ public class App extends BaseApp {
 	}
 
 	@Override protected Object createDatabase() {
-		DataBaseHelper db = new DataBaseHelper(this);
+		DataBaseHelper db = new DataBaseHelper(this, BuildConfig.DEBUG);
 		@SuppressWarnings({"unused", "deprecation"}) // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 		Object task = new BackgroundExecution(new Runnable() {
 			@Override public void run() {

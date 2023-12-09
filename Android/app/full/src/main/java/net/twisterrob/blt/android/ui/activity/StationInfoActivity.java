@@ -12,7 +12,7 @@ import android.widget.ExpandableListView.*;
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
 import net.twisterrob.android.utils.tools.IntentTools;
 import net.twisterrob.blt.android.*;
-import net.twisterrob.blt.android.R;
+import net.twisterrob.blt.android.full.R;
 import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
 import net.twisterrob.blt.android.ui.ListViewHandler;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter;

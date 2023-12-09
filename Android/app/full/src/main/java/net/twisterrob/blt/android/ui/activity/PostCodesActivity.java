@@ -20,9 +20,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 
 import net.twisterrob.blt.android.*;
-import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.db.model.AreaHullPoint;
+import net.twisterrob.blt.android.full.R;
 import net.twisterrob.java.model.Location;
 
 public class PostCodesActivity extends FragmentActivity {

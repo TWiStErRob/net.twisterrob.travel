@@ -17,7 +17,10 @@ rootProject.name = "net-twisterrob-blt"
 
 include(":android:app:full")
 include(":android:app:range")
-include(":android:feature:range")
+include(":android:component:android")
+include(":android:component:map")
+include(":android:component:theme")
+include(":android:feature:range2") // STOPSHIP name "range" after it compiles
 include(":common:android-polyfill")
 include(":common:data:network")
 include(":common:data:routes")

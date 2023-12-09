@@ -17,8 +17,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Filter.FilterListener;
 
 import net.twisterrob.blt.android.*;
-import net.twisterrob.blt.android.R;
 import net.twisterrob.blt.android.db.model.Station;
+import net.twisterrob.blt.android.full.R;
 import net.twisterrob.blt.android.ui.adapter.StationAdapter;
 
 public class StationListActivity extends BaseActivity implements FilterListener {

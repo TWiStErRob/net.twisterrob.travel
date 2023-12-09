@@ -1,0 +1,51 @@
+//name = "Better London Travel Android App"
+plugins {
+	id("net.twisterrob.blt.convention")
+	id("net.twisterrob.gradle.plugin.android-library") // STOPSHIP lib convention
+	id("com.android.library")
+}
+
+dependencies {
+	implementation(projects.android.component.android)
+	implementation(projects.android.component.theme)
+
+	api("net.twisterrob.lib:twister-lib-android-monolith") // api because AppCompatActivity.
+	implementation("net.twisterrob.lib:twister-lib-android-basics")
+	implementation("net.twisterrob.lib:twister-lib-android-slf4j")
+	implementation("net.twisterrob.lib:twister-lib-android-widgets")
+	implementation("net.twisterrob.lib:twister-lib-android-stringers")
+
+	implementation("net.twisterrob.lib:twister-lib-android-color_picker")
+	implementation("net.twisterrob.lib:twister-lib-android-settings")
+
+	implementation(projects.common.model) {
+		exclude module: "android-polyfill"
+	}
+	implementation(libs.gms.maps)
+	implementation(libs.gms.places)
+	implementation(libs.jsr305)
+	implementation(libs.glide)
+	
+	// STOPSHIP move tests?
+//	testImplementation(projects.common.testHelpers)
+}
+
+android {
+	namespace = "net.twisterrob.blt.android.feature.range"
+	compileSdk = 34
+	defaultConfig {
+		minSdk = 21
+	}
+	lint {
+		checkAllWarnings = true
+		warningsAsErrors = true
+		checkDependencies = true
+		lintConfig = rootProject.file("config/lint/lint.xml")
+		baseline = rootProject.file("config/lint/lint-baseline.xml")
+	}
+	packagingOptions {
+		// TODEL https://issuetracker.google.com/issues/312677256
+		exclude("META-INF/services/io.grpc.LoadBalancerProvider")
+		exclude("META-INF/services/io.grpc.NameResolverProvider")
+	}
+}

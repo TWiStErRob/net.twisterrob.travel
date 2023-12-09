@@ -6,14 +6,15 @@ plugins {
 }
 
 dependencies {
+	implementation(projects.android.component.theme)
+	implementation(projects.android.component.android)
+	implementation(projects.android.feature.range2)
 	implementation("net.twisterrob.lib:twister-lib-android-monolith")
 	implementation("net.twisterrob.lib:twister-lib-android-basics")
 	implementation("net.twisterrob.lib:twister-lib-android-slf4j")
-	implementation("net.twisterrob.lib:twister-lib-android-widgets")
 	implementation("net.twisterrob.lib:twister-lib-android-stringers")
 
 	implementation("net.twisterrob.lib:twister-lib-android-about")
-	implementation("net.twisterrob.lib:twister-lib-android-color_picker")
 	implementation("net.twisterrob.lib:twister-lib-android-settings")
 
 	implementation(projects.common.model) {
@@ -29,9 +30,10 @@ dependencies {
 }
 
 android {
-	namespace = "net.twisterrob.blt.android"
+	namespace = "net.twisterrob.blt.android.full"
 	compileSdk = 34
 	defaultConfig {
+		applicationId = "net.twisterrob.blt"
 		minSdk = 21
 		targetSdk = 21
 		version {
@@ -60,18 +62,6 @@ android {
 		checkDependencies = true
 		lintConfig = rootProject.file("config/lint/lint.xml")
 		baseline = rootProject.file("config/lint/lint-baseline.xml")
-	}
-	flavorDimensions += "app-build"
-	productFlavors {
-		full {
-			// default
-			applicationId = "net.twisterrob.blt"
-			dimension("app-build")
-		}
-		range {
-			applicationId = "net.twisterrob.blt.range"
-			dimension("app-build")
-		}
 	}
 	packagingOptions {
 		// TODEL https://issuetracker.google.com/issues/312677256

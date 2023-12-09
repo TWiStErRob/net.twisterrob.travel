@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import net.twisterrob.android.adapter.BaseListAdapter;
-import net.twisterrob.blt.android.R;
+import net.twisterrob.blt.android.full.R;
 import net.twisterrob.blt.android.ui.activity.main.LauncherAdapter.LauncherViewHolder;
 
 class LauncherAdapter extends BaseListAdapter<LauncherItem, LauncherViewHolder> {
