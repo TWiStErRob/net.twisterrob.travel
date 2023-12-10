@@ -1,0 +1,10 @@
+plugins {
+	id("net.twisterrob.travel.android-library")
+}
+
+dependencies {
+	api(projects.common.model)
+	implementation("net.twisterrob.lib:twister-lib-android-monolith")
+	implementation("net.twisterrob.lib:twister-lib-android-basics")
+	implementation("net.twisterrob.lib:twister-lib-android-slf4j")
+}

@@ -4,8 +4,9 @@ plugins {
 }
 
 dependencies {
-	implementation(projects.android.component.theme)
 	implementation(projects.android.component.android)
+	implementation(projects.android.component.data)
+	implementation(projects.android.component.theme)
 	implementation(projects.android.feature.range2)
 	implementation("net.twisterrob.lib:twister-lib-android-monolith")
 	implementation("net.twisterrob.lib:twister-lib-android-basics")

@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
 	implementation(projects.android.component.android)
+	implementation(projects.android.component.data)
 	implementation(projects.android.component.theme)
 
 	api("net.twisterrob.lib:twister-lib-android-monolith") // api because AppCompatActivity.
