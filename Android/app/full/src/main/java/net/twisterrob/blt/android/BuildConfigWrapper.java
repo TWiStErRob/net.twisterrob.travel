@@ -7,4 +7,8 @@ public class BuildConfigWrapper implements net.twisterrob.blt.android.BuildConfi
 	@Override public boolean isDebug() {
 		return BuildConfig.DEBUG;
 	}
+
+	@Override public String applicationId() {
+		return BuildConfig.APPLICATION_ID;
+	}
 }
