@@ -1,0 +1,27 @@
+// STOPSHIP this is hacky, replace with proper publishing things after data is split up.
+
+abstract class GenerateDatabase extends Copy {
+
+	@Internal("An intermediate property to satisfy AGP, tracked in destination.")
+	abstract DirectoryProperty getOutput()
+}
+
+def generateDataBase = tasks.register("generateDataBase", GenerateDatabase.class) {
+	dependsOn(":common:data:runNetwork", ":common:data:runPostCode")
+	from(new File(project(":common:data").projectDir, "output")) {
+		include("*.data.*.sql")
+	}
+	into(output)
+}
+
+androidComponents {
+	onVariants(selector().all()) { variant ->
+		variant.sources.assets.addGeneratedSourceDirectory(generateDataBase, { it.output })
+		afterEvaluate {
+			tasks.named("generate${variant.name.capitalize()}Assets").configure {
+				// This should be not necessary with addGeneratedSourceDirectory, but without this, it doesn't work.
+				dependsOn(generateDataBase)
+			}
+		}
+	}
+}

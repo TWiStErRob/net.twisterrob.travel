@@ -1,14 +1,30 @@
 group = "net.twisterrob.travel"
 
-tasks.withType(JavaCompile).configureEach {
-	options.encoding = "UTF-8"
-	options.compilerArgs += [
-			"-Werror",
-			"-Xmaxwarns", "1000",
-			"-Xmaxerrs", "1000",
-			"-Xlint:all",
-			"-Xlint:-processing",
-	]
+pluginManager.withPlugin("org.gradle.java-base") {
+	java {
+		sourceCompatibility = libs.versions.java.asProvider().get()
+		targetCompatibility = libs.versions.java.asProvider().get()
+	}
+
+	tasks.withType(JavaCompile).configureEach {
+		options.encoding = "UTF-8"
+		options.compilerArgs += [
+				"-Werror",
+				"-Xmaxwarns", "1000",
+				"-Xmaxerrs", "1000",
+				"-Xlint:all",
+				"-Xlint:-processing",
+		]
+	}
+}
+
+pluginManager.withPlugin("com.android.base") {
+	android {
+		compileOptions {
+			sourceCompatibility = libs.versions.java.android.get()
+			targetCompatibility = libs.versions.java.android.get()
+		}
+	}
 }
 
 if (project.gradle.startParameter.isConfigurationCacheRequested()) {

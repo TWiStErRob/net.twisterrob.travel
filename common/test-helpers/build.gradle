@@ -3,11 +3,6 @@ plugins {
 	id("org.gradle.java-library")
 }
 
-java {
-	sourceCompatibility = libs.versions.java.asProvider().get()
-	targetCompatibility = libs.versions.java.asProvider().get()
-}
-
 dependencies {
 	api(libs.test.junit4) {
 		// we don't need this because we use org.hamcrest v2

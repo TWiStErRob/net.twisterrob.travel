@@ -1,13 +1,3 @@
 plugins {
-	id("net.twisterrob.blt.convention")
-	id("net.twisterrob.gradle.plugin.android-library")
-	id("com.android.library")
-}
-
-android {
-	namespace = "net.twisterrob.blt.android.component.android"
-	compileSdk = 34
-	defaultConfig {
-		minSdk = 21
-	}
+	id("net.twisterrob.travel.android-library")
 }

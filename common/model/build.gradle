@@ -5,15 +5,6 @@ plugins {
 	id("com.android.lint")
 }
 
-java {
-	sourceCompatibility = libs.versions.java.asProvider().get()
-	targetCompatibility = libs.versions.java.asProvider().get()
-}
-
-// <name>Better London Travel Shared</name>
-// <description>Shared model and surrounding classes</description>
-//name = "twister-travel-shared"
-version = "0.0.1-SNAPSHOT"
 dependencies {
 	api("net.twisterrob.lib:twister-lib-general")
 	api("net.twisterrob.lib:twister-lib-core")

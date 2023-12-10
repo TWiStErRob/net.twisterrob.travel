@@ -1,8 +1,6 @@
-//name = "Better London Travel Android App"
 plugins {
-	id("net.twisterrob.blt.convention")
-	id("net.twisterrob.gradle.plugin.android-app")
-	id("com.android.application")
+	id("net.twisterrob.travel.android-app")
+	id("net.twisterrob.blt.use-database")
 }
 
 dependencies {
@@ -11,67 +9,15 @@ dependencies {
 }
 
 android {
-	namespace = "net.twisterrob.blt.android.range"
-	compileSdk = 34
 	defaultConfig {
 		applicationId = "net.twisterrob.blt.range"
-		minSdk = 21
-		targetSdk = 21
 		version {
 			major = 1
 		}
-	}
-	twisterrob {
-		decorateBuildConfig = false
-	}
-	buildTypes {
-		release {
-			minifyEnabled true
-			shrinkResources true
-		}
-		debug {
-			// twister-lib-android only has release build type
-			matchingFallbacks = [ "release" ]
-		}
-	}
-	buildFeatures {
-		buildConfig = true
-	}
-	lint {
-		checkAllWarnings = true
-		warningsAsErrors = true
-		checkDependencies = true
-		lintConfig = rootProject.file("config/lint/lint.xml")
-		baseline = rootProject.file("config/lint/lint-baseline.xml")
 	}
 	packagingOptions {
 		// TODEL https://issuetracker.google.com/issues/312677256
 		exclude("META-INF/services/io.grpc.LoadBalancerProvider")
 		exclude("META-INF/services/io.grpc.NameResolverProvider")
-	}
-}
-
-abstract class GenerateDatabase extends Copy {
-
-	@Internal("An intermediate property to satisfy AGP, tracked in destination.")
-	abstract DirectoryProperty getOutput()
-}
-
-def generateDataBase = tasks.register("generateDataBase", GenerateDatabase.class) {
-	dependsOn(":common:data:runNetwork", ":common:data:runPostCode")
-	from(new File(projects.common.data.dependencyProject.projectDir, "output")) {
-		include("*.data.*.sql")
-	}
-	into(output)
-}
-androidComponents {
-	onVariants(selector().all()) { variant ->
-		variant.sources.assets.addGeneratedSourceDirectory(generateDataBase, { it.output })
-		afterEvaluate {
-			tasks.named("generate${variant.name.capitalize()}Assets").configure {
-				// This should be not necessary with addGeneratedSourceDirectory, but without this, it doesn't work.
-				dependsOn(generateDataBase)
-			}
-		}
 	}
 }
