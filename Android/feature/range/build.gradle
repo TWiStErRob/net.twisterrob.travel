@@ -24,7 +24,3 @@ dependencies {
 	implementation(libs.jsr305)
 	implementation(libs.glide)
 }
-
-android {
-	namespace = "net.twisterrob.blt.android.feature.range"
-}

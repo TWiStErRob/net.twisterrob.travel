@@ -1,5 +1,3 @@
-group = "net.twisterrob.travel"
-
 pluginManager.withPlugin("org.gradle.java-base") {
 	java {
 		sourceCompatibility = libs.versions.java.asProvider().get()
