@@ -6,7 +6,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import android.graphics.*;
 
-import net.twisterrob.blt.android.App;
+import net.twisterrob.blt.android.app.range.App;
 import net.twisterrob.blt.android.db.model.*;
 import net.twisterrob.blt.model.LineColors;
 import net.twisterrob.java.model.Location;

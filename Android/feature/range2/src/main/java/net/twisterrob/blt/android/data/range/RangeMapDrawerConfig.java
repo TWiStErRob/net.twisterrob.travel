@@ -2,7 +2,7 @@ package net.twisterrob.blt.android.data.range;
 
 import android.graphics.Color;
 
-import net.twisterrob.blt.android.App;
+import net.twisterrob.blt.android.app.range.App;
 import net.twisterrob.blt.model.*;
 
 public class RangeMapDrawerConfig {

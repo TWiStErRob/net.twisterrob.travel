@@ -56,7 +56,7 @@ import net.twisterrob.android.utils.tools.StringerTools;
 import net.twisterrob.android.utils.tools.ViewTools;
 import net.twisterrob.android.view.*;
 import net.twisterrob.android.view.layout.DoAfterLayout;
-import net.twisterrob.blt.android.App;
+import net.twisterrob.blt.android.app.range.App;
 import net.twisterrob.blt.android.BuildConfig;
 import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.data.range.*;

@@ -16,7 +16,7 @@ import static android.text.Spanned.*;
 import net.twisterrob.android.content.HtmlParser;
 import net.twisterrob.android.graphics.DrawableBinder;
 import net.twisterrob.android.view.TextAppearanceAccessor;
-import net.twisterrob.blt.android.App;
+import net.twisterrob.blt.android.app.range.App;
 import net.twisterrob.blt.model.*;
 
 /**

@@ -8,7 +8,7 @@ import androidx.core.graphics.ColorUtils;
 import androidx.core.util.Pools;
 import android.text.TextPaint;
 
-import net.twisterrob.blt.android.App;
+import net.twisterrob.blt.android.app.range.App;
 import net.twisterrob.blt.android.db.model.*;
 import net.twisterrob.blt.model.LineColors;
 import net.twisterrob.java.model.Location;

@@ -1,4 +1,4 @@
-package net.twisterrob.blt.android;
+package net.twisterrob.blt.android.app.range;
 
 import android.app.Application;
 

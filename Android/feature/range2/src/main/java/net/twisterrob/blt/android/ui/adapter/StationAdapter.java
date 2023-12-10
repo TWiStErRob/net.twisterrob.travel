@@ -13,7 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 
 import net.twisterrob.android.adapter.BaseListAdapter;
-import net.twisterrob.blt.android.*;
+import net.twisterrob.blt.android.app.range.App;
 import net.twisterrob.blt.android.db.model.Station;
 import net.twisterrob.blt.android.feature.range.R;
 import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder;
