@@ -190,6 +190,7 @@ public class RangeMapActivity extends MapActivity {
 	@Override protected void setupMap() {
 		SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.view__map);
 		mapFragment.getMapAsync(new OnMapReadyCallback() {
+			@SuppressLint("MissingPermission") // It's declared in Places SDK.
 			@Override public void onMapReady(@NonNull GoogleMap map) {
 				RangeMapActivity.this.map = map;
 				map.setMyLocationEnabled(true);
