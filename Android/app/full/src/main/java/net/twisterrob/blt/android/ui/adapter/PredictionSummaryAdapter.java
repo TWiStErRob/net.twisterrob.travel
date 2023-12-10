@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.*;
 
 import net.twisterrob.android.adapter.BaseFilteringExpandableList3Adapter;
-import net.twisterrob.blt.android.*;
-import net.twisterrob.blt.android.full.R;
+import net.twisterrob.blt.android.App;
+import net.twisterrob.blt.android.app.full.R;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.*;
 import net.twisterrob.blt.io.feeds.trackernet.model.*;
 import net.twisterrob.blt.model.*;

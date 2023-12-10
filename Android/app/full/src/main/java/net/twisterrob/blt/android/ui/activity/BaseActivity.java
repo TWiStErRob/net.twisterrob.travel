@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.*;
 import android.widget.ListView;
 
-import net.twisterrob.blt.android.full.R;
+import net.twisterrob.blt.android.app.full.R;
 
 public abstract class BaseActivity extends AppCompatActivity {
 	@Override public void setContentView(@LayoutRes int layoutResID) {

@@ -2,7 +2,7 @@ package net.twisterrob.blt.android.data;
 
 import java.util.*;
 
-import net.twisterrob.blt.android.full.R;
+import net.twisterrob.blt.android.app.full.R;
 import net.twisterrob.blt.data.SharedStaticData;
 import net.twisterrob.blt.model.StopType;
 

@@ -10,7 +10,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import net.twisterrob.android.activity.AboutActivity;
 import net.twisterrob.android.utils.tools.AndroidTools;
-import net.twisterrob.blt.android.full.R;
+import net.twisterrob.blt.android.app.full.R;
 import net.twisterrob.blt.android.ui.activity.*;
 import net.twisterrob.blt.model.Line;
 

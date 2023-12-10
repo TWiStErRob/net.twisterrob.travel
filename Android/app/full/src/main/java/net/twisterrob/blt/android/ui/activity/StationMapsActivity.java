@@ -17,9 +17,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import net.twisterrob.blt.android.App;
+import net.twisterrob.blt.android.app.full.R;
 import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.db.model.Station;
-import net.twisterrob.blt.android.full.R;
 import net.twisterrob.blt.model.StopType;
 
 public class StationMapsActivity extends FragmentActivity {

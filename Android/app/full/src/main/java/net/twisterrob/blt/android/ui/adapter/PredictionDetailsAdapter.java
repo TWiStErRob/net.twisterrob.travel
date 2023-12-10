@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import net.twisterrob.android.adapter.BaseExpandableList2Adapter;
-import net.twisterrob.blt.android.full.R;
+import net.twisterrob.blt.android.app.full.R;
 import net.twisterrob.blt.android.ui.adapter.PredictionDetailsAdapter.*;
 import net.twisterrob.blt.io.feeds.trackernet.model.*;
 

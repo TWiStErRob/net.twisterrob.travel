@@ -11,9 +11,9 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import androidx.annotation.NonNull;
 
-import net.twisterrob.blt.android.*;
+import net.twisterrob.blt.android.App;
+import net.twisterrob.blt.android.app.full.BuildConfig;
 import net.twisterrob.blt.android.db.model.Station;
-import net.twisterrob.blt.android.full.BuildConfig;
 
 public class StationSuggestProvider extends ContentProvider {
 	public static class StationSuggestCursor extends AbstractCursor {

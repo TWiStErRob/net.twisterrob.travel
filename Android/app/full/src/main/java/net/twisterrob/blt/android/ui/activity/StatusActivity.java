@@ -11,7 +11,7 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
-import net.twisterrob.blt.android.full.R;
+import net.twisterrob.blt.android.app.full.R;
 import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
 import net.twisterrob.blt.android.ui.ListViewHandler;
 import net.twisterrob.blt.android.ui.adapter.StationStatusAdapter;

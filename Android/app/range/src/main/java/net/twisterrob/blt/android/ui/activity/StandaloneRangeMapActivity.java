@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.view.*;
 
 import net.twisterrob.android.activity.AboutActivity;
-import net.twisterrob.blt.android.range.R;
+import net.twisterrob.blt.android.app.range.R;
 
 public class StandaloneRangeMapActivity extends RangeMapActivity {
 	@Override public boolean onCreateOptionsMenu(Menu menu) {

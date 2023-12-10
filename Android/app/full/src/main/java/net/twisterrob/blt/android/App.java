@@ -15,9 +15,9 @@ import net.twisterrob.android.app.BaseApp;
 import net.twisterrob.android.log.AndroidLoggerFactory;
 import net.twisterrob.android.utils.concurrent.*;
 import net.twisterrob.android.utils.tostring.stringers.detailed.*;
+import net.twisterrob.blt.android.app.full.BuildConfig;
 import net.twisterrob.blt.android.data.*;
 import net.twisterrob.blt.android.db.DataBaseHelper;
-import net.twisterrob.blt.android.full.BuildConfig;
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.java.utils.tostring.StringerRepo;
 
