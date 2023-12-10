@@ -21,7 +21,7 @@ include(":android:component:android")
 include(":android:component:map")
 include(':android:component:data')
 include(":android:component:theme")
-include(":android:feature:range2") // STOPSHIP name "range" after it compiles
+include(":android:feature:range")
 include(":common:android-polyfill")
 include(":common:data:network")
 include(":common:data:routes")
