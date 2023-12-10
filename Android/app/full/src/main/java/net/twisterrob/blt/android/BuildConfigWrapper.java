@@ -1,8 +1,10 @@
 package net.twisterrob.blt.android;
 
-public class BuildConfigWrapper implements BuildConfig {
+import net.twisterrob.blt.android.app.full.BuildConfig;
+
+public class BuildConfigWrapper implements net.twisterrob.blt.android.BuildConfig {
 
 	@Override public boolean isDebug() {
-		return net.twisterrob.blt.android.app.full.BuildConfig.DEBUG;
+		return BuildConfig.DEBUG;
 	}
 }

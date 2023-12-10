@@ -13,7 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 
 import net.twisterrob.android.adapter.BaseListAdapter;
-import net.twisterrob.blt.android.app.range.App;
+import net.twisterrob.blt.android.data.AndroidStaticData;
 import net.twisterrob.blt.android.db.model.Station;
 import net.twisterrob.blt.android.feature.range.R;
 import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder;
@@ -21,8 +21,12 @@ import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder.Descripti
 import net.twisterrob.blt.model.*;
 
 public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
-	public StationAdapter(final Context context, final Collection<Station> items) {
+
+	private final AndroidStaticData staticData;
+
+	public StationAdapter(final Context context, final Collection<Station> items, AndroidStaticData staticData) {
 		super(context, items, false);
+		this.staticData = staticData;
 	}
 	public static class ViewHolder {
 		private final TextView title;
@@ -32,16 +36,19 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 		private final View[] lines = new View[6];
 		private final Context context;
 
+		private final AndroidStaticData staticData;
+
 		public interface DescriptionFormatter {
 			CharSequence format(Station station);
 		}
 
-		public ViewHolder(final View view, DescriptionFormatter descriptionFormatter) {
+		public ViewHolder(final View view, AndroidStaticData staticData, DescriptionFormatter descriptionFormatter) {
 			this.context = view.getContext();
 			this.descriptionFormatter = descriptionFormatter;
 			this.title = (TextView)view.findViewById(android.R.id.text1);
 			this.description = (TextView)view.findViewById(android.R.id.text2);
 			this.icon = (ImageView)view.findViewById(android.R.id.icon);
+			this.staticData = staticData;
 			lines[0] = view.findViewById(R.id.box_line_1);
 			lines[1] = view.findViewById(R.id.box_line_2);
 			lines[2] = view.findViewById(R.id.box_line_3);
@@ -75,7 +82,7 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 		}
 
 		public void bind(Station currentItem, String filter) {
-			Map<StopType, Integer> logos = App.getInstance().getStaticData().getStopTypeLogos();
+			Map<StopType, Integer> logos = staticData.getStopTypeLogos();
 			Drawable icon = ContextCompat.getDrawable(context, logos.get(currentItem.getType()));
 			CharSequence title = highlight(currentItem.getName(), filter);
 			CharSequence stationLines = descriptionFormatter.format(currentItem);
@@ -105,13 +112,12 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 		}
 
 		private void updateLineColors(List<Line> lines) {
-			LineColors colors = App.getInstance().getStaticData().getLineColors();
 			for (int i = 0; i < this.lines.length; ++i) {
 				View lineView = this.lines[i];
 				if (i < lines.size()) {
 					Line line = lines.get(i);
 					lineView.setVisibility(View.VISIBLE);
-					lineView.setBackgroundColor(line.getBackground(colors));
+					lineView.setBackgroundColor(line.getBackground(staticData.getLineColors()));
 					lineView.setContentDescription(line.getTitle());
 					lineView.setTag(line);
 				} else {
@@ -129,7 +135,7 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 	}
 
 	@Override protected ViewHolder createHolder(final View convertView) {
-		return new ViewHolder(convertView, new DescriptionFormatter() {
+		return new ViewHolder(convertView, staticData, new DescriptionFormatter() {
 			@Override public CharSequence format(Station station) {
 				return convertView.getContext().getString(R.string.station_lines,
 						station.getType(), station.getLines());

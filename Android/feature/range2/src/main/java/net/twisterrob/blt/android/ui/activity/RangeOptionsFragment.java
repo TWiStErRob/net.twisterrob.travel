@@ -1,7 +1,10 @@
 package net.twisterrob.blt.android.ui.activity;
 
+import javax.inject.Inject;
+
 import org.slf4j.*;
 
+import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.*;
 import com.google.android.material.navigation.NavigationView;
@@ -23,7 +26,8 @@ import net.twisterrob.android.utils.tools.DialogTools.PopupCallbacks;
 import net.twisterrob.android.utils.tools.ResourceTools;
 import net.twisterrob.android.wiring.NumberPickerWidget;
 import net.twisterrob.android.wiring.NumberPickerWidget.OnValueChangeListener;
-import net.twisterrob.blt.android.app.range.App;
+import net.twisterrob.blt.android.Injector;
+import net.twisterrob.blt.android.data.AndroidStaticData;
 import net.twisterrob.blt.android.data.range.*;
 import net.twisterrob.blt.android.feature.range.R;
 import net.twisterrob.blt.android.ui.*;
@@ -38,7 +42,6 @@ public class RangeOptionsFragment extends Fragment {
 	private NumberPickerWidget startWalk;
 	private CompoundButton intraStation;
 	private CompoundButton interStation;
-	private final ResourcePreferences prefs = App.prefs();
 	private ColorPickerWidget borderColor;
 	private NumberPickerWidget borderSize;
 	private CompoundButton dynamicColor;
@@ -52,6 +55,17 @@ public class RangeOptionsFragment extends Fragment {
 	private RangeMapGeneratorConfig genConfig;
 	private RangeMapDrawerConfig drawConfig;
 	private ConfigsUpdatedListener configsUpdatedListener;
+
+	@Inject
+	public AndroidStaticData staticData;
+
+	@Inject
+	public ResourcePreferences prefs;
+
+	@Override public void onAttach(@NonNull Context context) {
+		Injector.from(context).inject(this);
+		super.onAttach(context);
+	}
 
 	@Override public @Nullable View onCreateView(
 			LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -261,7 +275,8 @@ public class RangeOptionsFragment extends Fragment {
 				|| item.getGroupId() == R.id.group__range__config__draw
 				|| item.getGroupId() == R.id.group__range__config__ui) {
 			@StringRes int tooltipID = getTooltip(item);
-			Spanned tooltip = HtmlParser.fromHtml(getString(tooltipID), null, new TubeHtmlHandler(getContext()));
+			TubeHtmlHandler tagHandler = new TubeHtmlHandler(getContext(), staticData);
+			Spanned tooltip = HtmlParser.fromHtml(getString(tooltipID), null, tagHandler);
 			DialogTools
 					.notify(getContext(), PopupCallbacks.DoNothing.<Boolean>instance())
 					.setTitle(item.getTitle())
@@ -276,7 +291,7 @@ public class RangeOptionsFragment extends Fragment {
 			configsUpdatedListener.onConfigsUpdated();
 			return true;
 		} else if (id == R.id.menu__action__range__reset_drawing) {
-			drawConfig.set(new RangeMapDrawerConfig());
+			drawConfig.set(new RangeMapDrawerConfig(staticData.getLineColors()));
 			bindConfigs(genConfig, drawConfig); // update self UI
 			configsUpdatedListener.onConfigsUpdated();
 			return true;

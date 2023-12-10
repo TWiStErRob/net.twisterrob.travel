@@ -4,6 +4,8 @@ import java.util.*;
 
 import static java.util.concurrent.TimeUnit.*;
 
+import javax.inject.Inject;
+
 import org.slf4j.*;
 
 import android.annotation.SuppressLint;
@@ -22,6 +24,8 @@ import net.twisterrob.android.utils.tools.AndroidTools;
 import net.twisterrob.android.utils.tools.StringerTools;
 import net.twisterrob.android.utils.tostring.stringers.name.AddressNameStringer;
 import net.twisterrob.android.view.AutomatedViewSwitcher;
+import net.twisterrob.blt.android.Injector;
+import net.twisterrob.blt.android.data.AndroidStaticData;
 import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.data.range.RangeMapGeneratorConfig;
 import net.twisterrob.blt.android.db.model.*;
@@ -39,6 +43,15 @@ public class RangeNearestFragment extends Fragment {
 	private ViewGroup nearestStations;
 	private LatLng lastStartPoint;
 	private GeocoderTask m_geocoderTask;
+
+	@Inject
+	public AndroidStaticData staticData;
+
+	@Override public void onAttach(@NonNull Context context) {
+		Injector.from(context).inject(this);
+		super.onAttach(context);
+	}
+
 	@Override public @Nullable View onCreateView(
 			LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_range_nearest, container, false);
@@ -102,7 +115,7 @@ public class RangeNearestFragment extends Fragment {
 		for (StationWithDistance station : toStations(startNodes)) {
 			LOG.trace("Creating nearest station for {}", station);
 			View view = inflater.inflate(R.layout.item_station, nearestStations, false);
-			new StationAdapter.ViewHolder(view, formatter).bind(station, null);
+			new StationAdapter.ViewHolder(view, staticData, formatter).bind(station, null);
 			nearestStations.addView(view);
 		}
 		if (nearestStations.getChildCount() == 0) {

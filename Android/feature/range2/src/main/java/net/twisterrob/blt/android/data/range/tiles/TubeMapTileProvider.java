@@ -8,7 +8,6 @@ import androidx.core.graphics.ColorUtils;
 import androidx.core.util.Pools;
 import android.text.TextPaint;
 
-import net.twisterrob.blt.android.app.range.App;
 import net.twisterrob.blt.android.db.model.*;
 import net.twisterrob.blt.model.LineColors;
 import net.twisterrob.java.model.Location;
@@ -21,10 +20,12 @@ public class TubeMapTileProvider extends DebugGeneratedGeoTileProvider {
 	private final Pools.Pool<Paint> lineShadowPaints = new Pools.SynchronizedPool<>(10);
 	private final Paint lineShadowPaintProto;
 	private final Set<NetworkLink> links;
+	private final LineColors colors;
 
-	public TubeMapTileProvider(Set<NetworkNode> nodes, int tileSize, boolean isDebug) {
+	public TubeMapTileProvider(Set<NetworkNode> nodes, LineColors colors, int tileSize, boolean isDebug) {
 		super(tileSize, isDebug);
 		this.links = getLinks(nodes);
+		this.colors = colors;
 
 		this.textPaintProto = new TextPaint();
 		textPaintProto.setTextAlign(Align.CENTER);
@@ -78,8 +79,7 @@ public class TubeMapTileProvider extends DebugGeneratedGeoTileProvider {
 		double p2x = (to.getLongitude() - minLon) / (maxLon - minLon) * tileSize;
 		double p1y = (from.getLatitude() - minLat) / (maxLat - minLat) * tileSize;
 		double p2y = (to.getLatitude() - minLat) / (maxLat - minLat) * tileSize;
-		LineColors lineColors = App.getInstance().getStaticData().getLineColors();
-		int lineColor = link.getSource().getLine().getBackground(lineColors);
+		int lineColor = link.getSource().getLine().getBackground(colors);
 		linePaint.setColor(lineColor);
 		canvas.drawLine((float)p1x, (float)p1y, (float)p2x, (float)p2y, lineShadowPaint);
 		canvas.drawLine((float)p1x, (float)p1y, (float)p2x, (float)p2y, linePaint);

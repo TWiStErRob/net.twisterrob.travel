@@ -2,7 +2,6 @@ package net.twisterrob.blt.android.data.range;
 
 import android.graphics.Color;
 
-import net.twisterrob.blt.android.app.range.App;
 import net.twisterrob.blt.model.*;
 
 public class RangeMapDrawerConfig {
@@ -17,11 +16,13 @@ public class RangeMapDrawerConfig {
 
 	boolean dynamicColor = true;
 	int rangeColor = Color.RED;
-	LineColors colors = App.getInstance().getStaticData().getLineColors();
-	public RangeMapDrawerConfig() {
+	LineColors colors;
+	public RangeMapDrawerConfig(LineColors colors) {
+		this.colors = colors;
 	}
 
-	public RangeMapDrawerConfig(RangeMapDrawerConfig config) {
+	public RangeMapDrawerConfig(RangeMapDrawerConfig config, LineColors colors) {
+		this(colors);
 		set(config);
 	}
 

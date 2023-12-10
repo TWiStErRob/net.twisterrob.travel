@@ -16,7 +16,7 @@ import static android.text.Spanned.*;
 import net.twisterrob.android.content.HtmlParser;
 import net.twisterrob.android.graphics.DrawableBinder;
 import net.twisterrob.android.view.TextAppearanceAccessor;
-import net.twisterrob.blt.android.app.range.App;
+import net.twisterrob.blt.android.data.AndroidStaticData;
 import net.twisterrob.blt.model.*;
 
 /**
@@ -31,10 +31,10 @@ public class TubeHtmlHandler implements HtmlParser.TagHandler {
 	private final Map<StopType, Integer> logos;
 	private final Context context;
 	private final float textSize;
-	public TubeHtmlHandler(Context context) {
+	public TubeHtmlHandler(Context context, AndroidStaticData staticData) {
 		this.context = context;
-		this.colors = new TextLineColors(App.getInstance().getStaticData().getLineColors());
-		this.logos = App.getInstance().getStaticData().getStopTypeLogos();
+		this.colors = new TextLineColors(staticData.getLineColors());
+		this.logos = staticData.getStopTypeLogos();
 		this.textSize = TextAppearanceAccessor.getDefaultTextSize(context);
 	}
 	@Override public boolean handleTag(boolean opening, String tag, Editable output, Attributes attributes) {

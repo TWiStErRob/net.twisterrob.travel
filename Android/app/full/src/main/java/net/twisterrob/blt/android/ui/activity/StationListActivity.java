@@ -112,7 +112,7 @@ public class StationListActivity extends BaseActivity implements FilterListener 
 
 	protected void populateListData(List<Station> stations) {
 		Collections.sort(stations, Station.COMPARATOR_NAME);
-		m_adapter = new StationAdapter(this, stations);
+		m_adapter = new StationAdapter(this, stations, App.getInstance().getStaticData());
 		filter(m_lastFilter);
 		m_list.setAdapter(m_adapter);
 	}

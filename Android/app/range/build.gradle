@@ -4,8 +4,12 @@ plugins {
 }
 
 dependencies {
+	implementation(projects.android.component.android)
+	implementation(projects.android.component.data)
 	implementation(projects.android.feature.range2)
 	implementation("net.twisterrob.lib:twister-lib-android-about")
+	implementation("net.twisterrob.lib:twister-lib-android-slf4j")
+	implementation("net.twisterrob.lib:twister-lib-android-settings")
 }
 
 android {

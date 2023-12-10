@@ -2,6 +2,8 @@ package net.twisterrob.blt.android.ui.activity;
 
 import java.util.*;
 
+import javax.inject.Inject;
+
 import org.slf4j.*;
 
 import android.annotation.SuppressLint;
@@ -19,7 +21,6 @@ import androidx.core.graphics.ColorUtils;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.*;
 import androidx.appcompat.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
@@ -50,21 +51,25 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import net.twisterrob.android.content.pref.ResourcePreferences;
 import net.twisterrob.android.utils.concurrent.SimpleAsyncTask;
 import net.twisterrob.android.utils.tools.AndroidTools;
 import net.twisterrob.android.utils.tools.StringerTools;
 import net.twisterrob.android.utils.tools.ViewTools;
 import net.twisterrob.android.view.*;
 import net.twisterrob.android.view.layout.DoAfterLayout;
-import net.twisterrob.blt.android.app.range.App;
 import net.twisterrob.blt.android.BuildConfig;
+import net.twisterrob.blt.android.Injector;
+import net.twisterrob.blt.android.data.AndroidStaticData;
 import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.data.range.*;
 import net.twisterrob.blt.android.data.range.tiles.*;
+import net.twisterrob.blt.android.db.DataBaseHelper;
 import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.android.feature.range.R;
 import net.twisterrob.blt.android.ui.activity.RangeOptionsFragment.ConfigsUpdatedListener;
 import net.twisterrob.blt.android.ui.activity.main.MapActivity;
+import net.twisterrob.blt.model.LineColors;
 import net.twisterrob.blt.model.StopType;
 
 import static net.twisterrob.android.utils.tools.ResourceTools.*;
@@ -76,7 +81,7 @@ public class RangeMapActivity extends MapActivity {
 	private GroundOverlay mapOverlay;
 	private final List<Marker> markers = new LinkedList<>();
 	private final RangeMapGeneratorConfig genConfig = new RangeMapGeneratorConfig();
-	private final RangeMapDrawerConfig drawConfig = new RangeMapDrawerConfig();
+	private /*final*/ RangeMapDrawerConfig drawConfig;
 	private BottomSheetBehavior<?> behavior;
 	private RangeNearestFragment nearestFragment;
 	private RangeOptionsFragment optionsFragment;
@@ -86,9 +91,21 @@ public class RangeMapActivity extends MapActivity {
 	private LatLng lastStartPoint;
 	private AutocompleteSupportFragment searchFragment;
 
-	private BuildConfig buildConfig;
+	@Inject
+	public BuildConfig buildConfig;
+
+	@Inject
+	public AndroidStaticData staticData;
+
+	@Inject
+	public DataBaseHelper db;
+
+	@Inject
+	public ResourcePreferences prefs;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
+		Injector.from(this).inject(this);
+		drawConfig = new RangeMapDrawerConfig(staticData.getLineColors());
 		String apiKey = getApplicationInfoWithMetadata(this).metaData.getString("com.google.android.geo.API_KEY");
 		Places.initialize(getApplicationContext(), apiKey);
 
@@ -141,7 +158,7 @@ public class RangeMapActivity extends MapActivity {
 		@SuppressWarnings({"unused", "deprecation"}) // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 		Object task = new AsyncTask<Void, Void, Set<NetworkNode>>() {
 			@Override protected Set<NetworkNode> doInBackground(Void... params) {
-				return App.db().getTubeNetwork();
+				return db.getTubeNetwork();
 			}
 			@Override protected void onPostExecute(Set<NetworkNode> nodes) {
 				super.onPostExecute(nodes);
@@ -238,7 +255,7 @@ public class RangeMapActivity extends MapActivity {
 	}
 
 	public void updateToolbarVisibility() {
-		boolean showToolbar = App.prefs().getBoolean(R.string.pref__show_toolbar, R.bool.pref__show_toolbar__default);
+		boolean showToolbar = prefs.getBoolean(R.string.pref__show_toolbar, R.bool.pref__show_toolbar__default);
 		final View container = findViewById(R.id.view__range__toolbar_container);
 		ViewTools.displayedIf(container, showToolbar);
 		new DoAfterLayout(drawers, true) {
@@ -322,9 +339,8 @@ public class RangeMapActivity extends MapActivity {
 				.image(BitmapDescriptorFactory.fromBitmap(rangeDrawer.draw(emptyNetwork)))
 		);
 //		// tube map above
-		if (!App.prefs().getBoolean(R.string.pref__network_overlay, R.bool.pref__network_overlay__default)) {
-			TubeMapDrawer tubeMapDrawer = new TubeMapDrawer(nodes);
-			DisplayMetrics metrics = getResources().getDisplayMetrics();
+		if (!prefs.getBoolean(R.string.pref__network_overlay, R.bool.pref__network_overlay__default)) {
+			TubeMapDrawer tubeMapDrawer = new TubeMapDrawer(nodes, staticData.getLineColors());
 			tubeMapDrawer.setSize(dip(this, 1024), dip(this, 1024));
 			map.addGroundOverlay(new GroundOverlayOptions()
 					.positionFromBounds(rangeDrawer.getBounds())
@@ -333,7 +349,7 @@ public class RangeMapActivity extends MapActivity {
 			);
 		} else {
 			int tileSize = Math.max(256, dipInt(this, 192));
-			TubeMapTileProvider provider = new TubeMapTileProvider(nodes, tileSize, buildConfig.isDebug());
+			TubeMapTileProvider provider = new TubeMapTileProvider(nodes, staticData.getLineColors(), tileSize, buildConfig.isDebug());
 			if (buildConfig.isDebug()) {
 				provider.setMarkers(new MarkerAdder() {
 					@Override public void addMarker(final double lat, final double lon, final String text) {
@@ -377,7 +393,7 @@ public class RangeMapActivity extends MapActivity {
 			return;
 		}
 		// don't set empty image for the ground overlay here because it flashes
-		drawTask = new DrawAsyncTask(tubeNetwork, genConfig, drawConfig);
+		drawTask = new DrawAsyncTask(tubeNetwork, genConfig, drawConfig, staticData.getLineColors());
 		AndroidTools.executePreferParallel(drawTask, latlng);
 	}
 
@@ -398,7 +414,7 @@ public class RangeMapActivity extends MapActivity {
 		for (NetworkNode startNode : startNodes) {
 			LOG.trace("Creating marker for {}", startNode);
 			StopType stopType = startNode.getLine().getDefaultStopType();
-			Map<StopType, Integer> icons = App.getInstance().getStaticData().getStopTypeMiniIcons();
+			Map<StopType, Integer> icons = staticData.getStopTypeMiniIcons();
 			Marker marker = map.addMarker(new MarkerOptions()
 					.title(startNode.getName())
 					.position(LocationUtils.toLatLng(startNode.getLocation()))
@@ -419,7 +435,7 @@ public class RangeMapActivity extends MapActivity {
 
 	private void updateNearestStations(Collection<NetworkNode> startNodes) {
 		nearestFragment.updateNearestStations(startNodes, genConfig);
-		if (App.prefs().getBoolean(R.string.pref__show_nearest, R.bool.pref__show_nearest__default)) {
+		if (prefs.getBoolean(R.string.pref__show_nearest, R.bool.pref__show_nearest__default)) {
 			behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 		}
 	}
@@ -451,12 +467,16 @@ public class RangeMapActivity extends MapActivity {
 		private final RangeMapGeneratorConfig config;
 		private final RangeMapDrawerConfig drawConfig;
 
-		public DrawAsyncTask(Set<NetworkNode> nodes,
-				RangeMapGeneratorConfig config, RangeMapDrawerConfig drawConfig) {
+		public DrawAsyncTask(
+				Set<NetworkNode> nodes,
+				RangeMapGeneratorConfig config,
+				RangeMapDrawerConfig drawConfig,
+				LineColors colors
+		) {
 			this.nodes = nodes;
 			// Make a copy of configs to make sure any modifications are not messing with the background thread
 			this.config = new RangeMapGeneratorConfig(config);
-			this.drawConfig = new RangeMapDrawerConfig(drawConfig);
+			this.drawConfig = new RangeMapDrawerConfig(drawConfig, colors);
 		}
 
 		@Override protected @NonNull Result doInBackground(@Nullable LatLng location) {

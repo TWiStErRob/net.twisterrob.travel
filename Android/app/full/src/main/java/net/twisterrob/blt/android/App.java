@@ -18,10 +18,11 @@ import net.twisterrob.android.utils.tostring.stringers.detailed.*;
 import net.twisterrob.blt.android.app.full.BuildConfig;
 import net.twisterrob.blt.android.data.*;
 import net.twisterrob.blt.android.db.DataBaseHelper;
+import net.twisterrob.blt.android.ui.activity.RangeMapActivity;
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.java.utils.tostring.StringerRepo;
 
-public class App extends BaseApp {
+public class App extends BaseApp implements Injector.Provider {
 	static {
 		AndroidLoggerFactory.addReplacement("^net\\.twisterrob\\.blt\\.android\\.(.+\\.)?", "");
 		AndroidLoggerFactory.addReplacement("^net\\.twisterrob\\.blt\\.(.+\\.)?", "");
@@ -92,5 +93,15 @@ public class App extends BaseApp {
 				}
 			}
 		}.execute(body);
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override public Injector injector() {
+		return new net.twisterrob.blt.android.feature.range.Injector(
+				new BuildConfigWrapper(),
+				m_static,
+				db(),
+				prefs()
+		);
 	}
 }

@@ -4,9 +4,9 @@ import java.util.*;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
+import android.annotation.SuppressLint;
 import android.graphics.*;
 
-import net.twisterrob.blt.android.app.range.App;
 import net.twisterrob.blt.android.db.model.*;
 import net.twisterrob.blt.model.LineColors;
 import net.twisterrob.java.model.Location;
@@ -18,8 +18,11 @@ public class TubeMapDrawer {
 	protected final double minLat;
 	protected final double maxLat;
 	private final RenderedGeoSize size = new AndroidOpenGLRenderedGeoSize();
+	private final LineColors colors;
 
-	public TubeMapDrawer(Iterable<NetworkNode> nodes) {
+	@SuppressLint("LambdaLast")
+	public TubeMapDrawer(Iterable<NetworkNode> nodes, LineColors colors) {
+		this.colors = colors;
 		double minX = Double.POSITIVE_INFINITY, maxX = Double.NEGATIVE_INFINITY;
 		double minY = Double.POSITIVE_INFINITY, maxY = Double.NEGATIVE_INFINITY;
 		for (NetworkNode node : nodes) {
@@ -75,7 +78,6 @@ public class TubeMapDrawer {
 		double toY = (maxLat - to.getLatitude()) * scaleY;
 
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		LineColors colors = App.getInstance().getStaticData().getLineColors();
 		int lineColor = link.getSource().getLine().getBackground(colors);
 		paint.setColor(lineColor);
 		paint.setStrokeWidth(4);
