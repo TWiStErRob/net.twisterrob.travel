@@ -49,6 +49,7 @@ jobs:
           --stacktrace
           --continue
           --no-build-cache
+          --scan
           build
           :web:status-history:appengineStage
 
