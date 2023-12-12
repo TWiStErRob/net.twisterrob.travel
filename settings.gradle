@@ -19,7 +19,7 @@ rootProject.name = "net-twisterrob-blt"
 include(":android:app:full")
 include(":android:app:range")
 include(":android:component:android")
-include(":android:component:map")
+//include(":android:component:map")
 include(":android:component:data")
 include(":android:component:theme")
 include(":android:feature:range")

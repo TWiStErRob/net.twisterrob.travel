@@ -467,11 +467,8 @@ public class RangeMapActivity extends MapActivity {
 		private final RangeMapGeneratorConfig config;
 		private final RangeMapDrawerConfig drawConfig;
 
-		public DrawAsyncTask(
-				Set<NetworkNode> nodes,
-				RangeMapGeneratorConfig config,
-				RangeMapDrawerConfig drawConfig
-		) {
+		public DrawAsyncTask(Set<NetworkNode> nodes,
+				RangeMapGeneratorConfig config, RangeMapDrawerConfig drawConfig) {
 			this.nodes = nodes;
 			// Make a copy of configs to make sure any modifications are not messing with the background thread
 			this.config = new RangeMapGeneratorConfig(config);
