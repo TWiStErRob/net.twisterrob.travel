@@ -1,0 +1,20 @@
+plugins {
+	id("net.twisterrob.blt.convention")
+	id("net.twisterrob.gradle.plugin.android-library")
+	id("com.android.library")
+}
+
+android {
+	namespace = "net.twisterrob.blt${project.path.replace(":", ".")}"
+	compileSdk = 34
+	defaultConfig {
+		minSdk = 21
+	}
+	lint {
+		checkAllWarnings = true
+		warningsAsErrors = true
+		checkDependencies = true
+		lintConfig = rootProject.file("config/lint/lint.xml")
+		baseline = rootProject.file("config/lint/lint-baseline${project.path.replace(":", "-")}.xml")
+	}
+}

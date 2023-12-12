@@ -50,13 +50,14 @@ jobs:
           --continue
           --no-build-cache
           build
-          :AppEngine:appengineStage
+          :web:status-history:appengineStage
 
       - name: "Upload 'Unit Test Results' artifact."
         if: success() || failure()
         uses: actions/upload-artifact@v3
         with:
           name: 'Unit Test Results'
+          if-no-files-found: error
           path: ${{ github.workspace }}/**/build/reports/tests/*/
 
       - name: "Upload 'Android Lint Results' artifact."
@@ -64,6 +65,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: 'Android Lint Results'
+          if-no-files-found: error
           path: ${{ github.workspace }}/**/build/reports/lint-results*
 
       - name: "Publish 'Unit Results' check suite."
@@ -81,6 +83,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: 'APKs'
+          if-no-files-found: error
           path: |
             ${{ github.workspace }}/**/build/outputs/apk/
             ${{ github.workspace }}/**/build/outputs/mapping/

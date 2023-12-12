@@ -1,4 +1,5 @@
 plugins {
+	// REPORT removing this makes everything in gradle/plugins/build.gradle invisible to build.gradle plugins blocks.
 	id("net.twisterrob.blt.convention")
 	id("org.gradle.idea")
 }
@@ -7,6 +8,7 @@ idea {
 	module {
 		excludeDirs = [
 			file(".gradle"),
+			file("build"),
 			file(".idea"),
 			file("temp"),
 		]

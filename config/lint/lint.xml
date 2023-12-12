@@ -32,7 +32,9 @@
 	<!-- STOPSHIP Leave me alone for now, we'll see when I'm ready to publish -->
 	<issue id="IconMissingDensityFolder" severity="ignore" />
 	<issue id="ConvertToWebp">
+		<!-- Whitelist a few existing ones to prevent adding new ones. -->
 		<ignore path="**/src/main/res/drawable/tfl_roundel_*.jpg" />
+		<ignore path="**/src/main/res/mipmap-*/ic_launcher.png" />
 	</issue>
 
 	<issue id="SyntheticAccessor" severity="ignore">
@@ -40,6 +42,9 @@
 	</issue>
 	<issue id="UnknownNullness" severity="ignore">
 		<!-- Not Kotlin yet, reduce lint warning count. -->
+	</issue>
+	<issue id="JavaPluginLanguageLevel" severity="ignore">
+		<!-- REPORT Would be useful if it understood convention plugins. -->
 	</issue>
 	<issue id="InvalidPackage">
 		<ignore regexp="Invalid package reference in .*; not included in Android: `javax\.xml\.stream`\. Referenced from `net\.twisterrob\.blt\.io\.feeds\.timetable\.JourneyPlannerTimetableFeedKmlOut`\." />

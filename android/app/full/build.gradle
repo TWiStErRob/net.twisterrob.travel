@@ -1,0 +1,26 @@
+plugins {
+	id("net.twisterrob.travel.android-app")
+}
+
+android.defaultConfig.applicationId = "net.twisterrob.blt"
+android.defaultConfig.version {
+	major = 1
+}
+
+dependencies {
+	implementation(projects.android.component.android)
+	implementation(projects.android.component.data)
+	implementation(projects.android.component.theme)
+	implementation(projects.android.feature.range)
+	implementation("net.twisterrob.lib:twister-lib-android-monolith")
+	implementation("net.twisterrob.lib:twister-lib-android-basics")
+	implementation("net.twisterrob.lib:twister-lib-android-slf4j")
+	implementation("net.twisterrob.lib:twister-lib-android-stringers")
+
+	implementation("net.twisterrob.lib:twister-lib-android-about")
+	implementation("net.twisterrob.lib:twister-lib-android-settings")
+
+	implementation(libs.gms.maps)
+	implementation(libs.jsr305)
+	implementation(libs.androidx.swiperefreshlayout)
+}
