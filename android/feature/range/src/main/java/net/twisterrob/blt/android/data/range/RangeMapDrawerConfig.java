@@ -21,8 +21,7 @@ public class RangeMapDrawerConfig {
 		this.colors = colors;
 	}
 
-	public RangeMapDrawerConfig(RangeMapDrawerConfig config, LineColors colors) {
-		this(colors);
+	public RangeMapDrawerConfig(RangeMapDrawerConfig config) {
 		set(config);
 	}
 

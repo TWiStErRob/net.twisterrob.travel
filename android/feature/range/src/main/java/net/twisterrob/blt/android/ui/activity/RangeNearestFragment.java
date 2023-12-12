@@ -45,7 +45,7 @@ public class RangeNearestFragment extends Fragment {
 	private GeocoderTask m_geocoderTask;
 
 	@Inject
-	public AndroidStaticData staticData;
+	AndroidStaticData staticData;
 
 	@Override public void onAttach(@NonNull Context context) {
 		Injector.from(context).inject(this);

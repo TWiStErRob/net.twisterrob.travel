@@ -1,4 +1,4 @@
-package net.twisterrob.blt.android.feature.range;
+package net.twisterrob.blt.android.ui.activity;
 
 import net.twisterrob.android.content.pref.ResourcePreferences;
 import net.twisterrob.blt.android.BuildConfig;

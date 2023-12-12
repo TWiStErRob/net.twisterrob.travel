@@ -92,16 +92,16 @@ public class RangeMapActivity extends MapActivity {
 	private AutocompleteSupportFragment searchFragment;
 
 	@Inject
-	public BuildConfig buildConfig;
+	BuildConfig buildConfig;
 
 	@Inject
-	public AndroidStaticData staticData;
+	AndroidStaticData staticData;
 
 	@Inject
-	public DataBaseHelper db;
+	DataBaseHelper db;
 
 	@Inject
-	public ResourcePreferences prefs;
+	ResourcePreferences prefs;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		Injector.from(this).inject(this);
@@ -393,7 +393,7 @@ public class RangeMapActivity extends MapActivity {
 			return;
 		}
 		// don't set empty image for the ground overlay here because it flashes
-		drawTask = new DrawAsyncTask(tubeNetwork, genConfig, drawConfig, staticData.getLineColors());
+		drawTask = new DrawAsyncTask(tubeNetwork, genConfig, drawConfig);
 		AndroidTools.executePreferParallel(drawTask, latlng);
 	}
 
@@ -470,13 +470,12 @@ public class RangeMapActivity extends MapActivity {
 		public DrawAsyncTask(
 				Set<NetworkNode> nodes,
 				RangeMapGeneratorConfig config,
-				RangeMapDrawerConfig drawConfig,
-				LineColors colors
+				RangeMapDrawerConfig drawConfig
 		) {
 			this.nodes = nodes;
 			// Make a copy of configs to make sure any modifications are not messing with the background thread
 			this.config = new RangeMapGeneratorConfig(config);
-			this.drawConfig = new RangeMapDrawerConfig(drawConfig, colors);
+			this.drawConfig = new RangeMapDrawerConfig(drawConfig);
 		}
 
 		@Override protected @NonNull Result doInBackground(@Nullable LatLng location) {

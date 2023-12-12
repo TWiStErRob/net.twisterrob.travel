@@ -2,6 +2,11 @@ plugins {
 	id("net.twisterrob.travel.android-app")
 }
 
+android.defaultConfig.applicationId = "net.twisterrob.blt.range"
+android.defaultConfig.version {
+	major = 1
+}
+
 dependencies {
 	implementation(projects.android.component.android)
 	implementation(projects.android.component.data)
@@ -9,13 +14,4 @@ dependencies {
 	implementation("net.twisterrob.lib:twister-lib-android-about")
 	implementation("net.twisterrob.lib:twister-lib-android-slf4j")
 	implementation("net.twisterrob.lib:twister-lib-android-settings")
-}
-
-android {
-	defaultConfig {
-		applicationId = "net.twisterrob.blt.range"
-		version {
-			major = 1
-		}
-	}
 }

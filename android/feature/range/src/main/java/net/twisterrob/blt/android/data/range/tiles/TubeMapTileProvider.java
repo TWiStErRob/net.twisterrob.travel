@@ -20,12 +20,12 @@ public class TubeMapTileProvider extends DebugGeneratedGeoTileProvider {
 	private final Pools.Pool<Paint> lineShadowPaints = new Pools.SynchronizedPool<>(10);
 	private final Paint lineShadowPaintProto;
 	private final Set<NetworkLink> links;
-	private final LineColors colors;
+	private final LineColors lineColors;
 
-	public TubeMapTileProvider(Set<NetworkNode> nodes, LineColors colors, int tileSize, boolean isDebug) {
+	public TubeMapTileProvider(Set<NetworkNode> nodes, LineColors lineColors, int tileSize, boolean isDebug) {
 		super(tileSize, isDebug);
 		this.links = getLinks(nodes);
-		this.colors = colors;
+		this.lineColors = lineColors;
 
 		this.textPaintProto = new TextPaint();
 		textPaintProto.setTextAlign(Align.CENTER);
@@ -79,7 +79,7 @@ public class TubeMapTileProvider extends DebugGeneratedGeoTileProvider {
 		double p2x = (to.getLongitude() - minLon) / (maxLon - minLon) * tileSize;
 		double p1y = (from.getLatitude() - minLat) / (maxLat - minLat) * tileSize;
 		double p2y = (to.getLatitude() - minLat) / (maxLat - minLat) * tileSize;
-		int lineColor = link.getSource().getLine().getBackground(colors);
+		int lineColor = link.getSource().getLine().getBackground(lineColors);
 		linePaint.setColor(lineColor);
 		canvas.drawLine((float)p1x, (float)p1y, (float)p2x, (float)p2y, lineShadowPaint);
 		canvas.drawLine((float)p1x, (float)p1y, (float)p2x, (float)p2y, linePaint);

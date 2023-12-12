@@ -88,7 +88,7 @@ public class App extends BaseApp implements Injector.Provider {
 
 	@SuppressWarnings("deprecation")
 	@Override public Injector injector() {
-		return new net.twisterrob.blt.android.feature.range.Injector(
+		return new net.twisterrob.blt.android.ui.activity.Injector(
 				new BuildConfigWrapper(),
 				m_static,
 				db(),

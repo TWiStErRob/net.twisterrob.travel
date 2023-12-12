@@ -2,6 +2,11 @@ plugins {
 	id("net.twisterrob.travel.android-app")
 }
 
+android.defaultConfig.applicationId = "net.twisterrob.blt"
+android.defaultConfig.version {
+	major = 1
+}
+
 dependencies {
 	implementation(projects.android.component.android)
 	implementation(projects.android.component.data)
@@ -18,13 +23,4 @@ dependencies {
 	implementation(libs.gms.maps)
 	implementation(libs.jsr305)
 	implementation(libs.androidx.swiperefreshlayout)
-}
-
-android {
-	defaultConfig {
-		applicationId = "net.twisterrob.blt"
-		version {
-			major = 1
-		}
-	}
 }

@@ -57,10 +57,10 @@ public class RangeOptionsFragment extends Fragment {
 	private ConfigsUpdatedListener configsUpdatedListener;
 
 	@Inject
-	public AndroidStaticData staticData;
+	AndroidStaticData staticData;
 
 	@Inject
-	public ResourcePreferences prefs;
+	ResourcePreferences prefs;
 
 	@Override public void onAttach(@NonNull Context context) {
 		Injector.from(context).inject(this);

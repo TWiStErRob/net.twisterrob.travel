@@ -1,4 +1,6 @@
 <resources>
+
 	<color name="compass_on">#00ff00</color>
 	<color name="compass_off">#ff0000</color>
+
 </resources>

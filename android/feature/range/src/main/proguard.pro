@@ -1,6 +1,5 @@
 ### -- android/feature/range/proguard.pro -- ###
 
-
 # TODEL https://issuetracker.google.com/issues/312677256
 # WARNING: app\build\intermediates\merged_java_res\release\mergeReleaseJavaResource\base.jar:
 # R8: Unexpected reference to missing service class: META-INF/services/io.grpc.LoadBalancerProvider.

@@ -26,10 +26,6 @@ android {
 			minifyEnabled true
 			shrinkResources true
 		}
-		debug {
-			// twister-lib-android only has release build type
-			matchingFallbacks = [ "release" ]
-		}
 	}
 	buildFeatures {
 		buildConfig = true

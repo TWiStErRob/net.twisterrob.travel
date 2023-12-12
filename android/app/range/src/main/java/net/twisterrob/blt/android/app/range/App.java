@@ -36,7 +36,7 @@ public class App extends BaseApp implements Injector.Provider {
 		BuildConfig buildConfig = new BuildConfigWrapper();
 		DataBaseHelper db = new DataBaseHelper(context, buildConfig.isDebug());
 		@SuppressWarnings("deprecation")
-		Injector injector = new net.twisterrob.blt.android.feature.range.Injector(
+		Injector injector = new net.twisterrob.blt.android.ui.activity.Injector(
 				buildConfig,
 				new AndroidDBStaticData(db),
 				db,
