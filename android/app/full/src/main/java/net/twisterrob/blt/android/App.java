@@ -5,11 +5,6 @@ import org.slf4j.*;
 import androidx.annotation.NonNull;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.libraries.places.api.model.Place;
-
 import net.twisterrob.android.AndroidConstants;
 import net.twisterrob.android.app.BaseApp;
 import net.twisterrob.android.log.AndroidLoggerFactory;
@@ -18,7 +13,6 @@ import net.twisterrob.android.utils.tostring.stringers.detailed.*;
 import net.twisterrob.blt.android.app.full.BuildConfig;
 import net.twisterrob.blt.android.data.*;
 import net.twisterrob.blt.android.db.DataBaseHelper;
-import net.twisterrob.blt.android.ui.activity.RangeMapActivity;
 import net.twisterrob.blt.io.feeds.*;
 import net.twisterrob.java.utils.tostring.StringerRepo;
 
@@ -50,10 +44,7 @@ public class App extends BaseApp implements Injector.Provider {
 
 	@Override public void onCreate() {
 		super.onCreate();
-		StringerRepo.INSTANCE.register(Status.class, new StatusStringer());
-		StringerRepo.INSTANCE.register(Place.class, new PlaceStringer());
-		StringerRepo.INSTANCE.register(LatLng.class, new LatLngStringer());
-		StringerRepo.INSTANCE.register(LatLngBounds.class, new LatLngBoundsStringer());
+		Stringers.register(StringerRepo.INSTANCE);
 		m_static = new AndroidDBStaticData(db());
 	}
 

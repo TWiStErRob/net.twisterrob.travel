@@ -17,7 +17,6 @@ dependencies {
 
 	implementation(projects.common.model)
 	implementation(libs.gms.maps)
-	implementation(libs.gms.places)
 	implementation(libs.jsr305)
 	implementation(libs.glide)
 	implementation(libs.androidx.swiperefreshlayout)
