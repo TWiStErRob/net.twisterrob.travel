@@ -22,3 +22,5 @@ dependencies {
 	implementation(libs.jsr305)
 	implementation(libs.glide)
 }
+
+android.defaultConfig.consumerProguardFile("src/main/proguard.pro")

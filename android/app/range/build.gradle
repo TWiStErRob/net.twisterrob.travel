@@ -18,9 +18,4 @@ android {
 			major = 1
 		}
 	}
-	packagingOptions {
-		// TODEL https://issuetracker.google.com/issues/312677256
-		exclude("META-INF/services/io.grpc.LoadBalancerProvider")
-		exclude("META-INF/services/io.grpc.NameResolverProvider")
-	}
 }
