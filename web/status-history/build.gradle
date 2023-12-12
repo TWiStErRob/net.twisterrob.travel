@@ -23,6 +23,7 @@ dependencies {
 	implementation(libs.micronaut.handlebars)
 
 	implementation(projects.common.model)
+	runtimeOnly(projects.common.androidPolyfill)
 	implementation(projects.common.diff)
 
 	implementation(libs.slf4j.api)

@@ -15,9 +15,7 @@ dependencies {
 	implementation("net.twisterrob.lib:twister-lib-android-about")
 	implementation("net.twisterrob.lib:twister-lib-android-settings")
 
-	implementation(projects.common.model) {
-		exclude module: "android-polyfill"
-	}
+	implementation(projects.common.model)
 	implementation(libs.gms.maps)
 	implementation(libs.gms.places)
 	implementation(libs.jsr305)

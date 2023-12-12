@@ -11,10 +11,11 @@ dependencies {
 
 	implementation(libs.jsr305)
 	implementation(libs.slf4j.api)
-	implementation(projects.common.androidPolyfill)
+	compileOnly(projects.common.androidPolyfill)
 	implementation("net.twisterrob.lib:twister-lib-java_desktop")
 
 	testImplementation(projects.common.testHelpers)
+	testRuntimeOnly(projects.common.androidPolyfill)
 }
 
 lint {

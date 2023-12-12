@@ -9,7 +9,9 @@ plugins {
 description = "Better London Travel Data Generation: Standalone project to handle large feeds"
 
 dependencies {
-	api(projects.common.model)
+	implementation(projects.common.model)
+	runtimeOnly(projects.common.androidPolyfill)
+
 	implementation(libs.jsr305)
 	implementation(libs.slf4j.api)
 	implementation(libs.slf4j.simple)
