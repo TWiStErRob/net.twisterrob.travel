@@ -33,7 +33,7 @@ google-places = "3.3.0"
 google-datastore = "2.17.6"
 
 micronaut = "4.2.1"
-micronaut-http = "4.2.1"
+micronaut-http = "4.2.2"
 micronaut-jackson = "2.5.1"
 micronaut-handlebars = "5.0.1"
 snakeyaml = "2.2"
