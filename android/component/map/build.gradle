@@ -3,5 +3,8 @@ plugins {
 }
 
 dependencies {
+	implementation(projects.common.maptiler)
 	api(libs.gms.maps) // STOPSHIP
+	implementation(libs.slf4j.api)
+	implementation(libs.androidx.fragment)
 }

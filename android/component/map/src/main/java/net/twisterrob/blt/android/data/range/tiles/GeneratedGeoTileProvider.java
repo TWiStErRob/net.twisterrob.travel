@@ -8,7 +8,6 @@ import androidx.annotation.*;
 import androidx.core.util.Pools;
 import android.text.TextPaint;
 
-import com.bumptech.glide.util.Util;
 import com.google.android.gms.maps.model.Tile;
 
 public abstract class GeneratedGeoTileProvider extends GeoTileProvider {
@@ -31,7 +30,7 @@ public abstract class GeneratedGeoTileProvider extends GeoTileProvider {
 						+ "drawing a {}x{} Bitmap ({} bytes) compressed into {} bytes "
 						+ "took {} ms (create = {} ms, draw = {} ms, compress = {} ms)",
 				x, y, zoom,
-				bitmap.getWidth(), bitmap.getHeight(), Util.getBitmapByteSize(bitmap), tile.data.length,
+				bitmap.getWidth(), bitmap.getHeight(), bitmap.getAllocationByteCount(), tile.data.length,
 				converted - begin, created - begin, drawn - created, converted - drawn);
 		return tile;
 	}
