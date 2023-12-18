@@ -37,7 +37,7 @@ gretty { // org.akhikhl.gretty.GrettyExtension
 
 idea {
 	module {
-		excludeDirs = [
+		excludeDirs += [
 			file("output"),
 			file("src/data"),
 		]
