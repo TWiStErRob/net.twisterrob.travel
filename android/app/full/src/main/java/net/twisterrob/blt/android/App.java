@@ -44,7 +44,7 @@ public class App extends BaseApp implements Injector.Provider {
 
 	@Override public void onCreate() {
 		super.onCreate();
-		Stringers.register(StringerRepo.INSTANCE);
+		RangeStringers.register(StringerRepo.INSTANCE);
 		m_static = new AndroidDBStaticData(db());
 	}
 

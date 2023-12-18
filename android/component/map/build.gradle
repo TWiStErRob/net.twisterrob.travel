@@ -7,4 +7,6 @@ dependencies {
 	api(libs.gms.maps) // STOPSHIP
 	implementation(libs.slf4j.api)
 	implementation(libs.androidx.fragment)
+	implementation("net.twisterrob.lib:twister-lib-android-stringers")
+	implementation("net.twisterrob.lib:twister-lib-stringer")
 }
