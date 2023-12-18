@@ -25,6 +25,16 @@ pluginManager.withPlugin("com.android.base") {
 	}
 }
 
+pluginManager.withPlugin("com.android.lint") {
+	lint {
+		checkAllWarnings = true
+		warningsAsErrors = true
+		lintConfig = rootProject.file("config/lint/lint.xml")
+		baseline = rootProject.file("config/lint/lint-baseline${project.path.replace(":", "-")}.xml")
+		enable += "StopShip"
+	}
+}
+
 if (project.gradle.startParameter.isConfigurationCacheRequested()) {
 	// TODEL https://github.com/TWiStErRob/net.twisterrob.gradle/issues/511
 	project.plugins.withId("com.android.application") {
