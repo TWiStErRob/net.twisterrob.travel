@@ -1,6 +1,5 @@
-import net.twisterrob.travel.InputDirectoryArgumentProvider
+import net.twisterrob.travel.DirectoryArgumentProvider
 import net.twisterrob.travel.JavaExecExtensions
-import net.twisterrob.travel.OutputDirectoryArgumentProvider
 
 plugins {
 	id("net.twisterrob.blt.convention")
@@ -20,18 +19,29 @@ application {
 	mainClass = "net.twisterrob.blt.data.apps.TravelNetworkParser"
 }
 
+Provider<Directory> outputDir = layout.buildDirectory.dir("output")
 tasks.named("run", JavaExec.class) {
 	Directory inputDir = rootProject.layout.projectDirectory.dir("temp/feed15/LULDLRRiverTramCable")
-	Provider<Directory> outputDir = layout.buildDirectory.dir("output")
 	inputs.dir(inputDir).withPathSensitivity(PathSensitivity.RELATIVE)
 	inputs.dir(rootProject.layout.projectDirectory.dir("data/PredictionSummary")) // STOPSHIP
 	argumentProviders.addAll([
-			new InputDirectoryArgumentProvider(provider { inputDir }),
-			new OutputDirectoryArgumentProvider(outputDir),
+			new DirectoryArgumentProvider(provider { inputDir }) {
+				@InputDirectory
+				@PathSensitive(PathSensitivity.RELATIVE)
+				@Override Provider<Directory> getDirectory() {
+					return super.getDirectory()
+				}
+			},
+			new DirectoryArgumentProvider(outputDir) {
+				@OutputDirectory
+				@Override Provider<Directory> getDirectory() {
+					return super.getDirectory()
+				}
+			},
 	])
 	enableAssertions = true
 	JavaExecExtensions.logTo(it, outputDir.map { it.file("run.log") })
 }
 
 configurations.create("output")
-artifacts.output(tasks.named("run").map { it.outputs.files.singleFile })
+artifacts.output(tasks.named("run").map { outputDir })
