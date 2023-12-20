@@ -24,7 +24,7 @@ tasks.named("run", JavaExec.class) {
 	Directory inputDir = rootProject.layout.projectDirectory.dir("temp/feed15/LULDLRRiverTramCable")
 	Provider<Directory> outputDir = layout.buildDirectory.dir("output")
 	inputs.dir(inputDir).withPathSensitivity(PathSensitivity.RELATIVE)
-	inputs.dir(projects.common.data.fake.dependencyProject.file("src/main/data/PredictionSummary")) // STOPSHIP
+	inputs.dir(rootProject.layout.projectDirectory.dir("data/PredictionSummary")) // STOPSHIP
 	argumentProviders.addAll([
 			new InputDirectoryArgumentProvider(provider { inputDir }),
 			new OutputDirectoryArgumentProvider(outputDir),
