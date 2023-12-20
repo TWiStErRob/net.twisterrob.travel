@@ -5,7 +5,6 @@ import java.util.Map.Entry;
 
 import static java.util.Collections.*;
 
-import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.model.Line;
 import net.twisterrob.java.utils.CollectionTools;
 
@@ -20,6 +19,7 @@ class StationInconsistencies {
 	 * Map for each line from how a station is called in the {@link Feed#JourneyPlannerTimetables}
 	 * to how it is called in the {@link Feed#TubeDepartureBoards*} feeds.
 	 */
+	@SuppressWarnings("JavadocReference")
 	private static Map<Line, Map<String, String>> initAliases() {
 		Map<Line, Map<String, String>> aliases = new EnumMap<>(Line.class);
 		{

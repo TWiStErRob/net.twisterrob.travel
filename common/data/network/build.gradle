@@ -8,8 +8,10 @@ plugins {
 }
 
 dependencies {
-	implementation(projects.common.model)
 	implementation(projects.common.data.desktop)
+	implementation(projects.common.feed.feeds)
+	implementation(projects.common.feed.timetable)
+	implementation(projects.common.feed.trackernet)
 	implementation(projects.common.logConsole)
 
 	runtimeOnly(projects.common.androidPolyfill)

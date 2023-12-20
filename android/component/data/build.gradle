@@ -6,6 +6,7 @@ configurations.create("database")
 
 dependencies {
 	api(projects.common.model)
+	api(projects.common.data.static)
 	implementation("net.twisterrob.lib:twister-lib-android-monolith")
 	implementation("net.twisterrob.lib:twister-lib-android-basics")
 	implementation("net.twisterrob.lib:twister-lib-android-slf4j")

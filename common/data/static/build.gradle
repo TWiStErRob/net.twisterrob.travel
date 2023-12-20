@@ -2,9 +2,10 @@ plugins {
 	id("net.twisterrob.blt.convention")
 	id("org.gradle.java-library")
 	id("net.twisterrob.gradle.plugin.java")
+	id("com.android.lint")
 }
 
 dependencies {
-	api(projects.common.model)
-	api(projects.common.data.static)
+	implementation(projects.common.model)
+	implementation(projects.common.feed.feeds)
 }
