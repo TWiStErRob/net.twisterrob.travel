@@ -174,7 +174,7 @@ public class RangeMapActivity extends MapActivity {
 
 	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/12
 	private void setTranslucentStatusBar() {
-		int statusBarColor = ColorUtils.setAlphaComponent(ContextCompat.getColor(this, R.color.accent), 0x66);
+		int statusBarColor = ColorUtils.setAlphaComponent(ContextCompat.getColor(this, net.twisterrob.blt.android.component.theme.R.color.accent), 0x66);
 		AndroidTools.setTranslucentStatusBar(getWindow(), statusBarColor);
 	}
 
@@ -205,7 +205,8 @@ public class RangeMapActivity extends MapActivity {
 	}
 
 	@Override protected void setupMap() {
-		SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.view__map);
+		SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager()
+				.findFragmentById(net.twisterrob.blt.android.component.map.R.id.view__map);
 		mapFragment.getMapAsync(new OnMapReadyCallback() {
 			@SuppressLint("MissingPermission") // It's declared in Places SDK.
 			@Override public void onMapReady(@NonNull GoogleMap map) {
