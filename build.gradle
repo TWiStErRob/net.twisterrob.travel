@@ -10,6 +10,7 @@ idea {
 			file(".gradle"),
 			file("build"),
 			file(".idea"),
+			file("data"),
 			file("temp"),
 		]
 	}

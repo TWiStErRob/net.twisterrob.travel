@@ -1,0 +1,14 @@
+plugins {
+	id("net.twisterrob.blt.convention")
+	id("org.gradle.java-library")
+	id("net.twisterrob.gradle.plugin.java")
+	id("com.android.lint")
+}
+
+dependencies {
+	api(projects.common.feed.core)
+	implementation(projects.common.feed.facilities)
+	implementation(projects.common.feed.trackernet)
+	implementation(projects.common.feed.timetable)
+	implementation(libs.jsr305)
+}

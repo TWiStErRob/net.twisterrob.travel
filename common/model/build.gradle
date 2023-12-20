@@ -17,10 +17,3 @@ dependencies {
 	testImplementation(projects.common.testHelpers)
 	testRuntimeOnly(projects.common.androidPolyfill)
 }
-
-lint {
-	checkAllWarnings = true
-	warningsAsErrors = true
-	lintConfig = rootProject.file("config/lint/lint.xml")
-	enable += "StopShip"
-}

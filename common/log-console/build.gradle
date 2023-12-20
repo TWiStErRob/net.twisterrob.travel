@@ -1,0 +1,9 @@
+plugins {
+	id("net.twisterrob.blt.convention")
+	id("org.gradle.java-library")
+}
+
+dependencies {
+	api(libs.slf4j.api)
+	runtimeOnly(libs.slf4j.simple)
+}

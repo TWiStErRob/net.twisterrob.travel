@@ -10,8 +10,12 @@ android.defaultConfig.version {
 dependencies {
 	implementation(projects.android.component.android)
 	implementation(projects.android.component.data)
+	implementation(projects.android.component.map)
 	implementation(projects.android.component.theme)
 	implementation(projects.android.feature.range)
+	implementation(projects.common.feed.feeds)
+	implementation(projects.common.feed.facilities)
+	implementation(projects.common.feed.trackernet)
 	implementation("net.twisterrob.lib:twister-lib-android-monolith")
 	implementation("net.twisterrob.lib:twister-lib-android-basics")
 	implementation("net.twisterrob.lib:twister-lib-android-slf4j")
@@ -20,7 +24,6 @@ dependencies {
 	implementation("net.twisterrob.lib:twister-lib-android-about")
 	implementation("net.twisterrob.lib:twister-lib-android-settings")
 
-	implementation(libs.gms.maps)
 	implementation(libs.jsr305)
 	implementation(libs.androidx.swiperefreshlayout)
 }

@@ -1,0 +1,12 @@
+plugins {
+	id("net.twisterrob.travel.android-library")
+}
+
+dependencies {
+	implementation(projects.common.maptiler)
+	api(libs.gms.maps)
+	implementation(libs.slf4j.api)
+	implementation(libs.androidx.fragment)
+	implementation("net.twisterrob.lib:twister-lib-android-stringers")
+	implementation("net.twisterrob.lib:twister-lib-stringer")
+}

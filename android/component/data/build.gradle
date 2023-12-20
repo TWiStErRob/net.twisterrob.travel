@@ -2,14 +2,18 @@ plugins {
 	id("net.twisterrob.travel.android-library")
 }
 
+configurations.create("database")
+
 dependencies {
 	api(projects.common.model)
+	api(projects.common.data.static)
 	implementation("net.twisterrob.lib:twister-lib-android-monolith")
 	implementation("net.twisterrob.lib:twister-lib-android-basics")
 	implementation("net.twisterrob.lib:twister-lib-android-slf4j")
+	database(projects.common.data.postcodes) { targetConfiguration = "output" }
+	database(projects.common.data.network) { targetConfiguration = "output" }
 }
 
-// TODO this is hacky, replace with proper publishing things after :common:data is split up.
 abstract class GenerateDatabase extends Copy {
 
 	@Internal("An intermediate property to satisfy AGP, tracked in destination.")
@@ -17,8 +21,7 @@ abstract class GenerateDatabase extends Copy {
 }
 
 def generateDataBase = tasks.register("generateDataBase", GenerateDatabase.class) {
-	dependsOn(":common:data:runNetwork", ":common:data:runPostCode")
-	from(new File(project(":common:data").projectDir, "output")) {
+	from(configurations.database) {
 		include("*.data.*.sql")
 	}
 	into(output)

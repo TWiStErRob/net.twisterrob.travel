@@ -5,6 +5,7 @@ plugins {
 dependencies {
 	implementation(projects.android.component.android)
 	implementation(projects.android.component.data)
+	implementation(projects.android.component.map)
 	implementation(projects.android.component.theme)
 
 	api("net.twisterrob.lib:twister-lib-android-monolith") // api because AppCompatActivity.
@@ -17,7 +18,6 @@ dependencies {
 	implementation("net.twisterrob.lib:twister-lib-android-settings")
 
 	implementation(projects.common.model)
-	implementation(libs.gms.maps)
 	implementation(libs.gms.places)
 	implementation(libs.jsr305)
 	implementation(libs.glide)
