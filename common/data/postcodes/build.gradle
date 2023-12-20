@@ -1,3 +1,5 @@
+import net.twisterrob.travel.JavaExecExtensions
+
 plugins {
 	id("net.twisterrob.blt.convention")
 	id("org.gradle.application")
@@ -16,21 +18,13 @@ application {
 tasks.named("run", JavaExec.class) {
 	File inputDir = rootProject.file("temp/feed15/LULDLRRiverTramCable")
 	File csv = projects.common.data.fake.dependencyProject.file("src/main/data/london.csv.gz")
-	File outputDir = file("output")
+	Provider<Directory> outputDir = project.layout.buildDirectory.dir("output")
 	// STOPSHIP File outputFile = new File(outputDir, "LondonTravel.data.AreaHull.sql")
-	File logFile = new File(outputDir, "run.log")
 	inputs.dir(inputDir).withPathSensitivity(PathSensitivity.RELATIVE)
 	inputs.file(csv).withPathSensitivity(PathSensitivity.NONE)
-	outputs.dir(outputDir)
 	args = [ csv ]
 	enableAssertions = true
-	doFirst {
-		outputDir.mkdirs()
-		standardOutput = logFile.newOutputStream()
-	}
-	doLast {
-		standardOutput.close()
-	}
+	JavaExecExtensions.logTo(it, outputDir.map { it.file("run.log") }) 
 }
 
 configurations.create("output")

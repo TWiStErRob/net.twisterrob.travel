@@ -1,3 +1,7 @@
+import net.twisterrob.travel.InputDirectoryArgumentProvider
+import net.twisterrob.travel.JavaExecExtensions
+import net.twisterrob.travel.OutputDirectoryArgumentProvider
+
 plugins {
 	id("net.twisterrob.blt.convention")
 	id("org.gradle.application")
@@ -17,20 +21,16 @@ application {
 }
 
 tasks.named("run", JavaExec.class) {
-	File inputDir = rootProject.file("temp/feed15/LULDLRRiverTramCable")
-	File outputDir = file("output")
+	Directory inputDir = rootProject.layout.projectDirectory.dir("temp/feed15/LULDLRRiverTramCable")
+	Provider<Directory> outputDir = layout.buildDirectory.dir("output")
 	inputs.dir(inputDir).withPathSensitivity(PathSensitivity.RELATIVE)
 	inputs.dir(projects.common.data.fake.dependencyProject.file("src/main/data/PredictionSummary")) // STOPSHIP
-	outputs.dir(outputDir)
-	args = [ inputDir, outputDir ]
+	argumentProviders.addAll([
+			new InputDirectoryArgumentProvider(provider { inputDir }),
+			new OutputDirectoryArgumentProvider(outputDir),
+	])
 	enableAssertions = true
-	doFirst {
-		outputDir.mkdirs()
-		standardOutput = new FileOutputStream(new File(outputDir, "run.log"))
-	}
-	doLast {
-		standardOutput.close()
-	}
+	JavaExecExtensions.logTo(it, outputDir.map { it.file("run.log") })
 }
 
 configurations.create("output")
