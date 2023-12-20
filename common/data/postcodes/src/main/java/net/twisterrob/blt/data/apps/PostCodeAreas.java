@@ -10,7 +10,6 @@ import net.twisterrob.blt.data.algo.postcodes.ConvexHull.ToPos;
 import net.twisterrob.java.model.*;
 
 public class PostCodeAreas {
-	private static final DesktopStaticData STATIC_DATA = DesktopStaticData.INSTANCE;
 	private static final ToPos<PostCode> POSER = new ConvexHull.ToPos<PostCode>() {
 		public double getX(PostCode obj) {
 			return obj.getLocation().getLongitude();
@@ -20,17 +19,22 @@ public class PostCodeAreas {
 		}
 	};
 
-	public static void main(String[] args) throws Throwable {
-		List<PostCode> codes = loadData(new File(args[0]));
+	public static void main(String... args) throws Throwable {
+		if (args.length != 2) {
+			throw new IllegalArgumentException("Usage: PostCodeAreas <postcodes.csv.gz> <output.sql>");
+		}
+		File postcodesCsvGz = new File(args[0]);
+		File outputSql = new File(args[1]);
+		List<PostCode> codes = loadData(postcodesCsvGz);
 		Map<String, List<PostCode>> clusters = cluster(codes);
 		for (Entry<String, List<PostCode>> cluster : clusters.entrySet()) {
 			cluster.setValue(ConvexHull.convexHull(cluster.getValue(), POSER));
 		}
-		writeData(clusters);
+		writeData(outputSql, clusters);
 	}
 
-	protected static void writeData(Map<String, List<PostCode>> clusters) throws IOException {
-		try (PrintWriter out = new PrintWriter(STATIC_DATA.getOut("LondonTravel.data.AreaHull.sql"), "utf-8")) {
+	protected static void writeData(File outputSql, Map<String, List<PostCode>> clusters) throws IOException {
+		try (PrintWriter out = new PrintWriter(outputSql, "utf-8")) {
 			for (Entry<String, List<PostCode>> cluster : clusters.entrySet()) {
 				String area = cluster.getKey();
 				Location center = ConvexHull.center(cluster.getValue(), POSER);
@@ -64,10 +68,10 @@ public class PostCodeAreas {
 		return clusters;
 	}
 
-	private static List<PostCode> loadData(File postcodeCsvGz) throws IOException {
+	private static List<PostCode> loadData(File postcodesCsvGz) throws IOException {
 		List<PostCode> codes = new ArrayList<>();
 		try (
-				InputStream zip = new GZIPInputStream(new FileInputStream(postcodeCsvGz));
+				InputStream zip = new GZIPInputStream(new FileInputStream(postcodesCsvGz));
 				BufferedReader reader = new BufferedReader(new InputStreamReader(zip))
 		) {
 			String line; // BR1 1AB,50,540194,169201,E09000006,E05000109

@@ -22,10 +22,9 @@ public class TravelNetworkParser {
 	private static DesktopStaticData STATIC_DATA;
 
 	public static void main(String[] args) throws Throwable {
-		if (args.length == 2) {
+		if (args.length != 2) {
+			throw new IllegalArgumentException("Usage: TravelNetworkParser <timetableRoot> <outputDir>");
 			STATIC_DATA = new DesktopHardcodedStaticData(args[0], new File(args[1]).getAbsoluteFile());
-		} else {
-			STATIC_DATA = new DesktopHardcodedStaticData();
 		}
 		writeDBScripts(STATIC_DATA.getTimetableFilenames().keySet());
 	}

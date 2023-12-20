@@ -17,12 +17,10 @@ application {
 
 Provider<Directory> outputDir = project.layout.buildDirectory.dir("output")
 tasks.named("run", JavaExec.class) {
-	Directory inputDir = rootProject.layout.projectDirectory.dir("temp/feed15/LULDLRRiverTramCable")
 	RegularFile csv = rootProject.layout.projectDirectory.file("data/london.csv.gz")
-	// STOPSHIP File outputFile = new File(outputDir, "LondonTravel.data.AreaHull.sql")
-	inputs.dir(inputDir).withPathSensitivity(PathSensitivity.RELATIVE)
+	Provider<RegularFile> outputFile = outputDir.map { it.file("LondonTravel.data.AreaHull.sql") }
 	inputs.file(csv).withPathSensitivity(PathSensitivity.NONE)
-	args = [ csv.asFile ]
+	args = [ csv.asFile, outputFile.get().asFile ]
 	enableAssertions = true
 	JavaExecExtensions.logTo(it, outputDir.map { it.file("run.log") }) 
 }
