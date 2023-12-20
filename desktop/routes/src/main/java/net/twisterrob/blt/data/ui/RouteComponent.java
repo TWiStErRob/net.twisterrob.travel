@@ -16,7 +16,7 @@ public abstract class RouteComponent extends JPanel {
 	private Route route;
 	private List<String> highlights;
 
-	private LineColors colors = DesktopStaticData.INSTANCE.getLineColors();
+	private final LineColors colors;
 	protected Color lineColor;
 	protected Color lineHighlight;
 
@@ -24,7 +24,8 @@ public abstract class RouteComponent extends JPanel {
 	private static final int outerRadius = 18;
 	private static final int innerRadius = 12;
 
-	public RouteComponent(Line line, Route route, List<String> highlights) {
+	public RouteComponent(LineColors lineColors, Line line, Route route, List<String> highlights) {
+		this.colors = lineColors;
 		setLine(line);
 		setRoute(route);
 		setHighlights(highlights);

@@ -38,8 +38,8 @@ jobs:
         run: |
           curl --silent --show-error --location --remote-name \
               https://github.com/TWiStErRob/net.twisterrob.travel/releases/download/v1.0.0/LULDLRRiverTramCable.zip
-          mkdir -p temp/feed15/LULDLRRiverTramCable
-          unzip LULDLRRiverTramCable.zip 'tfl_*-*-_-y05-*.xml' -d temp/feed15/LULDLRRiverTramCable
+          mkdir -p data/feed15/LULDLRRiverTramCable
+          unzip LULDLRRiverTramCable.zip 'tfl_*-*-_-y05-*.xml' -d data/feed15/LULDLRRiverTramCable
 
       - name: "Build project."
         working-directory: .

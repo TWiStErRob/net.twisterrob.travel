@@ -1,3 +1,5 @@
+import net.twisterrob.travel.DirectoryArgumentProvider
+
 plugins {
 	id("net.twisterrob.blt.convention")
 	id("org.gradle.application")
@@ -17,7 +19,25 @@ application {
 }
 
 tasks.named("run", JavaExec.class) {
+	Directory timetableRoot = rootProject.layout.projectDirectory.dir("data/feed15/LULDLRRiverTramCable")
+	Directory predictionRoot = rootProject.layout.projectDirectory.dir("data/PredictionSummary")
 	// Use gradlew ...:run --args "Bakerloo Northern" to override.
 	args = [ "DLR" ]
+	argumentProviders.addAll([
+			new DirectoryArgumentProvider(provider { timetableRoot }) {
+				@InputDirectory
+				@PathSensitive(PathSensitivity.RELATIVE)
+				@Override Provider<Directory> getDirectory() {
+					return super.getDirectory()
+				}
+			},
+			new DirectoryArgumentProvider(provider { predictionRoot }) {
+				@InputDirectory
+				@PathSensitive(PathSensitivity.RELATIVE)
+				@Override Provider<Directory> getDirectory() {
+					return super.getDirectory()
+				}
+			},
+	])
 	enableAssertions = true
 }

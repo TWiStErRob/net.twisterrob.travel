@@ -7,7 +7,6 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
-import net.twisterrob.blt.data.apps.DesktopStaticData;
 import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.model.*;
 
@@ -18,10 +17,10 @@ public class LineDisplay extends JFrame {
 	protected RouteDrawer routeLine;
 	protected List<String> highlights;
 
-	public LineDisplay(JourneyPlannerTimetableFeed feed, String... highlights) {
-		this(feed.getLine(), feed.getRoutes(), highlights);
+	public LineDisplay(JourneyPlannerTimetableFeed feed, LineColors lineColors, String... highlights) {
+		this(feed.getLine(), feed.getRoutes(), lineColors, highlights);
 	}
-	public LineDisplay(final Line line, List<Route> routes, String... highlights) {
+	public LineDisplay(final Line line, List<Route> routes, LineColors lineColors, String... highlights) {
 		super(line.getTitle());
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(1024, 800));
@@ -33,13 +32,13 @@ public class LineDisplay extends JFrame {
 		Container panel = getContentPane();
 		panel.setLayout(new BorderLayout());
 
-		routeLine = new RouteDrawer(line, null, this.highlights);
+		routeLine = new RouteDrawer(lineColors, line, null, this.highlights);
 		routeLine.setBorder(BorderFactory.createEmptyBorder(5, 35, 5, 35));
 		panel.add(routeLine, BorderLayout.SOUTH);
 
 		list = new JList<>(routes.toArray(new Route[routes.size()]));
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setCellRenderer(new LineRouteCellRenderer(line));
+		list.setCellRenderer(new LineRouteCellRenderer(lineColors, line));
 		list.addListSelectionListener(new ListSelectionListener() {
 			@Override public void valueChanged(ListSelectionEvent e) {
 				if (e.getValueIsAdjusting()) {
@@ -55,7 +54,7 @@ public class LineDisplay extends JFrame {
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		panel.add(scroll, BorderLayout.WEST);
 
-		routeMap = new RouteMapDrawer(stopPoints, line, null, this.highlights);
+		routeMap = new RouteMapDrawer(lineColors, stopPoints, line, null, this.highlights);
 		routeMap.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		panel.add(routeMap, BorderLayout.CENTER);
 
@@ -68,8 +67,7 @@ public class LineDisplay extends JFrame {
 		private final Color fg;
 		private final Color bg;
 
-		LineRouteCellRenderer(Line line) {
-			LineColors colors = DesktopStaticData.INSTANCE.getLineColors();
+		LineRouteCellRenderer(LineColors colors, Line line) {
 			fg = new Color(line.getForeground(colors));
 			bg = new Color(line.getBackground(colors));
 		}

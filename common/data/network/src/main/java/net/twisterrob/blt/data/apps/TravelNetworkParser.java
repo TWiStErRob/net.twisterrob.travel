@@ -20,12 +20,17 @@ public class TravelNetworkParser {
 	private static final Logger LOG = LoggerFactory.getLogger(TravelNetworkParser.class);
 
 	private static DesktopStaticData STATIC_DATA;
+	private static File outputDir;
 
-	public static void main(String[] args) throws Throwable {
-		if (args.length != 2) {
-			throw new IllegalArgumentException("Usage: TravelNetworkParser <timetableRoot> <outputDir>");
-			STATIC_DATA = new DesktopHardcodedStaticData(args[0], new File(args[1]).getAbsoluteFile());
+	public static void main(String... args) throws Throwable {
+		if (args.length != 3) {
+			throw new IllegalArgumentException("Usage: TravelNetworkParser <timetableRoot> <predictionRoot> <outputDir>");
 		}
+		STATIC_DATA = new DesktopHardcodedStaticData(
+				new File(args[0]),
+				new File(args[1])
+		);
+		outputDir = new File(args[2]);
 		writeDBScripts(STATIC_DATA.getTimetableFilenames().keySet());
 	}
 
@@ -220,7 +225,7 @@ public class TravelNetworkParser {
 	}
 
 	private static PrintWriter out(String fileName) throws FileNotFoundException, UnsupportedEncodingException {
-		return new PrintWriter(STATIC_DATA.getOut(fileName), "utf-8");
+		return new PrintWriter(new File(outputDir, fileName), "utf-8");
 	}
 	private static void writeStopLine(PrintWriter out, StopPoint stop, Line line, String code) {
 		LOG.trace("StopLine: Line {}, station {} ({}), code {}", line, stop.getName(), stop.getName().hashCode(), code);

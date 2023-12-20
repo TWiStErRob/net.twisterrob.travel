@@ -6,6 +6,7 @@ import java.util.*;
 
 import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.LineColors;
 import net.twisterrob.java.exceptions.WTF;
 import net.twisterrob.java.model.*;
 
@@ -22,8 +23,8 @@ class RouteMapDrawer extends RouteComponent {
 	private static final Stroke lineStroke = new BasicStroke(4);
 	private static final int stopRadius = 10;
 
-	public RouteMapDrawer(Set<StopPoint> stations, Line line, Route route, List<String> highlights) {
-		super(line, route, highlights);
+	public RouteMapDrawer(LineColors lineColors, Set<StopPoint> stations, Line line, Route route, List<String> highlights) {
+		super(lineColors, line, route, highlights);
 		setStations(stations);
 	}
 

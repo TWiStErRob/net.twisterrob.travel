@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.LineColors;
 import net.twisterrob.java.exceptions.WTF;
 
 class RouteDrawer extends RouteComponent {
@@ -19,8 +20,8 @@ class RouteDrawer extends RouteComponent {
 	private static final int textDistance = 10;
 	private static final int internalPadding = 25;
 
-	public RouteDrawer(Line line, Route route, List<String> highlights) {
-		super(line, route, highlights);
+	public RouteDrawer(LineColors lineColors, Line line, Route route, List<String> highlights) {
+		super(lineColors, line, route, highlights);
 		setPreferredSize(new Dimension(-1, 100));
 		setBackground(Color.WHITE);
 	}

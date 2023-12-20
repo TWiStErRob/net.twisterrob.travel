@@ -21,11 +21,17 @@ application {
 
 Provider<Directory> outputDir = layout.buildDirectory.dir("output")
 tasks.named("run", JavaExec.class) {
-	Directory inputDir = rootProject.layout.projectDirectory.dir("temp/feed15/LULDLRRiverTramCable")
-	inputs.dir(inputDir).withPathSensitivity(PathSensitivity.RELATIVE)
-	inputs.dir(rootProject.layout.projectDirectory.dir("data/PredictionSummary")) // STOPSHIP
+	Directory timetableRoot = rootProject.layout.projectDirectory.dir("data/feed15/LULDLRRiverTramCable")
+	Directory predictionRoot = rootProject.layout.projectDirectory.dir("data/PredictionSummary")
 	argumentProviders.addAll([
-			new DirectoryArgumentProvider(provider { inputDir }) {
+			new DirectoryArgumentProvider(provider { timetableRoot }) {
+				@InputDirectory
+				@PathSensitive(PathSensitivity.RELATIVE)
+				@Override Provider<Directory> getDirectory() {
+					return super.getDirectory()
+				}
+			},
+			new DirectoryArgumentProvider(provider { predictionRoot }) {
 				@InputDirectory
 				@PathSensitive(PathSensitivity.RELATIVE)
 				@Override Provider<Directory> getDirectory() {
