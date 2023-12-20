@@ -1,0 +1,23 @@
+plugins {
+	id("net.twisterrob.blt.convention")
+	id("org.gradle.application")
+	id("net.twisterrob.gradle.plugin.java")
+}
+
+dependencies {
+	implementation(projects.common.model)
+	implementation(projects.common.data.desktop)
+	implementation(projects.common.logConsole)
+	runtimeOnly(projects.common.androidPolyfill)
+	implementation(libs.jsr305)
+}
+
+application {
+	mainClass = "net.twisterrob.blt.data.apps.DisplayLine"
+}
+
+tasks.named("run", JavaExec.class) {
+	// Use gradlew ...:run --args "Bakerloo Northern" to override.
+	args = [ "DLR" ]
+	enableAssertions = true
+}

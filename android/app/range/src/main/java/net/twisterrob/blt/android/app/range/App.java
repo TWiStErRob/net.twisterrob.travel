@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 
 import net.twisterrob.android.app.BaseApp;
 import net.twisterrob.android.log.AndroidLoggerFactory;
-import net.twisterrob.android.utils.tostring.stringers.detailed.Stringers;
+import net.twisterrob.android.utils.tostring.stringers.detailed.RangeStringers;
 import net.twisterrob.blt.android.BuildConfig;
 import net.twisterrob.blt.android.Injector;
 import net.twisterrob.blt.android.data.AndroidDBStaticData;
@@ -24,7 +24,7 @@ public class App extends BaseApp implements Injector.Provider {
 
 	@Override public void onCreate() {
 		super.onCreate();
-		Stringers.register(StringerRepo.INSTANCE);
+		RangeStringers.register(StringerRepo.INSTANCE);
 		this.injector = createInjector(this);
 	}
 

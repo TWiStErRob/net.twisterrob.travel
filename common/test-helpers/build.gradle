@@ -14,5 +14,5 @@ dependencies {
 	}
 	api(libs.test.mockito)
 	api(libs.test.gwen)
-	runtimeOnly(libs.slf4j.simple)
+	implementation(projects.common.logConsole)
 }

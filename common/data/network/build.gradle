@@ -1,0 +1,37 @@
+plugins {
+	id("net.twisterrob.blt.convention")
+	id("org.gradle.application")
+	id("net.twisterrob.gradle.plugin.java")
+}
+
+dependencies {
+	implementation(projects.common.model)
+	implementation(projects.common.data.desktop)
+	implementation(projects.common.logConsole)
+
+	runtimeOnly(projects.common.androidPolyfill)
+}
+
+application {
+	mainClass = "net.twisterrob.blt.data.apps.TravelNetworkParser"
+}
+
+tasks.named("run", JavaExec.class) {
+	File inputDir = rootProject.file("temp/feed15/LULDLRRiverTramCable")
+	File outputDir = file("output")
+	inputs.dir(inputDir).withPathSensitivity(PathSensitivity.RELATIVE)
+	inputs.dir(projects.common.data.fake.dependencyProject.file("src/main/data/PredictionSummary")) // STOPSHIP
+	outputs.dir(outputDir)
+	args = [ inputDir, outputDir ]
+	enableAssertions = true
+	doFirst {
+		outputDir.mkdirs()
+		standardOutput = new FileOutputStream(new File(outputDir, "run.log"))
+	}
+	doLast {
+		standardOutput.close()
+	}
+}
+
+configurations.create("output")
+artifacts.output(tasks.named("run").map { it.outputs.files.singleFile })
