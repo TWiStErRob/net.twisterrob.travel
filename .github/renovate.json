@@ -5,13 +5,6 @@
 	],
 	"packageRules": [
 		{
-			"description": "https://github.com/TWiStErRob/net.twisterrob.travel/issues/11",
-			"matchPackageNames": [
-				"com.github.bumptech.glide:glide"
-			],
-			"enabled": false
-		},
-		{
 			"description": "https://github.com/TWiStErRob/net.twisterrob.travel/issues/13",
 			"matchPackageNames": [
 				"com.android.tools.build:gradle",
