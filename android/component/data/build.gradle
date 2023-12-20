@@ -10,11 +10,10 @@ dependencies {
 	implementation("net.twisterrob.lib:twister-lib-android-monolith")
 	implementation("net.twisterrob.lib:twister-lib-android-basics")
 	implementation("net.twisterrob.lib:twister-lib-android-slf4j")
-	database(project(path: ":common:data:postcodes", configuration: "output"))
-	database(project(path: ":common:data:network", configuration: "output"))
+	database(projects.common.data.postcodes) { targetConfiguration = "output" }
+	database(projects.common.data.network) { targetConfiguration = "output" }
 }
 
-// TODO this is hacky, replace with proper publishing things after :common:data is split up.
 abstract class GenerateDatabase extends Copy {
 
 	@Internal("An intermediate property to satisfy AGP, tracked in destination.")
