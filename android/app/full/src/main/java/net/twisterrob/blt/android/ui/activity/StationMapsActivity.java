@@ -27,9 +27,10 @@ public class StationMapsActivity extends FragmentActivity {
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.inc_map);
+		setContentView(net.twisterrob.blt.android.component.map.R.layout.inc_map);
 
-		SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.view__map);
+		SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager()
+				.findFragmentById(net.twisterrob.blt.android.component.map.R.id.view__map);
 		mapFragment.getMapAsync(new OnMapReadyCallback() {
 			@Override public void onMapReady(@NonNull GoogleMap map) {
 				StationMapsActivity.this.map = map;
