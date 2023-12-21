@@ -303,7 +303,7 @@ public class RangeOptionsFragment extends Fragment {
 		int id = AndroidConstants.INVALID_RESOURCE_ID;
 		String name = getResources().getResourceEntryName(item.getItemId());
 		if (name != null) {
-			name = name.substring("option$".length()) + "$tooltip";
+			name = "range__config__" + name.substring("option__range__config__".length()) + "__tooltip";
 			id = ResourceTools.getStringResourceID(getContext(), name);
 		}
 		if (id == AndroidConstants.INVALID_RESOURCE_ID) {
