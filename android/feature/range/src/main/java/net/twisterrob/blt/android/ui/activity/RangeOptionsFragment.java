@@ -8,10 +8,8 @@ import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.*;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.widget.Toolbar;
-import androidx.appcompat.widget.Toolbar.OnMenuItemClickListener;
 import android.text.Spanned;
 import android.view.*;
 import android.widget.CompoundButton;
@@ -48,7 +46,7 @@ public class RangeOptionsFragment extends Fragment {
 	private NumberPickerWidget pixelDensity;
 	private ColorPickerWidget distanceColor;
 
-	interface ConfigsUpdatedListener {
+	public interface ConfigsUpdatedListener {
 		void onConfigsUpdated();
 	}
 
@@ -68,26 +66,18 @@ public class RangeOptionsFragment extends Fragment {
 	}
 
 	@Override public @Nullable View onCreateView(
-			LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+			@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_range_options, container, false);
 	}
 
-	@Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+	@Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		nav = (NavigationView)view.findViewById(R.id.view__range__navigation_view);
-		nav.setNavigationItemSelectedListener(new OnNavigationItemSelectedListener() {
-			@Override public boolean onNavigationItemSelected(MenuItem item) {
-				return onOptionsItemSelected(item);
-			}
-		});
+		nav = view.findViewById(R.id.view__range__navigation_view);
+		nav.setNavigationItemSelectedListener(this::menuItemSelected);
 		accountForStatusBar();
-		Toolbar toolbar = (Toolbar)nav.getHeaderView(0).findViewById(R.id.view__range__parameters_toolbar);
+		Toolbar toolbar = nav.getHeaderView(0).findViewById(R.id.view__range__parameters_toolbar);
 		toolbar.inflateMenu(R.menu.range_options_header);
-		toolbar.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			@Override public boolean onMenuItemClick(MenuItem item) {
-				return onOptionsItemSelected(item);
-			}
-		});
+		toolbar.setOnMenuItemClickListener(this::menuItemSelected);
 
 		bool(R.id.option__range__config__ui_show_stations, new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -269,16 +259,15 @@ public class RangeOptionsFragment extends Fragment {
 		return picker;
 	}
 
-	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/21
-	@Override public boolean onOptionsItemSelected(MenuItem item) {
+	private boolean menuItemSelected(@NonNull MenuItem item) {
 		if (item.getGroupId() == R.id.group__range__config__generator
 				|| item.getGroupId() == R.id.group__range__config__draw
 				|| item.getGroupId() == R.id.group__range__config__ui) {
-			@StringRes int tooltipID = getTooltip(item);
-			TubeHtmlHandler tagHandler = new TubeHtmlHandler(getContext(), staticData);
+			@StringRes int tooltipID = getTooltip(requireContext(), item);
+			HtmlParser.TagHandler tagHandler = new TubeHtmlHandler(getContext(), staticData);
 			Spanned tooltip = HtmlParser.fromHtml(getString(tooltipID), null, tagHandler);
 			DialogTools
-					.notify(getContext(), PopupCallbacks.DoNothing.<Boolean>instance())
+					.notify(requireContext(), PopupCallbacks.DoNothing.<Boolean>instance())
 					.setTitle(item.getTitle())
 					.setMessage(tooltip)
 					.show();
@@ -296,15 +285,15 @@ public class RangeOptionsFragment extends Fragment {
 			configsUpdatedListener.onConfigsUpdated();
 			return true;
 		}
-		return super.onOptionsItemSelected(item);
+		return false;
 	}
 
-	private int getTooltip(MenuItem item) {
+	private static int getTooltip(@NonNull Context context, @NonNull MenuItem item) {
 		int id = AndroidConstants.INVALID_RESOURCE_ID;
-		String name = getResources().getResourceEntryName(item.getItemId());
+		String name = context.getResources().getResourceEntryName(item.getItemId());
 		if (name != null) {
-			name = name.substring("option$".length()) + "$tooltip";
-			id = ResourceTools.getStringResourceID(getContext(), name);
+			name = "range__config__" + name.substring("option__range__config__".length()) + "__tooltip";
+			id = ResourceTools.getStringResourceID(context, name);
 		}
 		if (id == AndroidConstants.INVALID_RESOURCE_ID) {
 			id = R.string.range__config__missing_tooltip;
@@ -312,7 +301,7 @@ public class RangeOptionsFragment extends Fragment {
 		return id;
 	}
 
-	public void bindConfigs(RangeMapGeneratorConfig genConfig, RangeMapDrawerConfig drawConfig) {
+	public void bindConfigs(@NonNull RangeMapGeneratorConfig genConfig, @NonNull RangeMapDrawerConfig drawConfig) {
 		this.genConfig = genConfig;
 		this.drawConfig = drawConfig;
 		interStation.setChecked(genConfig.isAllowInterStationInterchange());
