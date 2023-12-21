@@ -2,6 +2,10 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	>
 
+	<!-- App required, Maps recommended -->
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
 	<application>
 
 		<meta-data

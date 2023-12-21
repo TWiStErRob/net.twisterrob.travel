@@ -69,8 +69,8 @@ import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.android.feature.range.R;
 import net.twisterrob.blt.android.ui.activity.RangeOptionsFragment.ConfigsUpdatedListener;
 import net.twisterrob.blt.android.ui.activity.main.MapActivity;
-import net.twisterrob.blt.model.LineColors;
 import net.twisterrob.blt.model.StopType;
+import net.twisterrob.travel.map.MapUtils;
 
 import static net.twisterrob.android.utils.tools.ResourceTools.*;
 
@@ -204,10 +204,9 @@ public class RangeMapActivity extends MapActivity {
 		SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager()
 				.findFragmentById(net.twisterrob.blt.android.component.map.R.id.view__map);
 		mapFragment.getMapAsync(new OnMapReadyCallback() {
-			@SuppressLint("MissingPermission") // It's declared in Places SDK.
 			@Override public void onMapReady(@NonNull GoogleMap map) {
 				RangeMapActivity.this.map = map;
-				map.setMyLocationEnabled(true);
+				MapUtils.setMyLocationEnabledIfPossible(RangeMapActivity.this, map);
 				zoomFullLondon();
 				updateToolbarVisibility();
 				class MapInteractorListener implements OnMapClickListener, OnMarkerClickListener, OnMapLongClickListener {
@@ -244,11 +243,12 @@ public class RangeMapActivity extends MapActivity {
 	}
 
 	private void zoomFullLondon() {
-		LatLngBounds fullLondon = new LatLngBounds(new LatLng(51.342889, -0.611361), new LatLng(51.705232, 0.251388));
-		Point screen = AndroidTools.getScreenSize(ContextCompat.getDisplayOrDefault(this));
-		map.moveCamera(CameraUpdateFactory.newLatLngBounds(fullLondon, screen.x, screen.y, dipInt(this, -160)));
-		// TODO below doesn't work, even with latest GMS, negative padding above is a workaround
-//		map.moveCamera(CameraUpdateFactory.zoomIn());
+		LatLngBounds fullLondon = new LatLngBounds(
+				new LatLng(51.342889, -0.611361),
+				new LatLng(51.705232, 0.251388)
+		);
+		map.moveCamera(CameraUpdateFactory.newLatLngBounds(fullLondon, 0));
+		map.moveCamera(CameraUpdateFactory.zoomIn());
 	}
 
 	public void updateToolbarVisibility() {

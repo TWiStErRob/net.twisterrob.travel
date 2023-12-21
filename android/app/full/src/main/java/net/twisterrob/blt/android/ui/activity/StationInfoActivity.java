@@ -6,10 +6,12 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.widget.*;
 import android.widget.ExpandableListView.*;
 
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
+import net.twisterrob.android.utils.tools.StrictModeTools;
 import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.android.app.full.R;
 import net.twisterrob.blt.android.io.feeds.DownloadFeedTask;
@@ -74,8 +76,11 @@ public class StationInfoActivity extends BaseActivity implements
 		// gather params
 		Intent intent = getIntent();
 		String name = intent.getStringExtra(EXTRA_STATION_NAME);
-		m_station = App.db().getStation(name);
-
+		StrictModeTools.allowThreadDiskReads(() -> {
+			// TODO make it async
+			m_station = App.db().getStation(name);
+			return null;
+		});
 		getSupportActionBar().setSubtitle(name);
 		((TextView)findViewById(R.id.text_station)).setText(name);
 	}
