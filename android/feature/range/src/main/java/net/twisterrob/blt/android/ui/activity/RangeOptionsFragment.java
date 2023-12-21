@@ -77,7 +77,7 @@ public class RangeOptionsFragment extends Fragment {
 		nav = (NavigationView)view.findViewById(R.id.view__range__navigation_view);
 		nav.setNavigationItemSelectedListener(new OnNavigationItemSelectedListener() {
 			@Override public boolean onNavigationItemSelected(MenuItem item) {
-				return onOptionsItemSelected(item);
+				return menuItemSelected(item);
 			}
 		});
 		accountForStatusBar();
@@ -85,7 +85,7 @@ public class RangeOptionsFragment extends Fragment {
 		toolbar.inflateMenu(R.menu.range_options_header);
 		toolbar.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override public boolean onMenuItemClick(MenuItem item) {
-				return onOptionsItemSelected(item);
+				return menuItemSelected(item);
 			}
 		});
 
@@ -269,8 +269,7 @@ public class RangeOptionsFragment extends Fragment {
 		return picker;
 	}
 
-	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/21
-	@Override public boolean onOptionsItemSelected(MenuItem item) {
+	private boolean menuItemSelected(MenuItem item) {
 		if (item.getGroupId() == R.id.group__range__config__generator
 				|| item.getGroupId() == R.id.group__range__config__draw
 				|| item.getGroupId() == R.id.group__range__config__ui) {
@@ -296,7 +295,7 @@ public class RangeOptionsFragment extends Fragment {
 			configsUpdatedListener.onConfigsUpdated();
 			return true;
 		}
-		return super.onOptionsItemSelected(item);
+		return false;
 	}
 
 	private static int getTooltip(Context context, MenuItem item) {
