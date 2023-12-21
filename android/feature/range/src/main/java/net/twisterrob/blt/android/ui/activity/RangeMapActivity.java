@@ -248,11 +248,12 @@ public class RangeMapActivity extends MapActivity {
 	}
 
 	private void zoomFullLondon() {
-		LatLngBounds fullLondon = new LatLngBounds(new LatLng(51.342889, -0.611361), new LatLng(51.705232, 0.251388));
-		Point screen = AndroidTools.getScreenSize(ContextCompat.getDisplayOrDefault(this));
-		map.moveCamera(CameraUpdateFactory.newLatLngBounds(fullLondon, screen.x, screen.y, dipInt(this, -160)));
-		// TODO below doesn't work, even with latest GMS, negative padding above is a workaround
-//		map.moveCamera(CameraUpdateFactory.zoomIn());
+		LatLngBounds fullLondon = new LatLngBounds(
+				new LatLng(51.342889, -0.611361),
+				new LatLng(51.705232, 0.251388)
+		);
+		map.moveCamera(CameraUpdateFactory.newLatLngBounds(fullLondon, 0));
+		map.moveCamera(CameraUpdateFactory.zoomIn());
 	}
 
 	public void updateToolbarVisibility() {
