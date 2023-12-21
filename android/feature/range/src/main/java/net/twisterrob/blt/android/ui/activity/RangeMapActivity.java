@@ -131,11 +131,7 @@ public class RangeMapActivity extends MapActivity {
 		FragmentManager fm = getSupportFragmentManager();
 		nearestFragment = (RangeNearestFragment)fm.findFragmentById(R.id.view__range__bottom_sheet);
 		optionsFragment = (RangeOptionsFragment)fm.findFragmentById(R.id.view__range__drawer);
-		optionsFragment.setConfigsUpdatedListener(new ConfigsUpdatedListener() {
-			@Override public void onConfigsUpdated() {
-				reDraw(lastStartPoint);
-			}
-		});
+		optionsFragment.setConfigsUpdatedListener(() -> reDraw(lastStartPoint));
 		FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.view__range__fab);
 		behavior = BottomSheetBehavior.from(findViewById(R.id.view__range__bottom_sheet));
 		behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
