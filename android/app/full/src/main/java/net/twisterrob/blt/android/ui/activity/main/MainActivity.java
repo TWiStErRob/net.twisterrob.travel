@@ -28,7 +28,7 @@ public class MainActivity extends BaseActivity {
 			new LauncherItem(R.string.launcher__station_info, StationInfoActivity.class) {
 				@Override void addIntentParams(Intent intent) {
 					super.addIntentParams(intent);
-					intent.putExtra(StationInfoActivity.EXTRA_STATION_NAME, "King's Cross St.Pancras");
+					intent.putExtra(StationInfoActivity.EXTRA_STATION_NAME, "King's Cross St. Pancras");
 				}
 			},
 			new LauncherItem(R.string.launcher__station_map, StationMapsActivity.class),
