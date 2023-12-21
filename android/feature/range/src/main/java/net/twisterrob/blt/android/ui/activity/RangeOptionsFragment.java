@@ -274,7 +274,7 @@ public class RangeOptionsFragment extends Fragment {
 		if (item.getGroupId() == R.id.group__range__config__generator
 				|| item.getGroupId() == R.id.group__range__config__draw
 				|| item.getGroupId() == R.id.group__range__config__ui) {
-			@StringRes int tooltipID = getTooltip(item);
+			@StringRes int tooltipID = getTooltip(requireContext(), item);
 			TubeHtmlHandler tagHandler = new TubeHtmlHandler(getContext(), staticData);
 			Spanned tooltip = HtmlParser.fromHtml(getString(tooltipID), null, tagHandler);
 			DialogTools
@@ -299,12 +299,12 @@ public class RangeOptionsFragment extends Fragment {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private int getTooltip(MenuItem item) {
+	private static int getTooltip(Context context, MenuItem item) {
 		int id = AndroidConstants.INVALID_RESOURCE_ID;
-		String name = getResources().getResourceEntryName(item.getItemId());
+		String name = context.getResources().getResourceEntryName(item.getItemId());
 		if (name != null) {
 			name = "range__config__" + name.substring("option__range__config__".length()) + "__tooltip";
-			id = ResourceTools.getStringResourceID(getContext(), name);
+			id = ResourceTools.getStringResourceID(context, name);
 		}
 		if (id == AndroidConstants.INVALID_RESOURCE_ID) {
 			id = R.string.range__config__missing_tooltip;
