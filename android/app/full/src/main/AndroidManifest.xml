@@ -17,6 +17,7 @@
 		android:largeHeap="true"
 		android:supportsRtl="false"
 		android:theme="@style/AppTheme.Default"
+		android:networkSecurityConfig="@xml/network_security_config"
 		>
 
 		<provider
