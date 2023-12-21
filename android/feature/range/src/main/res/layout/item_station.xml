@@ -38,8 +38,8 @@
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
 				android:gravity="start"
-				android:textSize="20sp"
 				android:textIsSelectable="false"
+				android:textSize="20sp"
 				tools:text="Something Blah Station"
 				/>
 			<!-- Reverse order giving the illusion of right aligned "list" -->
@@ -58,9 +58,9 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:gravity="start"
+			android:textIsSelectable="false"
 			android:textSize="12sp"
 			android:textStyle="italic"
-			android:textIsSelectable="false"
 			tools:text="Underground: [Line1, Line2, Line3, Line4]"
 			/>
 	</LinearLayout>
