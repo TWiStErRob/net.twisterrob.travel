@@ -69,7 +69,6 @@ import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.android.feature.range.R;
 import net.twisterrob.blt.android.ui.activity.RangeOptionsFragment.ConfigsUpdatedListener;
 import net.twisterrob.blt.android.ui.activity.main.MapActivity;
-import net.twisterrob.blt.model.LineColors;
 import net.twisterrob.blt.model.StopType;
 
 import static net.twisterrob.android.utils.tools.ResourceTools.*;
