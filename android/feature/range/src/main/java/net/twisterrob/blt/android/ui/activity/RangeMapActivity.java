@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import org.slf4j.*;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -53,7 +52,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import net.twisterrob.android.content.pref.ResourcePreferences;
-import net.twisterrob.android.permissions.PermissionInterrogator;
 import net.twisterrob.android.utils.concurrent.SimpleAsyncTask;
 import net.twisterrob.android.utils.tools.AndroidTools;
 import net.twisterrob.android.utils.tools.StringerTools;
@@ -72,6 +70,7 @@ import net.twisterrob.blt.android.feature.range.R;
 import net.twisterrob.blt.android.ui.activity.RangeOptionsFragment.ConfigsUpdatedListener;
 import net.twisterrob.blt.android.ui.activity.main.MapActivity;
 import net.twisterrob.blt.model.StopType;
+import net.twisterrob.travel.map.MapUtils;
 
 import static net.twisterrob.android.utils.tools.ResourceTools.*;
 
@@ -211,7 +210,7 @@ public class RangeMapActivity extends MapActivity {
 		mapFragment.getMapAsync(new OnMapReadyCallback() {
 			@Override public void onMapReady(@NonNull GoogleMap map) {
 				RangeMapActivity.this.map = map;
-				setMyLocationIfPossible(map);
+				MapUtils.setMyLocationEnabledIfPossible(RangeMapActivity.this, map);
 				zoomFullLondon();
 				updateToolbarVisibility();
 				class MapInteractorListener implements OnMapClickListener, OnMarkerClickListener, OnMapLongClickListener {
@@ -245,14 +244,6 @@ public class RangeMapActivity extends MapActivity {
 				setNodes(tubeNetwork);
 			}
 		});
-	}
-
-	@SuppressLint("MissingPermission") // It's declared in Places SDK and checked right here.
-	private void setMyLocationIfPossible(@NonNull GoogleMap map) {
-		PermissionInterrogator interrogator = new PermissionInterrogator(RangeMapActivity.this);
-		boolean hasFine = interrogator.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-		boolean hasCoarse = interrogator.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-		map.setMyLocationEnabled(hasFine || hasCoarse);
 	}
 
 	private void zoomFullLondon() {

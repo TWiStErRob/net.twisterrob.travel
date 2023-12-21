@@ -24,6 +24,7 @@ import net.twisterrob.blt.android.app.full.R;
 import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.db.model.AreaHullPoint;
 import net.twisterrob.java.model.Location;
+import net.twisterrob.travel.map.MapUtils;
 
 public class PostCodesActivity extends FragmentActivity {
 	private GoogleMap map;
@@ -37,7 +38,7 @@ public class PostCodesActivity extends FragmentActivity {
 		mapFragment.getMapAsync(new OnMapReadyCallback() {
 			@Override public void onMapReady(@NonNull GoogleMap map) {
 				PostCodesActivity.this.map = map;
-				map.setMyLocationEnabled(true);
+				MapUtils.setMyLocationEnabledIfPossible(PostCodesActivity.this, map);
 				LatLng cityOfLondon = new LatLng(51.512161, -0.090981);
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(cityOfLondon, 13));
 				new LoadPostCodesTask().execute();

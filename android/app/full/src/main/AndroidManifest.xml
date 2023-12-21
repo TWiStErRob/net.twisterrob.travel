@@ -6,8 +6,6 @@
 
 	<!-- App required -->
 	<uses-permission android:name="android.permission.INTERNET" />
-	<!-- App required, Maps recommended -->
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 	<application
 		android:name="net.twisterrob.blt.android.App"

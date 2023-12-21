@@ -21,6 +21,7 @@ import net.twisterrob.blt.android.app.full.R;
 import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.db.model.Station;
 import net.twisterrob.blt.model.StopType;
+import net.twisterrob.travel.map.MapUtils;
 
 public class StationMapsActivity extends FragmentActivity {
 	private GoogleMap map;
@@ -34,7 +35,7 @@ public class StationMapsActivity extends FragmentActivity {
 		mapFragment.getMapAsync(new OnMapReadyCallback() {
 			@Override public void onMapReady(@NonNull GoogleMap map) {
 				StationMapsActivity.this.map = map;
-				map.setMyLocationEnabled(true);
+				MapUtils.setMyLocationEnabledIfPossible(StationMapsActivity.this, map);
 				LatLng cityOfLondon = new LatLng(51.512161, -0.090981);
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(cityOfLondon, 13));
 				new LoadStationsTask().execute();

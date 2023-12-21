@@ -9,4 +9,5 @@ dependencies {
 	implementation(libs.androidx.fragment)
 	implementation("net.twisterrob.lib:twister-lib-android-stringers")
 	implementation("net.twisterrob.lib:twister-lib-stringer")
+	implementation("net.twisterrob.lib:twister-lib-android-permissions")
 }
