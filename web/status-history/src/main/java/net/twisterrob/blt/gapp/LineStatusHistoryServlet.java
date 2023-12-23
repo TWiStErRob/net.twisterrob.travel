@@ -37,24 +37,13 @@ public class LineStatusHistoryServlet {
 	@View("LineStatus")
 	@Produces(MediaType.TEXT_HTML)
 	public HttpResponse<?> doGet(HttpServletRequest req, HttpServletResponse resp) {
-		List<Result> results = new LinkedList<>();
+		int max = parseInt(req.getParameter(QUERY_DISPLAY_MAX), DISPLAY_MAX_DEFAULT);
+		boolean displayCurrent = Boolean.parseBoolean(req.getParameter(QUERY_DISPLAY_CURRENT));
+		boolean displayErrors = Boolean.parseBoolean(req.getParameter(QUERY_DISPLAY_ERRORS));
+		Feed feed = Feed.TubeDepartureBoardsLineStatus;
 
-		// Params
-		int max;
-		try {
-			max = Integer.parseInt(req.getParameter(QUERY_DISPLAY_MAX));
-		} catch (NumberFormatException ex) {
-			max = DISPLAY_MAX_DEFAULT;
-		}
-		boolean current = Boolean.parseBoolean(req.getParameter(QUERY_DISPLAY_CURRENT));
-		boolean skipErrors = true;
-		if (Boolean.parseBoolean(req.getParameter(QUERY_DISPLAY_ERRORS))) {
-			skipErrors = false;
-		}
-
-		List<ParsedStatusItem> history = useCase.history(Feed.TubeDepartureBoardsLineStatus, max, current, skipErrors);
-		history.iterator().forEachRemaining(item -> results.add(toResult(item)));
-
+		List<ParsedStatusItem> history = useCase.history(feed, max, displayCurrent, displayErrors);
+		List<Result> results = history.stream().map(LineStatusHistoryServlet::toResult).toList();
 		List<ResultChange> differences = getDifferences(results);
 
 		return HttpResponse.ok(
@@ -97,5 +86,15 @@ public class LineStatusHistoryServlet {
 		resultChanges.add(new ResultChange(null, newResult));
 		resultChanges.remove(0);
 		return resultChanges;
+	}
+
+	private static int parseInt(String value, int def) {
+		int max;
+		try {
+			max = Integer.parseInt(value);
+		} catch (NumberFormatException ex) {
+			max = def;
+		}
+		return max;
 	}
 }

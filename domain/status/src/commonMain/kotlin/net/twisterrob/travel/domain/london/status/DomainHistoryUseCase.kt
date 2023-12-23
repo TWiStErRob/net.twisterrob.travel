@@ -12,16 +12,16 @@ class DomainHistoryUseCase(
 	private val feedParser: FeedParser,
 ) : HistoryUseCase {
 
-	override fun history(feed: Feed, max: Int, current: Boolean, skipErrors: Boolean): List<ParsedStatusItem> {
+	override fun history(feed: Feed, max: Int, includeCurrent: Boolean, includeErrors: Boolean): List<ParsedStatusItem> {
 		val result = mutableListOf<StatusItem>()
-		if (current) {
+		if (includeCurrent) {
 			result.add(statusInteractor.getCurrent(feed))
 		}
 		val history = statusHistoryRepository.fetchEntries(feed, max)
 		result.addAll(history)
 		return result
 			.map { it.parse() }
-			.filterNot { skipErrors && it is ParsedStatusItem.ParseFailed }
+			.filterNot { !includeErrors && it is ParsedStatusItem.ParseFailed }
 	}
 
 	private fun StatusItem.parse(): ParsedStatusItem =
