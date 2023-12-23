@@ -2,7 +2,6 @@ package net.twisterrob.blt.gapp;
 
 import java.util.*;
 
-
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
@@ -22,6 +21,7 @@ import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem;
 
 @Controller
 public class LineStatusHistoryServlet {
+
 	private static final String QUERY_DISPLAY_CURRENT = "current";
 	private static final String QUERY_DISPLAY_ERRORS = "errors";
 	private static final String QUERY_DISPLAY_MAX = "max";
@@ -42,8 +42,11 @@ public class LineStatusHistoryServlet {
 		boolean displayErrors = Boolean.parseBoolean(req.getParameter(QUERY_DISPLAY_ERRORS));
 		Feed feed = Feed.TubeDepartureBoardsLineStatus;
 
-		List<ParsedStatusItem> history = useCase.history(feed, max, displayCurrent, displayErrors);
-		List<Result> results = history.stream().map(LineStatusHistoryServlet::toResult).toList();
+		List<ParsedStatusItem> history = useCase.history(feed, max, displayCurrent);
+		List<Result> results = history
+				.stream()
+				.filter((it) -> !displayErrors && it instanceof ParsedStatusItem.ParseFailed)
+				.map(LineStatusHistoryServlet::toResult).toList();
 		List<ResultChange> differences = getDifferences(results);
 
 		return HttpResponse.ok(

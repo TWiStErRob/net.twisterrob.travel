@@ -6,7 +6,7 @@ import net.twisterrob.travel.domain.london.status.StatusItem
 
 interface HistoryUseCase {
 
-	fun history(feed: Feed, max: Int, includeCurrent: Boolean, includeErrors: Boolean): List<ParsedStatusItem>
+	fun history(feed: Feed, max: Int, includeCurrent: Boolean): List<ParsedStatusItem>
 }
 
 sealed class ParsedStatusItem {
