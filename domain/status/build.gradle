@@ -1,6 +1,7 @@
 plugins {
 	id("net.twisterrob.blt.convention")
 	id("org.jetbrains.kotlin.multiplatform")
+	id("com.google.devtools.ksp")
 }
 
 kotlin {
@@ -10,8 +11,20 @@ kotlin {
 			dependencies {
 				api(libs.kotlin.datetime)
 				api(libs.kotlin.serialization)
-				implementation("io.github.oshai:kotlin-logging:6.0.1")
+				//implementation("io.github.oshai:kotlin-logging:6.0.1")
+			}
+		}
+		commonTest {
+			dependencies {
+				implementation(libs.kotlin.test)
+				implementation(libs.test.mockative)
 			}
 		}
 	}
 }
+
+configurations
+		.matching { Configuration it -> it.name.startsWith("ksp") && it.name.endsWith("Test") }
+		.configureEach { Configuration it ->
+			project.dependencies.add(it.name, libs.test.mockative.processor)
+		}
