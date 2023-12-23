@@ -10,10 +10,4 @@ public interface FeedConsts {
 	URLBuilder URL_BUILDER = new TFLUrlBuilder(EMAIL);
 
 	StaticData STATIC_DATA = new SharedStaticData();
-
-	String ENCODING = "UTF-8";
-
-	String DS_PROP_RETRIEVED_DATE = "retrievedDate";
-	String DS_PROP_CONTENT = "content";
-	String DS_PROP_ERROR = "error";
 }

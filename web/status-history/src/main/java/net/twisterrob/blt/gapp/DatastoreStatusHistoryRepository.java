@@ -1,5 +1,9 @@
 package net.twisterrob.blt.gapp;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -25,11 +29,15 @@ import net.twisterrob.travel.domain.london.status.StatusContent;
 import net.twisterrob.travel.domain.london.status.StatusItem;
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository;
 
-import static net.twisterrob.blt.gapp.FeedConsts.DS_PROP_CONTENT;
-import static net.twisterrob.blt.gapp.FeedConsts.DS_PROP_ERROR;
-import static net.twisterrob.blt.gapp.FeedConsts.DS_PROP_RETRIEVED_DATE;
+import static net.twisterrob.blt.gapp.DatastoreStatusHistoryRepository.DS_PROP_CONTENT;
+import static net.twisterrob.blt.gapp.DatastoreStatusHistoryRepository.DS_PROP_ERROR;
+import static net.twisterrob.blt.gapp.DatastoreStatusHistoryRepository.DS_PROP_RETRIEVED_DATE;
 
 public class DatastoreStatusHistoryRepository implements StatusHistoryRepository {
+
+	static final String DS_PROP_RETRIEVED_DATE = "retrievedDate";
+	static final String DS_PROP_CONTENT = "content";
+	static final String DS_PROP_ERROR = "error";
 
 	private final Datastore datastore;
 	private final StatusItemToEntityConverter statusItemConverter;
@@ -41,27 +49,39 @@ public class DatastoreStatusHistoryRepository implements StatusHistoryRepository
 		this.entityConverter = new EntityToStatusItemConverter();
 	}
 
-	@Override public @Nullable StatusItem getLatest(@Nonnull Feed feed) {
-		Query<Entity> q = Query
-				.newEntityQueryBuilder()
-				.setKind(feed.name())
-				.addOrderBy(OrderBy.desc(DS_PROP_RETRIEVED_DATE))
-				.build();
-		// We're only concerned about the latest one, if any.
-		QueryResults<Entity> result = datastore.run(q);
-		return result.hasNext()? entityConverter.toItem(result.next()) : null;
-	}
-
 	@Override public void add(@Nonnull StatusItem current) {
 		datastore.add(statusItemConverter.toEntity(current));
 	}
 
-	static @Nonnull Value<?> unindexedString(@Nullable String value) {
-		return StatusItemToEntityConverter.unindexedString(value);
+	@Override public @Nullable StatusItem getLatest(@Nonnull Feed feed) {
+		Iterator<Entity> result = queryAllMostRecentFirst(feed);
+		// We're only concerned about the latest one, if any.
+		return result.hasNext()? entityConverter.toItem(result.next()) : null;
 	}
 
-	static boolean hasProperty(BaseEntity<?> entry, String propName) {
-		return EntityToStatusItemConverter.hasProperty(entry, propName);
+	@Override public @Nonnull List<StatusItem> fetchEntries(@Nonnull Feed feed, int max) {
+		Iterator<Entity> entries = queryAllMostRecentFirst(feed);
+		List<StatusItem> results = new ArrayList<>();
+		while (entries.hasNext()) {
+			Entity entry = entries.next();
+			if (--max < 0) {
+				break; // we've had enough
+			}
+			StatusItem result = entityConverter.toItem(entry);
+			results.add(result);
+		}
+		return results;
+	}
+
+	private @Nonnull QueryResults<Entity> queryAllMostRecentFirst(@Nonnull Feed feed) {
+		Query<Entity> q = Query
+				.newEntityQueryBuilder()
+				.setKind(feed.name())
+				.addOrderBy(OrderBy.desc(DS_PROP_RETRIEVED_DATE))
+				.build()
+				;
+		QueryResults<Entity> results = datastore.run(q);
+		return results;
 	}
 }
 

@@ -7,4 +7,5 @@ interface StatusHistoryRepository {
 
 	fun getLatest(feed: Feed): StatusItem?
 	fun add(current: StatusItem)
+	fun fetchEntries(feed: Feed, max: Int): List<StatusItem>
 }
