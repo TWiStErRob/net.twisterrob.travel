@@ -9,16 +9,18 @@ interface RefreshUseCase {
 }
 
 sealed class RefreshResult {
-	class Created(
-		val current: StatusItem
-	) : RefreshResult()
 
-	class Refreshed(
+	data class Created(
 		val current: StatusItem,
-		val latest: StatusItem
 	) : RefreshResult()
 
-	class NoChange(
-		val latest: StatusItem
+	data class Refreshed(
+		val current: StatusItem,
+		val latest: StatusItem,
+	) : RefreshResult()
+
+	data class NoChange(
+		val current: StatusItem,
+		val latest: StatusItem,
 	) : RefreshResult()
 }

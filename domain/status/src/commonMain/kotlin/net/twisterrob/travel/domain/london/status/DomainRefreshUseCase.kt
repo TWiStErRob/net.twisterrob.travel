@@ -16,9 +16,9 @@ class DomainRefreshUseCase(
 
 		return if (latest != null) {
 			if (sameContent(latest, current)) {
-				RefreshResult.NoChange(latest)
+				RefreshResult.NoChange(current, latest)
 			} else if (sameError(latest, current)) {
-				RefreshResult.NoChange(latest)
+				RefreshResult.NoChange(current, latest)
 			} else {
 				statusHistoryRepository.add(current)
 				RefreshResult.Refreshed(current, latest)

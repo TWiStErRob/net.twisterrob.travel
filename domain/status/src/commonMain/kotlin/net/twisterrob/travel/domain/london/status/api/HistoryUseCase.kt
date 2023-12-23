@@ -13,16 +13,16 @@ sealed class ParsedStatusItem {
 
 	abstract val item: StatusItem
 
-	class ParsedFeed(
+	data class ParsedFeed(
 		override val item: StatusItem.SuccessfulStatusItem,
 		val content: Any,
 	) : ParsedStatusItem()
 
-	class AlreadyFailed(
+	data class AlreadyFailed(
 		override val item: StatusItem.FailedStatusItem,
 	) : ParsedStatusItem()
 
-	class ParseFailed(
+	data class ParseFailed(
 		override val item: StatusItem.SuccessfulStatusItem,
 		val error: Stacktrace,
 	) : ParsedStatusItem()
