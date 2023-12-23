@@ -9,6 +9,7 @@ kotlin {
 		commonMain {
 			dependencies {
 				api(libs.kotlin.datetime)
+				api(libs.kotlin.serialization)
 				implementation("io.github.oshai:kotlin-logging:6.0.1")
 			}
 		}

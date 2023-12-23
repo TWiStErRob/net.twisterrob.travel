@@ -55,6 +55,14 @@ public class DatastoreStatusHistoryRepository implements StatusHistoryRepository
 	@Override public void add(@Nonnull StatusItem current) {
 		datastore.add(statusItemConverter.toEntity(current));
 	}
+
+	static @Nonnull Value<?> unindexedString(@Nullable String value) {
+		return StatusItemToEntityConverter.unindexedString(value);
+	}
+
+	static boolean hasProperty(BaseEntity<?> entry, String propName) {
+		return EntityToStatusItemConverter.hasProperty(entry, propName);
+	}
 }
 
 class StatusItemToEntityConverter {
@@ -85,7 +93,7 @@ class StatusItemToEntityConverter {
 	 * Strings have a limitation of 1500 bytes when indexed. This removes that limitation.
 	 * @see https://cloud.google.com/datastore/docs/concepts/entities#text_string
 	 */
-	public static @Nonnull Value<?> unindexedString(@Nullable String value) {
+	static @Nonnull Value<?> unindexedString(@Nullable String value) {
 		return value == null
 				? NullValue.of()
 				: StringValue.newBuilder(value).setExcludeFromIndexes(true).build();
@@ -116,7 +124,7 @@ class EntityToStatusItemConverter {
 		return Instant.Companion.fromEpochSeconds(timestamp.getSeconds(), timestamp.getNanos());
 	}
 
-	public static boolean hasProperty(BaseEntity<?> entry, String propName) {
+	static boolean hasProperty(BaseEntity<?> entry, String propName) {
 		return entry.getProperties().containsKey(propName);
 	}
 }

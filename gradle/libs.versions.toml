@@ -8,6 +8,7 @@ twisterrob = "0.16"
 gretty = "4.1.1"
 kotlin = "1.9.22"
 kotlin-datetime = "0.5.0"
+kotlin-serialization = "1.6.2"
 
 jsr305 = "3.0.2"
 kxml2 = "2.3.0"
@@ -66,6 +67,7 @@ jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
 kxml2 = { module = "net.sf.kxml:kxml2", version.ref = "kxml2" }
 sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite-jdbc" }
 kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlin-datetime" }
+kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlin-serialization" }
 
 androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "androidx-fragment" }
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "androidx-swiperefreshlayout" }

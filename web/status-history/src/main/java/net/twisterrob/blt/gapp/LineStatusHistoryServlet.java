@@ -90,8 +90,8 @@ public class LineStatusHistoryServlet {
 
 	private static Result toResult(BaseEntity<?> entry) {
 		Result result;
-		String content = EntityToStatusItemConverter.hasProperty(entry, DS_PROP_CONTENT) ? entry.getString(DS_PROP_CONTENT) : null;
-		String error = EntityToStatusItemConverter.hasProperty(entry, DS_PROP_ERROR) ? entry.getString(DS_PROP_ERROR) : null;
+		String content = DatastoreStatusHistoryRepository.hasProperty(entry, DS_PROP_CONTENT) ? entry.getString(DS_PROP_CONTENT) : null;
+		String error = DatastoreStatusHistoryRepository.hasProperty(entry, DS_PROP_ERROR) ? entry.getString(DS_PROP_ERROR) : null;
 		Date date = entry.getTimestamp(DS_PROP_RETRIEVED_DATE).toDate();
 		if (content != null) {
 			try {
@@ -142,10 +142,10 @@ public class LineStatusHistoryServlet {
 		FullEntity.Builder<IncompleteKey> newEntry = Entity.newBuilder(keyFactory.newKey());
 		try {
 			String feedResult = HttpStatusInteractor.downloadFeed(feed);
-			newEntry.set(DS_PROP_CONTENT, StatusItemToEntityConverter.unindexedString(feedResult));
+			newEntry.set(DS_PROP_CONTENT, DatastoreStatusHistoryRepository.unindexedString(feedResult));
 		} catch (Exception ex) {
 			LOG.error("Cannot load '{}'!", feed, ex);
-			newEntry.set(DS_PROP_ERROR, StatusItemToEntityConverter.unindexedString(ObjectTools.getFullStackTrace(ex)));
+			newEntry.set(DS_PROP_ERROR, DatastoreStatusHistoryRepository.unindexedString(ObjectTools.getFullStackTrace(ex)));
 		}
 		newEntry.set(DS_PROP_RETRIEVED_DATE, Timestamp.now());
 		return newEntry.build();
