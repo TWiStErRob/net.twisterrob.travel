@@ -3,6 +3,8 @@ package net.twisterrob.blt.gapp;
 import java.io.*;
 import java.util.*;
 
+import javax.annotation.Nullable;
+
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import jakarta.servlet.http.*;
@@ -32,20 +34,18 @@ public class FeedCronServlet extends HttpServlet {
 
 	@Get("/FeedCron")
 	@Override public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		String feedString = String.valueOf(req.getParameter(QUERY_FEED));
-		Feed feed;
-		try {
-			feed = Feed.valueOf(feedString);
-		} catch (IllegalArgumentException ex) {
+		String feedString = req.getParameter(QUERY_FEED);
+		Feed feed = parseFeed(feedString);
+		if (feed == null) {
 			String message = String.format(Locale.getDefault(), "No such feed: '%s'.", feedString);
 			LOG.warn(message);
 			resp.getWriter().println(message);
 			resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
-		Marker marker = MarkerFactory.getMarker(feed.name());
 
 		RefreshResult result = useCase.refreshLatest(feed);
+		Marker marker = MarkerFactory.getMarker(feed.name());
 		if (result instanceof RefreshResult.NoChange noChange) {
 			if (noChange.getLatest() instanceof StatusItem.SuccessfulStatusItem) {
 				LOG.info(marker, "They have the same content.");
@@ -62,6 +62,17 @@ public class FeedCronServlet extends HttpServlet {
 			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
 		} else {
 			throw new IllegalStateException("Unknown result: " + result);
+		}
+	}
+
+	static @Nullable Feed parseFeed(@Nullable String feedString) {
+		if (feedString == null) {
+			return null;
+		}
+		try {
+			return Feed.valueOf(feedString);
+		} catch (IllegalArgumentException ex) {
+			return null;
 		}
 	}
 }
