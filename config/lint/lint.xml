@@ -53,9 +53,4 @@
 	<issue id="UseTomlInstead">
 		<ignore path="**/Shared/build.gradle" />
 	</issue>
-	<issue id="NewerVersionAvailable">
-		<!-- REPORT not suppressible in TOML. -->
-		<!-- TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/11 -->
-		<ignore regexp="com.github.bumptech.glide:glide" />
-	</issue>
 </lint>
