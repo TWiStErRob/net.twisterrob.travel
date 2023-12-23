@@ -3,6 +3,9 @@ package net.twisterrob.blt.gapp;
 import java.io.*;
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
@@ -11,6 +14,7 @@ import io.micronaut.http.annotation.Produces;
 import io.micronaut.views.View;
 import jakarta.servlet.http.*;
 
+import com.google.cloud.Timestamp;
 import com.google.cloud.datastore.*;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
 
@@ -20,12 +24,11 @@ import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
 import net.twisterrob.java.utils.ObjectTools;
 
 import static net.twisterrob.blt.gapp.FeedConsts.*;
-import static net.twisterrob.blt.gapp.FeedCronServlet.hasProperty;
 
 @Controller
 @SuppressWarnings("serial")
 public class LineStatusHistoryServlet {
-	//private static final Logger LOG = LoggerFactory.getLogger(LineStatusHistoryServlet.class);
+	private static final Logger LOG = LoggerFactory.getLogger(LineStatusHistoryServlet.class);
 
 	private static final String QUERY_DISPLAY_CURRENT = "current";
 	private static final String QUERY_DISPLAY_ERRORS = "errors";
@@ -49,7 +52,7 @@ public class LineStatusHistoryServlet {
 			max = DISPLAY_MAX_DEFAULT;
 		}
 		if (Boolean.parseBoolean(req.getParameter(QUERY_DISPLAY_CURRENT))) {
-			FullEntity<IncompleteKey> entry = FeedCronServlet.downloadNewEntry(datastore, feed);
+			FullEntity<IncompleteKey> entry = downloadNewEntry(datastore, feed);
 			results.add(toResult(entry));
 		}
 		boolean skipErrors = true;
@@ -87,8 +90,8 @@ public class LineStatusHistoryServlet {
 
 	private static Result toResult(BaseEntity<?> entry) {
 		Result result;
-		String content = hasProperty(entry, DS_PROP_CONTENT) ? entry.getString(DS_PROP_CONTENT) : null;
-		String error = hasProperty(entry, DS_PROP_ERROR) ? entry.getString(DS_PROP_ERROR) : null;
+		String content = EntityToStatusItemConverter.hasProperty(entry, DS_PROP_CONTENT) ? entry.getString(DS_PROP_CONTENT) : null;
+		String error = EntityToStatusItemConverter.hasProperty(entry, DS_PROP_ERROR) ? entry.getString(DS_PROP_ERROR) : null;
 		Date date = entry.getTimestamp(DS_PROP_RETRIEVED_DATE).toDate();
 		if (content != null) {
 			try {
@@ -132,5 +135,19 @@ public class LineStatusHistoryServlet {
 		resultChanges.add(new ResultChange(null, newResult));
 		resultChanges.remove(0);
 		return resultChanges;
+	}
+
+	public static FullEntity<IncompleteKey> downloadNewEntry(Datastore datastore, Feed feed) {
+		KeyFactory keyFactory = datastore.newKeyFactory().setKind(feed.name());
+		FullEntity.Builder<IncompleteKey> newEntry = Entity.newBuilder(keyFactory.newKey());
+		try {
+			String feedResult = HttpStatusInteractor.downloadFeed(feed);
+			newEntry.set(DS_PROP_CONTENT, StatusItemToEntityConverter.unindexedString(feedResult));
+		} catch (Exception ex) {
+			LOG.error("Cannot load '{}'!", feed, ex);
+			newEntry.set(DS_PROP_ERROR, StatusItemToEntityConverter.unindexedString(ObjectTools.getFullStackTrace(ex)));
+		}
+		newEntry.set(DS_PROP_RETRIEVED_DATE, Timestamp.now());
+		return newEntry.build();
 	}
 }

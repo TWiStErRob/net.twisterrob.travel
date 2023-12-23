@@ -9,7 +9,16 @@ interface StatusHistoryUseCase {
 }
 
 sealed class RefreshResult {
-	class Created(current: StatusItem) : RefreshResult()
-	class Refreshed(current: StatusItem, latest: StatusItem) : RefreshResult()
-	class NoChange(latest: StatusItem) : RefreshResult()
+	class Created(
+		val current: StatusItem
+	) : RefreshResult()
+
+	class Refreshed(
+		val current: StatusItem,
+		val latest: StatusItem
+	) : RefreshResult()
+
+	class NoChange(
+		val latest: StatusItem
+	) : RefreshResult()
 }
