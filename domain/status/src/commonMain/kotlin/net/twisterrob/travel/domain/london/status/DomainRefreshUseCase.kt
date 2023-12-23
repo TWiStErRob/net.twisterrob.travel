@@ -12,7 +12,7 @@ class DomainRefreshUseCase(
 
 	override fun refreshLatest(feed: Feed): RefreshResult {
 		val current = statusInteractor.getCurrent(feed)
-		val latest = statusHistoryRepository.getLatest(feed)
+		val latest = statusHistoryRepository.fetchEntries(feed, 1).singleOrNull()
 
 		return if (latest != null) {
 			if (sameContent(latest, current)) {

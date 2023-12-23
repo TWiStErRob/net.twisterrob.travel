@@ -5,7 +5,7 @@ import net.twisterrob.travel.domain.london.status.StatusItem
 
 interface StatusHistoryRepository {
 
-	fun getLatest(feed: Feed): StatusItem?
 	fun add(current: StatusItem)
+
 	fun fetchEntries(feed: Feed, max: Int): List<StatusItem>
 }
