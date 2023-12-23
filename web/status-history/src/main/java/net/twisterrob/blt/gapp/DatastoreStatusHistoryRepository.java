@@ -54,7 +54,7 @@ public class DatastoreStatusHistoryRepository implements StatusHistoryRepository
 	}
 
 	@Override public @Nonnull List<StatusItem> getAll(@Nonnull Feed feed, int max) {
-		Iterator<Entity> entries = queryAllMostRecentFirst(feed);
+		Iterator<Entity> entries = queryAllMostRecentFirst(feed, max);
 		List<StatusItem> results = new ArrayList<>();
 		while (entries.hasNext()) {
 			Entity entry = entries.next();
@@ -67,15 +67,15 @@ public class DatastoreStatusHistoryRepository implements StatusHistoryRepository
 		return results;
 	}
 
-	private @Nonnull QueryResults<Entity> queryAllMostRecentFirst(@Nonnull Feed feed) {
-		Query<Entity> q = Query
+	private @Nonnull QueryResults<Entity> queryAllMostRecentFirst(@Nonnull Feed feed, int limit) {
+		Query<Entity> query = Query
 				.newEntityQueryBuilder()
 				.setKind(feed.name())
+				.setLimit(limit)
 				.addOrderBy(OrderBy.desc(DS_PROP_RETRIEVED_DATE))
 				.build()
 				;
-		QueryResults<Entity> results = datastore.run(q);
-		return results;
+		return datastore.run(query);
 	}
 }
 
@@ -95,6 +95,8 @@ class StatusItemToEntityConverter {
 			newEntry.set(DS_PROP_CONTENT, unindexedString(success.getContent().getContent()));
 		} else if (current instanceof StatusItem.FailedStatusItem error) {
 			newEntry.set(DS_PROP_ERROR, unindexedString(error.getError().getStacktrace()));
+		} else {
+			throw new IllegalArgumentException("Unknown item: " + current);
 		}
 		return newEntry.build();
 	}
@@ -105,7 +107,7 @@ class StatusItemToEntityConverter {
 
 	/**
 	 * Strings have a limitation of 1500 bytes when indexed. This removes that limitation.
-	 * @see https://cloud.google.com/datastore/docs/concepts/entities#text_string
+	 * @see <a href="https://cloud.google.com/datastore/docs/concepts/entities#text_string">Entities</a>
 	 */
 	static @Nonnull Value<?> unindexedString(@Nullable String value) {
 		return value == null
