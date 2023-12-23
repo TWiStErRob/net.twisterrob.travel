@@ -1,0 +1,19 @@
+plugins {
+	id("net.twisterrob.blt.convention")
+	id("org.gradle.java-library")
+	id("net.twisterrob.gradle.plugin.java")
+	id("com.android.lint")
+}
+
+dependencies {
+	api("net.twisterrob.lib:twister-lib-general")
+	api("net.twisterrob.lib:twister-lib-core")
+
+	implementation(libs.jsr305)
+	implementation(libs.slf4j.api)
+	compileOnly(projects.common.androidPolyfill)
+	implementation("net.twisterrob.lib:twister-lib-java_desktop")
+
+	testImplementation(projects.common.testHelpers)
+	testRuntimeOnly(projects.common.androidPolyfill)
+}

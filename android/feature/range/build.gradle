@@ -1,0 +1,25 @@
+plugins {
+	id("net.twisterrob.travel.android-library")
+}
+
+dependencies {
+	implementation(projects.android.component.android)
+	implementation(projects.android.component.data)
+	implementation(projects.android.component.map)
+	implementation(projects.android.component.theme)
+
+	api("net.twisterrob.lib:twister-lib-android-monolith") // api because AppCompatActivity.
+	implementation("net.twisterrob.lib:twister-lib-android-basics")
+	implementation("net.twisterrob.lib:twister-lib-android-slf4j")
+	implementation("net.twisterrob.lib:twister-lib-android-widgets")
+	implementation("net.twisterrob.lib:twister-lib-android-stringers")
+
+	implementation("net.twisterrob.lib:twister-lib-android-color_picker")
+	implementation("net.twisterrob.lib:twister-lib-android-settings")
+
+	implementation(projects.common.model)
+	implementation(libs.gms.places)
+	implementation(libs.jsr305)
+}
+
+android.defaultConfig.consumerProguardFile("src/main/proguard.pro")

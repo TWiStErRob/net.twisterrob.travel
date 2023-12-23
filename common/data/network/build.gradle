@@ -1,0 +1,55 @@
+import net.twisterrob.travel.DirectoryArgumentProvider
+import net.twisterrob.travel.JavaExecExtensions
+
+plugins {
+	id("net.twisterrob.blt.convention")
+	id("org.gradle.application")
+	id("net.twisterrob.gradle.plugin.java")
+}
+
+dependencies {
+	implementation(projects.common.data.desktop)
+	implementation(projects.common.feed.feeds)
+	implementation(projects.common.feed.timetable)
+	implementation(projects.common.feed.trackernet)
+	implementation(projects.common.logConsole)
+
+	runtimeOnly(projects.common.androidPolyfill)
+}
+
+application {
+	mainClass = "net.twisterrob.blt.data.apps.TravelNetworkParser"
+}
+
+Provider<Directory> outputDir = layout.buildDirectory.dir("output")
+tasks.named("run", JavaExec.class) {
+	Directory timetableRoot = rootProject.layout.projectDirectory.dir("data/feed15/LULDLRRiverTramCable")
+	Directory predictionRoot = rootProject.layout.projectDirectory.dir("data/PredictionSummary")
+	argumentProviders.addAll([
+			new DirectoryArgumentProvider(provider { timetableRoot }) {
+				@InputDirectory
+				@PathSensitive(PathSensitivity.RELATIVE)
+				@Override Provider<Directory> getDirectory() {
+					return super.getDirectory()
+				}
+			},
+			new DirectoryArgumentProvider(provider { predictionRoot }) {
+				@InputDirectory
+				@PathSensitive(PathSensitivity.RELATIVE)
+				@Override Provider<Directory> getDirectory() {
+					return super.getDirectory()
+				}
+			},
+			new DirectoryArgumentProvider(outputDir) {
+				@OutputDirectory
+				@Override Provider<Directory> getDirectory() {
+					return super.getDirectory()
+				}
+			},
+	])
+	enableAssertions = true
+	JavaExecExtensions.logTo(it, outputDir.map { it.file("run.log") })
+}
+
+configurations.create("output")
+artifacts.output(tasks.named("run").map { outputDir })

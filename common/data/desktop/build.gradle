@@ -1,0 +1,10 @@
+plugins {
+	id("net.twisterrob.blt.convention")
+	id("org.gradle.java-library")
+	id("net.twisterrob.gradle.plugin.java")
+}
+
+dependencies {
+	api(projects.common.model)
+	api(projects.common.data.static)
+}

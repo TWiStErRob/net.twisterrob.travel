@@ -38,8 +38,8 @@ jobs:
         run: |
           curl --silent --show-error --location --remote-name \
               https://github.com/TWiStErRob/net.twisterrob.travel/releases/download/v1.0.0/LULDLRRiverTramCable.zip
-          mkdir -p temp/feed15/LULDLRRiverTramCable
-          unzip LULDLRRiverTramCable.zip 'tfl_*-*-_-y05-*.xml' -d temp/feed15/LULDLRRiverTramCable
+          mkdir -p data/feed15/LULDLRRiverTramCable
+          unzip LULDLRRiverTramCable.zip 'tfl_*-*-_-y05-*.xml' -d data/feed15/LULDLRRiverTramCable
 
       - name: "Build project."
         working-directory: .
@@ -50,20 +50,22 @@ jobs:
           --continue
           --no-build-cache
           build
-          :AppEngine:appengineStage
+          :web:status-history:appengineStage
 
       - name: "Upload 'Unit Test Results' artifact."
         if: success() || failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: 'Unit Test Results'
+          if-no-files-found: error
           path: ${{ github.workspace }}/**/build/reports/tests/*/
 
       - name: "Upload 'Android Lint Results' artifact."
         if: success() || failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: 'Android Lint Results'
+          if-no-files-found: error
           path: ${{ github.workspace }}/**/build/reports/lint-results*
 
       - name: "Publish 'Unit Results' check suite."
@@ -78,9 +80,10 @@ jobs:
 
       - name: "Upload 'APKs' artifact."
         if: success() || failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: 'APKs'
+          if-no-files-found: error
           path: |
             ${{ github.workspace }}/**/build/outputs/apk/
             ${{ github.workspace }}/**/build/outputs/mapping/

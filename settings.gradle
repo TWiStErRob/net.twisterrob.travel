@@ -1,18 +1,46 @@
 import static net.twisterrob.gradle.settings.SettingsUtils.enableFeaturePreviewQuietly
 
+pluginManagement {
+	includeBuild("gradle/plugins")
+	repositories {
+		google()
+		mavenCentral()
+		gradlePluginPortal()
+	}
+}
+
 plugins {
 	id("net.twisterrob.gradle.plugin.settings") version "0.16"
+	id("com.gradle.enterprise") version "3.16.1"
 }
 
 rootProject.name = "net-twisterrob-blt"
 
-include(":Android")
-include(":AppEngine")
-include(":Data")
-include(":Shared")
-include(":Shared:android-polyfill")
-include(":Shared:diff")
-include(":Shared:test-helpers")
+include(":android:app:full")
+include(":android:app:range")
+include(":android:component:android")
+include(":android:component:map")
+include(":android:component:data")
+include(":android:component:theme")
+include(":android:feature:range")
+include(":common:android-polyfill")
+include(":common:data:desktop")
+include(":common:data:fake")
+include(":common:data:network")
+include(":common:data:postcodes")
+include(":common:data:static")
+include(":common:diff")
+include(":common:feed:core")
+include(":common:feed:feeds")
+include(":common:feed:facilities")
+include(":common:feed:timetable")
+include(":common:feed:trackernet")
+include(":common:log-console")
+include(":common:model")
+include(":common:maptiler")
+include(":common:test-helpers")
+include(":desktop:routes")
+include(":web:status-history")
 
 enableFeaturePreviewQuietly(settings, "TYPESAFE_PROJECT_ACCESSORS", "Type-safe project accessors")
 
@@ -33,4 +61,11 @@ dependencyResolutionManagement {
 
 includeBuild("libs") { build ->
 	apply from: new File(build.projectDir, "gradle/settings.substitutions.gradle"), to: build
+}
+
+gradleEnterprise {
+	buildScan {
+		termsOfServiceUrl = "https://gradle.com/terms-of-service"
+		termsOfServiceAgree = "yes"
+	}
 }

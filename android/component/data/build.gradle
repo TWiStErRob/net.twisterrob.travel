@@ -1,0 +1,40 @@
+plugins {
+	id("net.twisterrob.travel.android-library")
+}
+
+configurations.create("database")
+
+dependencies {
+	api(projects.common.model)
+	api(projects.common.data.static)
+	implementation("net.twisterrob.lib:twister-lib-android-monolith")
+	implementation("net.twisterrob.lib:twister-lib-android-basics")
+	implementation("net.twisterrob.lib:twister-lib-android-slf4j")
+	database(projects.common.data.postcodes) { targetConfiguration = "output" }
+	database(projects.common.data.network) { targetConfiguration = "output" }
+}
+
+abstract class GenerateDatabase extends Copy {
+
+	@Internal("An intermediate property to satisfy AGP, tracked in destination.")
+	abstract DirectoryProperty getOutput()
+}
+
+def generateDataBase = tasks.register("generateDataBase", GenerateDatabase.class) {
+	from(configurations.database) {
+		include("*.data.*.sql")
+	}
+	into(output)
+}
+
+androidComponents {
+	onVariants(selector().all()) { variant ->
+		variant.sources.assets.addGeneratedSourceDirectory(generateDataBase, { it.output })
+		afterEvaluate {
+			tasks.named("generate${variant.name.capitalize()}Assets").configure {
+				// This should be not necessary with addGeneratedSourceDirectory, but without this, it doesn't work.
+				dependsOn(generateDataBase)
+			}
+		}
+	}
+}

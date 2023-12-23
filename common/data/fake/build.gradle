@@ -1,0 +1,20 @@
+plugins {
+	id("net.twisterrob.blt.convention")
+	id("org.gradle.java")
+	id("org.gretty")
+}
+
+// TODO logging doesn't work with org.eclipse nor org.mortbay package names
+// -Dorg.mortbay.log.class=org.eclipse.jetty.util.log.StrErrLog changes the logger, but no output
+// --debug logs, but too much and not configurable
+gretty { // org.akhikhl.gretty.GrettyExtension
+	//daemon = true
+	extraResourceBase(rootProject.layout.projectDirectory.dir("data").asFile)
+
+	// + Magic @Delegate org.akhikhl.gretty.ServerConfig through GrettyExtension implements GrettyConfig
+	httpPort = 8081
+	managedClassReload = false
+
+	// + Magic @Delegate org.akhikhl.gretty.WebAppConfig through GrettyExtension implements GrettyConfig
+	contextPath = "/fake-data"
+}

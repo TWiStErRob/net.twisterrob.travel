@@ -1,0 +1,29 @@
+import net.twisterrob.travel.JavaExecExtensions
+
+plugins {
+	id("net.twisterrob.blt.convention")
+	id("org.gradle.application")
+	id("net.twisterrob.gradle.plugin.java")
+}
+
+dependencies {
+	implementation("net.twisterrob.lib:twister-lib-general")
+	implementation(projects.common.data.desktop)
+}
+
+application {
+	mainClass = "net.twisterrob.blt.data.apps.PostCodeAreas"
+}
+
+Provider<Directory> outputDir = project.layout.buildDirectory.dir("output")
+tasks.named("run", JavaExec.class) {
+	RegularFile csv = rootProject.layout.projectDirectory.file("data/london.csv.gz")
+	Provider<RegularFile> outputFile = outputDir.map { it.file("LondonTravel.data.AreaHull.sql") }
+	inputs.file(csv).withPathSensitivity(PathSensitivity.NONE)
+	args = [ csv.asFile, outputFile.get().asFile ]
+	enableAssertions = true
+	JavaExecExtensions.logTo(it, outputDir.map { it.file("run.log") }) 
+}
+
+configurations.create("output")
+artifacts.output(tasks.named("run").map { outputDir })

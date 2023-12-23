@@ -1,0 +1,12 @@
+plugins {
+	id("net.twisterrob.blt.convention")
+	id("org.gradle.java-library")
+	id("net.twisterrob.gradle.plugin.java")
+	id("com.android.lint")
+}
+
+dependencies {
+	api(projects.common.model)
+	implementation(libs.jsr305)
+	implementation(libs.slf4j.api)
+}
