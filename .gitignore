@@ -3,6 +3,7 @@ build/
 /Android/src/main/assets/LondonTravel.data.*.sql
 
 /.idea/
+!/.idea/runConfigurations/
 *.ipr
 *.iml
 *.iws

@@ -17,6 +17,6 @@
    ```
    gcloud beta emulators datastore env-init
    ```
-5. Set the output environment variables before running `gradlew :AppEngine:run`.
+5. Set the output environment variables before running `gradlew :web:status-history:run`.
 
-Note: step 4 and 5 are automated in `build.gradle`. 
+Note: step 4 and 5 are automated in `build.gradle` and in "Run status-history server" IDEA run configuration. 
