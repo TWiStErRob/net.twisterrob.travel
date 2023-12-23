@@ -22,6 +22,7 @@ dependencies {
 	runtimeOnly(libs.micronaut.jackson)
 	implementation(libs.micronaut.handlebars)
 
+	implementation(projects.domain.status)
 	implementation(projects.common.data.static)
 	implementation(projects.common.feed.feeds)
 	implementation(projects.common.feed.trackernet)

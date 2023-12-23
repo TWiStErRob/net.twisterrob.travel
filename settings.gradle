@@ -39,6 +39,7 @@ include(":common:log-console")
 include(":common:model")
 include(":common:maptiler")
 include(":common:test-helpers")
+include(":domain:status")
 include(":desktop:routes")
 include(":web:status-history")
 

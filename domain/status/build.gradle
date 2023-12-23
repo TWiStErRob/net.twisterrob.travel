@@ -1,0 +1,15 @@
+plugins {
+	id("net.twisterrob.blt.convention")
+	id("org.jetbrains.kotlin.multiplatform")
+}
+
+kotlin {
+	jvm()
+	sourceSets {
+		commonMain {
+			dependencies {
+				implementation(libs.kotlin.datetime)
+			}
+		}
+	}
+}
