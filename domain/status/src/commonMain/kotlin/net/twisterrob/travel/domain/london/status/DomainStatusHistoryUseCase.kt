@@ -1,38 +1,41 @@
 package net.twisterrob.travel.domain.london.status
 
+import io.github.oshai.kotlinlogging.KMarkerFactory
+import io.github.oshai.kotlinlogging.KotlinLogging.logger
+import io.github.oshai.kotlinlogging.Marker
 import net.twisterrob.travel.domain.london.status.api.RefreshResult
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryUseCase
 import net.twisterrob.travel.domain.london.status.api.StatusInteractor
 
-private val LOG = logger()
+private val LOG = logger {}
 
 class DomainStatusHistoryUseCase(
 	private val statusHistoryRepository: StatusHistoryRepository,
 	private val statusInteractor: StatusInteractor,
 ) : StatusHistoryUseCase {
 
-	override fun refreshLatest(): RefreshResult {
-		val current = statusInteractor.getCurrent()
-		val latest = statusHistoryRepository.getLatest()
-		val marker: org.slf4j.Marker = org.slf4j.MarkerFactory.getMarker(feed.name)
+	override fun refreshLatest(feed: Feed): RefreshResult {
+		val current = statusInteractor.getCurrent(feed)
+		val latest = statusHistoryRepository.getLatest(feed)
+		val marker: Marker = KMarkerFactory.getMarker(feed.name)
 
-		if (latest != null) {
+		return if (latest != null) {
 			if (sameContent(latest, current)) {
-				LOG.info(marker, "They have the same content.")
-				return RefreshResult.NoChange(latest)
+				LOG.atInfo(marker) { message = "They have the same content." }
+				RefreshResult.NoChange(latest)
 			} else if (sameError(latest, current)) {
-				LOG.info(marker, "They have the same error.")
-				return RefreshResult.NoChange(latest)
+				LOG.atInfo(marker) { message = "They have the same error." }
+				RefreshResult.NoChange(latest)
 			} else {
-				LOG.info(marker, "They're different, storing...")
+				LOG.atInfo(marker) { message = "They're different, storing..." }
 				statusHistoryRepository.add(current)
-				return RefreshResult.Refreshed(current, latest)
+				RefreshResult.Refreshed(current, latest)
 			}
 		} else {
-			LOG.info(marker, "It's new, storing...")
+			LOG.atInfo(marker) { message = "It's new, storing..." }
 			statusHistoryRepository.add(current)
-			return RefreshResult.Created(current)
+			RefreshResult.Created(current)
 		}
 	}
 

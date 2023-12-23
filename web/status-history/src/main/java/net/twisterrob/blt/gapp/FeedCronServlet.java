@@ -1,7 +1,6 @@
 package net.twisterrob.blt.gapp;
 
 import java.io.*;
-import java.net.*;
 import java.util.*;
 
 import io.micronaut.http.annotation.Controller;
@@ -15,7 +14,6 @@ import com.google.cloud.datastore.*;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
 
 import net.twisterrob.blt.io.feeds.Feed;
-import net.twisterrob.java.io.IOTools;
 import net.twisterrob.java.utils.ObjectTools;
 
 import static net.twisterrob.blt.gapp.FeedConsts.*;
@@ -90,7 +88,7 @@ public class FeedCronServlet extends HttpServlet {
 		KeyFactory keyFactory = datastore.newKeyFactory().setKind(feed.name());
 		FullEntity.Builder<IncompleteKey> newEntry = Entity.newBuilder(keyFactory.newKey());
 		try {
-			String feedResult = downloadFeed(feed);
+			String feedResult = HttpStatusInteractor.downloadFeed(feed);
 			newEntry.set(DS_PROP_CONTENT, unindexedString(feedResult));
 		} catch (Exception ex) {
 			LOG.error("Cannot load '{}'!", feed, ex);
@@ -110,19 +108,4 @@ public class FeedCronServlet extends HttpServlet {
 				: StringValue.newBuilder(value).setExcludeFromIndexes(true).build();
 	}
 
-	public static String downloadFeed(Feed feed) throws IOException {
-		InputStream input = null;
-		String result;
-		try {
-			URL url = URL_BUILDER.getFeedUrl(feed, Collections.<String, Object>emptyMap());
-			LOG.debug("Requesting feed '{}': '{}'...", feed, url);
-			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-			connection.connect();
-			input = connection.getInputStream();
-			result = IOTools.readAll(input);
-		} finally {
-			IOTools.ignorantClose(input);
-		}
-		return result;
-	}
 }
