@@ -21,7 +21,7 @@ class DomainHistoryUseCase(
 		if (includeCurrent) {
 			result.add(statusInteractor.getCurrent(feed))
 		}
-		val history = statusHistoryRepository.fetchEntries(feed, max)
+		val history = statusHistoryRepository.getAll(feed, max)
 		result.addAll(history)
 		return result.map { it.parse() }
 	}

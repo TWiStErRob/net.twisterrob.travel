@@ -32,13 +32,13 @@ class DomainRefreshUseCaseUnitTest {
 	@Test fun `current will be saved when there are no previous statuses`() {
 		val current = SuccessfulStatusItem()
 		every { mockInteractor.getCurrent(any()) }.returns(current)
-		every { mockRepo.fetchEntries(any(), any()) }.returns(emptyList())
+		every { mockRepo.getAll(any(), any()) }.returns(emptyList())
 
 		val result = subject.refreshLatest(feed)
 		assertEquals(RefreshResult.Created(current), result)
 
 		verify { mockInteractor.getCurrent(feed) }.wasInvoked()
-		verify { mockRepo.fetchEntries(feed, 1) }.wasInvoked()
+		verify { mockRepo.getAll(feed, 1) }.wasInvoked()
 		verify { mockRepo.add(current) }.wasInvoked()
 	}
 
@@ -46,13 +46,13 @@ class DomainRefreshUseCaseUnitTest {
 		val current = SuccessfulStatusItem()
 		val latest = SuccessfulStatusItem().copy(content = current.content)
 		every { mockInteractor.getCurrent(any()) }.returns(current)
-		every { mockRepo.fetchEntries(any(), any()) }.returns(listOf(latest))
+		every { mockRepo.getAll(any(), any()) }.returns(listOf(latest))
 
 		val result = subject.refreshLatest(feed)
 		assertEquals(RefreshResult.NoChange(current, latest), result)
 
 		verify { mockInteractor.getCurrent(feed) }.wasInvoked()
-		verify { mockRepo.fetchEntries(feed, 1) }.wasInvoked()
+		verify { mockRepo.getAll(feed, 1) }.wasInvoked()
 		verify { mockRepo.add(any()) }.wasNotInvoked()
 	}
 
@@ -60,13 +60,13 @@ class DomainRefreshUseCaseUnitTest {
 		val current = SuccessfulStatusItem()
 		val latest = SuccessfulStatusItem()
 		every { mockInteractor.getCurrent(any()) }.returns(current)
-		every { mockRepo.fetchEntries(any(), any()) }.returns(listOf(latest))
+		every { mockRepo.getAll(any(), any()) }.returns(listOf(latest))
 
 		val result = subject.refreshLatest(feed)
 		assertEquals(RefreshResult.Refreshed(current, latest), result)
 
 		verify { mockInteractor.getCurrent(feed) }.wasInvoked()
-		verify { mockRepo.fetchEntries(feed, 1) }.wasInvoked()
+		verify { mockRepo.getAll(feed, 1) }.wasInvoked()
 		verify { mockRepo.add(current) }.wasInvoked()
 	}
 
@@ -74,13 +74,13 @@ class DomainRefreshUseCaseUnitTest {
 		val current = FailedStatusItem()
 		val latest = SuccessfulStatusItem()
 		every { mockInteractor.getCurrent(any()) }.returns(current)
-		every { mockRepo.fetchEntries(any(), any()) }.returns(listOf(latest))
+		every { mockRepo.getAll(any(), any()) }.returns(listOf(latest))
 
 		val result = subject.refreshLatest(feed)
 		assertEquals(RefreshResult.Refreshed(current, latest), result)
 
 		verify { mockInteractor.getCurrent(feed) }.wasInvoked()
-		verify { mockRepo.fetchEntries(feed, 1) }.wasInvoked()
+		verify { mockRepo.getAll(feed, 1) }.wasInvoked()
 		verify { mockRepo.add(current) }.wasInvoked()
 	}
 
@@ -88,13 +88,13 @@ class DomainRefreshUseCaseUnitTest {
 		val current = SuccessfulStatusItem()
 		val latest = FailedStatusItem()
 		every { mockInteractor.getCurrent(any()) }.returns(current)
-		every { mockRepo.fetchEntries(any(), any()) }.returns(listOf(latest))
+		every { mockRepo.getAll(any(), any()) }.returns(listOf(latest))
 
 		val result = subject.refreshLatest(feed)
 		assertEquals(RefreshResult.Refreshed(current, latest), result)
 
 		verify { mockInteractor.getCurrent(feed) }.wasInvoked()
-		verify { mockRepo.fetchEntries(feed, 1) }.wasInvoked()
+		verify { mockRepo.getAll(feed, 1) }.wasInvoked()
 		verify { mockRepo.add(current) }.wasInvoked()
 	}
 
@@ -102,13 +102,13 @@ class DomainRefreshUseCaseUnitTest {
 		val current = FailedStatusItem()
 		val latest = FailedStatusItem()
 		every { mockInteractor.getCurrent(any()) }.returns(current)
-		every { mockRepo.fetchEntries(any(), any()) }.returns(listOf(latest))
+		every { mockRepo.getAll(any(), any()) }.returns(listOf(latest))
 
 		val result = subject.refreshLatest(feed)
 		assertEquals(RefreshResult.Refreshed(current, latest), result)
 
 		verify { mockInteractor.getCurrent(feed) }.wasInvoked()
-		verify { mockRepo.fetchEntries(feed, 1) }.wasInvoked()
+		verify { mockRepo.getAll(feed, 1) }.wasInvoked()
 		verify { mockRepo.add(current) }.wasInvoked()
 	}
 
@@ -116,13 +116,13 @@ class DomainRefreshUseCaseUnitTest {
 		val current = FailedStatusItem()
 		val latest = FailedStatusItem().copy(error = current.error)
 		every { mockInteractor.getCurrent(any()) }.returns(current)
-		every { mockRepo.fetchEntries(any(), any()) }.returns(listOf(latest))
+		every { mockRepo.getAll(any(), any()) }.returns(listOf(latest))
 
 		val result = subject.refreshLatest(feed)
 		assertEquals(RefreshResult.NoChange(current, latest), result)
 
 		verify { mockInteractor.getCurrent(feed) }.wasInvoked()
-		verify { mockRepo.fetchEntries(feed, 1) }.wasInvoked()
+		verify { mockRepo.getAll(feed, 1) }.wasInvoked()
 		verify { mockRepo.add(current) }.wasNotInvoked()
 	}
 }

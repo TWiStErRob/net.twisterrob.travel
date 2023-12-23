@@ -53,7 +53,7 @@ public class DatastoreStatusHistoryRepository implements StatusHistoryRepository
 		datastore.add(statusItemConverter.toEntity(current));
 	}
 
-	@Override public @Nonnull List<StatusItem> fetchEntries(@Nonnull Feed feed, int max) {
+	@Override public @Nonnull List<StatusItem> getAll(@Nonnull Feed feed, int max) {
 		Iterator<Entity> entries = queryAllMostRecentFirst(feed);
 		List<StatusItem> results = new ArrayList<>();
 		while (entries.hasNext()) {
