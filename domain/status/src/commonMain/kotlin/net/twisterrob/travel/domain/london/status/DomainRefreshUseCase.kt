@@ -1,14 +1,14 @@
 package net.twisterrob.travel.domain.london.status
 
 import net.twisterrob.travel.domain.london.status.api.RefreshResult
+import net.twisterrob.travel.domain.london.status.api.RefreshUseCase
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
-import net.twisterrob.travel.domain.london.status.api.StatusHistoryUseCase
 import net.twisterrob.travel.domain.london.status.api.StatusInteractor
 
-class DomainStatusHistoryUseCase(
+class DomainRefreshUseCase(
 	private val statusHistoryRepository: StatusHistoryRepository,
 	private val statusInteractor: StatusInteractor,
-) : StatusHistoryUseCase {
+) : RefreshUseCase {
 
 	override fun refreshLatest(feed: Feed): RefreshResult {
 		val current = statusInteractor.getCurrent(feed)

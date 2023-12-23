@@ -13,11 +13,11 @@ import org.slf4j.*;
 
 import com.google.cloud.datastore.*;
 
-import net.twisterrob.travel.domain.london.status.DomainStatusHistoryUseCase;
+import net.twisterrob.travel.domain.london.status.DomainRefreshUseCase;
 import net.twisterrob.travel.domain.london.status.Feed;
 import net.twisterrob.travel.domain.london.status.StatusItem;
 import net.twisterrob.travel.domain.london.status.api.RefreshResult;
-import net.twisterrob.travel.domain.london.status.api.StatusHistoryUseCase;
+import net.twisterrob.travel.domain.london.status.api.RefreshUseCase;
 
 @Controller
 @SuppressWarnings("serial")
@@ -27,7 +27,7 @@ public class FeedCronServlet extends HttpServlet {
 
 	private static final String QUERY_FEED = "feed";
 
-	private final StatusHistoryUseCase useCase = new DomainStatusHistoryUseCase(
+	private final RefreshUseCase useCase = new DomainRefreshUseCase(
 			new DatastoreStatusHistoryRepository(DatastoreOptions.getDefaultInstance().getService()),
 			new HttpStatusInteractor()
 	);
