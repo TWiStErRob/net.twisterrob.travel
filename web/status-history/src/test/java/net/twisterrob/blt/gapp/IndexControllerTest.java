@@ -15,6 +15,7 @@ import io.micronaut.http.HttpRequest;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.runtime.server.EmbeddedServer;
 
+import net.twisterrob.blt.gapp.controller.IndexController;
 import net.twisterrob.java.io.IOTools;
 
 import static net.twisterrob.blt.gapp.HtmlValidator.assertValidHtml;

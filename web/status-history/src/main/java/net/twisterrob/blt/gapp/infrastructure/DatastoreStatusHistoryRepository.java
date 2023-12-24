@@ -1,4 +1,4 @@
-package net.twisterrob.blt.gapp;
+package net.twisterrob.blt.gapp.infrastructure;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,9 +30,9 @@ import net.twisterrob.travel.domain.london.status.StatusContent;
 import net.twisterrob.travel.domain.london.status.StatusItem;
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository;
 
-import static net.twisterrob.blt.gapp.DatastoreStatusHistoryRepository.DS_PROP_CONTENT;
-import static net.twisterrob.blt.gapp.DatastoreStatusHistoryRepository.DS_PROP_ERROR;
-import static net.twisterrob.blt.gapp.DatastoreStatusHistoryRepository.DS_PROP_RETRIEVED_DATE;
+import static net.twisterrob.blt.gapp.infrastructure.DatastoreStatusHistoryRepository.DS_PROP_CONTENT;
+import static net.twisterrob.blt.gapp.infrastructure.DatastoreStatusHistoryRepository.DS_PROP_ERROR;
+import static net.twisterrob.blt.gapp.infrastructure.DatastoreStatusHistoryRepository.DS_PROP_RETRIEVED_DATE;
 
 @Bean(typed = StatusHistoryRepository.class)
 public class DatastoreStatusHistoryRepository implements StatusHistoryRepository {

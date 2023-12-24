@@ -1,4 +1,4 @@
-package net.twisterrob.blt.gapp;
+package net.twisterrob.blt.gapp.infrastructure;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

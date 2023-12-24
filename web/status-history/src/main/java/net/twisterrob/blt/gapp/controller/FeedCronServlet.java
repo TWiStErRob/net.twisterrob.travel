@@ -1,4 +1,4 @@
-package net.twisterrob.blt.gapp;
+package net.twisterrob.blt.gapp.controller;
 
 import java.io.*;
 import java.util.*;
