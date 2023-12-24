@@ -9,7 +9,7 @@ import net.twisterrob.blt.model.Line;
 
 import static net.twisterrob.travel.statushistory.viewmodel.ResultChange.StatusChange;
 
-public class ResultChangeTest_Descriptions {
+public class ResultChangeUnitTest_Descriptions {
 	public static final String MISSING_DESCRIPTION = null;
 
 	private GwenStatus status1;

@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 import net.twisterrob.blt.model.*;
 import net.twisterrob.travel.statushistory.viewmodel.LineColor.AllColors;
 
-public class LineColorTest {
+public class LineColorUnitTest {
 	@Rule public final MockitoRule mockito = MockitoJUnit.rule();
 
 	@Mock LineColors colors;

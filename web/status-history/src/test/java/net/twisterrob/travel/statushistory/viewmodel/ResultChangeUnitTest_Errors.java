@@ -13,7 +13,7 @@ import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
 
 import static net.twisterrob.travel.statushistory.viewmodel.ResultChange.ErrorChange;
 
-public class ResultChangeTest_Errors {
+public class ResultChangeUnitTest_Errors {
 	@Test public void testErrorChange() {
 		Result result1 = new Result(new Date(), "error1");
 		Result result2 = new Result(new Date(), "error2");

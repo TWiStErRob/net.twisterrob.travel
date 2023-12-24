@@ -10,7 +10,7 @@ import static org.mockito.Mockito.*;
 import net.twisterrob.travel.statushistory.viewmodel.ResultChange.ErrorChange;
 import net.twisterrob.travel.statushistory.viewmodel.ResultChange.StatusChange;
 
-public class ResultChangeTest {
+public class ResultChangeUnitTest {
 	@Test public void testConsistentProperties() {
 		Result result1 = mock(Result.class);
 		Result result2 = mock(Result.class);

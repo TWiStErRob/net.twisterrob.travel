@@ -20,7 +20,7 @@ import net.twisterrob.java.io.IOTools;
 import static net.twisterrob.travel.statushistory.test.HtmlValidator.assertValidHtml;
 
 // TODO use @MicronautTest in JUnit 5.
-public class IndexControllerTest {
+public class IndexControllerIntegrationTest {
 
 	private static EmbeddedServer server;
 	private static HttpClient client;

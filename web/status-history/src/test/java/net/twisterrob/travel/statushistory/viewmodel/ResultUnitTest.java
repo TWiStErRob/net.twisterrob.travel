@@ -9,7 +9,7 @@ import static org.mockito.Mockito.*;
 
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
 
-public class ResultTest {
+public class ResultUnitTest {
 	@Test public void testSingleLineErrorHeader() {
 		String error = "Error message";
 		String errorHeader = "Error message";

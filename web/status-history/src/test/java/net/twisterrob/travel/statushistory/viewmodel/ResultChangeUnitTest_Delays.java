@@ -9,7 +9,7 @@ import net.twisterrob.blt.model.Line;
 
 import static net.twisterrob.travel.statushistory.viewmodel.ResultChange.StatusChange;
 
-public class ResultChangeTest_Delays {
+public class ResultChangeUnitTest_Delays {
 	private GwenStatus status1;
 	private GwenStatus status2;
 	private GwenChange change;
