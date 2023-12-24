@@ -46,6 +46,8 @@ class HttpStatusInteractor implements StatusInteractor {
 			URL url = URL_BUILDER.getFeedUrl(feed, Collections.<String, Object>emptyMap());
 			LOG.debug("Requesting feed '{}': '{}'...", feed, url);
 			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+			connection.setConnectTimeout(5000);
+			connection.setReadTimeout(5000);
 			connection.connect();
 			input = connection.getInputStream();
 			result = IOTools.readAll(input);

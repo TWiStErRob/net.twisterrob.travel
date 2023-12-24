@@ -45,7 +45,7 @@ public class LineStatusHistoryServlet {
 		List<ParsedStatusItem> history = useCase.history(feed, max, displayCurrent);
 		List<Result> results = history
 				.stream()
-				.filter((it) -> !displayErrors && it instanceof ParsedStatusItem.ParseFailed)
+				.filter((it) -> displayErrors || !(it instanceof ParsedStatusItem.ParseFailed))
 				.map(LineStatusHistoryServlet::toResult).toList();
 		List<ResultChange> differences = getDifferences(results);
 
