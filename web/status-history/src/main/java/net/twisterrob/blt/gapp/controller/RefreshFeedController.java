@@ -1,14 +1,12 @@
 package net.twisterrob.blt.gapp.controller;
 
-import java.io.*;
-import java.util.*;
-
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Produces;
+import io.micronaut.http.annotation.QueryValue;
 import jakarta.servlet.http.*;
 
 import org.slf4j.*;
@@ -23,8 +21,6 @@ public class RefreshFeedController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(RefreshFeedController.class);
 
-	private static final String QUERY_FEED = "feed";
-
 	private final RefreshUseCase useCase;
 
 	public RefreshFeedController(RefreshUseCase useCase) {
@@ -33,17 +29,7 @@ public class RefreshFeedController {
 
 	@Get("/refresh")
 	@Produces(MediaType.TEXT_PLAIN)
-	public void refreshFeed(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		String feedString = req.getParameter(QUERY_FEED);
-		Feed feed = parseFeed(feedString);
-		if (feed == null) {
-			String message = String.format(Locale.getDefault(), "No such feed: '%s'.", feedString);
-			LOG.warn(message);
-			resp.getWriter().println(message);
-			resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			return;
-		}
-
+	public void refreshFeed(@QueryValue("feed") @Nonnull Feed feed, HttpServletResponse resp) {
 		RefreshResult result = useCase.refreshLatest(feed);
 		Marker marker = MarkerFactory.getMarker(feed.name());
 		if (result instanceof RefreshResult.NoChange noChange) {
@@ -62,17 +48,6 @@ public class RefreshFeedController {
 			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
 		} else {
 			throw new IllegalStateException("Unknown result: " + result);
-		}
-	}
-
-	static @Nullable Feed parseFeed(@Nullable String feedString) {
-		if (feedString == null) {
-			return null;
-		}
-		try {
-			return Feed.valueOf(feedString);
-		} catch (IllegalArgumentException ex) {
-			return null;
 		}
 	}
 }
