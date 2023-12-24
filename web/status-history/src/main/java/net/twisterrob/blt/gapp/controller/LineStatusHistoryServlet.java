@@ -7,8 +7,8 @@ import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Produces;
+import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.views.View;
-import jakarta.servlet.http.*;
 
 import net.twisterrob.blt.data.StaticData;
 import net.twisterrob.blt.gapp.viewmodel.*;
@@ -19,11 +19,6 @@ import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem;
 
 @Controller
 public class LineStatusHistoryServlet {
-
-	private static final String QUERY_DISPLAY_CURRENT = "current";
-	private static final String QUERY_DISPLAY_ERRORS = "errors";
-	private static final String QUERY_DISPLAY_MAX = "max";
-	private static final int DISPLAY_MAX_DEFAULT = 100;
 
 	private final HistoryUseCase useCase;
 	private final StaticData staticData;
@@ -36,10 +31,11 @@ public class LineStatusHistoryServlet {
 	@Get("/LineStatusHistory")
 	@View("LineStatus")
 	@Produces(MediaType.TEXT_HTML)
-	public HttpResponse<?> doGet(HttpServletRequest req, HttpServletResponse resp) {
-		int max = parseInt(req.getParameter(QUERY_DISPLAY_MAX), DISPLAY_MAX_DEFAULT);
-		boolean displayCurrent = Boolean.parseBoolean(req.getParameter(QUERY_DISPLAY_CURRENT));
-		boolean displayErrors = Boolean.parseBoolean(req.getParameter(QUERY_DISPLAY_ERRORS));
+	public HttpResponse<?> lineStatusHistory(
+			@QueryValue(value = "current", defaultValue = "false") boolean displayCurrent,
+			@QueryValue(value = "errors", defaultValue = "false") boolean displayErrors,
+			@QueryValue(value = "max", defaultValue = "100") int max
+	) {
 		Feed feed = Feed.TubeDepartureBoardsLineStatus;
 
 		List<ParsedStatusItem> history = useCase.history(feed, max, displayCurrent);
@@ -89,15 +85,5 @@ public class LineStatusHistoryServlet {
 		resultChanges.add(new ResultChange(null, newResult));
 		resultChanges.remove(0);
 		return resultChanges;
-	}
-
-	private static int parseInt(String value, int def) {
-		int max;
-		try {
-			max = Integer.parseInt(value);
-		} catch (NumberFormatException ex) {
-			max = def;
-		}
-		return max;
 	}
 }
