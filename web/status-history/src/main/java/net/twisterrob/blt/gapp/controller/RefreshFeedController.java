@@ -5,8 +5,10 @@ import java.util.*;
 
 import javax.annotation.Nullable;
 
+import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Produces;
 import jakarta.servlet.http.*;
 
 import org.slf4j.*;
@@ -17,21 +19,21 @@ import net.twisterrob.travel.domain.london.status.api.RefreshResult;
 import net.twisterrob.travel.domain.london.status.api.RefreshUseCase;
 
 @Controller
-@SuppressWarnings("serial")
-public class FeedCronServlet extends HttpServlet {
+public class RefreshFeedController {
 
-	private static final Logger LOG = LoggerFactory.getLogger(FeedCronServlet.class);
+	private static final Logger LOG = LoggerFactory.getLogger(RefreshFeedController.class);
 
 	private static final String QUERY_FEED = "feed";
 
 	private final RefreshUseCase useCase;
 
-	public FeedCronServlet(RefreshUseCase useCase) {
+	public RefreshFeedController(RefreshUseCase useCase) {
 		this.useCase = useCase;
 	}
 
-	@Get("/FeedCron")
-	@Override public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	@Get("/refresh")
+	@Produces(MediaType.TEXT_PLAIN)
+	public void refreshFeed(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String feedString = req.getParameter(QUERY_FEED);
 		Feed feed = parseFeed(feedString);
 		if (feed == null) {
