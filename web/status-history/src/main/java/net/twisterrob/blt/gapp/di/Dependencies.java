@@ -4,6 +4,7 @@ import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Prototype;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.runtime.http.scope.RequestScope;
 import jakarta.inject.Singleton;
@@ -35,7 +36,7 @@ public class Dependencies {
 	/**
 	 * External dependency from domain layer in common KMP code.
 	 */
-	@RequestScope
+	@Prototype
 	public HistoryUseCase historyUseCase(
 			StatusHistoryRepository statusHistoryRepository,
 			StatusInteractor statusInteractor,
@@ -47,7 +48,7 @@ public class Dependencies {
 	/**
 	 * External dependency from domain layer in common KMP code.
 	 */
-	@RequestScope
+	@Prototype
 	public RefreshUseCase refreshUseCase(
 			StatusHistoryRepository statusHistoryRepository,
 			StatusInteractor statusInteractor
