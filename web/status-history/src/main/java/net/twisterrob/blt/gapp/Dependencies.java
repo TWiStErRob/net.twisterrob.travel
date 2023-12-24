@@ -4,9 +4,16 @@ import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Prototype;
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.runtime.http.scope.RequestScope;
 import jakarta.inject.Singleton;
 
+import net.twisterrob.blt.data.SharedStaticData;
+import net.twisterrob.blt.data.StaticData;
+import net.twisterrob.blt.io.feeds.LocalhostUrlBuilder;
+import net.twisterrob.blt.io.feeds.TFLUrlBuilder;
+import net.twisterrob.blt.io.feeds.URLBuilder;
 import net.twisterrob.travel.domain.london.status.DomainHistoryUseCase;
 import net.twisterrob.travel.domain.london.status.DomainRefreshUseCase;
 import net.twisterrob.travel.domain.london.status.api.FeedParser;
@@ -29,7 +36,7 @@ public class Dependencies {
 	/**
 	 * External dependency from domain layer in common KMP code.
 	 */
-	@RequestScope
+	@Prototype
 	public HistoryUseCase historyUseCase(
 			StatusHistoryRepository statusHistoryRepository,
 			StatusInteractor statusInteractor,
@@ -41,11 +48,28 @@ public class Dependencies {
 	/**
 	 * External dependency from domain layer in common KMP code.
 	 */
-	@RequestScope
+	@Prototype
 	public RefreshUseCase refreshUseCase(
 			StatusHistoryRepository statusHistoryRepository,
 			StatusInteractor statusInteractor
 	) {
 		return new DomainRefreshUseCase(statusHistoryRepository, statusInteractor);
+	}
+
+	@Singleton
+	public StaticData staticData() {
+		return new SharedStaticData();
+	}
+
+	@Singleton
+	@Requires(notEnv = "development")
+	public URLBuilder urlBuilder() {
+		return new TFLUrlBuilder("papp.robert.s@gmail.com");
+	}
+
+	@Singleton
+	@Requires(env = "development")
+	public URLBuilder urlBuilderDebug() {
+		return new LocalhostUrlBuilder();
 	}
 }

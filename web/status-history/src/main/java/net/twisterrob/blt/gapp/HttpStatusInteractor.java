@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Collections;
+
+import static java.util.Collections.emptyMap;
 
 import javax.annotation.Nonnull;
 
@@ -16,6 +17,7 @@ import kotlinx.datetime.Clock;
 import kotlinx.datetime.Instant;
 
 import net.twisterrob.blt.io.feeds.Feed;
+import net.twisterrob.blt.io.feeds.URLBuilder;
 import net.twisterrob.java.io.IOTools;
 import net.twisterrob.java.utils.ObjectTools;
 import net.twisterrob.travel.domain.london.status.Stacktrace;
@@ -23,11 +25,16 @@ import net.twisterrob.travel.domain.london.status.StatusContent;
 import net.twisterrob.travel.domain.london.status.StatusItem;
 import net.twisterrob.travel.domain.london.status.api.StatusInteractor;
 
-import static net.twisterrob.blt.gapp.FeedConsts.URL_BUILDER;
-
 @Bean(typed = StatusInteractor.class)
 class HttpStatusInteractor implements StatusInteractor {
+
 	private static final Logger LOG = LoggerFactory.getLogger(HttpStatusInteractor.class);
+
+	private final URLBuilder urlBuilder;
+
+	HttpStatusInteractor(URLBuilder urlBuilder) {
+		this.urlBuilder = urlBuilder;
+	}
 
 	@Override public @Nonnull StatusItem getCurrent(@Nonnull net.twisterrob.travel.domain.london.status.Feed feed) {
 		Instant now = Clock.System.INSTANCE.now();
@@ -41,11 +48,11 @@ class HttpStatusInteractor implements StatusInteractor {
 		}
 	}
 
-	public static String downloadFeed(Feed feed) throws IOException {
+	public String downloadFeed(Feed feed) throws IOException {
 		InputStream input = null;
 		String result;
 		try {
-			URL url = URL_BUILDER.getFeedUrl(feed, Collections.<String, Object>emptyMap());
+			URL url = urlBuilder.getFeedUrl(feed, emptyMap());
 			LOG.debug("Requesting feed '{}': '{}'...", feed, url);
 			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 			connection.setConnectTimeout(5000);

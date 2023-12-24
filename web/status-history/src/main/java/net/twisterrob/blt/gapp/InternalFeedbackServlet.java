@@ -5,21 +5,21 @@ import java.util.Properties;
 
 import javax.mail.*;
 import javax.mail.internet.*;
+import io.micronaut.http.MediaType;
+import io.micronaut.http.annotation.Body;
+import io.micronaut.http.annotation.Consumes;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
-import jakarta.servlet.http.*;
 
 import org.slf4j.*;
 
-import net.twisterrob.java.io.IOTools;
-
 @Controller
-@SuppressWarnings("serial")
-public class InternalFeedbackServlet extends HttpServlet {
+public class InternalFeedbackServlet {
 	private static final Logger LOG = LoggerFactory.getLogger(InternalFeedbackServlet.class);
 
 	@Post("/InternalFeedback")
-	@Override public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	@Consumes(MediaType.ALL)
+	public void doPost(@Body String body) throws IOException {
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
 		Message msg = new MimeMessage(session);
@@ -27,7 +27,7 @@ public class InternalFeedbackServlet extends HttpServlet {
 			msg.setFrom(new InternetAddress("feedback@twisterrob-london.appspotmail.com", "BLT Internal Feedback"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("papp.robert.s@gmail.com", "Me"));
 			msg.setSubject("Better London Travel automated internal feedback");
-			msg.setText(IOTools.readAll(req.getInputStream(), IOTools.ENCODING));
+			msg.setText(body);
 			Transport.send(msg);
 		} catch (MessagingException e) {
 			throw new IOException("Cannot send mail", e);

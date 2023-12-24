@@ -2,11 +2,11 @@
 cron:
 
   - description: 'Retrieve latest Line Status'
-    url: /FeedCron?feed=TubeDepartureBoardsLineStatus
+    url: /refresh?feed=TubeDepartureBoardsLineStatus
     schedule: every 5 minutes
     timezone: Europe/London
 
   - description: 'Retrieve latest Station Incidents'
-    url: /FeedCron?feed=TubeDepartureBoardsStationStatusIncidents
+    url: /refresh?feed=TubeDepartureBoardsStationStatusIncidents
     schedule: every 5 minutes
     timezone: Europe/London

@@ -1,4 +1,4 @@
-package net.twisterrob.blt.gapp;
+package net.twisterrob.blt.gapp; // STOPSHIP
 
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.runtime.Micronaut;

@@ -1,13 +1,14 @@
 package net.twisterrob.blt.gapp;
 
-import java.io.*;
-import java.util.*;
+import javax.annotation.Nonnull;
 
-import javax.annotation.Nullable;
-
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
-import jakarta.servlet.http.*;
+import io.micronaut.http.annotation.Produces;
+import io.micronaut.http.annotation.QueryValue;
 
 import org.slf4j.*;
 
@@ -17,12 +18,9 @@ import net.twisterrob.travel.domain.london.status.api.RefreshResult;
 import net.twisterrob.travel.domain.london.status.api.RefreshUseCase;
 
 @Controller
-@SuppressWarnings("serial")
-public class FeedCronServlet extends HttpServlet {
+public class FeedCronServlet {
 
 	private static final Logger LOG = LoggerFactory.getLogger(FeedCronServlet.class);
-
-	private static final String QUERY_FEED = "feed";
 
 	private final RefreshUseCase useCase;
 
@@ -30,47 +28,27 @@ public class FeedCronServlet extends HttpServlet {
 		this.useCase = useCase;
 	}
 
-	@Get("/FeedCron")
-	@Override public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		String feedString = req.getParameter(QUERY_FEED);
-		Feed feed = parseFeed(feedString);
-		if (feed == null) {
-			String message = String.format(Locale.getDefault(), "No such feed: '%s'.", feedString);
-			LOG.warn(message);
-			resp.getWriter().println(message);
-			resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			return;
-		}
-
+	@Get("/refresh")
+	@Produces(MediaType.TEXT_PLAIN)
+	public HttpResponse<String> refreshFeed(@QueryValue("feed") @Nonnull Feed feed) {
 		RefreshResult result = useCase.refreshLatest(feed);
 		Marker marker = MarkerFactory.getMarker(feed.name());
 		if (result instanceof RefreshResult.NoChange noChange) {
 			if (noChange.getLatest() instanceof StatusItem.SuccessfulStatusItem) {
 				LOG.info(marker, "They have the same content.");
-				resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+				return HttpResponse.noContent();
 			} else {
 				LOG.info(marker, "They have the same error.");
-				resp.setStatus(HttpServletResponse.SC_NON_AUTHORITATIVE_INFORMATION);
+				return HttpResponse.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION);
 			}
-		} else if (result instanceof RefreshResult.Created) {
+		} else if (result instanceof RefreshResult.Created created) {
 			LOG.info(marker, "It's new, stored...");
-			resp.setStatus(HttpServletResponse.SC_CREATED);
+			return HttpResponse.created(created.getCurrent().getRetrievedDate().toString());
 		} else if (result instanceof RefreshResult.Refreshed) {
 			LOG.info(marker, "They're different, stored...");
-			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
+			return HttpResponse.accepted();
 		} else {
 			throw new IllegalStateException("Unknown result: " + result);
-		}
-	}
-
-	static @Nullable Feed parseFeed(@Nullable String feedString) {
-		if (feedString == null) {
-			return null;
-		}
-		try {
-			return Feed.valueOf(feedString);
-		} catch (IllegalArgumentException ex) {
-			return null;
 		}
 	}
 }
