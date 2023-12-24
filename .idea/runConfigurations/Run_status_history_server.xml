@@ -7,12 +7,12 @@
       <env name="DATASTORE_HOST" value="http://localhost:8081" />
       <env name="DATASTORE_PROJECT_ID" value="twisterrob-travel" />
     </envs>
-    <option name="MAIN_CLASS_NAME" value="net.twisterrob.blt.gapp.Application" />
+    <option name="MAIN_CLASS_NAME" value="net.twisterrob.travel.statushistory.Application" />
     <module name="net-twisterrob-blt.web.status-history.main" />
     <option name="VM_PARAMETERS" value="-Dmicronaut.environments=test" />
     <option name="alternativeJrePath" />
     <option name="alternativeJrePathEnabled" value="false" />
-    <option name="mainClass" value="net.twisterrob.blt.gapp.Application" />
+    <option name="mainClass" value="net.twisterrob.travel.statushistory.Application" />
     <option name="passParentEnvs" value="true" />
     <option name="vmParameters" value="-Dmicronaut.environments=test" />
     <method v="2">
