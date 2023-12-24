@@ -1,4 +1,4 @@
-package net.twisterrob.blt.gapp;
+package net.twisterrob.blt.gapp.controller;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -14,8 +14,8 @@ import io.micronaut.http.annotation.Post;
 import org.slf4j.*;
 
 @Controller
-public class InternalFeedbackServlet {
-	private static final Logger LOG = LoggerFactory.getLogger(InternalFeedbackServlet.class);
+public class InternalFeedbackController {
+	private static final Logger LOG = LoggerFactory.getLogger(InternalFeedbackController.class);
 
 	@Post("/InternalFeedback")
 	@Consumes(MediaType.ALL)

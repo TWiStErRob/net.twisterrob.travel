@@ -37,6 +37,7 @@ import com.google.cloud.datastore.Value;
 import kotlin.random.Random;
 import kotlinx.datetime.Instant;
 
+import net.twisterrob.blt.gapp.infrastructure.DatastoreStatusHistoryRepository;
 import net.twisterrob.travel.domain.london.status.Feed;
 import net.twisterrob.travel.domain.london.status.Stacktrace;
 import net.twisterrob.travel.domain.london.status.StatusContent;
