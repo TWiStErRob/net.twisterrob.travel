@@ -59,10 +59,10 @@ public class DatastoreStatusHistoryRepository implements StatusHistoryRepository
 		Iterator<Entity> entries = queryAllMostRecentFirst(feed, max);
 		List<StatusItem> results = new ArrayList<>();
 		while (entries.hasNext()) {
-			Entity entry = entries.next();
 			if (--max < 0) {
-				break; // we've had enough
+				break; // We've had enough, don't read more.
 			}
+			Entity entry = entries.next();
 			StatusItem result = entityConverter.toItem(entry);
 			results.add(result);
 		}

@@ -14,18 +14,24 @@ class DomainRefreshUseCase(
 		val current = statusInteractor.getCurrent(feed)
 		val latest = statusHistoryRepository.getAll(feed, 1).singleOrNull()
 
-		return if (latest != null) {
-			if (sameContent(latest, current)) {
+		return when {
+			latest == null -> {
+				statusHistoryRepository.add(current)
+				RefreshResult.Created(current)
+			}
+
+			sameContent(latest, current) -> {
 				RefreshResult.NoChange(current, latest)
-			} else if (sameError(latest, current)) {
+			}
+
+			sameError(latest, current) -> {
 				RefreshResult.NoChange(current, latest)
-			} else {
+			}
+
+			else -> {
 				statusHistoryRepository.add(current)
 				RefreshResult.Refreshed(current, latest)
 			}
-		} else {
-			statusHistoryRepository.add(current)
-			RefreshResult.Created(current)
 		}
 	}
 
