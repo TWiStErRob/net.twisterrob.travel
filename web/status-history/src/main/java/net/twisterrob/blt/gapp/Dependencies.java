@@ -7,6 +7,8 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.runtime.http.scope.RequestScope;
 import jakarta.inject.Singleton;
 
+import net.twisterrob.blt.data.SharedStaticData;
+import net.twisterrob.blt.data.StaticData;
 import net.twisterrob.travel.domain.london.status.DomainHistoryUseCase;
 import net.twisterrob.travel.domain.london.status.DomainRefreshUseCase;
 import net.twisterrob.travel.domain.london.status.api.FeedParser;
@@ -47,5 +49,10 @@ public class Dependencies {
 			StatusInteractor statusInteractor
 	) {
 		return new DomainRefreshUseCase(statusHistoryRepository, statusInteractor);
+	}
+
+	@Singleton
+	public StaticData staticData() {
+		return new SharedStaticData();
 	}
 }

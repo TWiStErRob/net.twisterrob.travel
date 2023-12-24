@@ -10,6 +10,7 @@ import io.micronaut.http.annotation.Produces;
 import io.micronaut.views.View;
 import jakarta.servlet.http.*;
 
+import net.twisterrob.blt.data.StaticData;
 import net.twisterrob.blt.gapp.viewmodel.*;
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
 import net.twisterrob.travel.domain.london.status.Feed;
@@ -25,9 +26,11 @@ public class LineStatusHistoryServlet {
 	private static final int DISPLAY_MAX_DEFAULT = 100;
 
 	private final HistoryUseCase useCase;
+	private final StaticData staticData;
 
-	public LineStatusHistoryServlet(HistoryUseCase useCase) {
+	public LineStatusHistoryServlet(HistoryUseCase useCase, StaticData staticData) {
 		this.useCase = useCase;
+		this.staticData = staticData;
 	}
 
 	@Get("/LineStatusHistory")
@@ -49,7 +52,7 @@ public class LineStatusHistoryServlet {
 		return HttpResponse.ok(
 				new LineStatusHistoryModel(
 						differences,
-						new LineColor.AllColors(FeedConsts.STATIC_DATA.getLineColors())
+						new LineColor.AllColors(staticData.getLineColors())
 				)
 		);
 	}
