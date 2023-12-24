@@ -1,0 +1,51 @@
+package net.twisterrob.blt.gapp;
+
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
+
+import io.micronaut.context.annotation.Factory;
+import io.micronaut.runtime.http.scope.RequestScope;
+import jakarta.inject.Singleton;
+
+import net.twisterrob.travel.domain.london.status.DomainHistoryUseCase;
+import net.twisterrob.travel.domain.london.status.DomainRefreshUseCase;
+import net.twisterrob.travel.domain.london.status.api.FeedParser;
+import net.twisterrob.travel.domain.london.status.api.HistoryUseCase;
+import net.twisterrob.travel.domain.london.status.api.RefreshUseCase;
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository;
+import net.twisterrob.travel.domain.london.status.api.StatusInteractor;
+
+@Factory
+public class Dependencies {
+
+	/**
+	 * External dependency from Google.
+	 */
+	@Singleton
+	public Datastore datastore() {
+		return DatastoreOptions.getDefaultInstance().getService();
+	}
+
+	/**
+	 * External dependency from domain layer in common KMP code.
+	 */
+	@RequestScope
+	public HistoryUseCase historyUseCase(
+			StatusHistoryRepository statusHistoryRepository,
+			StatusInteractor statusInteractor,
+			FeedParser feedParser
+	) {
+		return new DomainHistoryUseCase(statusHistoryRepository, statusInteractor, feedParser);
+	}
+
+	/**
+	 * External dependency from domain layer in common KMP code.
+	 */
+	@RequestScope
+	public RefreshUseCase refreshUseCase(
+			StatusHistoryRepository statusHistoryRepository,
+			StatusInteractor statusInteractor
+	) {
+		return new DomainRefreshUseCase(statusHistoryRepository, statusInteractor);
+	}
+}

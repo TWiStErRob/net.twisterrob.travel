@@ -21,6 +21,7 @@ import com.google.cloud.datastore.StringValue;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
 import com.google.cloud.datastore.Value;
 
+import io.micronaut.context.annotation.Bean;
 import kotlinx.datetime.Instant;
 
 import net.twisterrob.travel.domain.london.status.Feed;
@@ -33,6 +34,7 @@ import static net.twisterrob.blt.gapp.DatastoreStatusHistoryRepository.DS_PROP_C
 import static net.twisterrob.blt.gapp.DatastoreStatusHistoryRepository.DS_PROP_ERROR;
 import static net.twisterrob.blt.gapp.DatastoreStatusHistoryRepository.DS_PROP_RETRIEVED_DATE;
 
+@Bean(typed = StatusHistoryRepository.class)
 public class DatastoreStatusHistoryRepository implements StatusHistoryRepository {
 
 	static final String DS_PROP_RETRIEVED_DATE = "retrievedDate";

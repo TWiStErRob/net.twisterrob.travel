@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.micronaut.context.annotation.Bean;
 import kotlinx.datetime.Clock;
 import kotlinx.datetime.Instant;
 
@@ -24,6 +25,7 @@ import net.twisterrob.travel.domain.london.status.api.StatusInteractor;
 
 import static net.twisterrob.blt.gapp.FeedConsts.URL_BUILDER;
 
+@Bean(typed = StatusInteractor.class)
 class HttpStatusInteractor implements StatusInteractor {
 	private static final Logger LOG = LoggerFactory.getLogger(HttpStatusInteractor.class);
 

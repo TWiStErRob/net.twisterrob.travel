@@ -10,11 +10,8 @@ import io.micronaut.http.annotation.Produces;
 import io.micronaut.views.View;
 import jakarta.servlet.http.*;
 
-import com.google.cloud.datastore.DatastoreOptions;
-
 import net.twisterrob.blt.gapp.viewmodel.*;
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
-import net.twisterrob.travel.domain.london.status.DomainHistoryUseCase;
 import net.twisterrob.travel.domain.london.status.Feed;
 import net.twisterrob.travel.domain.london.status.api.HistoryUseCase;
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem;
@@ -27,11 +24,11 @@ public class LineStatusHistoryServlet {
 	private static final String QUERY_DISPLAY_MAX = "max";
 	private static final int DISPLAY_MAX_DEFAULT = 100;
 
-	private final HistoryUseCase useCase = new DomainHistoryUseCase(
-			new DatastoreStatusHistoryRepository(DatastoreOptions.getDefaultInstance().getService()),
-			new HttpStatusInteractor(),
-			new FeedHandlerFeedParser()
-	);
+	private final HistoryUseCase useCase;
+
+	public LineStatusHistoryServlet(HistoryUseCase useCase) {
+		this.useCase = useCase;
+	}
 
 	@Get("/LineStatusHistory")
 	@View("LineStatus")

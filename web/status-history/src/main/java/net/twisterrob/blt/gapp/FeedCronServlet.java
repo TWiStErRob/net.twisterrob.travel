@@ -11,9 +11,6 @@ import jakarta.servlet.http.*;
 
 import org.slf4j.*;
 
-import com.google.cloud.datastore.*;
-
-import net.twisterrob.travel.domain.london.status.DomainRefreshUseCase;
 import net.twisterrob.travel.domain.london.status.Feed;
 import net.twisterrob.travel.domain.london.status.StatusItem;
 import net.twisterrob.travel.domain.london.status.api.RefreshResult;
@@ -27,10 +24,11 @@ public class FeedCronServlet extends HttpServlet {
 
 	private static final String QUERY_FEED = "feed";
 
-	private final RefreshUseCase useCase = new DomainRefreshUseCase(
-			new DatastoreStatusHistoryRepository(DatastoreOptions.getDefaultInstance().getService()),
-			new HttpStatusInteractor()
-	);
+	private final RefreshUseCase useCase;
+
+	public FeedCronServlet(RefreshUseCase useCase) {
+		this.useCase = useCase;
+	}
 
 	@Get("/FeedCron")
 	@Override public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
