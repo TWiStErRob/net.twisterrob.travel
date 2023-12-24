@@ -1,4 +1,4 @@
-package net.twisterrob.travel.statushistory;
+package net.twisterrob.travel.statushistory.controller;
 
 import java.io.IOException;
 
@@ -16,9 +16,8 @@ import io.micronaut.http.client.HttpClient;
 import io.micronaut.runtime.server.EmbeddedServer;
 
 import net.twisterrob.java.io.IOTools;
-import net.twisterrob.travel.statushistory.controller.IndexController;
 
-import static net.twisterrob.travel.statushistory.HtmlValidator.assertValidHtml;
+import static net.twisterrob.travel.statushistory.test.HtmlValidator.assertValidHtml;
 
 // TODO use @MicronautTest in JUnit 5.
 public class IndexControllerTest {

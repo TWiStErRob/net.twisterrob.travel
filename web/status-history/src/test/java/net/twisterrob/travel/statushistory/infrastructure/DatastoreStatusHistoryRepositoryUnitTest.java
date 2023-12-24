@@ -1,4 +1,4 @@
-package net.twisterrob.travel.statushistory;
+package net.twisterrob.travel.statushistory.infrastructure;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -44,7 +44,6 @@ import net.twisterrob.travel.domain.london.status.StatusItem;
 import net.twisterrob.travel.domain.london.status.StatusItem.FailedStatusItem;
 import net.twisterrob.travel.domain.london.status.StatusItem.SuccessfulStatusItem;
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository;
-import net.twisterrob.travel.statushistory.infrastructure.DatastoreStatusHistoryRepository;
 
 public class DatastoreStatusHistoryRepositoryUnitTest {
 

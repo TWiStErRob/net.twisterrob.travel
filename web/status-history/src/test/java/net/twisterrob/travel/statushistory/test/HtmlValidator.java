@@ -1,4 +1,4 @@
-package net.twisterrob.travel.statushistory;
+package net.twisterrob.travel.statushistory.test;
 
 import java.io.StringReader;
 import java.io.StringWriter;
