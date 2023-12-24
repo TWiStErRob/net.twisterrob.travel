@@ -19,13 +19,13 @@ After this runs hit:
 ### Update AppEngine
 
 ```shell
-$ gradlew appengineRun
-> Task :AppEngine:checkCloudSdk FAILED
+$ gradlew :web:status-history:appengineRun
+> Task :web:status-history:checkCloudSdk FAILED
 
 FAILURE: Build failed with an exception.
 
 * What went wrong:
-  Execution failed for task ':AppEngine:checkCloudSdk'.
+  Execution failed for task ':web:status-history:checkCloudSdk'.
 > Specified Cloud SDK version (347.0.0) does not match installed version (319.0.0).
 ```
 

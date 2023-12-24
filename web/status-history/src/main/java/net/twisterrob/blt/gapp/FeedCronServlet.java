@@ -1,8 +1,9 @@
 package net.twisterrob.blt.gapp;
 
 import java.io.*;
-import java.net.*;
 import java.util.*;
+
+import javax.annotation.Nullable;
 
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -10,119 +11,66 @@ import jakarta.servlet.http.*;
 
 import org.slf4j.*;
 
-import com.google.cloud.Timestamp;
-import com.google.cloud.datastore.*;
-import com.google.cloud.datastore.StructuredQuery.OrderBy;
-
-import net.twisterrob.blt.io.feeds.Feed;
-import net.twisterrob.java.io.IOTools;
-import net.twisterrob.java.utils.ObjectTools;
-
-import static net.twisterrob.blt.gapp.FeedConsts.*;
+import net.twisterrob.travel.domain.london.status.Feed;
+import net.twisterrob.travel.domain.london.status.StatusItem;
+import net.twisterrob.travel.domain.london.status.api.RefreshResult;
+import net.twisterrob.travel.domain.london.status.api.RefreshUseCase;
 
 @Controller
 @SuppressWarnings("serial")
 public class FeedCronServlet extends HttpServlet {
+
 	private static final Logger LOG = LoggerFactory.getLogger(FeedCronServlet.class);
 
 	private static final String QUERY_FEED = "feed";
 
-	private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+	private final RefreshUseCase useCase;
+
+	public FeedCronServlet(RefreshUseCase useCase) {
+		this.useCase = useCase;
+	}
 
 	@Get("/FeedCron")
 	@Override public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		String feedString = String.valueOf(req.getParameter(QUERY_FEED));
-		Feed feed;
-		try {
-			feed = Feed.valueOf(feedString);
-		} catch (IllegalArgumentException ex) {
+		String feedString = req.getParameter(QUERY_FEED);
+		Feed feed = parseFeed(feedString);
+		if (feed == null) {
 			String message = String.format(Locale.getDefault(), "No such feed: '%s'.", feedString);
 			LOG.warn(message);
 			resp.getWriter().println(message);
 			resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
-		Marker marker = MarkerFactory.getMarker(feed.name());
 
-		FullEntity<IncompleteKey> newEntry = downloadNewEntry(datastore, feed);
-		Entity oldEntry = readLatest(datastore, feed);
-		if (oldEntry != null) {
-			if (sameProp(DS_PROP_CONTENT, oldEntry, newEntry)) {
+		RefreshResult result = useCase.refreshLatest(feed);
+		Marker marker = MarkerFactory.getMarker(feed.name());
+		if (result instanceof RefreshResult.NoChange noChange) {
+			if (noChange.getLatest() instanceof StatusItem.SuccessfulStatusItem) {
 				LOG.info(marker, "They have the same content.");
 				resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-			} else if (sameProp(DS_PROP_ERROR, oldEntry, newEntry)) {
+			} else {
 				LOG.info(marker, "They have the same error.");
 				resp.setStatus(HttpServletResponse.SC_NON_AUTHORITATIVE_INFORMATION);
-			} else {
-				LOG.info(marker, "They're different, storing...");
-				resp.setStatus(HttpServletResponse.SC_ACCEPTED);
-				datastore.put(newEntry);
 			}
-		} else {
-			LOG.info(marker, "It's new, storing...");
+		} else if (result instanceof RefreshResult.Created) {
+			LOG.info(marker, "It's new, stored...");
 			resp.setStatus(HttpServletResponse.SC_CREATED);
-			datastore.put(newEntry);
+		} else if (result instanceof RefreshResult.Refreshed) {
+			LOG.info(marker, "They're different, stored...");
+			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
+		} else {
+			throw new IllegalStateException("Unknown result: " + result);
 		}
 	}
 
-	private static Entity readLatest(Datastore datastore, Feed feed) {
-		Query<Entity> q = Query
-				.newEntityQueryBuilder()
-				.setKind(feed.name())
-				.addOrderBy(OrderBy.desc(DS_PROP_RETRIEVED_DATE))
-				.build()
-				;
-		// We're only concerned about the latest one, if any.
-		QueryResults<Entity> result = datastore.run(q);
-		return result.hasNext()? result.next() : null;
-	}
-
-	private static boolean sameProp(String propName, BaseEntity<?> oldEntry, BaseEntity<?> newEntry) {
-		return hasProperty(oldEntry, propName) && hasProperty(newEntry, propName)
-				&& ObjectTools.equals(oldEntry.getValue(propName), newEntry.getValue(propName));
-	}
-
-	static boolean hasProperty(BaseEntity<?> entry, String propName) {
-		return entry.getProperties().containsKey(propName);
-	}
-
-	public static FullEntity<IncompleteKey> downloadNewEntry(Datastore datastore, Feed feed) {
-		KeyFactory keyFactory = datastore.newKeyFactory().setKind(feed.name());
-		FullEntity.Builder<IncompleteKey> newEntry = Entity.newBuilder(keyFactory.newKey());
+	static @Nullable Feed parseFeed(@Nullable String feedString) {
+		if (feedString == null) {
+			return null;
+		}
 		try {
-			String feedResult = downloadFeed(feed);
-			newEntry.set(DS_PROP_CONTENT, unindexedString(feedResult));
-		} catch (Exception ex) {
-			LOG.error("Cannot load '{}'!", feed, ex);
-			newEntry.set(DS_PROP_ERROR, unindexedString(ObjectTools.getFullStackTrace(ex)));
+			return Feed.valueOf(feedString);
+		} catch (IllegalArgumentException ex) {
+			return null;
 		}
-		newEntry.set(DS_PROP_RETRIEVED_DATE, Timestamp.now());
-		return newEntry.build();
-	}
-
-	/**
-	 * Strings have a limitation of 1500 bytes when indexed. This removes that limitation.
-	 * @see https://cloud.google.com/datastore/docs/concepts/entities#text_string
-	 */
-	private static Value<?> unindexedString(String value) {
-		return value == null
-				? NullValue.of()
-				: StringValue.newBuilder(value).setExcludeFromIndexes(true).build();
-	}
-
-	public static String downloadFeed(Feed feed) throws IOException {
-		InputStream input = null;
-		String result;
-		try {
-			URL url = URL_BUILDER.getFeedUrl(feed, Collections.<String, Object>emptyMap());
-			LOG.debug("Requesting feed '{}': '{}'...", feed, url);
-			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-			connection.connect();
-			input = connection.getInputStream();
-			result = IOTools.readAll(input);
-		} finally {
-			IOTools.ignorantClose(input);
-		}
-		return result;
 	}
 }

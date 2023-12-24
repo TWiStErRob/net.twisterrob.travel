@@ -6,6 +6,10 @@ java-appengine = "17"
 agp = "8.2.0"
 twisterrob = "0.16"
 gretty = "4.1.1"
+kotlin = "1.9.22"
+kotlin-ksp = "1.9.21-1.0.15"
+kotlin-datetime = "0.5.0"
+kotlin-serialization = "1.6.2"
 
 jsr305 = "3.0.2"
 kxml2 = "2.3.0"
@@ -38,6 +42,7 @@ snakeyaml = "2.2"
 
 junit4 = "4.13.2"
 mockito = "5.8.0"
+mockative = "2.0.1"
 # Use this instead of 1.3
 # If `hamcrest-1.3` appears in the dependency list, check if it's excluded from all usages.
 hamcrest = "2.0.0.0"
@@ -50,6 +55,8 @@ plugin-agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 plugin-appengine = { module = "com.google.cloud.tools:appengine-gradle-plugin", version.ref = "google-appengine-plugin" }
 plugin-twisterrob = { module = "net.twisterrob.gradle:twister-convention-plugins", version.ref = "twisterrob" }
 plugin-gretty = { module = "org.gretty:gretty", version.ref = "gretty" }
+plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+plugin-ksp = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "kotlin-ksp" }
 
 plugin-micronaut = { module = "io.micronaut.application:io.micronaut.application.gradle.plugin", version.ref = "micronaut" }
 #noinspection unused versions.micronaut is used for micronaut { version = ... }, micronaut-platform is added here to help Renovate.
@@ -62,6 +69,9 @@ snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
 jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
 kxml2 = { module = "net.sf.kxml:kxml2", version.ref = "kxml2" }
 sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite-jdbc" }
+kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlin-datetime" }
+kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlin-serialization" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 
 androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "androidx-fragment" }
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "androidx-swiperefreshlayout" }
@@ -77,6 +87,8 @@ gms-places = { module = "com.google.android.libraries.places:places", version.re
 gms-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "google-maps" }
 
 test-junit4 = { module = "junit:junit", version.ref = "junit4" }
+test-mockative = { module = "io.mockative:mockative", version.ref = "mockative" }
+test-mockative-processor = { module = "io.mockative:mockative-processor", version.ref = "mockative" }
 test-mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 test-hamcrest = { module = "org.hamcrest:hamcrest-junit", version.ref = "hamcrest" }
 test-gwen = { module = "com.shazam:gwen", version.ref = "gwen" }
