@@ -63,7 +63,7 @@ appengine { com.google.cloud.tools.gradle.appengine.appyaml.AppEngineAppYamlExte
 }
 
 application {
-	mainClass = "net.twisterrob.blt.gapp.Application"
+	mainClass = "net.twisterrob.travel.statushistory.Application"
 }
 
 micronaut {
@@ -72,7 +72,6 @@ micronaut {
 	testRuntime("junit4")
 	processing {
 		incremental(true)
-		annotations("net.twisterrob.blt.gapp.*")
 	}
 }
 
