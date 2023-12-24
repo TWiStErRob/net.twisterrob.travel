@@ -1,4 +1,4 @@
-package net.twisterrob.blt.gapp.infrastructure;
+package net.twisterrob.blt.gapp;
 
 import java.io.IOException;
 import java.io.InputStream;

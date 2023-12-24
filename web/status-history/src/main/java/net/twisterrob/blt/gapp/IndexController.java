@@ -1,4 +1,4 @@
-package net.twisterrob.blt.gapp.controller;
+package net.twisterrob.blt.gapp;
 
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;

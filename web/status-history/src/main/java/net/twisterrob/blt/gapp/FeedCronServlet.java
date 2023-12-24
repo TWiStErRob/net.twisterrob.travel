@@ -1,4 +1,4 @@
-package net.twisterrob.blt.gapp.controller;
+package net.twisterrob.blt.gapp;
 
 import javax.annotation.Nonnull;
 
@@ -18,13 +18,13 @@ import net.twisterrob.travel.domain.london.status.api.RefreshResult;
 import net.twisterrob.travel.domain.london.status.api.RefreshUseCase;
 
 @Controller
-public class RefreshFeedController {
+public class FeedCronServlet {
 
-	private static final Logger LOG = LoggerFactory.getLogger(RefreshFeedController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(FeedCronServlet.class);
 
 	private final RefreshUseCase useCase;
 
-	public RefreshFeedController(RefreshUseCase useCase) {
+	public FeedCronServlet(RefreshUseCase useCase) {
 		this.useCase = useCase;
 	}
 

@@ -1,4 +1,4 @@
-package net.twisterrob.blt.gapp.controller;
+package net.twisterrob.blt.gapp;
 
 import java.util.*;
 
@@ -18,12 +18,12 @@ import net.twisterrob.travel.domain.london.status.api.HistoryUseCase;
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem;
 
 @Controller
-public class LineStatusHistoryController {
+public class LineStatusHistoryServlet {
 
 	private final HistoryUseCase useCase;
 	private final StaticData staticData;
 
-	public LineStatusHistoryController(HistoryUseCase useCase, StaticData staticData) {
+	public LineStatusHistoryServlet(HistoryUseCase useCase, StaticData staticData) {
 		this.useCase = useCase;
 		this.staticData = staticData;
 	}
@@ -42,7 +42,7 @@ public class LineStatusHistoryController {
 		List<Result> results = history
 				.stream()
 				.filter((it) -> displayErrors || !(it instanceof ParsedStatusItem.ParseFailed))
-				.map(LineStatusHistoryController::toResult).toList();
+				.map(LineStatusHistoryServlet::toResult).toList();
 		List<ResultChange> differences = getDifferences(results);
 
 		return HttpResponse.ok(

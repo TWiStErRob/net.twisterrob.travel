@@ -1,4 +1,4 @@
-package net.twisterrob.blt.gapp.di;
+package net.twisterrob.blt.gapp;
 
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
