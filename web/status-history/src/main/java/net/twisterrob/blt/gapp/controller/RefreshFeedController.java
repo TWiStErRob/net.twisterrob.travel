@@ -2,12 +2,13 @@ package net.twisterrob.blt.gapp.controller;
 
 import javax.annotation.Nonnull;
 
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.annotation.QueryValue;
-import jakarta.servlet.http.*;
 
 import org.slf4j.*;
 
@@ -29,23 +30,23 @@ public class RefreshFeedController {
 
 	@Get("/refresh")
 	@Produces(MediaType.TEXT_PLAIN)
-	public void refreshFeed(@QueryValue("feed") @Nonnull Feed feed, HttpServletResponse resp) {
+	public HttpResponse<String> refreshFeed(@QueryValue("feed") @Nonnull Feed feed) {
 		RefreshResult result = useCase.refreshLatest(feed);
 		Marker marker = MarkerFactory.getMarker(feed.name());
 		if (result instanceof RefreshResult.NoChange noChange) {
 			if (noChange.getLatest() instanceof StatusItem.SuccessfulStatusItem) {
 				LOG.info(marker, "They have the same content.");
-				resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+				return HttpResponse.noContent();
 			} else {
 				LOG.info(marker, "They have the same error.");
-				resp.setStatus(HttpServletResponse.SC_NON_AUTHORITATIVE_INFORMATION);
+				return HttpResponse.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION);
 			}
-		} else if (result instanceof RefreshResult.Created) {
+		} else if (result instanceof RefreshResult.Created created) {
 			LOG.info(marker, "It's new, stored...");
-			resp.setStatus(HttpServletResponse.SC_CREATED);
+			return HttpResponse.created(created.getCurrent().getRetrievedDate().toString());
 		} else if (result instanceof RefreshResult.Refreshed) {
 			LOG.info(marker, "They're different, stored...");
-			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
+			return HttpResponse.accepted();
 		} else {
 			throw new IllegalStateException("Unknown result: " + result);
 		}
