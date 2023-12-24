@@ -9,6 +9,8 @@ import jakarta.inject.Singleton;
 
 import net.twisterrob.blt.data.SharedStaticData;
 import net.twisterrob.blt.data.StaticData;
+import net.twisterrob.blt.io.feeds.TFLUrlBuilder;
+import net.twisterrob.blt.io.feeds.URLBuilder;
 import net.twisterrob.travel.domain.london.status.DomainHistoryUseCase;
 import net.twisterrob.travel.domain.london.status.DomainRefreshUseCase;
 import net.twisterrob.travel.domain.london.status.api.FeedParser;
@@ -54,5 +56,10 @@ public class Dependencies {
 	@Singleton
 	public StaticData staticData() {
 		return new SharedStaticData();
+	}
+
+	@Singleton
+	public URLBuilder urlBuilder() {
+		return new TFLUrlBuilder("papp.robert.s@gmail.com");
 	}
 }
