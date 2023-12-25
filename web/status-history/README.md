@@ -10,11 +10,11 @@
    gcloud components install beta
    ```
 3. Run the datastore emulator in the background:
-   ```
+   ```shell
    gcloud --project twisterrob-travel beta emulators datastore start --no-store-on-disk
    ```
 4. In a separate window run:
-   ```
+   ```shell
    gcloud beta emulators datastore env-init
    ```
 5. Set the output environment variables before running `gradlew :web:status-history:run`.
