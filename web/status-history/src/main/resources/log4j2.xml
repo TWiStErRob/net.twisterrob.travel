@@ -36,6 +36,7 @@
 		<!-- Tighten framework logs. -->
 		<Logger name="org.eclipse.jetty" level="INFO" />
 		<Logger name="io.micronaut" level="INFO" />
+		<Logger name="io.micronaut.http.client" level="DEBUG" />
 		<Logger name="io.netty" level="INFO" />
 		<Logger name="com.github.jknack.handlebars" level="INFO" />
 		<Logger name="reactor" level="INFO" />
