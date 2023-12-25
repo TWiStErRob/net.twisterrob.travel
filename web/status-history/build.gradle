@@ -33,7 +33,9 @@ dependencies {
 	implementation(libs.slf4j.api)
 	runtimeOnly(libs.log4j.slf4j2)
 
-	testImplementation(projects.common.testHelpers)
+	testImplementation(projects.common.testHelpers) {
+		exclude(group: "org.slf4j", module: "slf4j-simple")
+	}
 	testImplementation(libs.micronaut.httpClient)
 	testImplementation(libs.jtidy)
 }
