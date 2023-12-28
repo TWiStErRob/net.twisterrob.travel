@@ -1,68 +1,60 @@
-package net.twisterrob.travel.statushistory.infrastructure;
+package net.twisterrob.travel.statushistory.infrastructure
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import io.micronaut.context.annotation.Bean
+import kotlinx.datetime.Clock
+import net.twisterrob.blt.io.feeds.URLBuilder
+import net.twisterrob.java.io.IOTools
+import net.twisterrob.java.utils.ObjectTools
+import net.twisterrob.travel.domain.london.status.Feed
+import net.twisterrob.travel.domain.london.status.Stacktrace
+import net.twisterrob.travel.domain.london.status.StatusContent
+import net.twisterrob.travel.domain.london.status.StatusItem
+import net.twisterrob.travel.domain.london.status.api.StatusInteractor
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import java.io.IOException
+import java.io.InputStream
+import java.net.HttpURLConnection
+import net.twisterrob.blt.io.feeds.Feed as RawFeed
 
-import static java.util.Collections.emptyMap;
+@Bean(typed = [StatusInteractor::class])
+internal class HttpStatusInteractor(
+	private val urlBuilder: URLBuilder,
+) : StatusInteractor {
 
-import javax.annotation.Nonnull;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.micronaut.context.annotation.Bean;
-import kotlinx.datetime.Clock;
-import kotlinx.datetime.Instant;
-
-import net.twisterrob.blt.io.feeds.Feed;
-import net.twisterrob.blt.io.feeds.URLBuilder;
-import net.twisterrob.java.io.IOTools;
-import net.twisterrob.java.utils.ObjectTools;
-import net.twisterrob.travel.domain.london.status.Stacktrace;
-import net.twisterrob.travel.domain.london.status.StatusContent;
-import net.twisterrob.travel.domain.london.status.StatusItem;
-import net.twisterrob.travel.domain.london.status.api.StatusInteractor;
-
-@Bean(typed = StatusInteractor.class)
-class HttpStatusInteractor implements StatusInteractor {
-
-	private static final Logger LOG = LoggerFactory.getLogger(HttpStatusInteractor.class);
-
-	private final URLBuilder urlBuilder;
-
-	HttpStatusInteractor(URLBuilder urlBuilder) {
-		this.urlBuilder = urlBuilder;
-	}
-
-	@Override public @Nonnull StatusItem getCurrent(@Nonnull net.twisterrob.travel.domain.london.status.Feed feed) {
-		Instant now = Clock.System.INSTANCE.now();
+	override fun getCurrent(feed: Feed): StatusItem {
+		val now = Clock.System.now()
 		try {
-			StatusContent content = new StatusContent(downloadFeed(Feed.valueOf(feed.name())));
-			return new StatusItem.SuccessfulStatusItem(feed, content, now);
-		} catch (Exception ex) {
-			LOG.error("Cannot load '{}'!", feed, ex);
-			Stacktrace stacktrace = new Stacktrace(ObjectTools.getFullStackTrace(ex));
-			return new StatusItem.FailedStatusItem(feed, stacktrace, now);
+			val content = StatusContent(downloadFeed(RawFeed.valueOf(feed.name)))
+			return StatusItem.SuccessfulStatusItem(feed, content, now)
+		} catch (ex: Exception) {
+			LOG.error("Cannot load '{}'!", feed, ex)
+			val stacktrace = Stacktrace(ObjectTools.getFullStackTrace(ex)!!)
+			return StatusItem.FailedStatusItem(feed, stacktrace, now)
 		}
 	}
 
-	public String downloadFeed(Feed feed) throws IOException {
-		InputStream input = null;
-		String result;
+	@Throws(IOException::class)
+	fun downloadFeed(feed: RawFeed?): String {
+		var input: InputStream? = null
+		val result: String
 		try {
-			URL url = urlBuilder.getFeedUrl(feed, emptyMap());
-			LOG.debug("Requesting feed '{}': '{}'...", feed, url);
-			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-			connection.setConnectTimeout(5000);
-			connection.setReadTimeout(5000);
-			connection.connect();
-			input = connection.getInputStream();
-			result = IOTools.readAll(input);
+			val url = urlBuilder.getFeedUrl(feed, emptyMap<String, Any>())
+			LOG.debug("Requesting feed '{}': '{}'...", feed, url)
+			val connection = url.openConnection() as HttpURLConnection
+			connection.connectTimeout = 5000
+			connection.readTimeout = 5000
+			connection.connect()
+			input = connection.inputStream
+			result = IOTools.readAll(input)
 		} finally {
-			IOTools.ignorantClose(input);
+			IOTools.ignorantClose(input)
 		}
-		return result;
+		return result
+	}
+
+	companion object {
+
+		private val LOG: Logger = LoggerFactory.getLogger(HttpStatusInteractor::class.java)
 	}
 }

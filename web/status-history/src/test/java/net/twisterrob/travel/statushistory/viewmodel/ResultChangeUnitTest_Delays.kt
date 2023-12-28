@@ -1,81 +1,77 @@
-package net.twisterrob.travel.statushistory.viewmodel;
+package net.twisterrob.travel.statushistory.viewmodel
 
-import org.junit.*;
+import com.shazam.gwen.Gwen.given
+import com.shazam.gwen.Gwen.then
+import com.shazam.gwen.Gwen.`when`
+import net.twisterrob.blt.io.feeds.trackernet.model.DelayType
+import net.twisterrob.blt.model.Line
+import net.twisterrob.travel.statushistory.viewmodel.ResultChange.StatusChange
+import org.junit.Before
+import org.junit.Test
 
-import static com.shazam.gwen.Gwen.*;
+class ResultChangeUnitTest_Delays {
 
-import net.twisterrob.blt.io.feeds.trackernet.model.DelayType;
-import net.twisterrob.blt.model.Line;
+	private lateinit var status1: GwenStatus
+	private lateinit var status2: GwenStatus
+	private lateinit var change: GwenChange
 
-import static net.twisterrob.travel.statushistory.viewmodel.ResultChange.StatusChange;
-
-public class ResultChangeUnitTest_Delays {
-	private GwenStatus status1;
-	private GwenStatus status2;
-	private GwenChange change;
-
-	@Before public void setUp() {
-		status1 = new GwenStatus();
-		status2 = new GwenStatus();
-		change = new GwenChange();
+	@Before fun setUp() {
+		status1 = GwenStatus()
+		status2 = GwenStatus()
+		change = GwenChange()
 	}
 
-	@Test public void testDelayWorse() {
-		given(status1).contains(Line.Northern, DelayType.GoodService);
-		given(status2).contains(Line.Northern, DelayType.Suspended);
+	@Test fun testDelayWorse() {
+		given(status1).contains(Line.Northern, DelayType.GoodService)
+		given(status2).contains(Line.Northern, DelayType.Suspended)
 
-		when(change).between(status1, status2);
+		`when`(change).between(status1, status2)
 
 		then(change)
-				.has(Line.Northern, StatusChange.Worse)
-				.hasNoErrorChange()
-				.hasNoDescriptionChangeFor(Line.Northern)
-		;
+			.has(Line.Northern, StatusChange.Worse)
+			.hasNoErrorChange()
+			.hasNoDescriptionChangeFor(Line.Northern)
 	}
 
-	@Test public void testDelayNotMixedUp() {
+	@Test fun testDelayNotMixedUp() {
 		given(status1)
-				.contains(Line.Northern, DelayType.GoodService)
-				.contains(Line.Jubilee, DelayType.Suspended)
-		;
+			.contains(Line.Northern, DelayType.GoodService)
+			.contains(Line.Jubilee, DelayType.Suspended)
+
 		given(status2)
-				.contains(Line.Jubilee, DelayType.GoodService)
-				.contains(Line.Northern, DelayType.Suspended)
-		;
+			.contains(Line.Jubilee, DelayType.GoodService)
+			.contains(Line.Northern, DelayType.Suspended)
 
-		when(change).between(status1, status2);
+		`when`(change).between(status1, status2)
 
 		then(change)
-				.has(Line.Northern, StatusChange.Worse)
-				.has(Line.Jubilee, StatusChange.Better)
-				.hasNoErrorChange()
-				.hasNoDescriptionChangeFor(Line.Northern, Line.Jubilee)
-		;
+			.has(Line.Northern, StatusChange.Worse)
+			.has(Line.Jubilee, StatusChange.Better)
+			.hasNoErrorChange()
+			.hasNoDescriptionChangeFor(Line.Northern, Line.Jubilee)
 	}
 
-	@Test public void testDelayLineAppeared() {
-		given(status1).doesNotContain(Line.Jubilee);
-		given(status2).contains(Line.Jubilee, DelayType.GoodService);
+	@Test fun testDelayLineAppeared() {
+		given(status1).doesNotContain(Line.Jubilee)
+		given(status2).contains(Line.Jubilee, DelayType.GoodService)
 
-		when(change).between(status1, status2);
+		`when`(change).between(status1, status2)
 
 		then(change)
-				.has(Line.Jubilee, StatusChange.Unknown)
-				.hasNoErrorChange()
-				.hasNoDescriptionChangeFor(Line.Northern, Line.Jubilee)
-		;
+			.has(Line.Jubilee, StatusChange.Unknown)
+			.hasNoErrorChange()
+			.hasNoDescriptionChangeFor(Line.Northern, Line.Jubilee)
 	}
 
-	@Test public void testDelayLineDisappeared() {
-		given(status1).contains(Line.Jubilee, DelayType.GoodService);
-		given(status2).doesNotContain(Line.Jubilee);
+	@Test fun testDelayLineDisappeared() {
+		given(status1).contains(Line.Jubilee, DelayType.GoodService)
+		given(status2).doesNotContain(Line.Jubilee)
 
-		when(change).between(status1, status2);
+		`when`(change).between(status1, status2)
 
 		then(change)
-				.has(Line.Jubilee, StatusChange.Unknown)
-				.hasNoErrorChange()
-				.hasNoDescriptionChangeFor(Line.Northern, Line.Jubilee)
-		;
+			.has(Line.Jubilee, StatusChange.Unknown)
+			.hasNoErrorChange()
+			.hasNoDescriptionChangeFor(Line.Northern, Line.Jubilee)
 	}
 }

@@ -1,43 +1,43 @@
-package net.twisterrob.travel.statushistory.viewmodel;
+package net.twisterrob.travel.statushistory.viewmodel
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import com.shazam.gwen.collaborators.Actor
+import com.shazam.gwen.collaborators.Asserter
+import net.twisterrob.blt.model.Line
+import net.twisterrob.travel.statushistory.viewmodel.ResultChange.ErrorChange
+import net.twisterrob.travel.statushistory.viewmodel.ResultChange.StatusChange
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.emptyOrNullString
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.hasEntry
+import org.hamcrest.Matchers.hasKey
+import org.hamcrest.Matchers.not
+import org.junit.Assert.assertEquals
 
-import com.shazam.gwen.collaborators.*;
+internal class GwenChange : Actor, Asserter {
 
-import net.twisterrob.blt.model.Line;
-import net.twisterrob.travel.statushistory.viewmodel.ResultChange.ErrorChange;
-import net.twisterrob.travel.statushistory.viewmodel.ResultChange.StatusChange;
+	private lateinit var change: ResultChange
 
-class GwenChange implements Actor, Asserter {
-	private ResultChange change;
-
-	public void between(GwenStatus status1, GwenStatus status2) {
-		change = new ResultChange(status1.createResult(), status2.createResult());
+	fun between(status1: GwenStatus, status2: GwenStatus) {
+		change = ResultChange(status1.createResult(), status2.createResult())
 	}
 
-	public GwenChange has(Line line, StatusChange status) {
-		assertThat(change.getStatuses(), hasEntry(line, status));
-		return this;
+	fun has(line: Line, status: StatusChange): GwenChange = apply {
+		assertThat(change.statuses, hasEntry(line, status))
 	}
 
-	public GwenChange hasNoDescriptionChangeFor(Line... lines) {
-		for (Line line : lines) {
-			assertThat(change.getDescriptions(), not(hasKey(line)));
+	fun hasNoDescriptionChangeFor(vararg lines: Line): GwenChange = apply {
+		for (line in lines) {
+			assertThat(change.descriptions, not(hasKey(line)))
 		}
-		return this;
 	}
 
-	public GwenChange hasDescriptionChangeFor(Line... lines) {
-		for (Line line : lines) {
-			assertThat(change.getDescriptions(), hasEntry(equalTo(line), not(emptyOrNullString())));
+	fun hasDescriptionChangeFor(vararg lines: Line): GwenChange = apply {
+		for (line in lines) {
+			assertThat(change.descriptions, hasEntry(equalTo(line), not(emptyOrNullString())))
 		}
-		return this;
 	}
 
-	public GwenChange hasNoErrorChange() {
-		assertEquals(ErrorChange.NoErrors, change.getError());
-		return this;
+	fun hasNoErrorChange(): GwenChange = apply {
+		assertEquals(ErrorChange.NoErrors, change.error)
 	}
 }

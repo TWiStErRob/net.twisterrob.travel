@@ -1,54 +1,61 @@
-package net.twisterrob.travel.statushistory.controller;
+package net.twisterrob.travel.statushistory.controller
 
-import javax.annotation.Nonnull;
-
-import io.micronaut.http.HttpResponse;
-import io.micronaut.http.HttpStatus;
-import io.micronaut.http.MediaType;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.Produces;
-import io.micronaut.http.annotation.QueryValue;
-
-import org.slf4j.*;
-
-import net.twisterrob.travel.domain.london.status.Feed;
-import net.twisterrob.travel.domain.london.status.StatusItem;
-import net.twisterrob.travel.domain.london.status.api.RefreshResult;
-import net.twisterrob.travel.domain.london.status.api.RefreshUseCase;
+import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpStatus
+import io.micronaut.http.MediaType
+import io.micronaut.http.annotation.Controller
+import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.Produces
+import io.micronaut.http.annotation.QueryValue
+import net.twisterrob.travel.domain.london.status.Feed
+import net.twisterrob.travel.domain.london.status.StatusItem
+import net.twisterrob.travel.domain.london.status.api.RefreshResult
+import net.twisterrob.travel.domain.london.status.api.RefreshUseCase
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.slf4j.MarkerFactory
 
 @Controller
-public class RefreshFeedController {
-
-	private static final Logger LOG = LoggerFactory.getLogger(RefreshFeedController.class);
-
-	private final RefreshUseCase useCase;
-
-	public RefreshFeedController(RefreshUseCase useCase) {
-		this.useCase = useCase;
-	}
+class RefreshFeedController(
+	private val useCase: RefreshUseCase,
+) {
 
 	@Get("/refresh")
 	@Produces(MediaType.TEXT_PLAIN)
-	public HttpResponse<String> refreshFeed(@QueryValue("feed") @Nonnull Feed feed) {
-		RefreshResult result = useCase.refreshLatest(feed);
-		Marker marker = MarkerFactory.getMarker(feed.name());
-		if (result instanceof RefreshResult.NoChange noChange) {
-			if (noChange.getLatest() instanceof StatusItem.SuccessfulStatusItem) {
-				LOG.info(marker, "They have the same content.");
-				return HttpResponse.noContent();
-			} else {
-				LOG.info(marker, "They have the same error.");
-				return HttpResponse.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION);
+	fun refreshFeed(
+		@QueryValue("feed") feed: Feed,
+	): HttpResponse<String> {
+		val result = useCase.refreshLatest(feed)
+		val marker = MarkerFactory.getMarker(feed.name)
+		return when (result) {
+			is RefreshResult.NoChange -> {
+				when (result.latest) {
+					is StatusItem.SuccessfulStatusItem -> {
+						LOG.info(marker, "They have the same content.")
+						HttpResponse.noContent()
+					}
+
+					is StatusItem.FailedStatusItem -> {
+						LOG.info(marker, "They have the same error.")
+						HttpResponse.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION)
+					}
+				}
 			}
-		} else if (result instanceof RefreshResult.Created created) {
-			LOG.info(marker, "It's new, stored...");
-			return HttpResponse.created(created.getCurrent().getRetrievedDate().toString());
-		} else if (result instanceof RefreshResult.Refreshed) {
-			LOG.info(marker, "They're different, stored...");
-			return HttpResponse.accepted();
-		} else {
-			throw new IllegalStateException("Unknown result: " + result);
+
+			is RefreshResult.Created -> {
+				LOG.info(marker, "It's new, stored...")
+				HttpResponse.created(result.current.retrievedDate.toString())
+			}
+
+			is RefreshResult.Refreshed -> {
+				LOG.info(marker, "They're different, stored...")
+				HttpResponse.accepted()
+			}
 		}
+	}
+
+	companion object {
+
+		private val LOG: Logger = LoggerFactory.getLogger(RefreshFeedController::class.java)
 	}
 }

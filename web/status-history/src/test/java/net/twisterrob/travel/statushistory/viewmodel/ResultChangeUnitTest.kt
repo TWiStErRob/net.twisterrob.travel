@@ -1,36 +1,38 @@
-package net.twisterrob.travel.statushistory.viewmodel;
+package net.twisterrob.travel.statushistory.viewmodel
 
-import org.junit.Test;
+import net.twisterrob.travel.statushistory.viewmodel.ResultChange.ErrorChange
+import net.twisterrob.travel.statushistory.viewmodel.ResultChange.StatusChange
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.emptyOrNullString
+import org.hamcrest.Matchers.`is`
+import org.hamcrest.Matchers.not
+import org.hamcrest.Matchers.notNullValue
+import org.junit.Assert.assertEquals
+import org.junit.Test
+import org.mockito.Mockito.mock
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+class ResultChangeUnitTest {
 
-import net.twisterrob.travel.statushistory.viewmodel.ResultChange.ErrorChange;
-import net.twisterrob.travel.statushistory.viewmodel.ResultChange.StatusChange;
+	@Test fun testConsistentProperties() {
+		val result1: Result = mock()
+		val result2: Result = mock()
 
-public class ResultChangeUnitTest {
-	@Test public void testConsistentProperties() {
-		Result result1 = mock(Result.class);
-		Result result2 = mock(Result.class);
+		val change = ResultChange(result1, result2)
 
-		ResultChange change = new ResultChange(result1, result2);
-
-		assertEquals(result1, change.getPrevious());
-		assertEquals(result2, change.getCurrent());
+		assertEquals(result1, change.previous)
+		assertEquals(result2, change.current)
 	}
 
-	@Test public void testStatusChange() {
-		for (StatusChange change : StatusChange.values()) {
-			assertThat(change.name(), change.getTitle(), is(notNullValue()));
-			assertThat(change.name(), change.getCssClass(), is(not(emptyOrNullString())));
+	@Test fun testStatusChange() {
+		for (change in StatusChange.entries) {
+			assertThat(change.name, change.title, `is`(notNullValue()))
+			assertThat(change.name, change.cssClass, not(`is`(emptyOrNullString())))
 		}
 	}
 
-	@Test public void testErrorChange() {
-		for (ErrorChange change : ErrorChange.values()) {
-			assertThat(change.name(), change.getTitle(), is(notNullValue()));
+	@Test fun testErrorChange() {
+		for (change in ErrorChange.entries) {
+			assertThat(change.name, change.title, `is`(notNullValue()))
 		}
 	}
 }

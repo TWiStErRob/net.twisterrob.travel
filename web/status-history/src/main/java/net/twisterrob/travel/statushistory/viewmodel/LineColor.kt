@@ -1,59 +1,43 @@
-package net.twisterrob.travel.statushistory.viewmodel;
+package net.twisterrob.travel.statushistory.viewmodel
 
-import java.util.*;
+import net.twisterrob.blt.model.Line
+import net.twisterrob.blt.model.LineColors
+import java.util.Locale
 
-import net.twisterrob.blt.model.*;
+class LineColor(
+	private val colors: LineColors,
+	val line: Line,
+) {
 
-public class LineColor {
-	private final LineColors colors;
-	private final Line line;
-	public LineColor(LineColors colors, Line line) {
-		this.colors = colors;
-		this.line = line;
-	}
+	val foregroundColor: String
+		get() = line.getForeground(colors).toColorString()
 
-	public Line getLine() {
-		return line;
-	}
+	val backgroundColor: String
+		get() = line.getBackground(colors).toColorString()
 
-	public String getForegroundColor() {
-		return colorString(line.getForeground(colors));
-	}
-	public String getBackgroundColor() {
-		return colorString(line.getBackground(colors));
-	}
-	private static String colorString(int color) {
-		return String.format(Locale.ROOT, "#%06X", color & 0xFFFFFF);
-	}
+	class AllColors(
+		private val colors: LineColors,
+	) : Iterable<LineColor> {
 
-	public static class AllColors implements Iterable<LineColor> {
-		private final LineColors colors;
-		public AllColors(LineColors colors) {
-			this.colors = colors;
-		}
+		override fun iterator(): Iterator<LineColor> =
+			@OptIn(ExperimentalStdlibApi::class)
+			object : Iterator<LineColor> {
+				private val lines = Line.entries
+				private var current = 0
 
-		@Override public Iterator<LineColor> iterator() {
-			return new Iterator<LineColor>() {
-				private final Line[] lines = Line.values();
-				private int current = 0;
-				@Override public boolean hasNext() {
-					return current < lines.length;
+				override fun hasNext(): Boolean =
+					current < lines.size
+
+				override fun next(): LineColor {
+					if (!hasNext()) throw NoSuchElementException()
+					return LineColor(colors, lines[current++])
 				}
-				@Override public LineColor next() {
-					return new LineColor(colors, lines[current++]);
-				}
-				@Override public void remove() {
-					throw new UnsupportedOperationException("remove");
-				}
-			};
-		}
+			}
+	}
 
-		/**
-		 * A method that can be called in EL, because they forgot to include Iterable in the JSTL standard.
-		 * @see <a href="https://bz.apache.org/bugzilla/show_bug.cgi?id=44284">WontFix bug for Iterable support</a>
-		 */
-		public Iterator<LineColor> getIterator() {
-			return iterator();
-		}
+	companion object {
+
+		private fun Int.toColorString(): String =
+			"#%06X".format(Locale.ROOT, this and @Suppress("detekt.MagicNumber") 0xFFFFFF)
 	}
 }

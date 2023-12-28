@@ -1,56 +1,53 @@
-package net.twisterrob.travel.statushistory.viewmodel;
+package net.twisterrob.travel.statushistory.viewmodel
 
-import java.util.*;
+import com.shazam.gwen.collaborators.Arranger
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed
+import net.twisterrob.blt.io.feeds.trackernet.model.DelayType
+import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus
+import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus.BranchStatus
+import net.twisterrob.blt.model.Line
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
+import java.util.Date
+import java.util.EnumMap
 
-import static org.mockito.Mockito.*;
+internal class GwenStatus : Arranger {
 
-import com.shazam.gwen.collaborators.Arranger;
+	private val feed: LineStatusFeed = mock()
+	private val statuses: MutableMap<Line, LineStatus> = EnumMap(Line::class.java)
 
-import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
-import net.twisterrob.blt.io.feeds.trackernet.model.*;
-import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus.BranchStatus;
-import net.twisterrob.blt.model.Line;
-
-class GwenStatus implements Arranger {
-	private final LineStatusFeed feed = mock(LineStatusFeed.class);
-	private final Map<Line, LineStatus> statuses = new EnumMap<>(Line.class);
-
-	public GwenStatus contains(Line line, String description) {
-		LineStatus status = new LineStatus();
-		status.setLine(line);
-		status.setType(DelayType.Unknown);
-		status.setDescription(description);
-		statuses.put(line, status);
-		return this;
-	}
-
-	public GwenStatus contains(Line line, String description, BranchStatus... branches) {
-		LineStatus status = new LineStatus();
-		status.setLine(line);
-		status.setType(DelayType.Unknown);
-		status.setDescription(description);
-		for (BranchStatus branch : branches) {
-			status.addBranchStatus(branch);
+	fun contains(line: Line, description: String?): GwenStatus = apply {
+		statuses[line] = LineStatus().apply {
+			this.line = line
+			this.type = DelayType.Unknown
+			this.description = description
 		}
-		statuses.put(line, status);
-		return this;
 	}
 
-	public GwenStatus contains(Line line, DelayType disruption) {
-		LineStatus status = new LineStatus();
-		status.setLine(line);
-		status.setType(disruption);
-		statuses.put(line, status);
-		return this;
+	fun contains(line: Line, description: String?, vararg branches: BranchStatus?): GwenStatus = apply {
+		statuses[line] = LineStatus().apply {
+			this.line = line
+			this.type = DelayType.Unknown
+			this.description = description
+			for (branch in branches) {
+				this.addBranchStatus(branch)
+			}
+		}
 	}
 
-	public GwenStatus doesNotContain(Line line) {
-		statuses.remove(line);
-		return this;
+	fun contains(line: Line, disruption: DelayType?): GwenStatus = apply {
+		statuses[line] = LineStatus().apply {
+			this.line = line
+			this.type = disruption
+		}
 	}
 
-	public Result createResult() {
-		when(feed.getStatusMap()).thenReturn(statuses);
-		return new Result(new Date(), feed);
+	fun doesNotContain(line: Line): GwenStatus = apply {
+		statuses.remove(line)
+	}
+
+	fun createResult(): Result {
+		`when`(feed.statusMap).thenReturn(statuses)
+		return Result(Date(), feed)
 	}
 }
