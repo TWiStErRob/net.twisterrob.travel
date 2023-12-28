@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.twisterrob.blt.model.Line;
 
 public class LineStatus {
@@ -27,11 +30,11 @@ public class LineStatus {
 		m_type = type;
 	}
 
-	public String getDescription() {
+	public @Nullable String getDescription() {
 		return m_description;
 	}
 	public void setDescription(String description) {
-		if (description != null && description.trim().length() == 0) {
+		if (description != null && description.trim().isEmpty()) {
 			m_description = null;
 		} else {
 			m_description = description;
@@ -53,7 +56,7 @@ public class LineStatus {
 		return Collections.unmodifiableList(m_branches);
 	}
 
-	public String getBranchDescription() {
+	public @Nonnull String getBranchDescription() {
 		StringBuilder sb = new StringBuilder();
 		if (!getBranchStatuses().isEmpty()) {
 			sb.append("Affected branches:\n");

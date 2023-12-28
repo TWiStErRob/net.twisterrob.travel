@@ -1,68 +1,63 @@
-package net.twisterrob.travel.statushistory.controller;
+package net.twisterrob.travel.statushistory.controller
 
-import java.io.IOException;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import io.micronaut.context.ApplicationContext;
-import io.micronaut.http.HttpRequest;
-import io.micronaut.http.client.HttpClient;
-import io.micronaut.runtime.server.EmbeddedServer;
-
-import net.twisterrob.java.io.IOTools;
-
-import static net.twisterrob.travel.statushistory.test.HtmlValidator.assertValidHtml;
+import io.micronaut.context.ApplicationContext
+import io.micronaut.http.HttpRequest
+import io.micronaut.http.client.HttpClient
+import io.micronaut.runtime.server.EmbeddedServer
+import net.twisterrob.travel.statushistory.test.HtmlValidator.assertValidHtml
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.containsString
+import org.junit.AfterClass
+import org.junit.Assert.assertArrayEquals
+import org.junit.Assert.assertNotNull
+import org.junit.BeforeClass
+import org.junit.Test
 
 // TODO use @MicronautTest in JUnit 5.
-public class IndexControllerIntegrationTest {
+class IndexControllerIntegrationTest {
 
-	private static EmbeddedServer server;
-	private static HttpClient client;
+	@Test fun testIndex() {
+		val request: HttpRequest<Unit> = HttpRequest.GET("/")
 
-	@BeforeClass
-	public static void setupServer() {
-		server = ApplicationContext
-				.run(EmbeddedServer.class);
-		client = server
-				.getApplicationContext()
-				.createBean(HttpClient.class, server.getURL());
+		val body = client.toBlocking().retrieve(request)
+
+		assertNotNull(body)
+		assertThat(body, containsString("Better London Travel"))
+		assertValidHtml(body)
 	}
 
-	@AfterClass
-	public static void stopServer() {
-		if (server != null) {
-			server.stop();
+	@Test fun testFavicon() {
+		val request: HttpRequest<Unit> = HttpRequest.GET("/favicon.ico")
+
+		val body = client.toBlocking().retrieve(request, ByteArray::class.java)
+
+		assertNotNull(body)
+		val expected = IndexController::class.java.getResourceAsStream("/public/favicon.ico")?.use { it.readBytes() }
+		assertArrayEquals(expected, body)
+	}
+
+	companion object {
+
+		private lateinit var server: EmbeddedServer
+		private lateinit var client: HttpClient
+
+		@JvmStatic
+		@BeforeClass fun setupServer() {
+			server = ApplicationContext
+				.run(EmbeddedServer::class.java)
+			client = server
+				.applicationContext
+				.createBean(HttpClient::class.java, server.url)
 		}
-		if (client != null) {
-			client.stop();
+
+		@JvmStatic
+		@AfterClass fun stopServer() {
+			if (this::server.isInitialized) {
+				server.stop()
+			}
+			if (this::client.isInitialized) {
+				client.stop()
+			}
 		}
-	}
-
-	@Test
-	public void testIndex() {
-		HttpRequest<?> request = HttpRequest.GET("/");
-
-		String body = client.toBlocking().retrieve(request);
-
-		assertNotNull(body);
-		assertTrue(body.contains("Better London Travel"));
-		assertValidHtml(body);
-	}
-
-	@Test
-	public void testFavicon() throws IOException {
-		HttpRequest<?> request = HttpRequest.GET("/favicon.ico");
-
-		byte[] body = client.toBlocking().retrieve(request, byte[].class);
-
-		assertNotNull(body);
-		byte[] expected = IOTools.readBytes(IndexController.class.getResourceAsStream("/public/favicon.ico"));
-		assertArrayEquals(expected, body);
 	}
 }

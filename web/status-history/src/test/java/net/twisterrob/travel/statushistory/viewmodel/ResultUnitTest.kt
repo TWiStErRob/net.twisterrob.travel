@@ -1,66 +1,60 @@
-package net.twisterrob.travel.statushistory.viewmodel;
+package net.twisterrob.travel.statushistory.viewmodel
 
-import java.util.Date;
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed
+import org.junit.Assert.assertEquals
+import org.junit.Test
+import org.mockito.Mockito.mock
+import java.util.Date
 
-import org.junit.Test;
+class ResultUnitTest {
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+	@Test fun testSingleLineErrorHeader() {
+		val error = "Error message"
+		val errorHeader = "Error message"
 
-import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
+		val result = Result(Date(), error)
 
-public class ResultUnitTest {
-	@Test public void testSingleLineErrorHeader() {
-		String error = "Error message";
-		String errorHeader = "Error message";
-
-		Result result = new Result(new Date(), error);
-
-		assertEquals(errorHeader, result.getErrorHeader());
-		assertEquals(error, result.getFullError());
+		assertEquals(errorHeader, result.errorHeader)
+		assertEquals(error, result.fullError)
 	}
 
-	@Test public void testOneLineErrorHeader() {
-		String error = "Error message\n";
-		String errorHeader = "Error message";
+	@Test fun testOneLineErrorHeader() {
+		val error = "Error message\n"
+		val errorHeader = "Error message"
 
-		Result result = new Result(new Date(), error);
+		val result = Result(Date(), error)
 
-		assertEquals(errorHeader, result.getErrorHeader());
-		assertEquals(error, result.getFullError());
+		assertEquals(errorHeader, result.errorHeader)
+		assertEquals(error, result.fullError)
 	}
 
-	@Test public void testMultiLineErrorHeader() {
-		String error = "Error message\nSecond line\nThird line";
-		String errorHeader = "Error message";
+	@Test fun testMultiLineErrorHeader() {
+		val error = "Error message\nSecond line\nThird line"
+		val errorHeader = "Error message"
 
-		Result result = new Result(new Date(), error);
+		val result = Result(Date(), error)
 
-		assertEquals(errorHeader, result.getErrorHeader());
-		assertEquals(error, result.getFullError());
+		assertEquals(errorHeader, result.errorHeader)
+		assertEquals(error, result.fullError)
 	}
 
-	@Test(expected = NullPointerException.class) public void testErrorMustBeNotNull() {
-		Result result = new Result(new Date(), (String)null);
+	@Test fun testConsistentPropertiesError() {
+		val error = "error"
+		val date: Date = mock()
+
+		val result = Result(date, error)
+
+		assertEquals(error, result.fullError)
+		assertEquals(date, result.`when`)
 	}
 
-	@Test public void testConsistentPropertiesError() {
-		String error = "error";
-		Date date = mock(Date.class);
+	@Test fun testConsistentPropertiesFeed() {
+		val feed: LineStatusFeed = mock()
+		val date: Date = mock()
 
-		Result result = new Result(date, error);
+		val result = Result(date, feed)
 
-		assertEquals(error, result.getFullError());
-		assertEquals(date, result.getWhen());
-	}
-
-	@Test public void testConsistentPropertiesFeed() {
-		LineStatusFeed feed = mock(LineStatusFeed.class);
-		Date date = mock(Date.class);
-
-		Result result = new Result(date, feed);
-
-		assertEquals(feed, result.getContent());
-		assertEquals(date, result.getWhen());
+		assertEquals(feed, result.content)
+		assertEquals(date, result.`when`)
 	}
 }

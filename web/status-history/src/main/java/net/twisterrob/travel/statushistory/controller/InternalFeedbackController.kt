@@ -1,36 +1,43 @@
-package net.twisterrob.travel.statushistory.controller;
+package net.twisterrob.travel.statushistory.controller
 
-import java.io.IOException;
-import java.util.Properties;
-
-import javax.mail.*;
-import javax.mail.internet.*;
-import io.micronaut.http.MediaType;
-import io.micronaut.http.annotation.Body;
-import io.micronaut.http.annotation.Consumes;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Post;
-
-import org.slf4j.*;
+import io.micronaut.http.MediaType
+import io.micronaut.http.annotation.Body
+import io.micronaut.http.annotation.Consumes
+import io.micronaut.http.annotation.Controller
+import io.micronaut.http.annotation.Post
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import java.io.IOException
+import java.util.Properties
+import javax.mail.Message
+import javax.mail.MessagingException
+import javax.mail.Session
+import javax.mail.Transport
+import javax.mail.internet.InternetAddress
+import javax.mail.internet.MimeMessage
 
 @Controller
-public class InternalFeedbackController {
-	private static final Logger LOG = LoggerFactory.getLogger(InternalFeedbackController.class);
+class InternalFeedbackController {
 
 	@Post("/InternalFeedback")
 	@Consumes(MediaType.ALL)
-	public void doPost(@Body String body) throws IOException {
-		Properties props = new Properties();
-		Session session = Session.getDefaultInstance(props, null);
-		Message msg = new MimeMessage(session);
+	fun doPost(@Body body: String?) {
+		val props = Properties()
+		val session = Session.getDefaultInstance(props, null)
+		val msg: Message = MimeMessage(session)
 		try {
-			msg.setFrom(new InternetAddress("feedback@twisterrob-london.appspotmail.com", "BLT Internal Feedback"));
-			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("papp.robert.s@gmail.com", "Me"));
-			msg.setSubject("Better London Travel automated internal feedback");
-			msg.setText(body);
-			Transport.send(msg);
-		} catch (MessagingException e) {
-			throw new IOException("Cannot send mail", e);
+			msg.setFrom(InternetAddress("feedback@twisterrob-london.appspotmail.com", "BLT Internal Feedback"))
+			msg.addRecipient(Message.RecipientType.TO, InternetAddress("papp.robert.s@gmail.com", "Me"))
+			msg.subject = "Better London Travel automated internal feedback"
+			msg.setText(body)
+			Transport.send(msg)
+		} catch (e: MessagingException) {
+			throw IOException("Cannot send mail", e)
 		}
+	}
+
+	companion object {
+
+		private val LOG: Logger = LoggerFactory.getLogger(InternalFeedbackController::class.java)
 	}
 }

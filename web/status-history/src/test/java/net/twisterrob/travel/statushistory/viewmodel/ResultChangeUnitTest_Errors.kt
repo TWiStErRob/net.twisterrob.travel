@@ -1,106 +1,108 @@
-package net.twisterrob.travel.statushistory.viewmodel;
+package net.twisterrob.travel.statushistory.viewmodel
 
-import java.util.Date;
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed
+import net.twisterrob.travel.statushistory.viewmodel.ResultChange.ErrorChange
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.anEmptyMap
+import org.hamcrest.Matchers.`is`
+import org.junit.Assert.assertEquals
+import org.junit.Test
+import org.mockito.Mockito.mock
+import java.util.Date
 
-import org.junit.Test;
+class ResultChangeUnitTest_Errors {
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+	@Test fun testErrorChange() {
+		val result1 = Result(Date(), "error1")
+		val result2 = Result(Date(), "error2")
 
-import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed;
+		val change = ResultChange(result1, result2)
 
-import static net.twisterrob.travel.statushistory.viewmodel.ResultChange.ErrorChange;
-
-public class ResultChangeUnitTest_Errors {
-	@Test public void testErrorChange() {
-		Result result1 = new Result(new Date(), "error1");
-		Result result2 = new Result(new Date(), "error2");
-
-		ResultChange change = new ResultChange(result1, result2);
-
-		assertErrorAndNoChanges(change, ErrorChange.Change);
+		assertErrorAndNoChanges(change, ErrorChange.Change)
 	}
 
-	@Test public void testErrorNoChange() {
-		Result result1 = new Result(new Date(), "error");
-		Result result2 = new Result(new Date(), "error");
+	@Test fun testErrorNoChange() {
+		val result1 = Result(Date(), "error")
+		val result2 = Result(Date(), "error")
 
-		ResultChange change = new ResultChange(result1, result2);
+		val change = ResultChange(result1, result2)
 
-		assertErrorAndNoChanges(change, ErrorChange.Same);
+		assertErrorAndNoChanges(change, ErrorChange.Same)
 	}
 
-	@Test public void testErrorIntroduced() {
-		Result result1 = new Result(new Date(), (LineStatusFeed)null);
-		Result result2 = new Result(new Date(), "error");
+	@Test fun testErrorIntroduced() {
+		val result1 = Result(Date(), null as LineStatusFeed?)
+		val result2 = Result(Date(), "error")
 
-		ResultChange change = new ResultChange(result1, result2);
+		val change = ResultChange(result1, result2)
 
-		assertErrorAndNoChanges(change, ErrorChange.Failed);
+		assertErrorAndNoChanges(change, ErrorChange.Failed)
 	}
 
-	@Test public void testErrorDisappeared() {
-		Result result1 = new Result(new Date(), "error");
-		Result result2 = new Result(new Date(), (LineStatusFeed)null);
+	@Test fun testErrorDisappeared() {
+		val result1 = Result(Date(), "error")
+		val result2 = Result(Date(), null as LineStatusFeed?)
 
-		ResultChange change = new ResultChange(result1, result2);
+		val change = ResultChange(result1, result2)
 
-		assertErrorAndNoChanges(change, ErrorChange.Fixed);
+		assertErrorAndNoChanges(change, ErrorChange.Fixed)
 	}
 
-	@Test public void testErrorNone() {
-		Result result1 = new Result(new Date(), (LineStatusFeed)null);
-		Result result2 = new Result(new Date(), (LineStatusFeed)null);
+	@Test fun testErrorNone() {
+		val result1 = Result(Date(), null as LineStatusFeed?)
+		val result2 = Result(Date(), null as LineStatusFeed?)
 
-		ResultChange change = new ResultChange(result1, result2);
+		val change = ResultChange(result1, result2)
 
-		assertErrorAndNoChanges(change, ErrorChange.NoErrors);
+		assertErrorAndNoChanges(change, ErrorChange.NoErrors)
 	}
 
-	@Test public void testFirstOne() {
-		Result result = mock(Result.class);
+	@Test fun testFirstOne() {
+		val result: Result = mock()
 
-		ResultChange change = new ResultChange(null, result);
+		val change = ResultChange(null, result)
 
-		assertErrorAndNoChanges(change, ErrorChange.NewStatus);
+		assertErrorAndNoChanges(change, ErrorChange.NewStatus)
 	}
 
-	@Test public void testLastOne() {
-		Result result = mock(Result.class);
+	@Test fun testLastOne() {
+		val result: Result = mock()
 
-		ResultChange change = new ResultChange(result, null);
+		val change = ResultChange(result, null)
 
-		assertErrorAndNoChanges(change, ErrorChange.LastStatus);
+		assertErrorAndNoChanges(change, ErrorChange.LastStatus)
 	}
 
-	@Test public void testMissingResults() {
-		ResultChange change = new ResultChange(null, null);
+	@Test fun testMissingResults() {
+		val change = ResultChange(null, null)
 
-		assertErrorAndNoChanges(change, ErrorChange.NoErrors);
+		assertErrorAndNoChanges(change, ErrorChange.NoErrors)
 	}
 
-	@Test public void testErrorNewFeedMissing() {
-		Result result1 = new Result(new Date(), mock(LineStatusFeed.class));
-		Result result2 = new Result(new Date(), (LineStatusFeed)null);
+	@Test fun testErrorNewFeedMissing() {
+		val result1 = Result(Date(), mock<LineStatusFeed>())
+		val result2 = Result(Date(), null as LineStatusFeed?)
 
-		ResultChange change = new ResultChange(result1, result2);
+		val change = ResultChange(result1, result2)
 
-		assertErrorAndNoChanges(change, ErrorChange.NoErrors);
-	}
-	@Test public void testErrorOldFeedMissing() {
-		Result result1 = new Result(new Date(), mock(LineStatusFeed.class));
-		Result result2 = new Result(new Date(), (LineStatusFeed)null);
-
-		ResultChange change = new ResultChange(result2, result1);
-
-		assertErrorAndNoChanges(change, ErrorChange.NoErrors);
+		assertErrorAndNoChanges(change, ErrorChange.NoErrors)
 	}
 
-	private static void assertErrorAndNoChanges(ResultChange result, ErrorChange errors) {
-		assertEquals(errors, result.getError());
-		assertThat(result.getStatuses(), is(anEmptyMap()));
-		assertThat(result.getDescriptions(), is(anEmptyMap()));
+	@Test fun testErrorOldFeedMissing() {
+		val result1 = Result(Date(), mock<LineStatusFeed>())
+		val result2 = Result(Date(), null as LineStatusFeed?)
+
+		val change = ResultChange(result2, result1)
+
+		assertErrorAndNoChanges(change, ErrorChange.NoErrors)
+	}
+
+	companion object {
+
+		private fun assertErrorAndNoChanges(result: ResultChange, errors: ErrorChange) {
+			assertEquals(errors, result.error)
+			assertThat(result.statuses, `is`(anEmptyMap()))
+			assertThat(result.descriptions, `is`(anEmptyMap()))
+		}
 	}
 }

@@ -1,35 +1,33 @@
-package net.twisterrob.travel.statushistory.controller;
+package net.twisterrob.travel.statushistory.controller
 
-import io.micronaut.http.HttpResponse;
-import io.micronaut.http.MediaType;
-import io.micronaut.http.MutableHttpResponse;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-import io.micronaut.http.server.types.files.StreamedFile;
-import io.micronaut.views.View;
-
-import net.twisterrob.travel.statushistory.viewmodel.Versions;
+import io.micronaut.http.HttpResponse
+import io.micronaut.http.MediaType
+import io.micronaut.http.MutableHttpResponse
+import io.micronaut.http.annotation.Controller
+import io.micronaut.http.annotation.Get
+import io.micronaut.http.server.types.files.StreamedFile
+import io.micronaut.views.View
+import net.twisterrob.travel.statushistory.viewmodel.Versions
 
 @Controller
-public class IndexController {
+class IndexController {
 
 	@Get("/")
 	@View("index")
-	public MutableHttpResponse<?> index() {
-		return HttpResponse.ok(new IndexModel(new Versions()));
-	}
+	fun index(): MutableHttpResponse<*> =
+		HttpResponse.ok(
+			IndexModel(Versions())
+		)
 
 	@Get("/favicon.ico")
-	public StreamedFile favicon() {
-		return new StreamedFile(
-				IndexController.class.getClassLoader().getResourceAsStream("public/favicon.ico"),
-				MediaType.IMAGE_PNG_TYPE
-		);
-	}
+	fun favicon(): StreamedFile =
+		StreamedFile(
+			IndexController::class.java.classLoader.getResourceAsStream("public/favicon.ico"),
+			MediaType.IMAGE_PNG_TYPE
+		)
 
-	private record IndexModel(
-			Versions versions
-	) {
-
-	}
+	@Suppress("unused") // Used by index.hbs.
+	private class IndexModel(
+		val versions: Versions,
+	)
 }

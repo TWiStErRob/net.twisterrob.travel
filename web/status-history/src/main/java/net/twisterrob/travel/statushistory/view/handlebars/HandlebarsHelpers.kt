@@ -1,52 +1,52 @@
-package net.twisterrob.travel.statushistory.view.handlebars;
+package net.twisterrob.travel.statushistory.view.handlebars
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.EnumMap;
-import java.util.Locale;
+import com.github.jknack.handlebars.Options
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.EnumMap
+import java.util.Locale
 
-import com.github.jknack.handlebars.Options;
+@Suppress("unused") // Used by .hbs files.
+object HandlebarsHelpers {
 
-public class HandlebarsHelpers {
+	@JvmStatic
+	fun assign(varName: String, varValue: Any?, options: Options) =
+		options.data(varName, varValue)
 
-	public static void assign(String varName, Object varValue, Options options) {
-		options.data(varName, varValue);
-	}
+	@JvmStatic
+	fun add(base: Int, increment: Int): Int =
+		base + increment
 
-	public static int add(int base, int increment) {
-		return base + increment;
-	}
+	@JvmStatic
+	fun concat(base: String, extra: String): String =
+		base + extra
 
-	public static String concat(String base, String extra) {
-		return base + extra;
-	}
+	@JvmStatic
+	fun not(value: Boolean): Boolean =
+		!value
 
-	public static boolean not(boolean value) {
-		return !value;
-	}
+	@JvmStatic
+	fun or(left: Boolean, right: Boolean): Boolean =
+		left || right
 
-	public static boolean or(boolean left, boolean right) {
-		return left || right;
-	}
+	@JvmStatic
+	fun and(left: Boolean, right: Boolean): Boolean =
+		left && right
 
-	public static boolean and(boolean left, boolean right) {
-		return left && right;
-	}
+	@JvmStatic
+	fun empty(value: String?): Boolean =
+		value.isNullOrEmpty()
 
-	public static boolean empty(String value) {
-		return value == null || value.isEmpty();
-	}
-
-	public static String formatDate(Date value, String pattern) {
-		return new SimpleDateFormat(pattern, Locale.getDefault()).format(value);
-	}
+	@JvmStatic
+	fun formatDate(value: Date, pattern: String): String =
+		SimpleDateFormat(pattern, Locale.getDefault()).format(value)
 
 	/**
 	 * Workaround for `myEnumMap.[Foo]` and `lookup myEnumMap Foo` not working.
-	 * Usage: Replace {@code (lookup someEnumMap someEnumKey)} with {@code (lookupEnumMap someEnumMap someEnumKey)}.
-	 * @see https://github.com/jknack/handlebars.java/issues/1083
+	 * Usage: Replace `(lookup someEnumMap someEnumKey)` with `(lookupEnumMap someEnumMap someEnumKey)`.
+	 * See https://github.com/jknack/handlebars.java/issues/1083.
 	 */
-	public static <E extends Enum<E>> Object lookupEnumMap(EnumMap<E, ?> map, E key) {
-		return map.get(key);
-	}
+	@JvmStatic
+	fun <E : Enum<E>> lookupEnumMap(map: EnumMap<E, *>, key: E): Any? =
+		map[key]
 }
