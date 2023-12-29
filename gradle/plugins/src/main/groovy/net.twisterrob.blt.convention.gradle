@@ -16,6 +16,10 @@ pluginManager.withPlugin("org.gradle.java-base") {
 	}
 }
 
+pluginManager.withPlugin("org.gradle.java") {
+	testing.suites.named("test", org.gradle.api.plugins.jvm.JvmTestSuite).configure { useJUnitJupiter() }
+}
+
 pluginManager.withPlugin("com.android.base") {
 	android {
 		compileOptions {

@@ -1,125 +1,140 @@
 package net.twisterrob.blt.model;
 
 import java.util.*;
-import java.util.Map.Entry;
 
-import org.junit.Test;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptySet;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.anEmptyMap;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class LineTest {
+
 	@Test
 	public void testFixMapList() {
 		Map<Line, List<String>> map = new TreeMap<>();
-		assertEquals(0, map.size());
-		Map<Line, List<String>> newMap = Line.fixMap(map, Collections.<String>emptyList());
+		assertThat(map, anEmptyMap());
+		Map<Line, List<String>> newMap = Line.fixMap(map, emptyList());
 		assertSame(map, newMap);
 		assertEquals(Line.values().length, map.size());
-		for (Entry<Line, List<String>> element : map.entrySet()) {
+		for (Map.Entry<Line, List<String>> element : map.entrySet()) {
 			assertNotNull(element.getKey());
 			List<String> value = element.getValue(); // force casting
 			assertNotNull(value);
-			assertSame(Collections.emptyList(), element.getValue());
+			assertSame(emptyList(), element.getValue());
 		}
 	}
+
 	@Test
 	public void testFixMapListInstance() {
 		Map<Line, List<String>> map = new TreeMap<>();
 		LinkedList<String> empty = new LinkedList<>();
-		assertEquals(0, map.size());
+		assertThat(map, anEmptyMap());
 		Map<Line, List<String>> newMap = Line.fixMap(map, empty);
 		assertSame(map, newMap);
 		assertEquals(Line.values().length, map.size());
-		for (Entry<Line, List<String>> element : map.entrySet()) {
+		for (Map.Entry<Line, List<String>> element : map.entrySet()) {
 			assertNotNull(element.getKey());
 			List<String> value = element.getValue(); // force casting
 			assertNotNull(value);
 			assertSame(empty, element.getValue());
 		}
 	}
+
 	@Test
 	public void testFixMapLinkedList() {
 		HashMap<Line, LinkedList<String>> map = new HashMap<>();
 		LinkedList<String> empty = new LinkedList<>();
-		assertEquals(0, map.size());
+		assertThat(map, anEmptyMap());
 		HashMap<Line, LinkedList<String>> newMap = Line.fixMap(map, empty);
 		assertSame(map, newMap);
 		assertEquals(Line.values().length, map.size());
-		for (Entry<Line, LinkedList<String>> element : map.entrySet()) {
+		for (Map.Entry<Line, LinkedList<String>> element : map.entrySet()) {
 			assertNotNull(element.getKey());
 			LinkedList<String> value = element.getValue(); // force casting
 			assertNotNull(value);
 			assertSame(empty, value);
 		}
 	}
+
 	@Test
 	public void testFixMapSet() {
 		Map<Line, Set<String>> map = new TreeMap<>();
-		Set<String> empty = Collections.emptySet();
-		assertEquals(0, map.size());
+		Set<String> empty = emptySet();
+		assertThat(map, anEmptyMap());
 		Map<Line, Set<String>> newMap = Line.fixMap(map, empty);
 		assertSame(map, newMap);
 		assertEquals(Line.values().length, map.size());
-		for (Entry<Line, Set<String>> element : map.entrySet()) {
+		for (Map.Entry<Line, Set<String>> element : map.entrySet()) {
 			assertNotNull(element.getKey());
 			Set<String> value = element.getValue(); // force casting
 			assertNotNull(value);
 			assertSame(empty, element.getValue());
 		}
 	}
+
 	@Test
 	public void testFixMapSetInstance() {
 		Map<Line, Set<String>> map = new TreeMap<>();
-		Set<String> empty = Collections.emptySet();
-		assertEquals(0, map.size());
+		Set<String> empty = emptySet();
+		assertThat(map, anEmptyMap());
 		Map<Line, Set<String>> newMap = Line.fixMap(map, empty);
 		assertSame(map, newMap);
 		assertEquals(Line.values().length, map.size());
-		for (Entry<Line, Set<String>> element : map.entrySet()) {
+		for (Map.Entry<Line, Set<String>> element : map.entrySet()) {
 			assertNotNull(element.getKey());
 			Set<String> value = element.getValue(); // force casting
 			assertNotNull(value);
 			assertSame(empty, element.getValue());
 		}
 	}
+
 	@Test
 	public void testFixMapHashSet() {
 		HashMap<Line, HashSet<String>> map = new HashMap<>();
 		HashSet<String> empty = new HashSet<>();
-		assertEquals(0, map.size());
+		assertThat(map, anEmptyMap());
 		HashMap<Line, HashSet<String>> newMap = Line.fixMap(map, empty);
 		assertSame(map, newMap);
 		assertEquals(Line.values().length, map.size());
-		for (Entry<Line, HashSet<String>> element : map.entrySet()) {
+		for (Map.Entry<Line, HashSet<String>> element : map.entrySet()) {
 			assertNotNull(element.getKey());
 			HashSet<String> value = element.getValue(); // force casting
 			assertNotNull(value);
 			assertSame(empty, value);
 		}
 	}
+
 	@Test
 	public void testFixMapMap() {
 		Map<Line, Map<String, Double>> map = new TreeMap<>();
-		assertEquals(0, map.size());
-		Map<Line, Map<String, Double>> newMap = Line.fixMap(map, Collections.<String, Double>emptyMap());
+		assertThat(map, anEmptyMap());
+		Map<Line, Map<String, Double>> newMap = Line.fixMap(map, emptyMap());
 		assertSame(map, newMap);
 		assertEquals(Line.values().length, map.size());
-		for (Entry<Line, Map<String, Double>> element : map.entrySet()) {
+		for (Map.Entry<Line, Map<String, Double>> element : map.entrySet()) {
 			assertNotNull(element.getKey());
 			Map<String, Double> value = element.getValue(); // force casting
 			assertNotNull(value);
-			assertSame(Collections.emptyMap(), element.getValue());
+			assertSame(emptyMap(), element.getValue());
 		}
 	}
+
 	@Test
 	public void testFixMapHashMap() {
 		HashMap<Line, HashMap<String, Double>> map = new HashMap<>();
 		HashMap<String, Double> empty = new HashMap<>();
-		assertEquals(0, map.size());
+		assertThat(map, anEmptyMap());
 		HashMap<Line, HashMap<String, Double>> newMap = Line.fixMap(map, empty);
 		assertSame(map, newMap);
 		assertEquals(Line.values().length, map.size());
-		for (Entry<Line, HashMap<String, Double>> element : map.entrySet()) {
+		for (Map.Entry<Line, HashMap<String, Double>> element : map.entrySet()) {
 			assertNotNull(element.getKey());
 			HashMap<String, Double> value = element.getValue(); // force casting
 			assertNotNull(value);

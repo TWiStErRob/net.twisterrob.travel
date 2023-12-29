@@ -11,7 +11,7 @@ import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.hasEntry
 import org.hamcrest.Matchers.hasKey
 import org.hamcrest.Matchers.not
-import org.junit.Assert.assertEquals
+import org.junit.jupiter.api.Assertions.assertEquals
 
 internal class GwenChange : Actor, Asserter {
 

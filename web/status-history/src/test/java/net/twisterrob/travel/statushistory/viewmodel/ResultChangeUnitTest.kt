@@ -7,8 +7,8 @@ import org.hamcrest.Matchers.emptyOrNullString
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.not
 import org.hamcrest.Matchers.notNullValue
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 
 class ResultChangeUnitTest {

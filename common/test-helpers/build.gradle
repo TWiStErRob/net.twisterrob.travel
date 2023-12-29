@@ -4,15 +4,14 @@ plugins {
 }
 
 dependencies {
-	api(libs.test.junit4) {
-		// we don't need this because we use org.hamcrest v2
-		exclude module: "hamcrest-core"
-	}
-	api(libs.test.hamcrest){
-		// this needs to be excluded because otherwise the hamcrest-core exclusion above doesn't work
-		exclude module: "junit"
+	api(libs.test.junit5)
+	runtimeOnly(libs.test.junit5.launcher)
+	api(libs.test.hamcrest) {
+		// Avoid leaking JUnit 4 into tests.
+		exclude group: "junit", module: "junit"
 	}
 	api(libs.test.mockito)
+	api(libs.test.mockito.junit5)
 	api(libs.test.gwen)
 	implementation(projects.common.logConsole)
 }

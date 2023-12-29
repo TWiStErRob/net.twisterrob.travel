@@ -3,7 +3,7 @@ package net.twisterrob.blt.io.feeds.trackernet;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
