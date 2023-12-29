@@ -28,10 +28,7 @@ class RefreshFeedControllerIntegrationTest {
 	lateinit var client: BlockingHttpClient
 
 	@MockBean(RefreshUseCase::class)
-	fun refreshUseCase(): RefreshUseCase = mock()
-
-	@Inject
-	lateinit var refreshUseCase: RefreshUseCase
+	val refreshUseCase: RefreshUseCase = mock()
 
 	@Test fun testNoFeedIsInvalidRequest() {
 		val request: HttpRequest<Unit> = HttpRequest.GET("/refresh")

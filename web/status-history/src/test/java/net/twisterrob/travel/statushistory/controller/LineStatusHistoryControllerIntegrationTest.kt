@@ -27,16 +27,10 @@ class LineStatusHistoryControllerIntegrationTest {
 	lateinit var client: BlockingHttpClient
 
 	@MockBean(HistoryUseCase::class)
-	fun historyUseCase(): HistoryUseCase = mock()
-
-	@Inject
-	lateinit var historyUseCase: HistoryUseCase
+	val historyUseCase: HistoryUseCase = mock()
 
 	@MockBean(StaticData::class)
-	fun staticData(): StaticData = mock()
-
-	@Inject
-	lateinit var staticData: StaticData
+	val staticData: StaticData = mock()
 
 	private val lineColors: LineColors = mock()
 
