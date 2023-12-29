@@ -7,11 +7,11 @@ import io.micronaut.runtime.server.EmbeddedServer
 import net.twisterrob.travel.statushistory.test.HtmlValidator.assertValidHtml
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.containsString
-import org.junit.AfterClass
-import org.junit.Assert.assertArrayEquals
-import org.junit.Assert.assertNotNull
-import org.junit.BeforeClass
-import org.junit.Test
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.Assertions.assertArrayEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 
 // TODO use @MicronautTest in JUnit 5.
 class IndexControllerIntegrationTest {
@@ -42,7 +42,7 @@ class IndexControllerIntegrationTest {
 		private lateinit var client: HttpClient
 
 		@JvmStatic
-		@BeforeClass fun setupServer() {
+		@BeforeAll fun setupServer() {
 			server = ApplicationContext
 				.run(EmbeddedServer::class.java)
 			client = server
@@ -51,7 +51,7 @@ class IndexControllerIntegrationTest {
 		}
 
 		@JvmStatic
-		@AfterClass fun stopServer() {
+		@AfterAll fun stopServer() {
 			if (this::server.isInitialized) {
 				server.stop()
 			}

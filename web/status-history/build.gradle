@@ -70,7 +70,7 @@ application {
 micronaut {
 	version = libs.versions.micronaut.asProvider().get()
 	runtime("jetty")
-	testRuntime("junit4")
+	testRuntime("junit5")
 	processing {
 		incremental(true)
 	}

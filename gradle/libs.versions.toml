@@ -41,6 +41,7 @@ micronaut-handlebars = "5.0.1"
 snakeyaml = "2.2"
 
 junit4 = "4.13.2"
+junit5 = "5.10.1"
 mockito = "5.8.0"
 mockative = "2.0.1"
 # Use this instead of 1.3
@@ -87,9 +88,13 @@ gms-places = { module = "com.google.android.libraries.places:places", version.re
 gms-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "google-maps" }
 
 test-junit4 = { module = "junit:junit", version.ref = "junit4" }
+test-junit5 = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit5" }
+test-junit5-vintage = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junit5" }
+test-junit5-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 test-mockative = { module = "io.mockative:mockative", version.ref = "mockative" }
 test-mockative-processor = { module = "io.mockative:mockative-processor", version.ref = "mockative" }
 test-mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+test-mockito-junit5 = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
 test-hamcrest = { module = "org.hamcrest:hamcrest-junit", version.ref = "hamcrest" }
 test-gwen = { module = "com.shazam:gwen", version.ref = "gwen" }
 jtidy = { module = "com.github.jtidy:jtidy", version.ref = "jtidy" }

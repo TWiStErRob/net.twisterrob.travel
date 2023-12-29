@@ -6,8 +6,8 @@ import com.shazam.gwen.Gwen.`when`
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus.BranchStatus
 import net.twisterrob.blt.model.Line
 import net.twisterrob.travel.statushistory.viewmodel.ResultChange.StatusChange
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 private val MISSING_DESCRIPTION: String? = null
 
@@ -17,7 +17,7 @@ class ResultChangeUnitTest_Descriptions {
 	private lateinit var status2: GwenStatus
 	private lateinit var change: GwenChange
 
-	@Before fun setUp() {
+	@BeforeEach fun setUp() {
 		status1 = GwenStatus()
 		status2 = GwenStatus()
 		change = GwenChange()
