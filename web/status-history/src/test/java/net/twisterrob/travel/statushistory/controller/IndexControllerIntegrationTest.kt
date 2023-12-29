@@ -1,8 +1,7 @@
 package net.twisterrob.travel.statushistory.controller
 
 import io.micronaut.http.HttpRequest
-import io.micronaut.http.client.HttpClient
-import io.micronaut.http.client.annotation.Client
+import io.micronaut.http.client.BlockingHttpClient
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
 import net.twisterrob.travel.statushistory.test.HtmlValidator.assertValidHtml
@@ -12,17 +11,19 @@ import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 
+/**
+ * @see IndexController
+ */
 @MicronautTest
 class IndexControllerIntegrationTest {
 
 	@Inject
-	@Client("/")
-	lateinit var client: HttpClient
+	lateinit var client: BlockingHttpClient
 
 	@Test fun testIndex() {
 		val request: HttpRequest<Unit> = HttpRequest.GET("/")
 
-		val body = client.toBlocking().retrieve(request)
+		val body = client.retrieve(request)
 
 		assertNotNull(body)
 		assertThat(body, containsString("Better London Travel"))
@@ -32,7 +33,7 @@ class IndexControllerIntegrationTest {
 	@Test fun testFavicon() {
 		val request: HttpRequest<Unit> = HttpRequest.GET("/favicon.ico")
 
-		val body = client.toBlocking().retrieve(request, ByteArray::class.java)
+		val body = client.retrieve(request, ByteArray::class.java)
 
 		assertNotNull(body)
 		val expected = IndexController::class.java.getResourceAsStream("/public/favicon.ico")?.use { it.readBytes() }
