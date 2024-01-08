@@ -1,5 +1,6 @@
 package net.twisterrob.travel.statushistory.viewmodel
 
+import net.twisterrob.blt.io.feeds.trackernet.model.DelayType
 import net.twisterrob.blt.model.Line
 
 open class ResultChange(
@@ -11,16 +12,33 @@ open class ResultChange(
 ) {
 
 	sealed class StatusChange {
-		data object Better : StatusChange()
-		data object Worse : StatusChange()
-		data object Same : StatusChange()
+		data class Better(
+			val oldDelay: DelayType,
+			val newDelay: DelayType,
+			val desc: DescriptionChange,
+		) : StatusChange()
+
+		data class Worse(
+			val oldDelay: DelayType,
+			val newDelay: DelayType,
+			val desc: DescriptionChange,
+		) : StatusChange()
+
+		data class Same(
+			val delay: DelayType,
+			val desc: DescriptionChange,
+		) : StatusChange()
+
 		data object Unknown : StatusChange()
-		data object SameDescriptionNone : StatusChange()
-		data class SameDescriptionSame(val desc: String) : StatusChange()
-		data class SameDescriptionChange(val oldDesc: String, val newDesc: String) : StatusChange()
-		data class SameDescriptionAdd(val newDesc: String) : StatusChange()
-		data class SameDescriptionDel(val oldDesc: String) : StatusChange()
-		data class BranchesChange(val oldBranches: String, val newBraches: String) : StatusChange()
+	}
+
+	sealed class DescriptionChange {
+		data object None : DescriptionChange()
+		data class Same(val desc: String) : DescriptionChange()
+		data class Changed(val oldDesc: String, val newDesc: String) : DescriptionChange()
+		data class Added(val newDesc: String) : DescriptionChange()
+		data class Removed(val oldDesc: String) : DescriptionChange()
+		data class Branches(val oldBranches: String, val newBranches: String) : DescriptionChange()
 	}
 
 	sealed interface ErrorChange {

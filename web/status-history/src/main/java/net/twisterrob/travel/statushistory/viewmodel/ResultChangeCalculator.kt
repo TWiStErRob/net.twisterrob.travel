@@ -2,6 +2,7 @@ package net.twisterrob.travel.statushistory.viewmodel
 
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus
 import net.twisterrob.blt.model.Line
+import net.twisterrob.travel.statushistory.viewmodel.ResultChange.DescriptionChange
 import net.twisterrob.travel.statushistory.viewmodel.ResultChange.ErrorChange
 import net.twisterrob.travel.statushistory.viewmodel.ResultChange.StatusChange
 import java.util.EnumMap
@@ -42,9 +43,6 @@ class ResultChangeCalculator {
 			val oldStatus = oldMap[line]
 			val newStatus = newMap[line]
 			statusChanges[line] = statusChange(oldStatus, newStatus)
-			if (statusChanges[line] == StatusChange.Same) {
-				statusChanges[line] = diffDesc(oldStatus!!, newStatus!!)
-			}
 		}
 	}
 
@@ -53,41 +51,42 @@ class ResultChangeCalculator {
 			return StatusChange.Unknown
 		}
 		val statusDiff = oldStatus.type.compareTo(newStatus.type)
+		val desc = diffDesc(oldStatus, newStatus)
 		return when {
-			statusDiff < 0 -> StatusChange.Better
-			statusDiff > 0 -> StatusChange.Worse
-			else /* statusDiff == 0 */ -> StatusChange.Same
+			statusDiff < 0 -> StatusChange.Better(oldStatus.type, newStatus.type, desc)
+			statusDiff > 0 -> StatusChange.Worse(oldStatus.type, newStatus.type, desc)
+			else /* statusDiff == 0 */ -> StatusChange.Same(newStatus.type, desc)
 		}
 	}
 
-	private fun diffDesc(oldStatus: LineStatus, newStatus: LineStatus): StatusChange {
+	private fun diffDesc(oldStatus: LineStatus, newStatus: LineStatus): DescriptionChange {
 		val oldDesc = oldStatus.description
 		val newDesc = newStatus.description
 		return when {
 			oldDesc != null && newDesc != null -> {
 				if (oldDesc != newDesc) {
-					StatusChange.SameDescriptionChange(oldDesc, newDesc)
+					DescriptionChange.Changed(oldDesc, newDesc)
 				} else {
 					val oldBranches = oldStatus.branchDescription
 					val newBranches = newStatus.branchDescription
 					if (oldBranches == newBranches) {
-						StatusChange.SameDescriptionSame(oldBranches)
+						DescriptionChange.Same(oldBranches)
 					} else {
-						StatusChange.BranchesChange(oldBranches, newBranches)
+						DescriptionChange.Branches(oldBranches, newBranches)
 					}
 				}
 			}
 
 			oldDesc == null && newDesc != null -> {
-				StatusChange.SameDescriptionAdd(newDesc)
+				DescriptionChange.Added(newDesc)
 			}
 
 			oldDesc != null && newDesc == null -> {
-				StatusChange.SameDescriptionDel(oldDesc)
+				DescriptionChange.Removed(oldDesc)
 			}
 
 			else /* oldDesc == null && newDesc == null */ -> {
-				StatusChange.SameDescriptionNone
+				DescriptionChange.None
 			}
 		}
 	}
