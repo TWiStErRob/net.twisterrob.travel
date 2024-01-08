@@ -11,10 +11,12 @@ import net.twisterrob.blt.data.StaticData
 import net.twisterrob.blt.io.feeds.LocalhostUrlBuilder
 import net.twisterrob.blt.io.feeds.TFLUrlBuilder
 import net.twisterrob.blt.io.feeds.URLBuilder
-import net.twisterrob.travel.domain.london.status.DomainHistoryUseCase
+import net.twisterrob.travel.domain.london.status.DomainHistoryRepository
 import net.twisterrob.travel.domain.london.status.DomainRefreshUseCase
+import net.twisterrob.travel.domain.london.status.Feed
 import net.twisterrob.travel.domain.london.status.api.FeedParser
 import net.twisterrob.travel.domain.london.status.api.HistoryUseCase
+import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
 import net.twisterrob.travel.domain.london.status.api.RefreshUseCase
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusDataSource
@@ -37,8 +39,13 @@ class Dependencies {
 		statusHistoryDataSource: StatusHistoryDataSource,
 		statusDataSource: StatusDataSource,
 		feedParser: FeedParser,
-	): HistoryUseCase =
-		DomainHistoryUseCase(statusHistoryDataSource, statusDataSource, feedParser)
+	): HistoryUseCase {
+		val repo = DomainHistoryRepository(statusHistoryDataSource, statusDataSource, feedParser)
+		return object : HistoryUseCase {
+			override fun history(feed: Feed, max: Int, includeCurrent: Boolean): List<ParsedStatusItem> =
+				repo.history(feed, max, includeCurrent)
+		}
+	}
 
 	/**
 	 * External dependency from domain layer in common KMP code.

@@ -1,21 +1,17 @@
 package net.twisterrob.travel.domain.london.status
 
 import net.twisterrob.travel.domain.london.status.api.FeedParser
-import net.twisterrob.travel.domain.london.status.api.HistoryUseCase
+import net.twisterrob.travel.domain.london.status.api.HistoryRepository
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
-import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusDataSource
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
 
-class DomainHistoryUseCase(
+class DomainHistoryRepository(
 	private val statusHistoryDataSource: StatusHistoryDataSource,
 	private val statusDataSource: StatusDataSource,
 	private val feedParser: FeedParser,
-) : HistoryUseCase {
+) : HistoryRepository {
 
-	/**
-	 * @param max maximum number of items to return, current is not included in the count.
-	 * @param includeCurrent whether to include the current status in the result.
-	 */
 	override fun history(feed: Feed, max: Int, includeCurrent: Boolean): List<ParsedStatusItem> {
 		val result = mutableListOf<StatusItem>()
 		if (includeCurrent) {

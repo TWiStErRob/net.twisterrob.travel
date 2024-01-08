@@ -7,21 +7,21 @@ import io.mockative.verify
 import io.mockative.verifyNoUnmetExpectations
 import io.mockative.verifyNoUnverifiedExpectations
 import net.twisterrob.travel.domain.london.status.api.FeedParser
-import net.twisterrob.travel.domain.london.status.api.HistoryUseCase
+import net.twisterrob.travel.domain.london.status.api.HistoryRepository
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
-import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusDataSource
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
 import java.io.IOException
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class DomainHistoryUseCaseUnitTest {
+class DomainHistoryRepositoryUnitTest {
 
 	private val mockHistory: StatusHistoryDataSource = mock()
 	private val mockStatus: StatusDataSource = mock()
 	private val mockParser: FeedParser = mock()
-	private val subject: HistoryUseCase = DomainHistoryUseCase(mockHistory, mockStatus, mockParser)
+	private val subject: HistoryRepository = DomainHistoryRepository(mockHistory, mockStatus, mockParser)
 	private val feed = Feed.TubeDepartureBoardsLineStatus
 
 	@AfterTest
