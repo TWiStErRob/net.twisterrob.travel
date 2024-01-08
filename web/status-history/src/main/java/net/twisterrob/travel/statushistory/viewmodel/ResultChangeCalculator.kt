@@ -1,6 +1,5 @@
 package net.twisterrob.travel.statushistory.viewmodel
 
-import net.twisterrob.blt.diff.HtmlDiff
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus
 import net.twisterrob.blt.model.Line
 import net.twisterrob.travel.statushistory.viewmodel.ResultChange.ErrorChange
@@ -67,61 +66,56 @@ class ResultChangeCalculator {
 		when {
 			oldDesc != null && newDesc != null -> {
 				if (oldDesc != newDesc) {
-					statusChanges[line] = StatusChange.SameDescriptionChange
-					descChanges[line] = diffDesc(oldDesc, newDesc)
+					statusChanges[line] = StatusChange.SameDescriptionChange(oldDesc, newDesc)
 				} else {
 					val oldBranches = oldStatus.branchDescription
 					val newBranches = newStatus.branchDescription
 					if (oldBranches == newBranches) {
-						statusChanges[line] = StatusChange.SameDescriptionSame
+						statusChanges[line] = StatusChange.SameDescriptionSame(oldBranches)
 					} else {
-						statusChanges[line] = StatusChange.BranchesChange
-						descChanges[line] = diffDesc(oldBranches, newBranches)
+						statusChanges[line] = StatusChange.BranchesChange(oldBranches, newBranches)
 					}
 				}
 			}
 
 			oldDesc == null && newDesc != null -> {
-				statusChanges[line] = StatusChange.SameDescriptionAdd
-				descChanges[line] = diffDesc("", newDesc)
+				statusChanges[line] = StatusChange.SameDescriptionAdd(newDesc)
 			}
 
 			oldDesc != null && newDesc == null -> {
-				statusChanges[line] = StatusChange.SameDescriptionDel
-				descChanges[line] = diffDesc(oldDesc, "")
+				statusChanges[line] = StatusChange.SameDescriptionDel(oldDesc)
 			}
 
 			else /* oldDesc == null && newDesc == null */ -> {
-				statusChanges[line] = StatusChange.SameDescriptionSame
+				statusChanges[line] = StatusChange.SameDescriptionNone
 			}
 		}
 	}
 
 	private fun diffError(oldResult: Result?, newResult: Result?): ErrorChange {
-		val oldErrorHeader = (oldResult as? Result.ErrorResult)?.errorHeader
-		val newErrorHeader = (newResult as? Result.ErrorResult)?.errorHeader
+		val oldError = (oldResult as? Result.ErrorResult)?.fullError
+		val oldErrorHeader = oldError?.substringBefore('\n')
+		val newError = (newResult as? Result.ErrorResult)?.fullError
+		val newErrorHeader = newError?.substringBefore('\n')
 		return when {
 			oldErrorHeader != null && newErrorHeader != null -> {
-				if (oldErrorHeader == newErrorHeader) ErrorChange.Same else ErrorChange.Change
+				if (oldErrorHeader == newErrorHeader)
+					ErrorChange.Same(oldError)
+				else
+					ErrorChange.Change(oldError, newError)
 			}
 
 			oldErrorHeader == null && newErrorHeader != null -> {
-				ErrorChange.Failed
+				ErrorChange.Failed(newError)
 			}
 
 			oldErrorHeader != null && newErrorHeader == null -> {
-				ErrorChange.Fixed
+				ErrorChange.Fixed(oldError)
 			}
 
 			else /* oldErrorHeader == null && newErrorHeader == null */ -> {
 				ErrorChange.NoErrors
 			}
 		}
-	}
-
-	companion object {
-
-		private fun diffDesc(oldDesc: String, newDesc: String): String =
-			HtmlDiff().diff(oldDesc, newDesc)
 	}
 }

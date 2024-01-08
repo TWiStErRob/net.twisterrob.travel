@@ -10,32 +10,26 @@ open class ResultChange(
 	val descriptions: Map<Line, String>,
 ) {
 
-	enum class StatusChange(
-		val title: String,
-		val cssClass: String,
-	) {
-
-		Better("better", "status-better"),
-		Worse("worse", "status-worse"),
-		Same("", "status-same"),
-		Unknown("unknown", "status-unknown"),
-		SameDescriptionSame("", "status-same-desc-same"),
-		SameDescriptionChange("descr.", "status-same-desc-change"),
-		SameDescriptionAdd("+ descr.", "status-same-desc-add"),
-		SameDescriptionDel("- descr.", "status-same-desc-del"),
-		BranchesChange("branches", "status-same-branch-change"),
+	sealed class StatusChange {
+		data object Better : StatusChange()
+		data object Worse : StatusChange()
+		data object Same : StatusChange()
+		data object Unknown : StatusChange()
+		data object SameDescriptionNone : StatusChange()
+		data class SameDescriptionSame(val desc: String) : StatusChange()
+		data class SameDescriptionChange(val oldDesc: String, val newDesc: String) : StatusChange()
+		data class SameDescriptionAdd(val newDesc: String) : StatusChange()
+		data class SameDescriptionDel(val oldDesc: String) : StatusChange()
+		data class BranchesChange(val oldBranches: String, val newBraches: String) : StatusChange()
 	}
 
-	enum class ErrorChange(
-		val title: String,
-	) {
-
-		Same("same error"),
-		Change("error changed"),
-		Failed("new error"),
-		Fixed("error fixed"),
-		NoErrors(""),
-		NewStatus(""),
-		LastStatus(""),
+	sealed interface ErrorChange {
+		data class Same(val error: String) : ErrorChange
+		data class Change(val oldError: String, val newError: String) : ErrorChange
+		data class Failed(val newError: String) : ErrorChange
+		data class Fixed(val oldError: String) : ErrorChange
+		data object NoErrors : ErrorChange
+		data object NewStatus : ErrorChange
+		data object LastStatus : ErrorChange
 	}
 }
