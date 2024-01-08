@@ -7,20 +7,20 @@ import net.twisterrob.travel.statushistory.viewmodel.ResultChange.ErrorChange
 import net.twisterrob.travel.statushistory.viewmodel.ResultChange.StatusChange
 import java.util.EnumMap
 
-class ResultChangeCalculator(
-	private val oldResult: Result?,
-	private val newResult: Result?,
-) {
+class ResultChangeCalculator {
 
 	private var errorChange: ErrorChange? = null
 	private val statusChanges: MutableMap<Line, StatusChange> = EnumMap(Line::class.java)
 	private val descChanges: MutableMap<Line, String> = EnumMap(Line::class.java)
 
-	fun diff(): ResultChange {
+	fun diff(oldResult: Result?, newResult: Result?): ResultChange {
+		errorChange = null
+		statusChanges.clear()
+		descChanges.clear()
 		when {
 			oldResult != null && newResult != null -> {
-				diffError()
-				diffContent()
+				diffError(oldResult, newResult)
+				diffContent(oldResult, newResult)
 			}
 
 			oldResult == null && newResult != null -> {
@@ -44,7 +44,7 @@ class ResultChangeCalculator(
 		)
 	}
 
-	private fun diffContent() {
+	private fun diffContent(oldResult: Result?, newResult: Result?) {
 		if (oldResult !is Result.ContentResult || newResult !is Result.ContentResult) {
 			return
 		}
@@ -114,7 +114,7 @@ class ResultChangeCalculator(
 		}
 	}
 
-	private fun diffError() {
+	private fun diffError(oldResult: Result?, newResult: Result?) {
 		val oldErrorHeader = (oldResult as? Result.ErrorResult)?.errorHeader
 		val newErrorHeader = (newResult as? Result.ErrorResult)?.errorHeader
 		errorChange = when {

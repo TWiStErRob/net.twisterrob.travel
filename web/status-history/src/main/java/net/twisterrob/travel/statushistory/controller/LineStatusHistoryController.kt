@@ -72,10 +72,10 @@ private fun getDifferences(results: List<Result>): List<ResultChange> {
 	val resultChanges: MutableList<ResultChange> = ArrayList(results.size)
 	var newResult: Result? = null
 	for (oldResult in results) { // We're going forward, but the list is backwards.
-		resultChanges.add(ResultChangeCalculator(oldResult, newResult).diff())
+		resultChanges.add(ResultChangeCalculator().diff(oldResult, newResult))
 		newResult = oldResult
 	}
-	resultChanges.add(ResultChangeCalculator(null, newResult).diff())
+	resultChanges.add(ResultChangeCalculator().diff(null, newResult))
 	resultChanges.removeAt(0)
 	return resultChanges
 }

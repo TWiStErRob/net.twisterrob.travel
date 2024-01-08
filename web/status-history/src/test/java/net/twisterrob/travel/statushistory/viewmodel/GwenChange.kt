@@ -18,7 +18,7 @@ internal class GwenChange : Actor, Asserter {
 	private lateinit var change: ResultChange
 
 	fun between(status1: GwenStatus, status2: GwenStatus) {
-		change = ResultChangeCalculator(status1.createResult(), status2.createResult()).diff()
+		change = ResultChangeCalculator().diff(status1.createResult(), status2.createResult())
 	}
 
 	fun has(line: Line, status: StatusChange): GwenChange = apply {
