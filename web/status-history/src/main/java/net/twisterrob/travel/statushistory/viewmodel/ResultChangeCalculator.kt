@@ -91,24 +91,22 @@ class ResultChangeCalculator {
 		}
 	}
 
-	private fun diffError(oldResult: Result?, newResult: Result?): ErrorChange {
+	private fun diffError(oldResult: Result, newResult: Result): ErrorChange {
 		val oldError = (oldResult as? Result.ErrorResult)?.fullError
-		val oldErrorHeader = oldError?.substringBefore('\n')
 		val newError = (newResult as? Result.ErrorResult)?.fullError
-		val newErrorHeader = newError?.substringBefore('\n')
 		return when {
-			oldErrorHeader != null && newErrorHeader != null -> {
-				if (oldErrorHeader == newErrorHeader)
+			oldError != null && newError != null -> {
+				if (oldError.header == newError.header)
 					ErrorChange.Same(oldError)
 				else
 					ErrorChange.Change(oldError, newError)
 			}
 
-			oldErrorHeader == null && newErrorHeader != null -> {
+			oldError == null && newError != null -> {
 				ErrorChange.Failed(newError)
 			}
 
-			oldErrorHeader != null && newErrorHeader == null -> {
+			oldError != null && newError == null -> {
 				ErrorChange.Fixed(oldError)
 			}
 
@@ -118,3 +116,6 @@ class ResultChangeCalculator {
 		}
 	}
 }
+
+private val String.header: String
+	get() = this.substringBefore('\n')
