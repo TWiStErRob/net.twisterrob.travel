@@ -9,38 +9,31 @@ import java.util.EnumMap
 
 class ResultChangeCalculator {
 
-	private val statusChanges: MutableMap<Line, StatusChange> = EnumMap(Line::class.java)
-
 	fun diff(oldResult: Result?, newResult: Result?): ResultChange {
-		statusChanges.clear()
 		val errorChange = when {
 			oldResult != null && newResult != null -> diffError(oldResult, newResult)
 			oldResult == null && newResult != null -> ErrorChange.NewStatus
 			oldResult != null && newResult == null -> ErrorChange.LastStatus
-			else /* oldResult == null && newResult == null */ -> ErrorChange.NoErrors
-		}
-		if (errorChange == ErrorChange.NoErrors) {
-			diffContent(oldResult as Result.ContentResult, newResult as Result.ContentResult)
+			else /* oldResult == null && newResult == null */ -> ErrorChange.NoErrors(emptyMap())
 		}
 		return ResultChange(
 			oldResult,
 			newResult,
 			errorChange,
-			statusChanges,
 		)
 	}
 
-	private fun diffContent(oldResult: Result.ContentResult, newResult: Result.ContentResult) {
+	private fun diffContent(oldResult: Result.ContentResult, newResult: Result.ContentResult): Map<Line, StatusChange> {
+		val statusChanges: MutableMap<Line, StatusChange> = EnumMap(Line::class.java)
 		val oldMap = oldResult.content.statusMap
 		val newMap = newResult.content.statusMap
-		val allLines: MutableSet<Line> = HashSet()
-		allLines.addAll(oldMap.keys)
-		allLines.addAll(newMap.keys)
+		val allLines: Set<Line> = oldMap.keys + newMap.keys
 		for (line in allLines) {
 			val oldStatus = oldMap[line]
 			val newStatus = newMap[line]
 			statusChanges[line] = statusChange(oldStatus, newStatus)
 		}
+		return statusChanges
 	}
 
 	private fun statusChange(oldStatus: LineStatus?, newStatus: LineStatus?): StatusChange {
@@ -108,7 +101,7 @@ class ResultChangeCalculator {
 			}
 
 			else /* oldErrorHeader == null && newErrorHeader == null */ -> {
-				ErrorChange.NoErrors
+				ErrorChange.NoErrors(diffContent(oldResult as Result.ContentResult, newResult as Result.ContentResult))
 			}
 		}
 	}

@@ -7,7 +7,6 @@ open class ResultChange(
 	val previous: Result?,
 	val current: Result?,
 	val error: ErrorChange,
-	val statuses: Map<Line, StatusChange>,
 ) {
 
 	sealed class StatusChange {
@@ -45,7 +44,7 @@ open class ResultChange(
 		data class Change(val oldError: String, val newError: String) : ErrorChange
 		data class Failed(val newError: String) : ErrorChange
 		data class Fixed(val oldError: String) : ErrorChange
-		data object NoErrors : ErrorChange
+		data class NoErrors(val changes: Map<Line, StatusChange>) : ErrorChange
 		data object NewStatus : ErrorChange
 		data object LastStatus : ErrorChange
 	}
