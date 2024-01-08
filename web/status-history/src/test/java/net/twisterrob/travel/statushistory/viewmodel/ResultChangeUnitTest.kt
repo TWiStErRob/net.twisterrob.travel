@@ -18,7 +18,7 @@ class ResultChangeUnitTest {
 		val result1: Result = Result.ContentResult(Date(), mock())
 		val result2: Result = Result.ErrorResult(Date(), "error")
 
-		val change = ResultChange(result1, result2)
+		val change = ResultChange(result1, result2, null, emptyMap(), emptyMap())
 
 		assertSame(result1, change.previous)
 		assertSame(result2, change.current)

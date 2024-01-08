@@ -15,7 +15,7 @@ class ResultChangeUnitTest_Errors {
 		val result1 = Result.ErrorResult(Date(), "error1")
 		val result2 = Result.ErrorResult(Date(), "error2")
 
-		val change = ResultChange(result1, result2)
+		val change = ResultChangeCalculator(result1, result2).diff()
 
 		assertErrorAndNoChanges(change, ErrorChange.Change)
 	}
@@ -24,7 +24,7 @@ class ResultChangeUnitTest_Errors {
 		val result1 = Result.ErrorResult(Date(), "error")
 		val result2 = Result.ErrorResult(Date(), "error")
 
-		val change = ResultChange(result1, result2)
+		val change = ResultChangeCalculator(result1, result2).diff()
 
 		assertErrorAndNoChanges(change, ErrorChange.Same)
 	}
@@ -33,7 +33,7 @@ class ResultChangeUnitTest_Errors {
 		val result1 = Result.ContentResult(Date(), mock())
 		val result2 = Result.ErrorResult(Date(), "error")
 
-		val change = ResultChange(result1, result2)
+		val change = ResultChangeCalculator(result1, result2).diff()
 
 		assertErrorAndNoChanges(change, ErrorChange.Failed)
 	}
@@ -42,7 +42,7 @@ class ResultChangeUnitTest_Errors {
 		val result1 = Result.ErrorResult(Date(), "error")
 		val result2 = Result.ContentResult(Date(), mock())
 
-		val change = ResultChange(result1, result2)
+		val change = ResultChangeCalculator(result1, result2).diff()
 
 		assertErrorAndNoChanges(change, ErrorChange.Fixed)
 	}
@@ -51,7 +51,7 @@ class ResultChangeUnitTest_Errors {
 		val result1 = Result.ContentResult(Date(), mock())
 		val result2 = Result.ContentResult(Date(), mock())
 
-		val change = ResultChange(result1, result2)
+		val change = ResultChangeCalculator(result1, result2).diff()
 
 		assertErrorAndNoChanges(change, ErrorChange.NoErrors)
 	}
@@ -59,7 +59,7 @@ class ResultChangeUnitTest_Errors {
 	@Test fun testFirstOne() {
 		val result: Result = Result.ContentResult(Date(), mock())
 
-		val change = ResultChange(null, result)
+		val change = ResultChangeCalculator(null, result).diff()
 
 		assertErrorAndNoChanges(change, ErrorChange.NewStatus)
 	}
@@ -67,7 +67,7 @@ class ResultChangeUnitTest_Errors {
 	@Test fun testFirstError() {
 		val result: Result = Result.ErrorResult(Date(), "error")
 
-		val change = ResultChange(null, result)
+		val change = ResultChangeCalculator(null, result).diff()
 
 		assertErrorAndNoChanges(change, ErrorChange.NewStatus)
 	}
@@ -75,7 +75,7 @@ class ResultChangeUnitTest_Errors {
 	@Test fun testLastOne() {
 		val result: Result = Result.ContentResult(Date(), mock())
 
-		val change = ResultChange(result, null)
+		val change = ResultChangeCalculator(result, null).diff()
 
 		assertErrorAndNoChanges(change, ErrorChange.LastStatus)
 	}
@@ -83,13 +83,13 @@ class ResultChangeUnitTest_Errors {
 	@Test fun testLastError() {
 		val result: Result = Result.ErrorResult(Date(), "error")
 
-		val change = ResultChange(result, null)
+		val change = ResultChangeCalculator(result, null).diff()
 
 		assertErrorAndNoChanges(change, ErrorChange.LastStatus)
 	}
 
 	@Test fun testMissingResults() {
-		val change = ResultChange(null, null)
+		val change = ResultChangeCalculator(null, null).diff()
 
 		assertErrorAndNoChanges(change, ErrorChange.NoErrors)
 	}
@@ -98,7 +98,7 @@ class ResultChangeUnitTest_Errors {
 		val result1 = Result.ContentResult(Date(), mock())
 		val result2 = Result.ContentResult(Date(), mock())
 
-		val change = ResultChange(result1, result2)
+		val change = ResultChangeCalculator(result1, result2).diff()
 
 		assertErrorAndNoChanges(change, ErrorChange.NoErrors)
 	}
@@ -107,7 +107,7 @@ class ResultChangeUnitTest_Errors {
 		val result1 = Result.ContentResult(Date(), mock())
 		val result2 = Result.ContentResult(Date(), mock())
 
-		val change = ResultChange(result2, result1)
+		val change = ResultChangeCalculator(result2, result1).diff()
 
 		assertErrorAndNoChanges(change, ErrorChange.NoErrors)
 	}

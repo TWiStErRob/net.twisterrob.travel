@@ -15,6 +15,7 @@ import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
 import net.twisterrob.travel.statushistory.viewmodel.LineColor
 import net.twisterrob.travel.statushistory.viewmodel.Result
 import net.twisterrob.travel.statushistory.viewmodel.ResultChange
+import net.twisterrob.travel.statushistory.viewmodel.ResultChangeCalculator
 import java.util.Date
 
 @Controller
@@ -71,10 +72,10 @@ private fun getDifferences(results: List<Result>): List<ResultChange> {
 	val resultChanges: MutableList<ResultChange> = ArrayList(results.size)
 	var newResult: Result? = null
 	for (oldResult in results) { // We're going forward, but the list is backwards.
-		resultChanges.add(ResultChange(oldResult, newResult))
+		resultChanges.add(ResultChangeCalculator(oldResult, newResult).diff())
 		newResult = oldResult
 	}
-	resultChanges.add(ResultChange(null, newResult))
+	resultChanges.add(ResultChangeCalculator(null, newResult).diff())
 	resultChanges.removeAt(0)
 	return resultChanges
 }
