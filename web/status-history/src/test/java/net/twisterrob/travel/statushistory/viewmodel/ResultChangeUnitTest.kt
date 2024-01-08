@@ -7,20 +7,21 @@ import org.hamcrest.Matchers.emptyOrNullString
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.not
 import org.hamcrest.Matchers.notNullValue
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
+import java.util.Date
 
 class ResultChangeUnitTest {
 
 	@Test fun testConsistentProperties() {
-		val result1: Result = mock()
-		val result2: Result = mock()
+		val result1: Result = Result.ContentResult(Date(), mock())
+		val result2: Result = Result.ErrorResult(Date(), "error")
 
 		val change = ResultChange(result1, result2)
 
-		assertEquals(result1, change.previous)
-		assertEquals(result2, change.current)
+		assertSame(result1, change.previous)
+		assertSame(result2, change.current)
 	}
 
 	@Test fun testStatusChange() {

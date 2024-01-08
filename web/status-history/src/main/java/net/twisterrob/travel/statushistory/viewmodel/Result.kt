@@ -3,24 +3,16 @@ package net.twisterrob.travel.statushistory.viewmodel
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed
 import java.util.Date
 
-class Result private constructor(
-	val errorHeader: String?,
-	val fullError: String?,
-	val content: LineStatusFeed?,
-	val `when`: Date,
-) {
+sealed interface Result {
 
-	constructor(`when`: Date, error: String) : this(
-		`when` = `when`,
-		content = null,
-		errorHeader = error.substringBefore('\n'),
-		fullError = error,
-	)
+	class ContentResult(
+		val `when`: Date,
+		val content: LineStatusFeed,
+	) : Result
 
-	constructor(`when`: Date, content: LineStatusFeed?) : this(
-		`when` = `when`,
-		content = content,
-		errorHeader = null,
-		fullError = null,
-	)
+	class ErrorResult(
+		val `when`: Date,
+		val fullError: String,
+		val errorHeader: String? = fullError.substringBefore('\n'),
+	) : Result
 }

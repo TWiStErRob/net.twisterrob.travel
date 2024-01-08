@@ -54,11 +54,11 @@ open class ResultChange(
 	}
 
 	protected fun diffContent() {
-		if (oldResult!!.content == null || newResult!!.content == null) {
+		if (oldResult !is Result.ContentResult || newResult !is Result.ContentResult) {
 			return
 		}
-		val oldMap = oldResult.content!!.statusMap
-		val newMap = newResult.content!!.statusMap
+		val oldMap = oldResult.content.statusMap
+		val newMap = newResult.content.statusMap
 		val allLines: MutableSet<Line> = HashSet()
 		allLines.addAll(oldMap.keys)
 		allLines.addAll(newMap.keys)
@@ -124,8 +124,8 @@ open class ResultChange(
 	}
 
 	protected fun diffError() {
-		val oldErrorHeader = oldResult!!.errorHeader
-		val newErrorHeader = newResult!!.errorHeader
+		val oldErrorHeader = (oldResult as? Result.ErrorResult)?.errorHeader
+		val newErrorHeader = (newResult as? Result.ErrorResult)?.errorHeader
 		errorChange = when {
 			oldErrorHeader != null && newErrorHeader != null -> {
 				if (oldErrorHeader == newErrorHeader) ErrorChange.Same else ErrorChange.Change

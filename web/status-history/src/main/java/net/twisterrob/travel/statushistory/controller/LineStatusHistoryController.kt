@@ -57,13 +57,13 @@ private fun ParsedStatusItem.toResult(): Result {
 	val date = Date(this.item.retrievedDate.toEpochMilliseconds())
 	return when (this) {
 		is ParsedStatusItem.ParsedFeed ->
-			Result(date, this.content as LineStatusFeed)
+			Result.ContentResult(date, this.content as LineStatusFeed)
 
 		is ParsedStatusItem.AlreadyFailed ->
-			Result(date, this.item.error.stacktrace)
+			Result.ErrorResult(date, this.item.error.stacktrace)
 
 		is ParsedStatusItem.ParseFailed ->
-			Result(date, "Error while displaying loaded XML: ${this.error.stacktrace}")
+			Result.ErrorResult(date, "Error while displaying loaded XML: ${this.error.stacktrace}")
 	}
 }
 

@@ -1,6 +1,5 @@
 package net.twisterrob.travel.statushistory.viewmodel
 
-import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed
 import net.twisterrob.travel.statushistory.viewmodel.ResultChange.ErrorChange
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.anEmptyMap
@@ -13,8 +12,8 @@ import java.util.Date
 class ResultChangeUnitTest_Errors {
 
 	@Test fun testErrorChange() {
-		val result1 = Result(Date(), "error1")
-		val result2 = Result(Date(), "error2")
+		val result1 = Result.ErrorResult(Date(), "error1")
+		val result2 = Result.ErrorResult(Date(), "error2")
 
 		val change = ResultChange(result1, result2)
 
@@ -22,8 +21,8 @@ class ResultChangeUnitTest_Errors {
 	}
 
 	@Test fun testErrorNoChange() {
-		val result1 = Result(Date(), "error")
-		val result2 = Result(Date(), "error")
+		val result1 = Result.ErrorResult(Date(), "error")
+		val result2 = Result.ErrorResult(Date(), "error")
 
 		val change = ResultChange(result1, result2)
 
@@ -31,8 +30,8 @@ class ResultChangeUnitTest_Errors {
 	}
 
 	@Test fun testErrorIntroduced() {
-		val result1 = Result(Date(), null as LineStatusFeed?)
-		val result2 = Result(Date(), "error")
+		val result1 = Result.ContentResult(Date(), mock())
+		val result2 = Result.ErrorResult(Date(), "error")
 
 		val change = ResultChange(result1, result2)
 
@@ -40,8 +39,8 @@ class ResultChangeUnitTest_Errors {
 	}
 
 	@Test fun testErrorDisappeared() {
-		val result1 = Result(Date(), "error")
-		val result2 = Result(Date(), null as LineStatusFeed?)
+		val result1 = Result.ErrorResult(Date(), "error")
+		val result2 = Result.ContentResult(Date(), mock())
 
 		val change = ResultChange(result1, result2)
 
@@ -49,8 +48,8 @@ class ResultChangeUnitTest_Errors {
 	}
 
 	@Test fun testErrorNone() {
-		val result1 = Result(Date(), null as LineStatusFeed?)
-		val result2 = Result(Date(), null as LineStatusFeed?)
+		val result1 = Result.ContentResult(Date(), mock())
+		val result2 = Result.ContentResult(Date(), mock())
 
 		val change = ResultChange(result1, result2)
 
@@ -58,7 +57,15 @@ class ResultChangeUnitTest_Errors {
 	}
 
 	@Test fun testFirstOne() {
-		val result: Result = mock()
+		val result: Result = Result.ContentResult(Date(), mock())
+
+		val change = ResultChange(null, result)
+
+		assertErrorAndNoChanges(change, ErrorChange.NewStatus)
+	}
+
+	@Test fun testFirstError() {
+		val result: Result = Result.ErrorResult(Date(), "error")
 
 		val change = ResultChange(null, result)
 
@@ -66,7 +73,15 @@ class ResultChangeUnitTest_Errors {
 	}
 
 	@Test fun testLastOne() {
-		val result: Result = mock()
+		val result: Result = Result.ContentResult(Date(), mock())
+
+		val change = ResultChange(result, null)
+
+		assertErrorAndNoChanges(change, ErrorChange.LastStatus)
+	}
+
+	@Test fun testLastError() {
+		val result: Result = Result.ErrorResult(Date(), "error")
 
 		val change = ResultChange(result, null)
 
@@ -80,8 +95,8 @@ class ResultChangeUnitTest_Errors {
 	}
 
 	@Test fun testErrorNewFeedMissing() {
-		val result1 = Result(Date(), mock<LineStatusFeed>())
-		val result2 = Result(Date(), null as LineStatusFeed?)
+		val result1 = Result.ContentResult(Date(), mock())
+		val result2 = Result.ContentResult(Date(), mock())
 
 		val change = ResultChange(result1, result2)
 
@@ -89,8 +104,8 @@ class ResultChangeUnitTest_Errors {
 	}
 
 	@Test fun testErrorOldFeedMissing() {
-		val result1 = Result(Date(), mock<LineStatusFeed>())
-		val result2 = Result(Date(), null as LineStatusFeed?)
+		val result1 = Result.ContentResult(Date(), mock())
+		val result2 = Result.ContentResult(Date(), mock())
 
 		val change = ResultChange(result2, result1)
 

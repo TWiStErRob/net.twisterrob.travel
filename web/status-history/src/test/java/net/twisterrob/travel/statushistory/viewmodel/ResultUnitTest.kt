@@ -12,7 +12,7 @@ class ResultUnitTest {
 		val error = "Error message"
 		val errorHeader = "Error message"
 
-		val result = Result(Date(), error)
+		val result = Result.ErrorResult(Date(), error)
 
 		assertEquals(errorHeader, result.errorHeader)
 		assertEquals(error, result.fullError)
@@ -22,7 +22,7 @@ class ResultUnitTest {
 		val error = "Error message\n"
 		val errorHeader = "Error message"
 
-		val result = Result(Date(), error)
+		val result = Result.ErrorResult(Date(), error)
 
 		assertEquals(errorHeader, result.errorHeader)
 		assertEquals(error, result.fullError)
@@ -32,7 +32,7 @@ class ResultUnitTest {
 		val error = "Error message\nSecond line\nThird line"
 		val errorHeader = "Error message"
 
-		val result = Result(Date(), error)
+		val result = Result.ErrorResult(Date(), error)
 
 		assertEquals(errorHeader, result.errorHeader)
 		assertEquals(error, result.fullError)
@@ -42,7 +42,7 @@ class ResultUnitTest {
 		val error = "error"
 		val date: Date = mock()
 
-		val result = Result(date, error)
+		val result = Result.ErrorResult(date, error)
 
 		assertEquals(error, result.fullError)
 		assertEquals(date, result.`when`)
@@ -52,7 +52,7 @@ class ResultUnitTest {
 		val feed: LineStatusFeed = mock()
 		val date: Date = mock()
 
-		val result = Result(date, feed)
+		val result = Result.ContentResult(date, feed)
 
 		assertEquals(feed, result.content)
 		assertEquals(date, result.`when`)

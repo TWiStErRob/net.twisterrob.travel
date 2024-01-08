@@ -48,6 +48,6 @@ internal class GwenStatus : Arranger {
 
 	fun createResult(): Result {
 		`when`(feed.statusMap).thenReturn(statuses)
-		return Result(Date(), feed)
+		return Result.ContentResult(Date(), feed)
 	}
 }
