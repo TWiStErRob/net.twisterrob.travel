@@ -9,31 +9,20 @@ import java.util.EnumMap
 
 class ResultChangeCalculator {
 
-	private var errorChange: ErrorChange? = null
 	private val statusChanges: MutableMap<Line, StatusChange> = EnumMap(Line::class.java)
 	private val descChanges: MutableMap<Line, String> = EnumMap(Line::class.java)
 
 	fun diff(oldResult: Result?, newResult: Result?): ResultChange {
-		errorChange = null
 		statusChanges.clear()
 		descChanges.clear()
-		when {
-			oldResult != null && newResult != null -> {
-				diffError(oldResult, newResult)
-				diffContent(oldResult, newResult)
-			}
-
-			oldResult == null && newResult != null -> {
-				errorChange = ErrorChange.NewStatus
-			}
-
-			oldResult != null && newResult == null -> {
-				errorChange = ErrorChange.LastStatus
-			}
-
-			else /* oldResult == null && newResult == null */ -> {
-				errorChange = ErrorChange.NoErrors
-			}
+		val errorChange = when {
+			oldResult != null && newResult != null -> diffError(oldResult, newResult)
+			oldResult == null && newResult != null -> ErrorChange.NewStatus
+			oldResult != null && newResult == null -> ErrorChange.LastStatus
+			else /* oldResult == null && newResult == null */ -> ErrorChange.NoErrors
+		}
+		if (errorChange == ErrorChange.NoErrors) {
+			diffContent(oldResult as Result.ContentResult, newResult as Result.ContentResult)
 		}
 		return ResultChange(
 			oldResult,
@@ -44,10 +33,7 @@ class ResultChangeCalculator {
 		)
 	}
 
-	private fun diffContent(oldResult: Result?, newResult: Result?) {
-		if (oldResult !is Result.ContentResult || newResult !is Result.ContentResult) {
-			return
-		}
+	private fun diffContent(oldResult: Result.ContentResult, newResult: Result.ContentResult) {
 		val oldMap = oldResult.content.statusMap
 		val newMap = newResult.content.statusMap
 		val allLines: MutableSet<Line> = HashSet()
@@ -56,25 +42,22 @@ class ResultChangeCalculator {
 		for (line in allLines) {
 			val oldStatus = oldMap[line]
 			val newStatus = newMap[line]
-			if (oldStatus == null || newStatus == null) {
-				statusChanges[line] = StatusChange.Unknown
-				continue
+			statusChanges[line] = statusChange(oldStatus, newStatus)
+			if (statusChanges[line] == StatusChange.Same) {
+				diffDesc(line, oldStatus!!, newStatus!!)
 			}
-			val statusDiff = oldStatus.type.compareTo(newStatus.type)
-			when {
-				statusDiff < 0 -> {
-					statusChanges[line] = StatusChange.Better
-				}
+		}
+	}
 
-				statusDiff > 0 -> {
-					statusChanges[line] = StatusChange.Worse
-				}
-
-				else /* statusDiff == 0 */ -> {
-					statusChanges[line] = StatusChange.Same
-					diffDesc(line, oldStatus, newStatus)
-				}
-			}
+	private fun statusChange(oldStatus: LineStatus?, newStatus: LineStatus?): StatusChange {
+		if (oldStatus == null || newStatus == null) {
+			return StatusChange.Unknown
+		}
+		val statusDiff = oldStatus.type.compareTo(newStatus.type)
+		return when {
+			statusDiff < 0 -> StatusChange.Better
+			statusDiff > 0 -> StatusChange.Worse
+			else /* statusDiff == 0 */ -> StatusChange.Same
 		}
 	}
 
@@ -114,10 +97,10 @@ class ResultChangeCalculator {
 		}
 	}
 
-	private fun diffError(oldResult: Result?, newResult: Result?) {
+	private fun diffError(oldResult: Result?, newResult: Result?): ErrorChange {
 		val oldErrorHeader = (oldResult as? Result.ErrorResult)?.errorHeader
 		val newErrorHeader = (newResult as? Result.ErrorResult)?.errorHeader
-		errorChange = when {
+		return when {
 			oldErrorHeader != null && newErrorHeader != null -> {
 				if (oldErrorHeader == newErrorHeader) ErrorChange.Same else ErrorChange.Change
 			}

@@ -13,6 +13,6 @@ sealed interface Result {
 	class ErrorResult(
 		val `when`: Date,
 		val fullError: String,
-		val errorHeader: String? = fullError.substringBefore('\n'),
+		val errorHeader: String = fullError.substringBefore('\n'),
 	) : Result
 }
