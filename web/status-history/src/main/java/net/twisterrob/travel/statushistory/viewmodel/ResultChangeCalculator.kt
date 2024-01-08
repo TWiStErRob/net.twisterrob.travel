@@ -43,7 +43,7 @@ class ResultChangeCalculator {
 			val newStatus = newMap[line]
 			statusChanges[line] = statusChange(oldStatus, newStatus)
 			if (statusChanges[line] == StatusChange.Same) {
-				diffDesc(line, oldStatus!!, newStatus!!)
+				statusChanges[line] = diffDesc(oldStatus!!, newStatus!!)
 			}
 		}
 	}
@@ -60,34 +60,34 @@ class ResultChangeCalculator {
 		}
 	}
 
-	private fun diffDesc(line: Line, oldStatus: LineStatus, newStatus: LineStatus) {
+	private fun diffDesc(oldStatus: LineStatus, newStatus: LineStatus): StatusChange {
 		val oldDesc = oldStatus.description
 		val newDesc = newStatus.description
-		when {
+		return when {
 			oldDesc != null && newDesc != null -> {
 				if (oldDesc != newDesc) {
-					statusChanges[line] = StatusChange.SameDescriptionChange(oldDesc, newDesc)
+					StatusChange.SameDescriptionChange(oldDesc, newDesc)
 				} else {
 					val oldBranches = oldStatus.branchDescription
 					val newBranches = newStatus.branchDescription
 					if (oldBranches == newBranches) {
-						statusChanges[line] = StatusChange.SameDescriptionSame(oldBranches)
+						StatusChange.SameDescriptionSame(oldBranches)
 					} else {
-						statusChanges[line] = StatusChange.BranchesChange(oldBranches, newBranches)
+						StatusChange.BranchesChange(oldBranches, newBranches)
 					}
 				}
 			}
 
 			oldDesc == null && newDesc != null -> {
-				statusChanges[line] = StatusChange.SameDescriptionAdd(newDesc)
+				StatusChange.SameDescriptionAdd(newDesc)
 			}
 
 			oldDesc != null && newDesc == null -> {
-				statusChanges[line] = StatusChange.SameDescriptionDel(oldDesc)
+				StatusChange.SameDescriptionDel(oldDesc)
 			}
 
 			else /* oldDesc == null && newDesc == null */ -> {
-				statusChanges[line] = StatusChange.SameDescriptionNone
+				StatusChange.SameDescriptionNone
 			}
 		}
 	}
