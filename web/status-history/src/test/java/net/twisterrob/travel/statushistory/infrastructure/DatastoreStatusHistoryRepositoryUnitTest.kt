@@ -13,7 +13,7 @@ import com.google.cloud.datastore.TimestampValue
 import kotlinx.datetime.Instant
 import net.twisterrob.travel.domain.london.status.StatusItem.FailedStatusItem
 import net.twisterrob.travel.domain.london.status.StatusItem.SuccessfulStatusItem
-import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
 import net.twisterrob.travel.statushistory.test.FailedEntity
 import net.twisterrob.travel.statushistory.test.FailedStatusItem
 import net.twisterrob.travel.statushistory.test.SuccessfulEntity
@@ -39,7 +39,7 @@ import java.util.Collections.emptyIterator
 class DatastoreStatusHistoryRepositoryUnitTest {
 
 	private val mockDatastore: Datastore = mock()
-	private val subject: StatusHistoryRepository = DatastoreStatusHistoryRepository(mockDatastore)
+	private val subject: StatusHistoryDataSource = DatastoreStatusHistoryDataSource(mockDatastore)
 
 	@Test fun testSavesSuccessfulItem() {
 		`when`(mockDatastore.newKeyFactory()).thenReturn(KeyFactory("test-project-id"))

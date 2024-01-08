@@ -3,12 +3,12 @@ package net.twisterrob.travel.domain.london.status
 import net.twisterrob.travel.domain.london.status.api.FeedParser
 import net.twisterrob.travel.domain.london.status.api.HistoryUseCase
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
-import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
-import net.twisterrob.travel.domain.london.status.api.StatusInteractor
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
+import net.twisterrob.travel.domain.london.status.api.StatusDataSource
 
 class DomainHistoryUseCase(
-	private val statusHistoryRepository: StatusHistoryRepository,
-	private val statusInteractor: StatusInteractor,
+	private val statusHistoryDataSource: StatusHistoryDataSource,
+	private val statusDataSource: StatusDataSource,
 	private val feedParser: FeedParser,
 ) : HistoryUseCase {
 
@@ -19,9 +19,9 @@ class DomainHistoryUseCase(
 	override fun history(feed: Feed, max: Int, includeCurrent: Boolean): List<ParsedStatusItem> {
 		val result = mutableListOf<StatusItem>()
 		if (includeCurrent) {
-			result.add(statusInteractor.getCurrent(feed))
+			result.add(statusDataSource.getCurrent(feed))
 		}
-		val history = statusHistoryRepository.getAll(feed, max)
+		val history = statusHistoryDataSource.getAll(feed, max)
 		result.addAll(history)
 		return result.map { it.parse() }
 	}

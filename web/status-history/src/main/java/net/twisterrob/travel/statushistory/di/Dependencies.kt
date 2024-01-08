@@ -16,8 +16,8 @@ import net.twisterrob.travel.domain.london.status.DomainRefreshUseCase
 import net.twisterrob.travel.domain.london.status.api.FeedParser
 import net.twisterrob.travel.domain.london.status.api.HistoryUseCase
 import net.twisterrob.travel.domain.london.status.api.RefreshUseCase
-import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
-import net.twisterrob.travel.domain.london.status.api.StatusInteractor
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
+import net.twisterrob.travel.domain.london.status.api.StatusDataSource
 
 @Factory
 class Dependencies {
@@ -34,21 +34,21 @@ class Dependencies {
 	 */
 	@Prototype
 	fun historyUseCase(
-		statusHistoryRepository: StatusHistoryRepository,
-		statusInteractor: StatusInteractor,
+		statusHistoryDataSource: StatusHistoryDataSource,
+		statusDataSource: StatusDataSource,
 		feedParser: FeedParser,
 	): HistoryUseCase =
-		DomainHistoryUseCase(statusHistoryRepository, statusInteractor, feedParser)
+		DomainHistoryUseCase(statusHistoryDataSource, statusDataSource, feedParser)
 
 	/**
 	 * External dependency from domain layer in common KMP code.
 	 */
 	@Prototype
 	fun refreshUseCase(
-		statusHistoryRepository: StatusHistoryRepository,
-		statusInteractor: StatusInteractor,
+		statusHistoryDataSource: StatusHistoryDataSource,
+		statusDataSource: StatusDataSource,
 	): RefreshUseCase =
-		DomainRefreshUseCase(statusHistoryRepository, statusInteractor)
+		DomainRefreshUseCase(statusHistoryDataSource, statusDataSource)
 
 	@Singleton
 	fun staticData(): StaticData =

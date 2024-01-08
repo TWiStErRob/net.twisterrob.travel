@@ -9,7 +9,7 @@ import net.twisterrob.travel.domain.london.status.Feed
 import net.twisterrob.travel.domain.london.status.Stacktrace
 import net.twisterrob.travel.domain.london.status.StatusContent
 import net.twisterrob.travel.domain.london.status.StatusItem
-import net.twisterrob.travel.domain.london.status.api.StatusInteractor
+import net.twisterrob.travel.domain.london.status.api.StatusDataSource
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.IOException
@@ -17,10 +17,10 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import net.twisterrob.blt.io.feeds.Feed as RawFeed
 
-@Bean(typed = [StatusInteractor::class])
-internal class HttpStatusInteractor(
+@Bean(typed = [StatusDataSource::class])
+internal class HttpStatusDataSource(
 	private val urlBuilder: URLBuilder,
-) : StatusInteractor {
+) : StatusDataSource {
 
 	override fun getCurrent(feed: Feed): StatusItem {
 		val now = Clock.System.now()
@@ -55,6 +55,6 @@ internal class HttpStatusInteractor(
 
 	companion object {
 
-		private val LOG: Logger = LoggerFactory.getLogger(HttpStatusInteractor::class.java)
+		private val LOG: Logger = LoggerFactory.getLogger(HttpStatusDataSource::class.java)
 	}
 }
