@@ -8,7 +8,6 @@ open class ResultChange(
 	val current: Result?,
 	val error: ErrorChange,
 	val statuses: Map<Line, StatusChange>,
-	val descriptions: Map<Line, String>,
 ) {
 
 	sealed class StatusChange {

@@ -10,11 +10,9 @@ import java.util.EnumMap
 class ResultChangeCalculator {
 
 	private val statusChanges: MutableMap<Line, StatusChange> = EnumMap(Line::class.java)
-	private val descChanges: MutableMap<Line, String> = EnumMap(Line::class.java)
 
 	fun diff(oldResult: Result?, newResult: Result?): ResultChange {
 		statusChanges.clear()
-		descChanges.clear()
 		val errorChange = when {
 			oldResult != null && newResult != null -> diffError(oldResult, newResult)
 			oldResult == null && newResult != null -> ErrorChange.NewStatus
@@ -29,7 +27,6 @@ class ResultChangeCalculator {
 			newResult,
 			errorChange,
 			statusChanges,
-			descChanges,
 		)
 	}
 
