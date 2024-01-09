@@ -36,7 +36,7 @@ google-datastore = "2.18.0"
 
 micronaut = "4.2.1"
 micronaut-http = "4.2.3"
-micronaut-jackson = "2.5.1"
+micronaut-jackson = "2.6.0"
 micronaut-handlebars = "5.0.1"
 snakeyaml = "2.2"
 
