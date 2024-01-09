@@ -18,7 +18,7 @@ sqlite-jdbc = "3.44.1.0"
 androidx-swiperefreshlayout = "1.1.0"
 androidx-fragment = "1.6.2"
 
-slf4j = "2.0.10"
+slf4j = "2.0.11"
 # https://logging.apache.org/log4j/2.x/release-notes.html
 log4j  ="2.22.1"
 
