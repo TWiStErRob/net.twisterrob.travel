@@ -9,29 +9,32 @@ open class ResultChange(
 	val error: ErrorChange,
 ) {
 
+	interface HasDescriptionChange {
+		val desc: DescriptionChange
+	}
 	sealed class StatusChange {
 		data class Better(
 			val oldDelay: DelayType,
 			val newDelay: DelayType,
-			val desc: DescriptionChange,
-		) : StatusChange()
+			override val desc: DescriptionChange,
+		) : StatusChange(), HasDescriptionChange
 
 		data class Worse(
 			val oldDelay: DelayType,
 			val newDelay: DelayType,
-			val desc: DescriptionChange,
-		) : StatusChange()
+			override val desc: DescriptionChange,
+		) : StatusChange(), HasDescriptionChange
 
 		data class Same(
 			val delay: DelayType,
-			val desc: DescriptionChange,
-		) : StatusChange()
+			override val desc: DescriptionChange,
+		) : StatusChange(), HasDescriptionChange
 
 		data object Unknown : StatusChange()
 	}
 
 	sealed class DescriptionChange {
-		data object None : DescriptionChange()
+		data object Missing : DescriptionChange()
 		data class Same(val desc: String) : DescriptionChange()
 		data class Changed(val oldDesc: String, val newDesc: String) : DescriptionChange()
 		data class Added(val newDesc: String) : DescriptionChange()

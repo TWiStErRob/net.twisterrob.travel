@@ -76,7 +76,7 @@ class ResultChangeCalculator {
 			}
 
 			else /* oldDesc == null && newDesc == null */ -> {
-				DescriptionChange.None
+				DescriptionChange.Missing
 			}
 		}
 	}
