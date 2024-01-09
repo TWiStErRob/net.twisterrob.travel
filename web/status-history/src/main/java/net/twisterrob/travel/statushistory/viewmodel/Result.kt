@@ -12,6 +12,16 @@ sealed interface Result {
 
 	class ErrorResult(
 		val `when`: Date,
-		val fullError: String,
-	) : Result
+		val error: Error,
+	) : Result {
+
+		@JvmInline
+		value class Error(
+			val error: String,
+		) {
+
+			val header: String
+				get() = error.substringBefore('\n')
+		}
+	}
 }

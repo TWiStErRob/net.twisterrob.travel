@@ -82,12 +82,12 @@ class ResultChangeCalculator {
 	}
 
 	private fun diffError(oldResult: Result, newResult: Result): ErrorChange {
-		val oldError = (oldResult as? Result.ErrorResult)?.fullError
-		val newError = (newResult as? Result.ErrorResult)?.fullError
+		val oldError = (oldResult as? Result.ErrorResult)?.error
+		val newError = (newResult as? Result.ErrorResult)?.error
 		return when {
 			oldError != null && newError != null -> {
 				if (oldError.header == newError.header)
-					ErrorChange.Same(oldError)
+					ErrorChange.Same(newError)
 				else
 					ErrorChange.Change(oldError, newError)
 			}
@@ -106,6 +106,3 @@ class ResultChangeCalculator {
 		}
 	}
 }
-
-private val String.header: String
-	get() = this.substringBefore('\n')

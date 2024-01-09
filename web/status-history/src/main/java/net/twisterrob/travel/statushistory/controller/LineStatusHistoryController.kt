@@ -63,10 +63,10 @@ private fun ParsedStatusItem.toResult(): Result {
 			Result.ContentResult(date, this.content as LineStatusFeed)
 
 		is ParsedStatusItem.AlreadyFailed ->
-			Result.ErrorResult(date, this.item.error.stacktrace)
+			Result.ErrorResult(date, Result.ErrorResult.Error(this.item.error.stacktrace))
 
 		is ParsedStatusItem.ParseFailed ->
-			Result.ErrorResult(date, "Error while displaying loaded XML: ${this.error.stacktrace}")
+			Result.ErrorResult(date, Result.ErrorResult.Error("Error while displaying loaded XML: ${this.error.stacktrace}"))
 	}
 }
 
