@@ -5,11 +5,12 @@ import com.shazam.gwen.Gwen.then
 import com.shazam.gwen.Gwen.`when`
 import net.twisterrob.blt.io.feeds.trackernet.model.DelayType
 import net.twisterrob.blt.model.Line
+import net.twisterrob.travel.statushistory.viewmodel.ResultChange.DescriptionChange.Missing
 import net.twisterrob.travel.statushistory.viewmodel.ResultChange.StatusChange
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class ResultChangeUnitTest_Delays {
+class ResultChangeCalculatorUnitTest_Delays {
 
 	private lateinit var status1: GwenStatus
 	private lateinit var status2: GwenStatus
@@ -28,8 +29,8 @@ class ResultChangeUnitTest_Delays {
 		`when`(change).between(status1, status2)
 
 		then(change)
-			.has(Line.Northern, StatusChange.Worse)
 			.hasNoErrorChange()
+			.has(Line.Northern, StatusChange.Worse(DelayType.GoodService, DelayType.Suspended, Missing))
 			.hasNoDescriptionChangeFor(Line.Northern)
 	}
 
@@ -45,9 +46,9 @@ class ResultChangeUnitTest_Delays {
 		`when`(change).between(status1, status2)
 
 		then(change)
-			.has(Line.Northern, StatusChange.Worse)
-			.has(Line.Jubilee, StatusChange.Better)
 			.hasNoErrorChange()
+			.has(Line.Northern, StatusChange.Worse(DelayType.GoodService, DelayType.Suspended, Missing))
+			.has(Line.Jubilee, StatusChange.Better(DelayType.Suspended, DelayType.GoodService, Missing))
 			.hasNoDescriptionChangeFor(Line.Northern, Line.Jubilee)
 	}
 
@@ -58,8 +59,8 @@ class ResultChangeUnitTest_Delays {
 		`when`(change).between(status1, status2)
 
 		then(change)
-			.has(Line.Jubilee, StatusChange.Unknown)
 			.hasNoErrorChange()
+			.has(Line.Jubilee, StatusChange.Unknown)
 			.hasNoDescriptionChangeFor(Line.Northern, Line.Jubilee)
 	}
 
@@ -70,8 +71,8 @@ class ResultChangeUnitTest_Delays {
 		`when`(change).between(status1, status2)
 
 		then(change)
-			.has(Line.Jubilee, StatusChange.Unknown)
 			.hasNoErrorChange()
+			.has(Line.Jubilee, StatusChange.Unknown)
 			.hasNoDescriptionChangeFor(Line.Northern, Line.Jubilee)
 	}
 }

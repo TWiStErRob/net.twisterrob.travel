@@ -8,43 +8,13 @@ import java.util.Date
 
 class ResultUnitTest {
 
-	@Test fun testSingleLineErrorHeader() {
-		val error = "Error message"
-		val errorHeader = "Error message"
-
-		val result = Result.ErrorResult(Date(), error)
-
-		assertEquals(errorHeader, result.errorHeader)
-		assertEquals(error, result.fullError)
-	}
-
-	@Test fun testOneLineErrorHeader() {
-		val error = "Error message\n"
-		val errorHeader = "Error message"
-
-		val result = Result.ErrorResult(Date(), error)
-
-		assertEquals(errorHeader, result.errorHeader)
-		assertEquals(error, result.fullError)
-	}
-
-	@Test fun testMultiLineErrorHeader() {
-		val error = "Error message\nSecond line\nThird line"
-		val errorHeader = "Error message"
-
-		val result = Result.ErrorResult(Date(), error)
-
-		assertEquals(errorHeader, result.errorHeader)
-		assertEquals(error, result.fullError)
-	}
-
 	@Test fun testConsistentPropertiesError() {
-		val error = "error"
+		val error = Result.ErrorResult.Error("error")
 		val date: Date = mock()
 
 		val result = Result.ErrorResult(date, error)
 
-		assertEquals(error, result.fullError)
+		assertEquals(error, result.error)
 		assertEquals(date, result.`when`)
 	}
 

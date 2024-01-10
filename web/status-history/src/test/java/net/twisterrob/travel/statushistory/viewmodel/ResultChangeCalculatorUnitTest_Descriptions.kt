@@ -5,13 +5,13 @@ import com.shazam.gwen.Gwen.then
 import com.shazam.gwen.Gwen.`when`
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus.BranchStatus
 import net.twisterrob.blt.model.Line
-import net.twisterrob.travel.statushistory.viewmodel.ResultChange.StatusChange
+import net.twisterrob.travel.statushistory.viewmodel.ResultChange.DescriptionChange
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 private val MISSING_DESCRIPTION: String? = null
 
-class ResultChangeUnitTest_Descriptions {
+class ResultChangeCalculatorUnitTest_Descriptions {
 
 	private lateinit var status1: GwenStatus
 	private lateinit var status2: GwenStatus
@@ -30,8 +30,8 @@ class ResultChangeUnitTest_Descriptions {
 		`when`(change).between(status1, status2)
 
 		then(change)
-			.has(Line.Northern, StatusChange.SameDescriptionChange)
 			.hasNoErrorChange()
+			.has(Line.Northern, DescriptionChange.Changed("old description", "new description"))
 			.hasDescriptionChangeFor(Line.Northern)
 	}
 
@@ -42,8 +42,8 @@ class ResultChangeUnitTest_Descriptions {
 		`when`(change).between(status1, status2)
 
 		then(change)
-			.has(Line.Northern, StatusChange.SameDescriptionAdd)
 			.hasNoErrorChange()
+			.has(Line.Northern, DescriptionChange.Added("new description"))
 			.hasDescriptionChangeFor(Line.Northern)
 	}
 
@@ -54,8 +54,8 @@ class ResultChangeUnitTest_Descriptions {
 		`when`(change).between(status1, status2)
 
 		then(change)
-			.has(Line.Northern, StatusChange.SameDescriptionDel)
 			.hasNoErrorChange()
+			.has(Line.Northern, DescriptionChange.Removed("old description"))
 			.hasDescriptionChangeFor(Line.Northern)
 	}
 
@@ -66,8 +66,8 @@ class ResultChangeUnitTest_Descriptions {
 		`when`(change).between(status1, status2)
 
 		then(change)
-			.has(Line.Northern, StatusChange.SameDescriptionSame)
 			.hasNoErrorChange()
+			.has(Line.Northern, DescriptionChange.Same("description"))
 			.hasNoDescriptionChangeFor(Line.Northern)
 	}
 
@@ -78,20 +78,27 @@ class ResultChangeUnitTest_Descriptions {
 		`when`(change).between(status1, status2)
 
 		then(change)
-			.has(Line.Northern, StatusChange.SameDescriptionSame)
 			.hasNoErrorChange()
+			.has(Line.Northern, DescriptionChange.Missing)
 			.hasNoDescriptionChangeFor(Line.Northern)
 	}
 
 	@Test fun testStationsDifferent() {
 		given(status1).contains(Line.Northern, "description", BranchStatus("from1", "to1"))
-		given(status2).contains(Line.Northern, "description", BranchStatus("from1", "to2"))
+		given(status2).contains(Line.Northern, "description", BranchStatus("from2", "to2"))
 
 		`when`(change).between(status1, status2)
 
 		then(change)
-			.has(Line.Northern, StatusChange.BranchesChange)
 			.hasNoErrorChange()
+			.has(
+				Line.Northern,
+				DescriptionChange.Branches(
+					// STOPSHIP this is strange, branches should be compared not by toString.
+					"Affected branches:\nfrom1 - to1;\n",
+					"Affected branches:\nfrom2 - to2;\n"
+				)
+			)
 			.hasDescriptionChangeFor(Line.Northern)
 	}
 }

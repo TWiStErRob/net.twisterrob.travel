@@ -1,28 +1,15 @@
 package net.twisterrob.travel.statushistory.viewmodel
 
-import net.twisterrob.travel.statushistory.viewmodel.ResultChange.ErrorChange
-import net.twisterrob.travel.statushistory.viewmodel.ResultChange.StatusChange
+import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModel.ErrorChange
+import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModel.StatusChange
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.emptyOrNullString
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.not
 import org.hamcrest.Matchers.notNullValue
-import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.mock
-import java.util.Date
 
-class ResultChangeUnitTest {
-
-	@Test fun testConsistentProperties() {
-		val result1: Result = Result.ContentResult(Date(), mock())
-		val result2: Result = Result.ErrorResult(Date(), "error")
-
-		val change = ResultChange(result1, result2, ErrorChange.NoErrors, emptyMap(), emptyMap())
-
-		assertSame(result1, change.previous)
-		assertSame(result2, change.current)
-	}
+class ResultChangeModelUnitTest {
 
 	@Test fun testStatusChange() {
 		for (change in StatusChange.entries) {
