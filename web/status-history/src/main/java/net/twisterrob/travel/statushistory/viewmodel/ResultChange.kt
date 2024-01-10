@@ -1,6 +1,7 @@
 package net.twisterrob.travel.statushistory.viewmodel
 
 import net.twisterrob.blt.io.feeds.trackernet.model.DelayType
+import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus
 import net.twisterrob.blt.model.Line
 
 open class ResultChange(
@@ -55,8 +56,8 @@ open class ResultChange(
 		) : DescriptionChange()
 
 		data class Branches(
-			val oldBranches: String,
-			val newBranches: String,
+			val oldBranches: List<LineStatus.BranchStatus>,
+			val newBranches: List<LineStatus.BranchStatus>,
 		) : DescriptionChange()
 	}
 

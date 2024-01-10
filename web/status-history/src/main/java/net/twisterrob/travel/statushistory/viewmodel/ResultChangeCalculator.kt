@@ -57,8 +57,8 @@ class ResultChangeCalculator {
 				if (oldDesc != newDesc) {
 					DescriptionChange.Changed(oldDesc, newDesc)
 				} else {
-					val oldBranches = oldStatus.branchDescription
-					val newBranches = newStatus.branchDescription
+					val oldBranches = oldStatus.branchStatuses
+					val newBranches = newStatus.branchStatuses
 					if (oldBranches == newBranches) {
 						DescriptionChange.Same(newDesc)
 					} else {

@@ -93,11 +93,7 @@ class ResultChangeCalculatorUnitTest_Descriptions {
 			.hasNoErrorChange()
 			.has(
 				Line.Northern,
-				DescriptionChange.Branches(
-					// STOPSHIP this is strange, branches should be compared not by toString.
-					"Affected branches:\nfrom1 - to1;\n",
-					"Affected branches:\nfrom2 - to2;\n"
-				)
+				DescriptionChange.Branches(listOf(BranchStatus("from1", "to1")), listOf(BranchStatus("from2", "to2")))
 			)
 			.hasDescriptionChangeFor(Line.Northern)
 	}

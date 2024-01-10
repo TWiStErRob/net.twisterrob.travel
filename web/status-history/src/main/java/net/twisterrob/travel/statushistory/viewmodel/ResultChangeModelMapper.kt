@@ -1,6 +1,7 @@
 package net.twisterrob.travel.statushistory.viewmodel
 
 import net.twisterrob.blt.diff.HtmlDiff
+import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus
 
 class ResultChangeModelMapper {
 
@@ -51,10 +52,23 @@ class ResultChangeModelMapper {
 			is ResultChange.DescriptionChange.Changed -> diffDesc(change.oldDesc, change.newDesc)
 			is ResultChange.DescriptionChange.Added -> diffDesc("", change.newDesc)
 			is ResultChange.DescriptionChange.Removed -> diffDesc(change.oldDesc, "")
-			is ResultChange.DescriptionChange.Branches -> diffDesc(change.oldBranches, change.newBranches)
+			is ResultChange.DescriptionChange.Branches -> diffDesc(describe(change.oldBranches), describe(change.newBranches))
 			ResultChange.DescriptionChange.Missing -> ""
 		}
 
 	private fun diffDesc(oldDesc: String, newDesc: String): String =
 		HtmlDiff().diff(oldDesc, newDesc)
+
+	private fun describe(branches: List<LineStatus.BranchStatus>): String =
+		buildString {
+			if (branches.isNotEmpty()) {
+				append("Affected branches:\n")
+			}
+			for (branch in branches) {
+				append(branch.fromStation)
+				append(" - ")
+				append(branch.toStation)
+				append(";\n")
+			}
+		}
 }

@@ -3,6 +3,7 @@ package net.twisterrob.blt.io.feeds.trackernet.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -52,22 +53,8 @@ public class LineStatus {
 		m_branches.add(lineStatus);
 	}
 
-	public List<BranchStatus> getBranchStatuses() {
+	public @Nonnull List<BranchStatus> getBranchStatuses() {
 		return Collections.unmodifiableList(m_branches);
-	}
-
-	public @Nonnull String getBranchDescription() {
-		StringBuilder sb = new StringBuilder();
-		if (!getBranchStatuses().isEmpty()) {
-			sb.append("Affected branches:\n");
-		}
-		for (BranchStatus branch : getBranchStatuses()) {
-			sb.append(branch.getFromStation());
-			sb.append(" - ");
-			sb.append(branch.getToStation());
-			sb.append(";\n");
-		}
-		return sb.toString();
 	}
 
 	public static class BranchStatus {
@@ -93,6 +80,22 @@ public class LineStatus {
 		}
 		public void setToStation(String name) {
 			this.toStation = name;
+		}
+
+		@Override public boolean equals(Object o) {
+			if (this == o) {
+				return true;
+			}
+			if (o == null || getClass() != o.getClass()) {
+				return false;
+			}
+			BranchStatus status = (BranchStatus)o;
+			return Objects.equals(getFromStation(), status.getFromStation())
+					&& Objects.equals(getToStation(), status.getToStation());
+		}
+
+		@Override public int hashCode() {
+			return Objects.hash(getFromStation(), getToStation());
 		}
 	}
 }
