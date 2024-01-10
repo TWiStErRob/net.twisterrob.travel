@@ -6,7 +6,7 @@ import net.twisterrob.blt.model.Line
 open class ResultChange(
 	val previous: Result?,
 	val current: Result?,
-	val error: ErrorChange,
+	val error: ErrorChange, // STOPSHIP seal for error and changes
 ) {
 
 	interface HasDescriptionChange {
