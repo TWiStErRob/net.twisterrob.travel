@@ -22,6 +22,16 @@ class DomainHistoryRepository(
 		return result.map { it.parse() }
 	}
 
+	override fun getCurrent(feed: Feed): StatusItem =
+		statusDataSource.getCurrent(feed)
+
+	override fun getLatest(feed: Feed): StatusItem? =
+		statusHistoryDataSource.getAll(feed, 1).singleOrNull()
+
+	override fun save(item: StatusItem) {
+		statusHistoryDataSource.add(item)
+	}
+
 	private fun StatusItem.parse(): ParsedStatusItem =
 		when (this) {
 			is StatusItem.SuccessfulStatusItem -> {

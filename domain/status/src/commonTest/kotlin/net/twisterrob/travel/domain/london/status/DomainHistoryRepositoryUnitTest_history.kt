@@ -16,7 +16,7 @@ import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class DomainHistoryRepositoryUnitTest {
+class DomainHistoryRepositoryUnitTest_history {
 
 	private val mockHistory: StatusHistoryDataSource = mock()
 	private val mockStatus: StatusDataSource = mock()

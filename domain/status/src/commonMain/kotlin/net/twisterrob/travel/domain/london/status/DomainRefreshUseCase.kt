@@ -1,22 +1,20 @@
 package net.twisterrob.travel.domain.london.status
 
+import net.twisterrob.travel.domain.london.status.api.HistoryRepository
 import net.twisterrob.travel.domain.london.status.api.RefreshResult
 import net.twisterrob.travel.domain.london.status.api.RefreshUseCase
-import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
-import net.twisterrob.travel.domain.london.status.api.StatusDataSource
 
 class DomainRefreshUseCase(
-	private val statusHistoryDataSource: StatusHistoryDataSource,
-	private val statusDataSource: StatusDataSource,
+	private val historyRepository: HistoryRepository,
 ) : RefreshUseCase {
 
 	override fun refreshLatest(feed: Feed): RefreshResult {
-		val current = statusDataSource.getCurrent(feed)
-		val latest = statusHistoryDataSource.getAll(feed, 1).singleOrNull()
+		val current = historyRepository.getCurrent(feed)
+		val latest = historyRepository.getLatest(feed)
 
 		return when {
 			latest == null -> {
-				statusHistoryDataSource.add(current)
+				historyRepository.save(current)
 				RefreshResult.Created(current)
 			}
 
@@ -29,7 +27,7 @@ class DomainRefreshUseCase(
 			}
 
 			else -> {
-				statusHistoryDataSource.add(current)
+				historyRepository.save(current)
 				RefreshResult.Refreshed(current, latest)
 			}
 		}
