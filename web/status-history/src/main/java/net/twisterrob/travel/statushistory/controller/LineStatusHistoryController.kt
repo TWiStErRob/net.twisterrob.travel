@@ -10,7 +10,7 @@ import io.micronaut.views.View
 import net.twisterrob.blt.data.StaticData
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed
 import net.twisterrob.travel.domain.london.status.Feed
-import net.twisterrob.travel.domain.london.status.api.HistoryUseCase
+import net.twisterrob.travel.domain.london.status.api.HistoryRepository
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
 import net.twisterrob.travel.statushistory.viewmodel.LineColor
 import net.twisterrob.travel.statushistory.viewmodel.Result
@@ -19,7 +19,7 @@ import java.util.Date
 
 @Controller
 class LineStatusHistoryController(
-	private val useCase: HistoryUseCase,
+	private val useCase: HistoryRepository,
 	private val staticData: StaticData,
 ) {
 

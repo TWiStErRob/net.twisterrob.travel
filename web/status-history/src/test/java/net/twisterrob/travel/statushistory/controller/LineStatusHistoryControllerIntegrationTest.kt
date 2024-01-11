@@ -7,7 +7,7 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
 import net.twisterrob.blt.data.StaticData
 import net.twisterrob.blt.model.LineColors
-import net.twisterrob.travel.domain.london.status.api.HistoryUseCase
+import net.twisterrob.travel.domain.london.status.api.HistoryRepository
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.endsWith
 import org.hamcrest.Matchers.startsWith
@@ -26,8 +26,8 @@ class LineStatusHistoryControllerIntegrationTest {
 	@Inject
 	lateinit var client: BlockingHttpClient
 
-	@MockBean(HistoryUseCase::class)
-	val historyUseCase: HistoryUseCase = mock()
+	@MockBean(HistoryRepository::class)
+	val historyUseCase: HistoryRepository = mock()
 
 	@MockBean(StaticData::class)
 	val staticData: StaticData = mock()

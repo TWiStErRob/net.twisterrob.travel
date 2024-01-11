@@ -12,10 +12,9 @@ import net.twisterrob.blt.io.feeds.LocalhostUrlBuilder
 import net.twisterrob.blt.io.feeds.TFLUrlBuilder
 import net.twisterrob.blt.io.feeds.URLBuilder
 import net.twisterrob.travel.domain.london.status.DomainHistoryRepository
-import net.twisterrob.travel.domain.london.status.DomainHistoryUseCase
 import net.twisterrob.travel.domain.london.status.DomainRefreshUseCase
 import net.twisterrob.travel.domain.london.status.api.FeedParser
-import net.twisterrob.travel.domain.london.status.api.HistoryUseCase
+import net.twisterrob.travel.domain.london.status.api.HistoryRepository
 import net.twisterrob.travel.domain.london.status.api.RefreshUseCase
 import net.twisterrob.travel.domain.london.status.api.StatusDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
@@ -38,8 +37,8 @@ class Dependencies {
 		statusHistoryDataSource: StatusHistoryDataSource,
 		statusDataSource: StatusDataSource,
 		feedParser: FeedParser,
-	): HistoryUseCase =
-		DomainHistoryUseCase(DomainHistoryRepository(statusHistoryDataSource, statusDataSource, feedParser))
+	): HistoryRepository =
+		DomainHistoryRepository(statusHistoryDataSource, statusDataSource, feedParser)
 
 	/**
 	 * External dependency from domain layer in common KMP code.
