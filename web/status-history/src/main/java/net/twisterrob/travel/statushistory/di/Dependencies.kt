@@ -11,10 +11,10 @@ import net.twisterrob.blt.data.StaticData
 import net.twisterrob.blt.io.feeds.LocalhostUrlBuilder
 import net.twisterrob.blt.io.feeds.TFLUrlBuilder
 import net.twisterrob.blt.io.feeds.URLBuilder
-import net.twisterrob.travel.domain.london.status.DomainHistoryRepository
+import net.twisterrob.travel.domain.london.status.DomainStatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.DomainRefreshUseCase
 import net.twisterrob.travel.domain.london.status.api.FeedParser
-import net.twisterrob.travel.domain.london.status.api.HistoryRepository
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.api.RefreshUseCase
 import net.twisterrob.travel.domain.london.status.api.StatusDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
@@ -33,22 +33,21 @@ class Dependencies {
 	 * External dependency from domain layer in common KMP code.
 	 */
 	@Prototype
-	fun historyUseCase(
+	fun historyRepository(
 		statusHistoryDataSource: StatusHistoryDataSource,
 		statusDataSource: StatusDataSource,
 		feedParser: FeedParser,
-	): HistoryRepository =
-		DomainHistoryRepository(statusHistoryDataSource, statusDataSource, feedParser)
+	): StatusHistoryRepository =
+		DomainStatusHistoryRepository(statusHistoryDataSource, statusDataSource, feedParser)
 
 	/**
 	 * External dependency from domain layer in common KMP code.
 	 */
 	@Prototype
 	fun refreshUseCase(
-		statusHistoryDataSource: StatusHistoryDataSource,
-		statusDataSource: StatusDataSource,
+		statusHistoryRepository: StatusHistoryRepository,
 	): RefreshUseCase =
-		DomainRefreshUseCase(statusHistoryDataSource, statusDataSource)
+		DomainRefreshUseCase(statusHistoryRepository)
 
 	@Singleton
 	fun staticData(): StaticData =

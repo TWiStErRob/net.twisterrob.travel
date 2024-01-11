@@ -7,7 +7,7 @@ import io.mockative.verify
 import io.mockative.verifyNoUnmetExpectations
 import io.mockative.verifyNoUnverifiedExpectations
 import net.twisterrob.travel.domain.london.status.api.FeedParser
-import net.twisterrob.travel.domain.london.status.api.HistoryRepository
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.api.StatusDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
 import kotlin.test.AfterTest
@@ -20,7 +20,7 @@ class DomainHistoryRepositoryUnitTest_getLatest {
 	private val mockHistory: StatusHistoryDataSource = mock()
 	private val mockStatus: StatusDataSource = mock()
 	private val mockParser: FeedParser = mock()
-	private val subject: HistoryRepository = DomainHistoryRepository(mockHistory, mockStatus, mockParser)
+	private val subject: StatusHistoryRepository = DomainStatusHistoryRepository(mockHistory, mockStatus, mockParser)
 	private val feed = Feed.TubeDepartureBoardsLineStatus
 
 	@AfterTest

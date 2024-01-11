@@ -1,16 +1,16 @@
 package net.twisterrob.travel.domain.london.status
 
 import net.twisterrob.travel.domain.london.status.api.FeedParser
-import net.twisterrob.travel.domain.london.status.api.HistoryRepository
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
 import net.twisterrob.travel.domain.london.status.api.StatusDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
 
-class DomainHistoryRepository(
+class DomainStatusHistoryRepository(
 	private val statusHistoryDataSource: StatusHistoryDataSource,
 	private val statusDataSource: StatusDataSource,
 	private val feedParser: FeedParser,
-) : HistoryRepository {
+) : StatusHistoryRepository {
 
 	override fun history(feed: Feed, max: Int, includeCurrent: Boolean): List<ParsedStatusItem> {
 		val result = mutableListOf<StatusItem>()

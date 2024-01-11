@@ -3,7 +3,7 @@ package net.twisterrob.travel.domain.london.status.api
 import net.twisterrob.travel.domain.london.status.Feed
 import net.twisterrob.travel.domain.london.status.StatusItem
 
-interface HistoryRepository {
+interface StatusHistoryRepository {
 
 	/**
 	 * Returns the top [max] items from the history of [feed] ordered by [StatusItem.retrievedDate],
