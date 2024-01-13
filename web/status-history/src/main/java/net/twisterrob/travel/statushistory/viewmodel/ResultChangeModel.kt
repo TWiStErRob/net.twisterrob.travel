@@ -6,8 +6,8 @@ import java.util.Date
 
 open class ResultChangeModel(
 	val `when`: Date?,
-	val error: ErrorChange?,
 	val statuses: List<LineStatusModel>,
+	val error: ErrorChange?,
 ) {
 
 	class LineStatusModel(

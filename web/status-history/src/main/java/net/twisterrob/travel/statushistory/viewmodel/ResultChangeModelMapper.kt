@@ -12,7 +12,7 @@ class ResultChangeModelMapper {
 			`when` = changes.current?.`when`,
 			error = mapError(changes),
 			statuses = map(
-				(changes.current as? Result.ContentResult)?.content?.lineStatuses ?: emptyList<LineStatus?>(),
+				(changes.current as? Result.ContentResult)?.content?.lineStatuses.orEmpty(),
 				(changes as? Changes.Status)?.changes.orEmpty(),
 			),
 		)
