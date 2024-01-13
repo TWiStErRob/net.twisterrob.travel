@@ -8,7 +8,6 @@ class ResultChangeModelMapper {
 	fun map(changes: Changes): ResultChangeModel {
 		val statusChanges = (changes as? Changes.Status)?.changes.orEmpty()
 		return ResultChangeModel(
-			previous = changes.previous,
 			current = changes.current,
 			error = mapError(changes),
 			statuses = statusChanges.mapValues { map(it.value) },
@@ -56,19 +55,6 @@ class ResultChangeModelMapper {
 			is DescriptionChange.Branches -> diffDesc(describe(change.oldBranches), describe(change.newBranches))
 			DescriptionChange.Missing -> ""
 		}
-
-	private val Changes.previous: Result?
-		get() =
-			when (this) {
-				is Changes.Status -> previous
-				is Changes.NewStatus -> null
-				is Changes.LastStatus -> previous
-				is Changes.None -> null
-				is Changes.ErrorChanges.Change -> oldError
-				is Changes.ErrorChanges.Failed -> null
-				is Changes.ErrorChanges.Fixed -> oldError
-				is Changes.ErrorChanges.Same -> error
-			}
 
 	private val Changes.current: Result?
 		get() =
