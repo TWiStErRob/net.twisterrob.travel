@@ -1,4 +1,4 @@
-@file:Suppress("unused") // Used by LineStatus.hbs.
+@file:Suppress("unused", "CanBeParameter", "MemberVisibilityCanBePrivate") // Used by LineStatus.hbs.
 
 package net.twisterrob.travel.statushistory.viewmodel
 
@@ -41,6 +41,11 @@ class ResultChangeModel(
 		SameDescriptionAdd("+ descr.", "status-same-desc-add"),
 		SameDescriptionDel("- descr.", "status-same-desc-del"),
 		BranchesChange("branches", "status-same-branch-change"),
+		;
+
+		init {
+			require(cssClass.isNotEmpty()) { "CSS class must not be empty: ${this} has cssClass=${cssClass}." }
+		}
 	}
 
 	class ErrorChange(
