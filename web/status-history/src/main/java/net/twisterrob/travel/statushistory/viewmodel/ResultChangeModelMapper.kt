@@ -3,24 +3,19 @@ package net.twisterrob.travel.statushistory.viewmodel
 import net.twisterrob.blt.diff.HtmlDiff
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus
 import net.twisterrob.blt.model.Line
+import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModel.LineStatusModel
 
 class ResultChangeModelMapper {
 
-	fun map(changes: Changes): ResultChangeModel {
-		val statusChanges = (changes as? Changes.Status)?.changes.orEmpty()
-		return ResultChangeModel(
+	fun map(changes: Changes): ResultChangeModel =
+		ResultChangeModel(
 			`when` = changes.current?.`when`,
 			error = mapError(changes),
 			statuses = map(
 				(changes.current as? Result.ContentResult)?.content?.lineStatuses ?: emptyList<LineStatus?>(),
-				statusChanges.mapValues { map(it.value) },
-				statusChanges
-					.filterValues { it is HasDescriptionChange }
-					.mapValues { it.value as HasDescriptionChange }
-					.mapValues { diffDesc(it.value.desc) }
+				(changes as? Changes.Status)?.changes.orEmpty(),
 			),
 		)
-	}
 
 	private fun mapError(changes: Changes): ResultChangeModel.ErrorChange {
 		val error = (changes.current as? Result.ErrorResult)?.error
@@ -69,22 +64,24 @@ class ResultChangeModelMapper {
 			DescriptionChange.Missing -> ""
 		}
 
-	private fun map(
-		lineStatuses: List<LineStatus>,
-		statuses: Map<Line, ResultChangeModel.StatusChange>,
-		descriptions: Map<Line, String>,
-	): List<ResultChangeModel.LineStatusModel> =
-		lineStatuses.map { lineStatus ->
-			ResultChangeModel.LineStatusModel(
+	private fun map(statuses: List<LineStatus>, changes: Map<Line, StatusChange>): List<LineStatusModel> {
+		val statuses1: Map<Line, ResultChangeModel.StatusChange> = changes.mapValues { map(it.value) }
+		val descriptions: Map<Line, String> = changes
+			.filterValues { it is HasDescriptionChange }
+			.mapValues { it.value as HasDescriptionChange }
+			.mapValues { diffDesc(it.value.desc) }
+		return statuses.map { lineStatus ->
+			LineStatusModel(
 				line = lineStatus.line,
 				type = lineStatus.type,
 				description = lineStatus.description,
-				changeStatus = statuses[lineStatus.line],
+				changeStatus = statuses1[lineStatus.line],
 				changeDescription = descriptions[lineStatus.line],
 				active = lineStatus.isActive,
 				branchDescription = describe(lineStatus.branchStatuses),
 			)
 		}
+	}
 
 	private val Changes.current: Result?
 		get() =
