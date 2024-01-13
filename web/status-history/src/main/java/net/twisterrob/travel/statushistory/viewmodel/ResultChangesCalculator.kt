@@ -24,7 +24,7 @@ class ResultChangesCalculator {
 			oldResult == null && newResult != null -> Changes.NewStatus(newResult)
 			oldResult != null && newResult == null -> Changes.LastStatus(oldResult)
 			oldResult != null && newResult != null -> diffResults(oldResult, newResult)
-			else /* oldResult == null && newResult == null */ -> Changes.None
+			else /* oldResult == null && newResult == null */ -> Changes.Inconclusive
 		}
 
 	private fun diffResults(oldResult: Result, newResult: Result): Changes =

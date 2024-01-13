@@ -2,33 +2,40 @@ package net.twisterrob.travel.statushistory.viewmodel
 
 import net.twisterrob.blt.diff.HtmlDiff
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus
+import net.twisterrob.blt.model.Line
+import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModel.LineStatusModel
 
 class ResultChangeModelMapper {
 
-	fun map(changes: Changes): ResultChangeModel {
-		val statusChanges = (changes as? Changes.Status)?.changes.orEmpty()
-		return ResultChangeModel(
-			previous = changes.previous,
-			current = changes.current,
+	fun map(changes: Changes): ResultChangeModel =
+		ResultChangeModel(
+			`when` = changes.current?.`when`,
 			error = mapError(changes),
-			statuses = statusChanges.mapValues { map(it.value) },
-			descriptions = statusChanges
-				.filterValues { it is HasDescriptionChange }
-				.mapValues { it.value as HasDescriptionChange }
-				.mapValues { diffDesc(it.value.desc) },
+			statuses = map(
+				(changes.current as? Result.ContentResult)?.content?.lineStatuses.orEmpty(),
+				(changes as? Changes.Status)?.changes.orEmpty(),
+			),
+		)
+
+	private fun mapError(changes: Changes): ResultChangeModel.ErrorChange {
+		val error = (changes.current as? Result.ErrorResult)?.error
+		return ResultChangeModel.ErrorChange(
+			full = error?.text,
+			header = error?.header,
+			type = mapErrorType(changes),
 		)
 	}
 
-	private fun mapError(changes: Changes): ResultChangeModel.ErrorChange =
+	private fun mapErrorType(changes: Changes): ResultChangeModel.ErrorChange.Type =
 		when (changes) {
-			is Changes.Status -> ResultChangeModel.ErrorChange.NoErrors
-			Changes.None -> ResultChangeModel.ErrorChange.NoErrors
-			is Changes.NewStatus -> ResultChangeModel.ErrorChange.NewStatus
-			is Changes.LastStatus -> ResultChangeModel.ErrorChange.LastStatus
-			is Changes.ErrorChanges.Same -> ResultChangeModel.ErrorChange.Same
-			is Changes.ErrorChanges.Change -> ResultChangeModel.ErrorChange.Change
-			is Changes.ErrorChanges.Failed -> ResultChangeModel.ErrorChange.Failed
-			is Changes.ErrorChanges.Fixed -> ResultChangeModel.ErrorChange.Fixed
+			is Changes.Status -> ResultChangeModel.ErrorChange.Type.NoErrors
+			Changes.Inconclusive -> ResultChangeModel.ErrorChange.Type.NoErrors
+			is Changes.NewStatus -> ResultChangeModel.ErrorChange.Type.NewStatus
+			is Changes.LastStatus -> ResultChangeModel.ErrorChange.Type.LastStatus
+			is Changes.ErrorChanges.Same -> ResultChangeModel.ErrorChange.Type.Same
+			is Changes.ErrorChanges.Change -> ResultChangeModel.ErrorChange.Type.Change
+			is Changes.ErrorChanges.Failed -> ResultChangeModel.ErrorChange.Type.Failed
+			is Changes.ErrorChanges.Fixed -> ResultChangeModel.ErrorChange.Type.Fixed
 		}
 
 	private fun map(value: StatusChange): ResultChangeModel.StatusChange =
@@ -57,18 +64,18 @@ class ResultChangeModelMapper {
 			DescriptionChange.Missing -> ""
 		}
 
-	private val Changes.previous: Result?
-		get() =
-			when (this) {
-				is Changes.Status -> previous
-				is Changes.NewStatus -> null
-				is Changes.LastStatus -> previous
-				is Changes.None -> null
-				is Changes.ErrorChanges.Change -> oldError
-				is Changes.ErrorChanges.Failed -> null
-				is Changes.ErrorChanges.Fixed -> oldError
-				is Changes.ErrorChanges.Same -> error
-			}
+	private fun map(statuses: List<LineStatus>, changes: Map<Line, StatusChange>): List<LineStatusModel> =
+		statuses.map { lineStatus ->
+			LineStatusModel(
+				line = lineStatus.line,
+				type = lineStatus.type,
+				description = lineStatus.description,
+				changeStatus = changes[lineStatus.line]?.let(::map),
+				changeDescription = (changes[lineStatus.line] as? HasDescriptionChange)?.let { diffDesc(it.desc) },
+				active = lineStatus.isActive,
+				branchDescription = describe(lineStatus.branchStatuses),
+			)
+		}
 
 	private val Changes.current: Result?
 		get() =
@@ -76,7 +83,7 @@ class ResultChangeModelMapper {
 				is Changes.Status -> current
 				is Changes.NewStatus -> current
 				is Changes.LastStatus -> null
-				is Changes.None -> null
+				is Changes.Inconclusive -> null
 				is Changes.ErrorChanges.Change -> newError
 				is Changes.ErrorChanges.Failed -> newError
 				is Changes.ErrorChanges.Fixed -> newResult

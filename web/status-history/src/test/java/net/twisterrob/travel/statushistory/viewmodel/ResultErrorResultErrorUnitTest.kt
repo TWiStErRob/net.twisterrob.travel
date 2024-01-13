@@ -11,7 +11,7 @@ class ResultErrorResultErrorUnitTest {
 
 		val result = Result.ErrorResult.Error(error)
 
-		assertEquals(error, result.error)
+		assertEquals(error, result.text)
 		assertEquals(errorHeader, result.header)
 	}
 
@@ -21,7 +21,7 @@ class ResultErrorResultErrorUnitTest {
 
 		val result = Result.ErrorResult.Error(error)
 
-		assertEquals(error, result.error)
+		assertEquals(error, result.text)
 		assertEquals(errorHeader, result.header)
 	}
 
@@ -31,7 +31,7 @@ class ResultErrorResultErrorUnitTest {
 
 		val result = Result.ErrorResult.Error(error)
 
-		assertEquals(error, result.error)
+		assertEquals(error, result.text)
 		assertEquals(errorHeader, result.header)
 	}
 }

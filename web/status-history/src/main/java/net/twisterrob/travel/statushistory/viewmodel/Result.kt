@@ -5,7 +5,6 @@ import java.util.Date
 
 sealed interface Result {
 
-	// Used by Handlebars reflection in LineStatus.hbs.
 	@Suppress("detekt.VariableNaming")
 	val `when`: Date
 
@@ -21,11 +20,11 @@ sealed interface Result {
 
 		@JvmInline
 		value class Error(
-			val error: String,
+			val text: String,
 		) {
 
 			val header: String
-				get() = error.substringBefore('\n')
+				get() = text.substringBefore('\n')
 		}
 	}
 }

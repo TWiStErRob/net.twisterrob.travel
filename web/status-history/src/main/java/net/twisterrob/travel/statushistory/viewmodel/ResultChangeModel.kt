@@ -1,14 +1,31 @@
+@file:Suppress("unused", "CanBeParameter", "MemberVisibilityCanBePrivate") // Used by LineStatus.hbs.
+
 package net.twisterrob.travel.statushistory.viewmodel
 
+import net.twisterrob.blt.io.feeds.trackernet.model.DelayType
 import net.twisterrob.blt.model.Line
+import java.util.Date
 
-open class ResultChangeModel(
-	val previous: Result?,
-	val current: Result?,
+class LineStatusModel(
+	val feedChanges: List<ResultChangeModel>,
+	val colors: Iterable<LineColor>,
+)
+
+class ResultChangeModel(
+	val `when`: Date?,
+	val statuses: List<LineStatusModel>,
 	val error: ErrorChange?,
-	val statuses: Map<Line, StatusChange>,
-	val descriptions: Map<Line, String>,
 ) {
+
+	class LineStatusModel(
+		val line: Line,
+		val type: DelayType,
+		val description: String?,
+		val active: Boolean,
+		val branchDescription: String?,
+		val changeStatus: StatusChange?,
+		val changeDescription: String?,
+	)
 
 	enum class StatusChange(
 		val title: String,
@@ -24,18 +41,30 @@ open class ResultChangeModel(
 		SameDescriptionAdd("+ descr.", "status-same-desc-add"),
 		SameDescriptionDel("- descr.", "status-same-desc-del"),
 		BranchesChange("branches", "status-same-branch-change"),
+		;
+
+		init {
+			require(cssClass.isNotEmpty()) { "CSS class must not be empty: ${this} has cssClass=${cssClass}." }
+		}
 	}
 
-	enum class ErrorChange(
-		val title: String,
+	class ErrorChange(
+		val type: Type,
+		val header: String?,
+		val full: String?,
 	) {
 
-		Same("same error"),
-		Change("error changed"),
-		Failed("new error"),
-		Fixed("error fixed"),
-		NoErrors(""),
-		NewStatus(""),
-		LastStatus(""),
+		enum class Type(
+			val title: String,
+		) {
+
+			Same("same error"),
+			Change("error changed"),
+			Failed("new error"),
+			Fixed("error fixed"),
+			NoErrors(""),
+			NewStatus(""),
+			LastStatus(""),
+		}
 	}
 }
