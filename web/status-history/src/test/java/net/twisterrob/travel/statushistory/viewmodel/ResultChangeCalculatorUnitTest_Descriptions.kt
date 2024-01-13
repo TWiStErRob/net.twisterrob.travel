@@ -83,17 +83,16 @@ class ResultChangeCalculatorUnitTest_Descriptions {
 	}
 
 	@Test fun testStationsDifferent() {
-		given(status1).contains(Line.Northern, "description", BranchStatus("from1", "to1"))
-		given(status2).contains(Line.Northern, "description", BranchStatus("from2", "to2"))
+		val branch1 = BranchStatus("from1", "to1")
+		val branch2 = BranchStatus("from2", "to2")
+		given(status1).contains(Line.Northern, "description", branch1)
+		given(status2).contains(Line.Northern, "description", branch2)
 
 		`when`(change).between(status1, status2)
 
 		then(change)
 			.hasNoErrorChange()
-			.has(
-				Line.Northern,
-				DescriptionChange.Branches(listOf(BranchStatus("from1", "to1")), listOf(BranchStatus("from2", "to2")))
-			)
+			.has(Line.Northern, DescriptionChange.Branches(listOf(branch1), listOf(branch2)))
 			.hasDescriptionChangeFor(Line.Northern)
 	}
 }
