@@ -14,7 +14,6 @@ import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
 import net.twisterrob.travel.statushistory.viewmodel.LineColor
 import net.twisterrob.travel.statushistory.viewmodel.Result
-import net.twisterrob.travel.statushistory.viewmodel.ResultChange
 import net.twisterrob.travel.statushistory.viewmodel.ResultChangeCalculator
 import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModel
 import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModelMapper
@@ -39,7 +38,7 @@ class LineStatusHistoryController(
 		val results = history
 			.filter { displayErrors || it !is ParsedStatusItem.ParseFailed }
 			.map(ParsedStatusItem::toResult)
-		val differences = getDifferences(results)
+		val differences = ResultChangeCalculator().getDifferences(results)
 
 		return HttpResponse.ok(
 			LineStatusHistoryModel(
@@ -68,16 +67,4 @@ private fun ParsedStatusItem.toResult(): Result {
 		is ParsedStatusItem.ParseFailed ->
 			Result.ErrorResult(date, Result.ErrorResult.Error("Error while displaying loaded XML: ${this.error.stacktrace}"))
 	}
-}
-
-private fun getDifferences(results: List<Result>): List<ResultChange> {
-	val resultChanges: MutableList<ResultChange> = ArrayList(results.size)
-	var newResult: Result? = null
-	for (oldResult in results) { // We're going forward, but the list is backwards.
-		resultChanges.add(ResultChangeCalculator().diff(oldResult, newResult))
-		newResult = oldResult
-	}
-	resultChanges.add(ResultChangeCalculator().diff(null, newResult))
-	resultChanges.removeAt(0)
-	return resultChanges
 }

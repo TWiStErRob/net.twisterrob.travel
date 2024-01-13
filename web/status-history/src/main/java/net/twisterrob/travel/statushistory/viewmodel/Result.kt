@@ -5,13 +5,16 @@ import java.util.Date
 
 sealed interface Result {
 
+	@Suppress("detekt.VariableNaming")
+	val `when`: Date
+
 	class ContentResult(
-		val `when`: Date,
+		override val `when`: Date,
 		val content: LineStatusFeed,
 	) : Result
 
 	class ErrorResult(
-		val `when`: Date,
+		override val `when`: Date,
 		val error: Error,
 	) : Result {
 

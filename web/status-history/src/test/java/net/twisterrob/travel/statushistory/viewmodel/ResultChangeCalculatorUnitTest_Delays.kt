@@ -5,8 +5,8 @@ import com.shazam.gwen.Gwen.then
 import com.shazam.gwen.Gwen.`when`
 import net.twisterrob.blt.io.feeds.trackernet.model.DelayType
 import net.twisterrob.blt.model.Line
-import net.twisterrob.travel.statushistory.viewmodel.ResultChange.DescriptionChange.Missing
-import net.twisterrob.travel.statushistory.viewmodel.ResultChange.StatusChange
+import net.twisterrob.travel.statushistory.viewmodel.Difference.DescriptionChange.Missing
+import net.twisterrob.travel.statushistory.viewmodel.Difference.StatusChange
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -60,7 +60,7 @@ class ResultChangeCalculatorUnitTest_Delays {
 
 		then(change)
 			.hasNoErrorChange()
-			.has(Line.Jubilee, StatusChange.Unknown)
+			.has(Line.Jubilee, StatusChange.Appeared(DelayType.GoodService))
 			.hasNoDescriptionChangeFor(Line.Northern, Line.Jubilee)
 	}
 
@@ -72,7 +72,7 @@ class ResultChangeCalculatorUnitTest_Delays {
 
 		then(change)
 			.hasNoErrorChange()
-			.has(Line.Jubilee, StatusChange.Unknown)
+			.has(Line.Jubilee, StatusChange.Disappeared(DelayType.GoodService))
 			.hasNoDescriptionChangeFor(Line.Northern, Line.Jubilee)
 	}
 }

@@ -4,18 +4,33 @@ import net.twisterrob.blt.io.feeds.trackernet.model.DelayType
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus
 import net.twisterrob.blt.model.Line
 
-open class ResultChange(
-	val previous: Result?,
-	val current: Result?,
-	val error: ErrorChange, // STOPSHIP seal for error and changes
-) {
+sealed interface Difference {
 
-	interface HasDescriptionChange {
+	data object Nothing : Difference
 
-		val desc: DescriptionChange
-	}
+	data class NewStatus(
+		val current: Result,
+	) : Difference
+
+	data class LastStatus(
+		val previous: Result,
+	) : Difference
+
+	data class Changes(
+		val previous: Result,
+		val current: Result,
+		val changes: Map<Line, StatusChange>,
+	) : Difference
 
 	sealed class StatusChange {
+		data class Appeared(
+			val newDelay: DelayType,
+		) : StatusChange()
+
+		data class Disappeared(
+			val oldDelay: DelayType,
+		) : StatusChange()
+
 		data class Better(
 			val oldDelay: DelayType,
 			val newDelay: DelayType,
@@ -32,8 +47,11 @@ open class ResultChange(
 			val delay: DelayType,
 			override val desc: DescriptionChange,
 		) : StatusChange(), HasDescriptionChange
+	}
 
-		data object Unknown : StatusChange()
+	interface HasDescriptionChange {
+
+		val desc: DescriptionChange
 	}
 
 	sealed class DescriptionChange {
@@ -61,29 +79,24 @@ open class ResultChange(
 		) : DescriptionChange()
 	}
 
-	sealed interface ErrorChange {
+	sealed interface ErrorDifference : Difference {
 		data class Same(
-			val error: Result.ErrorResult.Error,
-		) : ErrorChange
+			val error: Result.ErrorResult,
+		) : ErrorDifference
 
 		data class Change(
-			val oldError: Result.ErrorResult.Error,
-			val newError: Result.ErrorResult.Error,
-		) : ErrorChange
+			val oldError: Result.ErrorResult,
+			val newError: Result.ErrorResult,
+		) : ErrorDifference
 
 		data class Failed(
-			val newError: Result.ErrorResult.Error,
-		) : ErrorChange
+			val oldResult: Result.ContentResult,
+			val newError: Result.ErrorResult,
+		) : ErrorDifference
 
 		data class Fixed(
-			val oldError: Result.ErrorResult.Error,
-		) : ErrorChange
-
-		data class NoErrors(
-			val changes: Map<Line, StatusChange>,
-		) : ErrorChange
-
-		data object NewStatus : ErrorChange
-		data object LastStatus : ErrorChange
+			val oldError: Result.ErrorResult,
+			val newResult: Result.ContentResult,
+		) : ErrorDifference
 	}
 }

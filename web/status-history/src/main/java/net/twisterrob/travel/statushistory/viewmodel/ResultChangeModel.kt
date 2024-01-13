@@ -5,7 +5,7 @@ import net.twisterrob.blt.model.Line
 open class ResultChangeModel(
 	val previous: Result?,
 	val current: Result?,
-	val error: ErrorChange,
+	val error: ErrorChange?,
 	val statuses: Map<Line, StatusChange>,
 	val descriptions: Map<Line, String>,
 ) {
