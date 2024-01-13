@@ -80,11 +80,13 @@
 				{{formatDate feed.when "yyyy-MM-dd HH:mm:ss"}}
 			</th>
 		</tr>
+		{{#if (empty feed.header)}}
 		<tr>
 			<th>Line</th>
 			<th>Disruption Type</th>
 			<th>Change</th>
 		</tr>
+		{{/if}}
 		</thead>
 		<tbody>
 		{{#each feed.content.lineStatuses as | lineStatus | }}
