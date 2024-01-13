@@ -7,44 +7,44 @@ import io.mockative.verify
 import io.mockative.verifyNoUnmetExpectations
 import io.mockative.verifyNoUnverifiedExpectations
 import net.twisterrob.travel.domain.london.status.api.FeedParser
-import net.twisterrob.travel.domain.london.status.api.HistoryUseCase
-import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
-import net.twisterrob.travel.domain.london.status.api.StatusInteractor
+import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
+import net.twisterrob.travel.domain.london.status.api.StatusDataSource
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
 import java.io.IOException
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class DomainHistoryUseCaseUnitTest {
+class DomainHistoryRepositoryUnitTest_history {
 
-	private val mockRepo: StatusHistoryRepository = mock()
-	private val mockInteractor: StatusInteractor = mock()
+	private val mockHistory: StatusHistoryDataSource = mock()
+	private val mockStatus: StatusDataSource = mock()
 	private val mockParser: FeedParser = mock()
-	private val subject: HistoryUseCase = DomainHistoryUseCase(mockRepo, mockInteractor, mockParser)
+	private val subject: StatusHistoryRepository = DomainStatusHistoryRepository(mockHistory, mockStatus, mockParser)
 	private val feed = Feed.TubeDepartureBoardsLineStatus
 
 	@AfterTest
 	fun verify() {
-		listOf(mockRepo, mockInteractor, mockParser).forEach {
+		listOf(mockHistory, mockStatus, mockParser).forEach {
 			verifyNoUnverifiedExpectations(it)
 			verifyNoUnmetExpectations(it)
 		}
 	}
 
 	@Test fun `empty history is processed`() {
-		every { mockRepo.getAll(any(), any()) }.returns(emptyList())
+		every { mockHistory.getAll(any(), any()) }.returns(emptyList())
 
 		val result = subject.history(feed, max = 123, includeCurrent = false)
 		assertEquals(emptyList(), result)
 
-		verify { mockRepo.getAll(feed, 123) }.wasInvoked()
+		verify { mockHistory.getAll(feed, 123) }.wasInvoked()
 	}
 
 	@Test fun `empty history with current is returned`() {
 		val current = SuccessfulStatusItem()
-		every { mockRepo.getAll(any(), any()) }.returns(emptyList())
-		every { mockInteractor.getCurrent(any()) }.returns(current)
+		every { mockHistory.getAll(any(), any()) }.returns(emptyList())
+		every { mockStatus.getCurrent(any()) }.returns(current)
 		val parsed = Any()
 		every { mockParser.parse(any(), any()) }.returns(parsed)
 
@@ -54,8 +54,8 @@ class DomainHistoryUseCaseUnitTest {
 		)
 		assertEquals(expected, result)
 
-		verify { mockRepo.getAll(feed, 123) }.wasInvoked()
-		verify { mockInteractor.getCurrent(feed) }.wasInvoked()
+		verify { mockHistory.getAll(feed, 123) }.wasInvoked()
+		verify { mockStatus.getCurrent(feed) }.wasInvoked()
 		verify { mockParser.parse(current.feed, current.content) }.wasInvoked()
 	}
 
@@ -63,8 +63,8 @@ class DomainHistoryUseCaseUnitTest {
 		val current = SuccessfulStatusItem()
 		val existing1 = SuccessfulStatusItem()
 		val existing2 = SuccessfulStatusItem()
-		every { mockRepo.getAll(any(), any()) }.returns(listOf(existing1, existing2))
-		every { mockInteractor.getCurrent(any()) }.returns(current)
+		every { mockHistory.getAll(any(), any()) }.returns(listOf(existing1, existing2))
+		every { mockStatus.getCurrent(any()) }.returns(current)
 		val currentParsed = Any()
 		val existingParsed1 = Any()
 		val existingParsed2 = Any()
@@ -78,8 +78,8 @@ class DomainHistoryUseCaseUnitTest {
 		)
 		assertEquals(expected, result)
 
-		verify { mockRepo.getAll(feed, 123) }.wasInvoked()
-		verify { mockInteractor.getCurrent(feed) }.wasInvoked()
+		verify { mockHistory.getAll(feed, 123) }.wasInvoked()
+		verify { mockStatus.getCurrent(feed) }.wasInvoked()
 		verify { mockParser.parse(current.feed, current.content) }.wasInvoked()
 		verify { mockParser.parse(existing1.feed, existing1.content) }.wasInvoked()
 		verify { mockParser.parse(existing2.feed, existing2.content) }.wasInvoked()
@@ -88,7 +88,7 @@ class DomainHistoryUseCaseUnitTest {
 	@Test fun `failed existing is returned`() {
 		val existing1 = FailedStatusItem()
 		val existing2 = SuccessfulStatusItem()
-		every { mockRepo.getAll(any(), any()) }.returns(listOf(existing1, existing2))
+		every { mockHistory.getAll(any(), any()) }.returns(listOf(existing1, existing2))
 		val existingParsed2 = Any()
 		every { mockParser.parse(any(), any()) }.returns(existingParsed2)
 
@@ -99,7 +99,7 @@ class DomainHistoryUseCaseUnitTest {
 		)
 		assertEquals(expected, result)
 
-		verify { mockRepo.getAll(feed, 123) }.wasInvoked()
+		verify { mockHistory.getAll(feed, 123) }.wasInvoked()
 		verify { mockParser.parse(existing2.feed, existing2.content) }.wasInvoked()
 	}
 
@@ -107,8 +107,8 @@ class DomainHistoryUseCaseUnitTest {
 		val current = FailedStatusItem()
 		val existing1 = SuccessfulStatusItem()
 		val existing2 = SuccessfulStatusItem()
-		every { mockRepo.getAll(any(), any()) }.returns(listOf(existing1, existing2))
-		every { mockInteractor.getCurrent(any()) }.returns(current)
+		every { mockHistory.getAll(any(), any()) }.returns(listOf(existing1, existing2))
+		every { mockStatus.getCurrent(any()) }.returns(current)
 		val existingParsed1 = Any()
 		val existingParsed2 = Any()
 		every { mockParser.parse(any(), any()) }.returnsMany(existingParsed1, existingParsed2)
@@ -121,8 +121,8 @@ class DomainHistoryUseCaseUnitTest {
 		)
 		assertEquals(expected, result)
 
-		verify { mockRepo.getAll(feed, 123) }.wasInvoked()
-		verify { mockInteractor.getCurrent(feed) }.wasInvoked()
+		verify { mockHistory.getAll(feed, 123) }.wasInvoked()
+		verify { mockStatus.getCurrent(feed) }.wasInvoked()
 		verify { mockParser.parse(existing1.feed, existing1.content) }.wasInvoked()
 		verify { mockParser.parse(existing2.feed, existing2.content) }.wasInvoked()
 	}
@@ -130,7 +130,7 @@ class DomainHistoryUseCaseUnitTest {
 	@Test fun `existing failing to parse is returned`() {
 		val existing1 = SuccessfulStatusItem()
 		val existing2 = SuccessfulStatusItem()
-		every { mockRepo.getAll(any(), any()) }.returns(listOf(existing1, existing2))
+		every { mockHistory.getAll(any(), any()) }.returns(listOf(existing1, existing2))
 		val existingParsed1 = Any()
 		val ex = IOException("Failed to parse XML")
 		every { mockParser.parse(any(), any()) }.invokesMany({ existingParsed1 }, { throw ex })
@@ -142,7 +142,7 @@ class DomainHistoryUseCaseUnitTest {
 		)
 		assertEquals(expected, result)
 
-		verify { mockRepo.getAll(feed, 123) }.wasInvoked()
+		verify { mockHistory.getAll(feed, 123) }.wasInvoked()
 		verify { mockParser.parse(existing1.feed, existing1.content) }.wasInvoked()
 		verify { mockParser.parse(existing2.feed, existing2.content) }.wasInvoked()
 	}
@@ -151,8 +151,8 @@ class DomainHistoryUseCaseUnitTest {
 		val current = SuccessfulStatusItem()
 		val existing1 = SuccessfulStatusItem()
 		val existing2 = SuccessfulStatusItem()
-		every { mockRepo.getAll(any(), any()) }.returns(listOf(existing1, existing2))
-		every { mockInteractor.getCurrent(any()) }.returns(current)
+		every { mockHistory.getAll(any(), any()) }.returns(listOf(existing1, existing2))
+		every { mockStatus.getCurrent(any()) }.returns(current)
 		val existingParsed1 = Any()
 		val existingParsed2 = Any()
 		val ex = IOException("Failed to parse XML")
@@ -166,8 +166,8 @@ class DomainHistoryUseCaseUnitTest {
 		)
 		assertEquals(expected, result)
 
-		verify { mockRepo.getAll(feed, 123) }.wasInvoked()
-		verify { mockInteractor.getCurrent(feed) }.wasInvoked()
+		verify { mockHistory.getAll(feed, 123) }.wasInvoked()
+		verify { mockStatus.getCurrent(feed) }.wasInvoked()
 		verify { mockParser.parse(current.feed, current.content) }.wasInvoked()
 		verify { mockParser.parse(existing1.feed, existing1.content) }.wasInvoked()
 		verify { mockParser.parse(existing2.feed, existing2.content) }.wasInvoked()

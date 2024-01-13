@@ -5,7 +5,8 @@ import io.mockative.classOf
 import io.mockative.mock
 import net.twisterrob.travel.domain.london.status.api.FeedParser
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
-import net.twisterrob.travel.domain.london.status.api.StatusInteractor
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
+import net.twisterrob.travel.domain.london.status.api.StatusDataSource
 
 @Suppress("unused") // Used by mockative KSP.
 object Mocks {
@@ -14,7 +15,10 @@ object Mocks {
 	private val statusHistoryRepository = mock(classOf<StatusHistoryRepository>())
 
 	@Mock
-	private val statusInteractor = mock(classOf<StatusInteractor>())
+	private val statusHistoryDataSource = mock(classOf<StatusHistoryDataSource>())
+
+	@Mock
+	private val statusDataSource = mock(classOf<StatusDataSource>())
 
 	@Mock
 	private val feedParser = mock(classOf<FeedParser>())

@@ -17,15 +17,15 @@ import net.twisterrob.travel.domain.london.status.Feed
 import net.twisterrob.travel.domain.london.status.Stacktrace
 import net.twisterrob.travel.domain.london.status.StatusContent
 import net.twisterrob.travel.domain.london.status.StatusItem
-import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
-import net.twisterrob.travel.statushistory.infrastructure.DatastoreStatusHistoryRepository.Companion.DS_PROP_CONTENT
-import net.twisterrob.travel.statushistory.infrastructure.DatastoreStatusHistoryRepository.Companion.DS_PROP_ERROR
-import net.twisterrob.travel.statushistory.infrastructure.DatastoreStatusHistoryRepository.Companion.DS_PROP_RETRIEVED_DATE
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
+import net.twisterrob.travel.statushistory.infrastructure.DatastoreStatusHistoryDataSource.Companion.DS_PROP_CONTENT
+import net.twisterrob.travel.statushistory.infrastructure.DatastoreStatusHistoryDataSource.Companion.DS_PROP_ERROR
+import net.twisterrob.travel.statushistory.infrastructure.DatastoreStatusHistoryDataSource.Companion.DS_PROP_RETRIEVED_DATE
 
-@Bean(typed = [StatusHistoryRepository::class])
-class DatastoreStatusHistoryRepository(
+@Bean(typed = [StatusHistoryDataSource::class])
+class DatastoreStatusHistoryDataSource(
 	private val datastore: Datastore,
-) : StatusHistoryRepository {
+) : StatusHistoryDataSource {
 
 	private val statusItemConverter = StatusItemToEntityConverter(datastore)
 	private val entityConverter = EntityToStatusItemConverter()

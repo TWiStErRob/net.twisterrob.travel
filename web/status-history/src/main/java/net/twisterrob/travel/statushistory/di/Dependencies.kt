@@ -11,13 +11,13 @@ import net.twisterrob.blt.data.StaticData
 import net.twisterrob.blt.io.feeds.LocalhostUrlBuilder
 import net.twisterrob.blt.io.feeds.TFLUrlBuilder
 import net.twisterrob.blt.io.feeds.URLBuilder
-import net.twisterrob.travel.domain.london.status.DomainHistoryUseCase
+import net.twisterrob.travel.domain.london.status.DomainStatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.DomainRefreshUseCase
 import net.twisterrob.travel.domain.london.status.api.FeedParser
-import net.twisterrob.travel.domain.london.status.api.HistoryUseCase
-import net.twisterrob.travel.domain.london.status.api.RefreshUseCase
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
-import net.twisterrob.travel.domain.london.status.api.StatusInteractor
+import net.twisterrob.travel.domain.london.status.api.RefreshUseCase
+import net.twisterrob.travel.domain.london.status.api.StatusDataSource
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
 
 @Factory
 class Dependencies {
@@ -33,12 +33,12 @@ class Dependencies {
 	 * External dependency from domain layer in common KMP code.
 	 */
 	@Prototype
-	fun historyUseCase(
-		statusHistoryRepository: StatusHistoryRepository,
-		statusInteractor: StatusInteractor,
+	fun historyRepository(
+		statusHistoryDataSource: StatusHistoryDataSource,
+		statusDataSource: StatusDataSource,
 		feedParser: FeedParser,
-	): HistoryUseCase =
-		DomainHistoryUseCase(statusHistoryRepository, statusInteractor, feedParser)
+	): StatusHistoryRepository =
+		DomainStatusHistoryRepository(statusHistoryDataSource, statusDataSource, feedParser)
 
 	/**
 	 * External dependency from domain layer in common KMP code.
@@ -46,9 +46,8 @@ class Dependencies {
 	@Prototype
 	fun refreshUseCase(
 		statusHistoryRepository: StatusHistoryRepository,
-		statusInteractor: StatusInteractor,
 	): RefreshUseCase =
-		DomainRefreshUseCase(statusHistoryRepository, statusInteractor)
+		DomainRefreshUseCase(statusHistoryRepository)
 
 	@Singleton
 	fun staticData(): StaticData =
