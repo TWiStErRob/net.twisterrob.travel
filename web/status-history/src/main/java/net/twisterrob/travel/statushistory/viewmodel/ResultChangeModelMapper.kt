@@ -64,24 +64,18 @@ class ResultChangeModelMapper {
 			DescriptionChange.Missing -> ""
 		}
 
-	private fun map(statuses: List<LineStatus>, changes: Map<Line, StatusChange>): List<LineStatusModel> {
-		val statuses1: Map<Line, ResultChangeModel.StatusChange> = changes.mapValues { map(it.value) }
-		val descriptions: Map<Line, String> = changes
-			.filterValues { it is HasDescriptionChange }
-			.mapValues { it.value as HasDescriptionChange }
-			.mapValues { diffDesc(it.value.desc) }
-		return statuses.map { lineStatus ->
+	private fun map(statuses: List<LineStatus>, changes: Map<Line, StatusChange>): List<LineStatusModel> =
+		statuses.map { lineStatus ->
 			LineStatusModel(
 				line = lineStatus.line,
 				type = lineStatus.type,
 				description = lineStatus.description,
-				changeStatus = statuses1[lineStatus.line],
-				changeDescription = descriptions[lineStatus.line],
+				changeStatus = changes[lineStatus.line]?.let(::map),
+				changeDescription = (changes[lineStatus.line] as? HasDescriptionChange)?.let { diffDesc(it.desc) },
 				active = lineStatus.isActive,
 				branchDescription = describe(lineStatus.branchStatuses),
 			)
 		}
-	}
 
 	private val Changes.current: Result?
 		get() =
