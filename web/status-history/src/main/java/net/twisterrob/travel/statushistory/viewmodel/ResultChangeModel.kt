@@ -6,7 +6,7 @@ import net.twisterrob.blt.io.feeds.trackernet.model.DelayType
 import net.twisterrob.blt.model.Line
 import java.util.Date
 
-class LineStatusHistoryModel(
+class LineStatusModel(
 	val feedChanges: List<ResultChangeModel>,
 	val colors: Iterable<LineColor>,
 )
