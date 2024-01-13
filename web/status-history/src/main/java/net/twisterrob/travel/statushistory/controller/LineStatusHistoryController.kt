@@ -14,7 +14,9 @@ import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
 import net.twisterrob.travel.statushistory.viewmodel.LineColor
 import net.twisterrob.travel.statushistory.viewmodel.Result
-import net.twisterrob.travel.statushistory.viewmodel.ResultChange
+import net.twisterrob.travel.statushistory.viewmodel.ResultChangesCalculator
+import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModel
+import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModelMapper
 import java.util.Date
 
 @Controller
@@ -36,11 +38,11 @@ class LineStatusHistoryController(
 		val results = history
 			.filter { displayErrors || it !is ParsedStatusItem.ParseFailed }
 			.map(ParsedStatusItem::toResult)
-		val differences = getDifferences(results)
+		val changes = ResultChangesCalculator().getChanges(results)
 
 		return HttpResponse.ok(
 			LineStatusHistoryModel(
-				differences,
+				changes.map(ResultChangeModelMapper()::map),
 				LineColor.AllColors(staticData.lineColors)
 			)
 		)
@@ -48,7 +50,7 @@ class LineStatusHistoryController(
 
 	@Suppress("unused") // Used by LineStatus.hbs.
 	private class LineStatusHistoryModel(
-		val feedChanges: List<ResultChange>,
+		val feedChanges: List<ResultChangeModel>,
 		val colors: Iterable<LineColor>,
 	)
 }
@@ -57,24 +59,12 @@ private fun ParsedStatusItem.toResult(): Result {
 	val date = Date(this.item.retrievedDate.toEpochMilliseconds())
 	return when (this) {
 		is ParsedStatusItem.ParsedFeed ->
-			Result(date, this.content as LineStatusFeed)
+			Result.ContentResult(date, this.content as LineStatusFeed)
 
 		is ParsedStatusItem.AlreadyFailed ->
-			Result(date, this.item.error.stacktrace)
+			Result.ErrorResult(date, Result.ErrorResult.Error(this.item.error.stacktrace))
 
 		is ParsedStatusItem.ParseFailed ->
-			Result(date, "Error while displaying loaded XML: ${this.error.stacktrace}")
+			Result.ErrorResult(date, Result.ErrorResult.Error("Error while displaying loaded XML: ${this.error.stacktrace}"))
 	}
-}
-
-private fun getDifferences(results: List<Result>): List<ResultChange> {
-	val resultChanges: MutableList<ResultChange> = ArrayList(results.size)
-	var newResult: Result? = null
-	for (oldResult in results) { // We're going forward, but the list is backwards.
-		resultChanges.add(ResultChange(oldResult, newResult))
-		newResult = oldResult
-	}
-	resultChanges.add(ResultChange(null, newResult))
-	resultChanges.removeAt(0)
-	return resultChanges
 }

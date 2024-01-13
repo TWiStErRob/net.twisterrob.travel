@@ -88,8 +88,8 @@
 		</thead>
 		<tbody>
 		{{#each feed.content.lineStatuses as | lineStatus | }}
-			{{assign "changeStatus" (lookupEnumMap feedChange.statuses lineStatus.line)}}
-			{{assign "changeDescription" (lookupEnumMap feedChange.descriptions lineStatus.line)}}
+			{{assign "changeStatus" (lookupMap feedChange.statuses lineStatus.line)}}
+			{{assign "changeDescription" (lookupMap feedChange.descriptions lineStatus.line)}}
 			{{assign "delayStyle" ""}}
 			{{#if (not (empty lineStatus.description))}}
 				{{assign "delayStyle" (concat delayStyle " hasDetails")}}

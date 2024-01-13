@@ -1,6 +1,8 @@
 package net.twisterrob.travel.statushistory.view.handlebars
 
 import com.github.jknack.handlebars.Options
+import net.twisterrob.java.exceptions.StackTrace
+import org.slf4j.LoggerFactory
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.EnumMap
@@ -8,6 +10,13 @@ import java.util.Locale
 
 @Suppress("unused") // Used by .hbs files.
 object HandlebarsHelpers {
+
+	@JvmStatic
+	fun debug(obj: Any?): String {
+		val value = if (obj != null) "(${obj::class.java}) ${obj}" else "<null>"
+		LoggerFactory.getLogger(HandlebarsHelpers::class.java).debug(value, StackTrace())
+		return value
+	}
 
 	@JvmStatic
 	fun assign(varName: String, varValue: Any?, options: Options) =
@@ -48,5 +57,13 @@ object HandlebarsHelpers {
 	 */
 	@JvmStatic
 	fun <E : Enum<E>> lookupEnumMap(map: EnumMap<E, *>, key: E): Any? =
+		map[key]
+
+	/**
+	 * Workaround for `myMap.[Foo]` and `lookup myMap Foo` not working, because Handlebars toStrings the keys.
+	 * Usage: Replace `(lookup someEnumMap someEnumKey)` with `(lookupMap someMap someKey)`.
+	 */
+	@JvmStatic
+	fun <K> lookupMap(map: Map<K, *>, key: K): Any? =
 		map[key]
 }

@@ -3,24 +3,29 @@ package net.twisterrob.travel.statushistory.viewmodel
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed
 import java.util.Date
 
-class Result private constructor(
-	val errorHeader: String?,
-	val fullError: String?,
-	val content: LineStatusFeed?,
-	val `when`: Date,
-) {
+sealed interface Result {
 
-	constructor(`when`: Date, error: String) : this(
-		`when` = `when`,
-		content = null,
-		errorHeader = error.substringBefore('\n'),
-		fullError = error,
-	)
+	// Used by Handlebars reflection in LineStatus.hbs.
+	@Suppress("detekt.VariableNaming")
+	val `when`: Date
 
-	constructor(`when`: Date, content: LineStatusFeed?) : this(
-		`when` = `when`,
-		content = content,
-		errorHeader = null,
-		fullError = null,
-	)
+	class ContentResult(
+		override val `when`: Date,
+		val content: LineStatusFeed,
+	) : Result
+
+	class ErrorResult(
+		override val `when`: Date,
+		val error: Error,
+	) : Result {
+
+		@JvmInline
+		value class Error(
+			val error: String,
+		) {
+
+			val header: String
+				get() = error.substringBefore('\n')
+		}
+	}
 }
