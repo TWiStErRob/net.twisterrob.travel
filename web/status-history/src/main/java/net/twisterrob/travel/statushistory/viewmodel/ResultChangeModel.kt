@@ -1,10 +1,17 @@
+@file:Suppress("unused") // Used by LineStatus.hbs.
+
 package net.twisterrob.travel.statushistory.viewmodel
 
 import net.twisterrob.blt.io.feeds.trackernet.model.DelayType
 import net.twisterrob.blt.model.Line
 import java.util.Date
 
-open class ResultChangeModel(
+class LineStatusHistoryModel(
+	val feedChanges: List<ResultChangeModel>,
+	val colors: Iterable<LineColor>,
+)
+
+class ResultChangeModel(
 	val `when`: Date?,
 	val statuses: List<LineStatusModel>,
 	val error: ErrorChange?,

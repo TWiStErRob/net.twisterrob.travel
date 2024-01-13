@@ -13,9 +13,9 @@ import net.twisterrob.travel.domain.london.status.Feed
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
 import net.twisterrob.travel.statushistory.viewmodel.LineColor
+import net.twisterrob.travel.statushistory.viewmodel.LineStatusHistoryModel
 import net.twisterrob.travel.statushistory.viewmodel.Result
 import net.twisterrob.travel.statushistory.viewmodel.ResultChangesCalculator
-import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModel
 import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModelMapper
 import java.util.Date
 
@@ -47,12 +47,6 @@ class LineStatusHistoryController(
 			)
 		)
 	}
-
-	@Suppress("unused") // Used by LineStatus.hbs.
-	private class LineStatusHistoryModel(
-		val feedChanges: List<ResultChangeModel>,
-		val colors: Iterable<LineColor>,
-	)
 }
 
 private fun ParsedStatusItem.toResult(): Result {

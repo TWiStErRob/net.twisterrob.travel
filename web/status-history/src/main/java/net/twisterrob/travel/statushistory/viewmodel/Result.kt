@@ -5,7 +5,6 @@ import java.util.Date
 
 sealed interface Result {
 
-	// Used by Handlebars reflection in LineStatus.hbs.
 	@Suppress("detekt.VariableNaming")
 	val `when`: Date
 
