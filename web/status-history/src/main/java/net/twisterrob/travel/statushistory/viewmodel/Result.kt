@@ -19,6 +19,12 @@ sealed interface Result {
 		val error: Error,
 	) : Result {
 
+		val header: String
+			get() = error.header
+		
+		val fullError: String
+			get() = error.error
+
 		@JvmInline
 		value class Error(
 			val error: String,

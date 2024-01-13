@@ -124,8 +124,8 @@
 		<tfoot>
 		<tr>
 			<td colspan="3">
-				{{#if (not (empty feed.errorHeader))}}
-					<a rel="htmltooltip">{{feedChange.error.title}}: {{feed.errorHeader}}</a>
+				{{#if (not (empty feed.header))}}
+					<a rel="htmltooltip">{{feedChange.error.title}}: {{feed.header}}</a>
 					<div class="htmltooltip">
 						<pre style="font-size: xx-small;">{{feed.fullError}}</pre>
 					</div>
