@@ -1,6 +1,6 @@
 package net.twisterrob.travel.statushistory.viewmodel
 
-import net.twisterrob.travel.statushistory.viewmodel.Difference.ErrorDifference
+import net.twisterrob.travel.statushistory.viewmodel.Changes.ErrorChanges
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
@@ -8,7 +8,7 @@ import java.util.Date
 
 class ResultChangeCalculatorUnitTest_NonContentDiffs {
 
-	private val subject = ResultChangeCalculator()
+	private val subject = ResultChangesCalculator()
 
 	@Test fun testErrorChange() {
 		val error1 = Result.ErrorResult.Error("error1")
@@ -18,7 +18,7 @@ class ResultChangeCalculatorUnitTest_NonContentDiffs {
 
 		val difference = subject.diff(result1, result2)
 
-		assertEquals(difference, ErrorDifference.Change(result1, result2))
+		assertEquals(difference, ErrorChanges.Change(result1, result2))
 	}
 
 	@Test fun testErrorNoChange() {
@@ -27,7 +27,7 @@ class ResultChangeCalculatorUnitTest_NonContentDiffs {
 
 		val difference = subject.diff(result1, result2)
 
-		assertEquals(difference, ErrorDifference.Same(result2))
+		assertEquals(difference, ErrorChanges.Same(result2))
 	}
 
 	@Test fun testErrorIntroduced() {
@@ -36,7 +36,7 @@ class ResultChangeCalculatorUnitTest_NonContentDiffs {
 
 		val difference = subject.diff(result1, result2)
 
-		assertEquals(difference, ErrorDifference.Failed(result1, result2))
+		assertEquals(difference, ErrorChanges.Failed(result1, result2))
 	}
 
 	@Test fun testErrorDisappeared() {
@@ -45,7 +45,7 @@ class ResultChangeCalculatorUnitTest_NonContentDiffs {
 
 		val difference = subject.diff(result1, result2)
 
-		assertEquals(difference, ErrorDifference.Fixed(result1, result2))
+		assertEquals(difference, ErrorChanges.Fixed(result1, result2))
 	}
 
 	@Test fun testEmpty() {
@@ -54,7 +54,7 @@ class ResultChangeCalculatorUnitTest_NonContentDiffs {
 
 		val difference = subject.diff(result1, result2)
 
-		assertEquals(difference, Difference.Changes(result1, result2, emptyMap()))
+		assertEquals(difference, Changes.Status(result1, result2, emptyMap()))
 	}
 
 	@Test fun testFirstOne() {
@@ -62,7 +62,7 @@ class ResultChangeCalculatorUnitTest_NonContentDiffs {
 
 		val difference = subject.diff(null, result)
 
-		assertEquals(difference, Difference.NewStatus(result))
+		assertEquals(difference, Changes.NewStatus(result))
 	}
 
 	@Test fun testFirstError() {
@@ -70,7 +70,7 @@ class ResultChangeCalculatorUnitTest_NonContentDiffs {
 
 		val difference = subject.diff(null, result)
 
-		assertEquals(difference, Difference.NewStatus(result))
+		assertEquals(difference, Changes.NewStatus(result))
 	}
 
 	@Test fun testLastOne() {
@@ -78,7 +78,7 @@ class ResultChangeCalculatorUnitTest_NonContentDiffs {
 
 		val difference = subject.diff(result, null)
 
-		assertEquals(difference, Difference.LastStatus(result))
+		assertEquals(difference, Changes.LastStatus(result))
 	}
 
 	@Test fun testLastError() {
@@ -86,12 +86,12 @@ class ResultChangeCalculatorUnitTest_NonContentDiffs {
 
 		val difference = subject.diff(result, null)
 
-		assertEquals(difference, Difference.LastStatus(result))
+		assertEquals(difference, Changes.LastStatus(result))
 	}
 
 	@Test fun testMissingResults() {
 		val difference = subject.diff(null, null)
 
-		assertEquals(difference, Difference.Nothing)
+		assertEquals(difference, Changes.None)
 	}
 }

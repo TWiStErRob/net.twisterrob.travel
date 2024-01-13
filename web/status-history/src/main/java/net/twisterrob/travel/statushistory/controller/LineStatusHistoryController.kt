@@ -14,7 +14,7 @@ import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
 import net.twisterrob.travel.statushistory.viewmodel.LineColor
 import net.twisterrob.travel.statushistory.viewmodel.Result
-import net.twisterrob.travel.statushistory.viewmodel.ResultChangeCalculator
+import net.twisterrob.travel.statushistory.viewmodel.ResultChangesCalculator
 import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModel
 import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModelMapper
 import java.util.Date
@@ -38,11 +38,11 @@ class LineStatusHistoryController(
 		val results = history
 			.filter { displayErrors || it !is ParsedStatusItem.ParseFailed }
 			.map(ParsedStatusItem::toResult)
-		val differences = ResultChangeCalculator().getDifferences(results)
+		val changes = ResultChangesCalculator().getChanges(results)
 
 		return HttpResponse.ok(
 			LineStatusHistoryModel(
-				differences.map(ResultChangeModelMapper()::map),
+				changes.map(ResultChangeModelMapper()::map),
 				LineColor.AllColors(staticData.lineColors)
 			)
 		)

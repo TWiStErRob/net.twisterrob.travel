@@ -5,82 +5,82 @@ import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus
 
 class ResultChangeModelMapper {
 
-	fun map(difference: Difference): ResultChangeModel {
-		val changes = (difference as? Difference.Changes)?.changes.orEmpty()
+	fun map(changes: Changes): ResultChangeModel {
+		val statusChanges = (changes as? Changes.Status)?.changes.orEmpty()
 		return ResultChangeModel(
-			previous = difference.previous,
-			current = difference.current,
-			error = mapError(difference),
-			statuses = changes.mapValues { map(it.value) },
-			descriptions = changes
-				.filterValues { it is Difference.HasDescriptionChange }
-				.mapValues { it.value as Difference.HasDescriptionChange }
+			previous = changes.previous,
+			current = changes.current,
+			error = mapError(changes),
+			statuses = statusChanges.mapValues { map(it.value) },
+			descriptions = statusChanges
+				.filterValues { it is HasDescriptionChange }
+				.mapValues { it.value as HasDescriptionChange }
 				.mapValues { diffDesc(it.value.desc) },
 		)
 	}
 
-	private fun mapError(difference: Difference): ResultChangeModel.ErrorChange =
-		when (difference) {
-			is Difference.Changes -> ResultChangeModel.ErrorChange.NoErrors
-			Difference.Nothing -> ResultChangeModel.ErrorChange.NoErrors
-			is Difference.NewStatus -> ResultChangeModel.ErrorChange.NewStatus
-			is Difference.LastStatus -> ResultChangeModel.ErrorChange.LastStatus
-			is Difference.ErrorDifference.Same -> ResultChangeModel.ErrorChange.Same
-			is Difference.ErrorDifference.Change -> ResultChangeModel.ErrorChange.Change
-			is Difference.ErrorDifference.Failed -> ResultChangeModel.ErrorChange.Failed
-			is Difference.ErrorDifference.Fixed -> ResultChangeModel.ErrorChange.Fixed
+	private fun mapError(changes: Changes): ResultChangeModel.ErrorChange =
+		when (changes) {
+			is Changes.Status -> ResultChangeModel.ErrorChange.NoErrors
+			Changes.None -> ResultChangeModel.ErrorChange.NoErrors
+			is Changes.NewStatus -> ResultChangeModel.ErrorChange.NewStatus
+			is Changes.LastStatus -> ResultChangeModel.ErrorChange.LastStatus
+			is Changes.ErrorChanges.Same -> ResultChangeModel.ErrorChange.Same
+			is Changes.ErrorChanges.Change -> ResultChangeModel.ErrorChange.Change
+			is Changes.ErrorChanges.Failed -> ResultChangeModel.ErrorChange.Failed
+			is Changes.ErrorChanges.Fixed -> ResultChangeModel.ErrorChange.Fixed
 		}
 
-	private fun map(value: Difference.StatusChange): ResultChangeModel.StatusChange =
+	private fun map(value: StatusChange): ResultChangeModel.StatusChange =
 		when (value) {
-			is Difference.StatusChange.Better -> ResultChangeModel.StatusChange.Better
-			is Difference.StatusChange.Worse -> ResultChangeModel.StatusChange.Worse
-			is Difference.StatusChange.Appeared -> ResultChangeModel.StatusChange.Unknown
-			is Difference.StatusChange.Disappeared -> ResultChangeModel.StatusChange.Unknown
-			is Difference.StatusChange.Same -> when (value.desc) {
-				is Difference.DescriptionChange.Same -> ResultChangeModel.StatusChange.SameDescriptionSame
-				is Difference.DescriptionChange.Changed -> ResultChangeModel.StatusChange.SameDescriptionChange
-				is Difference.DescriptionChange.Added -> ResultChangeModel.StatusChange.SameDescriptionAdd
-				is Difference.DescriptionChange.Removed -> ResultChangeModel.StatusChange.SameDescriptionDel
-				is Difference.DescriptionChange.Branches -> ResultChangeModel.StatusChange.BranchesChange
-				Difference.DescriptionChange.Missing -> ResultChangeModel.StatusChange.Same
+			is StatusChange.Better -> ResultChangeModel.StatusChange.Better
+			is StatusChange.Worse -> ResultChangeModel.StatusChange.Worse
+			is StatusChange.Appeared -> ResultChangeModel.StatusChange.Unknown
+			is StatusChange.Disappeared -> ResultChangeModel.StatusChange.Unknown
+			is StatusChange.Same -> when (value.desc) {
+				is DescriptionChange.Same -> ResultChangeModel.StatusChange.SameDescriptionSame
+				is DescriptionChange.Changed -> ResultChangeModel.StatusChange.SameDescriptionChange
+				is DescriptionChange.Added -> ResultChangeModel.StatusChange.SameDescriptionAdd
+				is DescriptionChange.Removed -> ResultChangeModel.StatusChange.SameDescriptionDel
+				is DescriptionChange.Branches -> ResultChangeModel.StatusChange.BranchesChange
+				DescriptionChange.Missing -> ResultChangeModel.StatusChange.Same
 			}
 		}
 
-	private fun diffDesc(change: Difference.DescriptionChange): String =
+	private fun diffDesc(change: DescriptionChange): String =
 		when (change) {
-			is Difference.DescriptionChange.Same -> change.desc
-			is Difference.DescriptionChange.Changed -> diffDesc(change.oldDesc, change.newDesc)
-			is Difference.DescriptionChange.Added -> diffDesc("", change.newDesc)
-			is Difference.DescriptionChange.Removed -> diffDesc(change.oldDesc, "")
-			is Difference.DescriptionChange.Branches -> diffDesc(describe(change.oldBranches), describe(change.newBranches))
-			Difference.DescriptionChange.Missing -> ""
+			is DescriptionChange.Same -> change.desc
+			is DescriptionChange.Changed -> diffDesc(change.oldDesc, change.newDesc)
+			is DescriptionChange.Added -> diffDesc("", change.newDesc)
+			is DescriptionChange.Removed -> diffDesc(change.oldDesc, "")
+			is DescriptionChange.Branches -> diffDesc(describe(change.oldBranches), describe(change.newBranches))
+			DescriptionChange.Missing -> ""
 		}
 
-	private val Difference.previous: Result?
+	private val Changes.previous: Result?
 		get() =
 			when (this) {
-				is Difference.Changes -> previous
-				is Difference.NewStatus -> null
-				is Difference.LastStatus -> previous
-				is Difference.Nothing -> null
-				is Difference.ErrorDifference.Change -> oldError
-				is Difference.ErrorDifference.Failed -> null
-				is Difference.ErrorDifference.Fixed -> oldError
-				is Difference.ErrorDifference.Same -> error
+				is Changes.Status -> previous
+				is Changes.NewStatus -> null
+				is Changes.LastStatus -> previous
+				is Changes.None -> null
+				is Changes.ErrorChanges.Change -> oldError
+				is Changes.ErrorChanges.Failed -> null
+				is Changes.ErrorChanges.Fixed -> oldError
+				is Changes.ErrorChanges.Same -> error
 			}
 
-	private val Difference.current: Result?
+	private val Changes.current: Result?
 		get() =
 			when (this) {
-				is Difference.Changes -> current
-				is Difference.NewStatus -> current
-				is Difference.LastStatus -> null
-				is Difference.Nothing -> null
-				is Difference.ErrorDifference.Change -> newError
-				is Difference.ErrorDifference.Failed -> newError
-				is Difference.ErrorDifference.Fixed -> newResult
-				is Difference.ErrorDifference.Same -> error
+				is Changes.Status -> current
+				is Changes.NewStatus -> current
+				is Changes.LastStatus -> null
+				is Changes.None -> null
+				is Changes.ErrorChanges.Change -> newError
+				is Changes.ErrorChanges.Failed -> newError
+				is Changes.ErrorChanges.Fixed -> newResult
+				is Changes.ErrorChanges.Same -> error
 			}
 
 	private fun diffDesc(oldDesc: String, newDesc: String): String =

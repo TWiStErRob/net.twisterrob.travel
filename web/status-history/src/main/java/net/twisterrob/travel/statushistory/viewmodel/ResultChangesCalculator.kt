@@ -2,15 +2,13 @@ package net.twisterrob.travel.statushistory.viewmodel
 
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus
 import net.twisterrob.blt.model.Line
-import net.twisterrob.travel.statushistory.viewmodel.Difference.DescriptionChange
-import net.twisterrob.travel.statushistory.viewmodel.Difference.ErrorDifference
-import net.twisterrob.travel.statushistory.viewmodel.Difference.StatusChange
+import net.twisterrob.travel.statushistory.viewmodel.Changes.ErrorChanges
 import java.util.EnumMap
 
-class ResultChangeCalculator {
+class ResultChangesCalculator {
 
-	fun getDifferences(results: List<Result>): List<Difference> {
-		val changes: MutableList<Difference> = ArrayList(results.size)
+	fun getChanges(results: List<Result>): List<Changes> {
+		val changes: MutableList<Changes> = ArrayList(results.size)
 		var newResult: Result? = null
 		for (oldResult in results) { // We're going forward, but the list is backwards.
 			changes.add(diff(oldResult, newResult))
@@ -21,18 +19,18 @@ class ResultChangeCalculator {
 		return changes
 	}
 
-	fun diff(oldResult: Result?, newResult: Result?): Difference =
+	fun diff(oldResult: Result?, newResult: Result?): Changes =
 		when {
-			oldResult == null && newResult != null -> Difference.NewStatus(newResult)
-			oldResult != null && newResult == null -> Difference.LastStatus(oldResult)
+			oldResult == null && newResult != null -> Changes.NewStatus(newResult)
+			oldResult != null && newResult == null -> Changes.LastStatus(oldResult)
 			oldResult != null && newResult != null -> diffResults(oldResult, newResult)
-			else /* oldResult == null && newResult == null */ -> Difference.Nothing
+			else /* oldResult == null && newResult == null */ -> Changes.None
 		}
 
-	private fun diffResults(oldResult: Result, newResult: Result): Difference =
+	private fun diffResults(oldResult: Result, newResult: Result): Changes =
 		when {
 			oldResult is Result.ContentResult && newResult is Result.ContentResult ->
-				Difference.Changes(oldResult, newResult, diffContent(oldResult, newResult))
+				Changes.Status(oldResult, newResult, diffContent(oldResult, newResult))
 
 			oldResult is Result.ErrorResult || newResult is Result.ErrorResult ->
 				diffError(oldResult, newResult)
@@ -97,23 +95,23 @@ class ResultChangeCalculator {
 		}
 	}
 
-	private fun diffError(oldResult: Result, newResult: Result): Difference {
+	private fun diffError(oldResult: Result, newResult: Result): Changes {
 		val oldError = (oldResult as? Result.ErrorResult)?.error
 		val newError = (newResult as? Result.ErrorResult)?.error
 		return when {
 			oldError != null && newError != null -> {
 				if (oldError.header == newError.header)
-					ErrorDifference.Same(newResult)
+					ErrorChanges.Same(newResult)
 				else
-					ErrorDifference.Change(oldResult, newResult)
+					ErrorChanges.Change(oldResult, newResult)
 			}
 
 			oldError == null && newError != null -> {
-				ErrorDifference.Failed(oldResult as Result.ContentResult, newResult)
+				ErrorChanges.Failed(oldResult as Result.ContentResult, newResult)
 			}
 
 			oldError != null && newError == null -> {
-				ErrorDifference.Fixed(oldResult, newResult as Result.ContentResult)
+				ErrorChanges.Fixed(oldResult, newResult as Result.ContentResult)
 			}
 
 			else /* oldError == null && newError == null */ -> {
