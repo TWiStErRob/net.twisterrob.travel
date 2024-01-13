@@ -7,9 +7,7 @@ import java.util.Date
 open class ResultChangeModel(
 	val `when`: Date?,
 	val error: ErrorChange?,
-	val lineStatuses: List<LineStatusModel>,
-	val statuses: Map<Line, StatusChange>,
-	val descriptions: Map<Line, String>,
+	val statuses: List<LineStatusModel>,
 ) {
 
 	class LineStatusModel(
@@ -18,6 +16,8 @@ open class ResultChangeModel(
 		val description: String?,
 		val active: Boolean,
 		val branchDescription: String?,
+		val changeStatus: StatusChange?,
+		val changeDescription: String?,
 	)
 
 	enum class StatusChange(
@@ -41,6 +41,7 @@ open class ResultChangeModel(
 		val header: String?,
 		val full: String?,
 	) {
+
 		enum class Type(
 			val title: String,
 		) {

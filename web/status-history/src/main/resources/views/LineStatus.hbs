@@ -88,35 +88,33 @@
 		{{/if}}
 		</thead>
 		<tbody>
-		{{#each feedChange.lineStatuses as | lineStatus | }}
-			{{assign "changeStatus" (lookupMap feedChange.statuses lineStatus.line)}}
-			{{assign "changeDescription" (lookupMap feedChange.descriptions lineStatus.line)}}
+		{{#each feedChange.statuses as | status | }}
 			{{assign "delayStyle" ""}}
-			{{#if (not (empty lineStatus.description))}}
+			{{#if (not (empty status.description))}}
 				{{assign "delayStyle" (concat delayStyle " hasDetails")}}
 			{{/if}}
-			{{#if (not lineStatus.active)}}
+			{{#if (not status.active)}}
 				{{assign "delayStyle" (concat delayStyle " inactive")}}
 			{{/if}}
 			<tr>
-				<td class="line-{{lineStatus.line}}">{{lineStatus.line.title}}</td>
-				<td class="delay {{changeStatus.cssClass}} {{delayStyle}}">
-					{{#if (or (empty lineStatus.description) (empty lineStatus.branchDescription))}}
-						{{lineStatus.type.title}}
+				<td class="line-{{status.line}}">{{status.line.title}}</td>
+				<td class="delay {{status.changeStatus.cssClass}} {{delayStyle}}">
+					{{#if (or (empty status.description) (empty status.branchDescription))}}
+						{{status.type.title}}
 					{{else}}
-						<a rel="htmltooltip">{{lineStatus.type.title}}</a>
+						<a rel="htmltooltip">{{status.type.title}}</a>
 						<div class="htmltooltip">
-							<p>{{lineStatus.description}}</p>
-							<p>{{lineStatus.branchDescription}}</p>
+							<p>{{status.description}}</p>
+							<p>{{status.branchDescription}}</p>
 						</div>
 					{{/if}}
 				</td>
-				<td class="change {{changeStatus.cssClass}}">
-					{{#if (empty changeDescription)}}
-						{{changeStatus.title}}
+				<td class="change {{status.changeStatus.cssClass}}">
+					{{#if (empty status.changeDescription)}}
+						{{status.changeStatus.title}}
 					{{else}}
-						<a rel="htmltooltip">{{changeStatus.title}}</a>
-						<div class="htmltooltip">{{{changeDescription}}}</div>
+						<a rel="htmltooltip">{{status.changeStatus.title}}</a>
+						<div class="htmltooltip">{{{status.changeDescription}}}</div>
 					{{/if}}
 				</td>
 			</tr>
