@@ -71,16 +71,15 @@
 </head>
 <body>
 {{#each feedChanges as | feedChange | }}
-	{{assign "feed" feedChange.current}}
 	<table class="info">
 		<thead>
 		<tr>
 			<th colspan="3" class="title">
 				{{add @index 1}}/{{../feedChanges.length}}:
-				{{formatDate feed.when "yyyy-MM-dd HH:mm:ss"}}
+				{{formatDate feedChange.when "yyyy-MM-dd HH:mm:ss"}}
 			</th>
 		</tr>
-		{{#if (empty feed.header)}}
+		{{#if (empty feedChange.errorHeader)}}
 		<tr>
 			<th>Line</th>
 			<th>Disruption Type</th>
@@ -89,7 +88,7 @@
 		{{/if}}
 		</thead>
 		<tbody>
-		{{#each feed.content.lineStatuses as | lineStatus | }}
+		{{#each feedChange.lineStatuses as | lineStatus | }}
 			{{assign "changeStatus" (lookupMap feedChange.statuses lineStatus.line)}}
 			{{assign "changeDescription" (lookupMap feedChange.descriptions lineStatus.line)}}
 			{{assign "delayStyle" ""}}
@@ -126,13 +125,13 @@
 		<tfoot>
 		<tr>
 			<td colspan="3">
-				{{#if (not (empty feed.header))}}
-					<a rel="htmltooltip">{{feedChange.error.title}}: {{feed.header}}</a>
+				{{#if (not (empty feedChange.errorHeader))}}
+					<a rel="htmltooltip">{{feedChange.errorType.title}}: {{feedChange.errorHeader}}</a>
 					<div class="htmltooltip">
-						<pre style="font-size: xx-small;">{{feed.fullError}}</pre>
+						<pre style="font-size: xx-small;">{{feedChange.fullError}}</pre>
 					</div>
-				{{else if (not (empty feedChange.error.title))}}
-					{{feedChange.error.title}}
+				{{else if (not (empty feedChange.errorType.title))}}
+					{{feedChange.errorType.title}}
 				{{else}}
 					{{!-- Make sure there's always content, otherwise the height of the tables is not the same --}}
 					&nbsp;

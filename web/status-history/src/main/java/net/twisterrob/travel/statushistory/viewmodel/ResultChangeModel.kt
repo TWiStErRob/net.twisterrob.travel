@@ -1,13 +1,26 @@
 package net.twisterrob.travel.statushistory.viewmodel
 
+import net.twisterrob.blt.io.feeds.trackernet.model.DelayType
 import net.twisterrob.blt.model.Line
+import java.util.Date
 
 open class ResultChangeModel(
-	val current: Result?,
-	val error: ErrorChange?,
+	val `when`: Date?,
+	val lineStatuses: List<LineStatusModel>,
+	val errorType: ErrorChange?,
+	val errorHeader: String?,
+	val fullError: String?,
 	val statuses: Map<Line, StatusChange>,
 	val descriptions: Map<Line, String>,
 ) {
+
+	class LineStatusModel(
+		val line: Line,
+		val type: DelayType,
+		val description: String?,
+		val active: Boolean,
+		val branchDescription: String?,
+	)
 
 	enum class StatusChange(
 		val title: String,

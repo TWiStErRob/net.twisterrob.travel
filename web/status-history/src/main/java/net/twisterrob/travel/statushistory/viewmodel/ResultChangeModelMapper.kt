@@ -1,15 +1,21 @@
 package net.twisterrob.travel.statushistory.viewmodel
 
 import net.twisterrob.blt.diff.HtmlDiff
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus
 
 class ResultChangeModelMapper {
 
 	fun map(changes: Changes): ResultChangeModel {
 		val statusChanges = (changes as? Changes.Status)?.changes.orEmpty()
+		val content = changes.current as? Result.ContentResult
+		val error = changes.current as? Result.ErrorResult
 		return ResultChangeModel(
-			current = changes.current,
-			error = mapError(changes),
+			`when` = content?.`when` ?: error?.`when`,
+			lineStatuses = content?.content?.let(::map) ?: emptyList(),
+			errorType = mapError(changes),
+			errorHeader = error?.error?.header,
+			fullError = error?.error?.error,
 			statuses = statusChanges.mapValues { map(it.value) },
 			descriptions = statusChanges
 				.filterValues { it is HasDescriptionChange }
@@ -55,6 +61,18 @@ class ResultChangeModelMapper {
 			is DescriptionChange.Branches -> diffDesc(describe(change.oldBranches), describe(change.newBranches))
 			DescriptionChange.Missing -> ""
 		}
+
+	private fun map(result: LineStatusFeed): List<ResultChangeModel.LineStatusModel> =
+		result.lineStatuses.map(::map)
+
+	private fun map(status: LineStatus): ResultChangeModel.LineStatusModel =
+		ResultChangeModel.LineStatusModel(
+			line = status.line,
+			type = status.type,
+			description = status.description,
+			active = status.isActive,
+			branchDescription = describe(status.branchStatuses),
+		)
 
 	private val Changes.current: Result?
 		get() =
