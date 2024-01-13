@@ -6,10 +6,8 @@ import java.util.Date
 
 open class ResultChangeModel(
 	val `when`: Date?,
+	val error: ErrorChange?,
 	val lineStatuses: List<LineStatusModel>,
-	val errorType: ErrorChange?,
-	val errorHeader: String?,
-	val fullError: String?,
 	val statuses: Map<Line, StatusChange>,
 	val descriptions: Map<Line, String>,
 ) {
@@ -38,16 +36,22 @@ open class ResultChangeModel(
 		BranchesChange("branches", "status-same-branch-change"),
 	}
 
-	enum class ErrorChange(
-		val title: String,
+	class ErrorChange(
+		val type: Type,
+		val header: String?,
+		val full: String?,
 	) {
+		enum class Type(
+			val title: String,
+		) {
 
-		Same("same error"),
-		Change("error changed"),
-		Failed("new error"),
-		Fixed("error fixed"),
-		NoErrors(""),
-		NewStatus(""),
-		LastStatus(""),
+			Same("same error"),
+			Change("error changed"),
+			Failed("new error"),
+			Fixed("error fixed"),
+			NoErrors(""),
+			NewStatus(""),
+			LastStatus(""),
+		}
 	}
 }

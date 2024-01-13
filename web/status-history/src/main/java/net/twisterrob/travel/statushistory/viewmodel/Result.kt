@@ -21,11 +21,11 @@ sealed interface Result {
 
 		@JvmInline
 		value class Error(
-			val error: String,
+			val text: String,
 		) {
 
 			val header: String
-				get() = error.substringBefore('\n')
+				get() = text.substringBefore('\n')
 		}
 	}
 }

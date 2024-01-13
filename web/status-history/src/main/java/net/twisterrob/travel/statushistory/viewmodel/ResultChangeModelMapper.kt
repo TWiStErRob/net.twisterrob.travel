@@ -8,14 +8,10 @@ class ResultChangeModelMapper {
 
 	fun map(changes: Changes): ResultChangeModel {
 		val statusChanges = (changes as? Changes.Status)?.changes.orEmpty()
-		val content = changes.current as? Result.ContentResult
-		val error = changes.current as? Result.ErrorResult
 		return ResultChangeModel(
-			`when` = content?.`when` ?: error?.`when`,
-			lineStatuses = content?.content?.let(::map) ?: emptyList(),
-			errorType = mapError(changes),
-			errorHeader = error?.error?.header,
-			fullError = error?.error?.error,
+			`when` = changes.current?.`when`,
+			lineStatuses = (changes.current as? Result.ContentResult)?.content?.let(::map) ?: emptyList(),
+			error = mapError(changes),
 			statuses = statusChanges.mapValues { map(it.value) },
 			descriptions = statusChanges
 				.filterValues { it is HasDescriptionChange }
@@ -24,16 +20,25 @@ class ResultChangeModelMapper {
 		)
 	}
 
-	private fun mapError(changes: Changes): ResultChangeModel.ErrorChange =
+	private fun mapError(changes: Changes): ResultChangeModel.ErrorChange {
+		val error = (changes.current as? Result.ErrorResult)?.error
+		return ResultChangeModel.ErrorChange(
+			full = error?.text,
+			header = error?.header,
+			type = mapErrorType(changes),
+		)
+	}
+
+	private fun mapErrorType(changes: Changes): ResultChangeModel.ErrorChange.Type =
 		when (changes) {
-			is Changes.Status -> ResultChangeModel.ErrorChange.NoErrors
-			Changes.Inconclusive -> ResultChangeModel.ErrorChange.NoErrors
-			is Changes.NewStatus -> ResultChangeModel.ErrorChange.NewStatus
-			is Changes.LastStatus -> ResultChangeModel.ErrorChange.LastStatus
-			is Changes.ErrorChanges.Same -> ResultChangeModel.ErrorChange.Same
-			is Changes.ErrorChanges.Change -> ResultChangeModel.ErrorChange.Change
-			is Changes.ErrorChanges.Failed -> ResultChangeModel.ErrorChange.Failed
-			is Changes.ErrorChanges.Fixed -> ResultChangeModel.ErrorChange.Fixed
+			is Changes.Status -> ResultChangeModel.ErrorChange.Type.NoErrors
+			Changes.Inconclusive -> ResultChangeModel.ErrorChange.Type.NoErrors
+			is Changes.NewStatus -> ResultChangeModel.ErrorChange.Type.NewStatus
+			is Changes.LastStatus -> ResultChangeModel.ErrorChange.Type.LastStatus
+			is Changes.ErrorChanges.Same -> ResultChangeModel.ErrorChange.Type.Same
+			is Changes.ErrorChanges.Change -> ResultChangeModel.ErrorChange.Type.Change
+			is Changes.ErrorChanges.Failed -> ResultChangeModel.ErrorChange.Type.Failed
+			is Changes.ErrorChanges.Fixed -> ResultChangeModel.ErrorChange.Type.Fixed
 		}
 
 	private fun map(value: StatusChange): ResultChangeModel.StatusChange =
