@@ -6,7 +6,7 @@ import net.twisterrob.blt.model.Line
 
 sealed interface Changes {
 
-	data object None : Changes
+	data object Inconclusive : Changes
 
 	data class NewStatus(
 		val current: Result,

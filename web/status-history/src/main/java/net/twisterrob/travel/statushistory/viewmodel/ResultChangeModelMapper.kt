@@ -21,7 +21,7 @@ class ResultChangeModelMapper {
 	private fun mapError(changes: Changes): ResultChangeModel.ErrorChange =
 		when (changes) {
 			is Changes.Status -> ResultChangeModel.ErrorChange.NoErrors
-			Changes.None -> ResultChangeModel.ErrorChange.NoErrors
+			Changes.Inconclusive -> ResultChangeModel.ErrorChange.NoErrors
 			is Changes.NewStatus -> ResultChangeModel.ErrorChange.NewStatus
 			is Changes.LastStatus -> ResultChangeModel.ErrorChange.LastStatus
 			is Changes.ErrorChanges.Same -> ResultChangeModel.ErrorChange.Same
@@ -62,7 +62,7 @@ class ResultChangeModelMapper {
 				is Changes.Status -> current
 				is Changes.NewStatus -> current
 				is Changes.LastStatus -> null
-				is Changes.None -> null
+				is Changes.Inconclusive -> null
 				is Changes.ErrorChanges.Change -> newError
 				is Changes.ErrorChanges.Failed -> newError
 				is Changes.ErrorChanges.Fixed -> newResult

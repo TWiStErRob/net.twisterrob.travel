@@ -91,7 +91,7 @@ class ResultChangeCalculatorUnitTest_NonContentDiffs {
 	@Test fun testMissingResults() {
 		val difference = subject.diff(null, null)
 
-		assertEquals(difference, Changes.None)
+		assertEquals(difference, Changes.Inconclusive)
 	}
 }
 
