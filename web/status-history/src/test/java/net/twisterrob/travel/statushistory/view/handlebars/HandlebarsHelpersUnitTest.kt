@@ -5,6 +5,9 @@ import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
+/**
+ * @see HandlebarsHelpers
+ */
 class HandlebarsHelpersUnitTest {
 
 	@Nested

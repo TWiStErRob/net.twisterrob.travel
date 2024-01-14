@@ -53,21 +53,4 @@ object HandlebarsHelpers {
 	@JvmStatic
 	fun formatCssColor(value: Int): String =
 		"#%06X".format(Locale.ROOT, value and @Suppress("detekt.MagicNumber") 0xFFFFFF)
-
-	/**
-	 * Workaround for `myEnumMap.[Foo]` and `lookup myEnumMap Foo` not working.
-	 * Usage: Replace `(lookup someEnumMap someEnumKey)` with `(lookupEnumMap someEnumMap someEnumKey)`.
-	 * See https://github.com/jknack/handlebars.java/issues/1083.
-	 */
-	@JvmStatic
-	fun <E : Enum<E>> lookupEnumMap(map: EnumMap<E, *>, key: E): Any? =
-		map[key]
-
-	/**
-	 * Workaround for `myMap.[Foo]` and `lookup myMap Foo` not working, because Handlebars toStrings the keys.
-	 * Usage: Replace `(lookup someEnumMap someEnumKey)` with `(lookupMap someMap someKey)`.
-	 */
-	@JvmStatic
-	fun <K> lookupMap(map: Map<K, *>, key: K): Any? =
-		map[key]
 }
