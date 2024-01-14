@@ -10,23 +10,23 @@ import java.util.*;
  * @see <a href="http://cloud.tfl.gov.uk/TrackerNet/LineStatus">Current status</a>
  */
 public enum Line {
-	unknown(Line.NO_ID, StopType.unknown, "Unknown", ""),
+	unknown(Line.NO_ID, StopType.unknown, "Unknown"),
 	Bakerloo(1, StopType.Underground, "Bakerloo"),
 	Central(2, StopType.Underground, "Central"),
 	// H from http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf / 5. Appendix A
 	Circle(7, StopType.Underground, "Circle"), // Hammersmith & Circle?
 	District(9, StopType.Underground, "District"),
-	HammersmithAndCity(8, StopType.Underground, "Hammersmith & City", "H'smith & City", "Hammersmith and City"),
+	HammersmithAndCity(8, StopType.Underground, "Hammersmith & City"),
 	Jubilee(4, StopType.Underground, "Jubilee"),
 	Metropolitan(11, StopType.Underground, "Metropolitan"),
 	Northern(5, StopType.Underground, "Northern"),
 	Piccadilly(6, StopType.Underground, "Piccadilly"),
 	Victoria(3, StopType.Underground, "Victoria"),
-	WaterlooAndCity(12, StopType.Underground, "Waterloo & City", "Waterloo and City"),
-	DLR(81, StopType.DLR, "DLR", "Docklands Light Railway"),
-	Overground(82, StopType.Overground, "Overground", "East London"),
-	Tram(90, StopType.Tram, "Trams", "Tram", "Tramlink 1", "Tramlink 2", "Tramlink 3", "Tramlink 4"),
-	EmiratesAirline(Line.NO_ID, StopType.Air, "Emirates Air Line", "Emirates Airline"),
+	WaterlooAndCity(12, StopType.Underground, "Waterloo & City"),
+	DLR(81, StopType.DLR, "DLR"),
+	Overground(82, StopType.Overground, "Overground"),
+	Tram(90, StopType.Tram, "Trams"),
+	EmiratesAirline(Line.NO_ID, StopType.Air, "Emirates Air Line"),
 	// TODO what is the tracker net code?
 	/**
 	 * It has been rebranded to {@link #ElizabethLine}.
@@ -38,27 +38,21 @@ public enum Line {
 	// "Elizabeth Line" comes from XML feed (http://cloud.tfl.gov.uk/TrackerNet/LineStatus)
 	// "Elizabeth" came from XML feed before 2022-11-07 so required to parse historical data.
 	// TODO what is the tracker net code?
-	ElizabethLine(83, StopType.Rail, "Elizabeth line", "Elizabeth Line", "Elizabeth"),
+	ElizabethLine(83, StopType.Rail, "Elizabeth line"),
 	;
 	private static final int NO_ID = 0;
 
-	/**
-	 * Possible names this Line can appear as.
-	 * <ul>
-	 * <li>{@code Name} attribute of {@code <Line>} in the Line Status feed.</li>
-	 * </ul>
-	 */
-	private final List<String> aliases;
+	private final String title;
 	/**
 	 * {@code ID} attribute of {@code <Line>} in the Line Status feed.
 	 */
 	private final int lineID;
 	private final StopType defaultStopType;
 
-	Line(int lineID, StopType defaultStopType, String... aliases) {
+	Line(int lineID, StopType defaultStopType, String title) {
 		this.lineID = lineID;
 		this.defaultStopType = defaultStopType;
-		this.aliases = Arrays.asList(aliases);
+		this.title = title;
 	}
 
 	public StopType getDefaultStopType() {
@@ -66,20 +60,11 @@ public enum Line {
 	}
 
 	public String getTitle() {
-		return aliases.get(0);
+		return title;
 	}
 
 	public int getLineStatusLineID() {
 		return lineID;
-	}
-
-	public static Line fromAlias(String alias) {
-		for (Line line : values()) {
-			if (line.aliases.contains(alias)) {
-				return line;
-			}
-		}
-		return Line.unknown;
 	}
 
 	public static final Set<Line> UNDERGROUND = Collections.unmodifiableSet(EnumSet.of(Bakerloo, Central, Circle,

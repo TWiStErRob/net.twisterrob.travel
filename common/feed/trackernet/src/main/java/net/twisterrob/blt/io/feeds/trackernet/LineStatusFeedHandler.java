@@ -2,6 +2,7 @@ package net.twisterrob.blt.io.feeds.trackernet;
 
 import java.io.*;
 
+import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import org.xml.sax.*;
@@ -17,6 +18,9 @@ import net.twisterrob.blt.io.feeds.trackernet.model.DelayType;
 
 @NotThreadSafe
 public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
+
+	private final @Nonnull TrackerNetData trackerNetData = new TrackerNetData();
+
 	LineStatusFeed m_root = new LineStatusFeed();
 	net.twisterrob.blt.io.feeds.trackernet.model.LineStatus m_lineStatus;
 	net.twisterrob.blt.io.feeds.trackernet.model.LineStatus.BranchStatus m_branch;
@@ -52,9 +56,12 @@ public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 			@Override public void start(Attributes attributes) {
 				String attrName = attributes.getValue(Line.name);
 
-				net.twisterrob.blt.model.Line line = net.twisterrob.blt.model.Line.fromAlias(attrName);
-				if (line == net.twisterrob.blt.model.Line.unknown && attrName != null) {
-					sendMail(net.twisterrob.blt.model.Line.class + " new alias: " + attrName);
+				net.twisterrob.blt.model.Line line = net.twisterrob.blt.model.Line.unknown;
+				if (attrName != null) {
+					line = trackerNetData.fromAlias(attrName);
+					if (line == net.twisterrob.blt.model.Line.unknown) {
+						sendMail(net.twisterrob.blt.model.Line.class + " new alias: " + attrName);
+					}
 				}
 				m_lineStatus.setLine(line);
 			}

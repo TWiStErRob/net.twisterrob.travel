@@ -3,6 +3,7 @@ package net.twisterrob.blt.io.feeds.timetable;
 import java.io.*;
 import java.util.*;
 
+import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import org.xml.sax.*;
@@ -22,10 +23,14 @@ import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.Stop
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Place.Location;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Place.Location.PrecisionEnum;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.StopClassification.StopTypeEnum;
+import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
 import net.twisterrob.java.model.LocationConverter;
 
 @NotThreadSafe
 public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlannerTimetableFeed> {
+
+	private final @Nonnull TrackerNetData trackerNetData = new TrackerNetData();
+
 	protected JourneyPlannerTimetableFeed m_root = new JourneyPlannerTimetableFeed();
 	protected Map<String, net.twisterrob.blt.io.feeds.timetable.Locality> m_localities = new HashMap<>();
 	protected Map<String, net.twisterrob.blt.io.feeds.timetable.StopPoint> m_stopPoints = new HashMap<>();
@@ -71,7 +76,7 @@ public class JourneyPlannerTimetableHandler extends BaseFeedHandler<JourneyPlann
 		Element lineName = line.getChild(Root.NS, Line.LineName);
 		lineName.setEndTextElementListener(new EndTextElementListener() {
 			public void end(String body) {
-				net.twisterrob.blt.model.Line line = net.twisterrob.blt.model.Line.fromAlias(body);
+				net.twisterrob.blt.model.Line line = trackerNetData.fromAlias(body);
 				m_root.setLine(line);
 			}
 		});
