@@ -8,7 +8,6 @@ class LineColorsModelMapper @Inject constructor(
 	private val colors: LineColors
 ) {
 
-	@OptIn(ExperimentalStdlibApi::class)
 	fun map(): List<LineColorsModel> =
 		Line.entries.map { line ->
 			LineColorsModel(

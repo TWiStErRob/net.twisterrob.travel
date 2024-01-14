@@ -26,7 +26,7 @@ class LineColorsModelMapperUnitTest {
 	}
 
 	@Test fun testAllColorsGiveAllLines() {
-		val allLinesInOrder = @OptIn(ExperimentalStdlibApi::class) Line.entries.sorted()
+		val allLinesInOrder = Line.entries.sorted()
 
 		val result = subject.map()
 
