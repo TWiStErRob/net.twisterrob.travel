@@ -82,13 +82,6 @@ public enum Line {
 		return lineID;
 	}
 
-	public static Line fromEnumName(String line) {
-		try {
-			return Line.valueOf(line);
-		} catch (IllegalArgumentException ex) {
-			return Line.unknown;
-		}
-	}
 	public static Line fromAlias(String alias) {
 		for (Line line : values()) {
 			if (line.aliases.contains(alias)) {

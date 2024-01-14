@@ -27,16 +27,19 @@ public class TubeHtmlHandler implements HtmlParser.TagHandler {
 	private static final char ICON_PLACEHOLDER = '\uFFFC'; // see android.text.HtmlToSpannedConverter#startImg
 	private static final char ICON_SPACING = '\u00A0';
 	private static final float ICON_SCALE = 0.75f;
+
 	private final LineColors colors;
 	private final Map<StopType, Integer> logos;
 	private final Context context;
 	private final float textSize;
+
 	public TubeHtmlHandler(Context context, AndroidStaticData staticData) {
 		this.context = context;
 		this.colors = new LineColors(new TextLineColorScheme(staticData.getLineColors()));
 		this.logos = staticData.getStopTypeLogos();
 		this.textSize = TextAppearanceAccessor.getDefaultTextSize(context);
 	}
+
 	@Override public boolean handleTag(boolean opening, String tag, Editable output, Attributes attributes) {
 		if (!"station".equals(tag)) {
 			if (tag.equals("ul") && !opening) {
@@ -50,7 +53,7 @@ public class TubeHtmlHandler implements HtmlParser.TagHandler {
 
 		if (opening) {
 			Icon icon = Icon.parse(attributes.getValue("icon"));
-			Line line = Line.fromEnumName(attributes.getValue("line"));
+			Line line = lineFromEnumName(attributes.getValue("line"));
 			int pos = output.length();
 			output.setSpan(new TubeColorSpanMaker(line, icon), pos, pos, Spannable.SPAN_MARK_MARK);
 		} else {
@@ -106,6 +109,14 @@ public class TubeHtmlHandler implements HtmlParser.TagHandler {
 			}
 		}
 		return null;
+	}
+
+	private static @NonNull Line lineFromEnumName(@Nullable String line) {
+		try {
+			return Line.valueOf(line);
+		} catch (IllegalArgumentException ex) {
+			return Line.unknown;
+		}
 	}
 
 	private static class TubeColorSpanMaker {
