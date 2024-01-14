@@ -1,11 +1,13 @@
 package net.twisterrob.travel.statushistory.viewmodel
 
+import jakarta.inject.Inject
 import net.twisterrob.blt.diff.HtmlDiff
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus
 import net.twisterrob.blt.model.Line
 import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModel.LineStatusModel
 
-class ResultChangeModelMapper {
+class ResultChangeModelMapper @Inject constructor(
+) {
 
 	fun map(changes: Changes): ResultChangeModel =
 		ResultChangeModel(
