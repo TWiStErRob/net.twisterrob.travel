@@ -17,7 +17,7 @@ import net.twisterrob.blt.model.*;
 public class PredictionSummaryAdapter
 		extends
 		BaseFilteringExpandableList3Adapter<Station, Platform, Train, GroupViewHolder, ChildViewHolder, TrainViewHolder> {
-	private static final LineColors colors = App.getInstance().getStaticData().getLineColors();
+	private static final LineColorer colors = new LineColorer(App.getInstance().getStaticData().getLineColors());
 
 	public PredictionSummaryAdapter(final Context context, ExpandableListView outerList,
 			Map<Station, Map<Platform, List<Train>>> data, Collection<PlatformDirection> directionsEnabled) {
@@ -62,8 +62,8 @@ public class PredictionSummaryAdapter
 			Station currentLevel1, List<Platform> currentLevel2, View level1ConvertView) {
 		String title = String.format("[%s] %s", currentLevel1.getTrackerNetCode(), currentLevel1.getName());
 		level1Holder.title.setText(title);
-		level1Holder.title.setBackgroundColor(currentLevel1.getLine().getBackground(colors));
-		level1Holder.title.setTextColor(currentLevel1.getLine().getForeground(colors));
+		level1Holder.title.setBackgroundColor(colors.getBackground(currentLevel1.getLine()));
+		level1Holder.title.setTextColor(colors.getForeground(currentLevel1.getLine()));
 	}
 
 	@Override protected int getLevel2LayoutId() {

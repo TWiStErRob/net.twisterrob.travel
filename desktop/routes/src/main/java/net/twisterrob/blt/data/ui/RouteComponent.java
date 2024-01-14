@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import net.twisterrob.blt.data.apps.DesktopStaticData;
 import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.model.*;
 
@@ -16,7 +15,7 @@ public abstract class RouteComponent extends JPanel {
 	private Route route;
 	private List<String> highlights;
 
-	private final LineColors colors;
+	private final LineColorer colors;
 	protected Color lineColor;
 	protected Color lineHighlight;
 
@@ -24,7 +23,7 @@ public abstract class RouteComponent extends JPanel {
 	private static final int outerRadius = 18;
 	private static final int innerRadius = 12;
 
-	public RouteComponent(LineColors lineColors, Line line, Route route, List<String> highlights) {
+	public RouteComponent(LineColorer lineColors, Line line, Route route, List<String> highlights) {
 		this.colors = lineColors;
 		setLine(line);
 		setRoute(route);
@@ -36,7 +35,7 @@ public abstract class RouteComponent extends JPanel {
 	}
 	public void setLine(Line line) {
 		this.line = line;
-		lineColor = new Color(line.getBackground(colors));
+		lineColor = new Color(colors.getBackground(line));
 		lineHighlight = new Color(~lineColor.getRGB());
 		repaint();
 	}

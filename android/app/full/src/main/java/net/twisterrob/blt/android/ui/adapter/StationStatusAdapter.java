@@ -11,10 +11,10 @@ import net.twisterrob.android.adapter.BaseListAdapter;
 import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.android.app.full.R;
 import net.twisterrob.blt.io.feeds.trackernet.model.*;
-import net.twisterrob.blt.model.LineColors;
+import net.twisterrob.blt.model.LineColorer;
 
 public class StationStatusAdapter extends BaseListAdapter<LineStatus, StationStatusAdapter.ViewHolder> {
-	private final LineColors colors = App.getInstance().getStaticData().getLineColors();
+	private final LineColorer colors = new LineColorer(App.getInstance().getStaticData().getLineColors());
 
 	public StationStatusAdapter(final Context context, final Collection<LineStatus> lines) {
 		super(context, lines, false);
@@ -52,8 +52,8 @@ public class StationStatusAdapter extends BaseListAdapter<LineStatus, StationSta
 			holder.description.setVisibility(View.GONE);
 		}
 
-		holder.line.setTextColor(currentItem.getLine().getForeground(colors));
-		holder.line.setBackgroundColor(currentItem.getLine().getBackground(colors));
+		holder.line.setTextColor(colors.getForeground(currentItem.getLine()));
+		holder.line.setBackgroundColor(colors.getBackground(currentItem.getLine()));
 
 		if (DelayType.ORDER_SEVERITY.compare(currentItem.getType(), DelayType.MinorDelays) >= 0) {
 			holder.delay.setTextColor(Color.rgb(0, 25, 168));

@@ -16,8 +16,8 @@ public class RangeMapDrawerConfig {
 
 	boolean dynamicColor = true;
 	int rangeColor = Color.RED;
-	LineColors colors;
-	public RangeMapDrawerConfig(LineColors colors) {
+	LineColorer colors;
+	public RangeMapDrawerConfig(LineColorer colors) {
 		this.colors = colors;
 	}
 
@@ -35,11 +35,11 @@ public class RangeMapDrawerConfig {
 	}
 
 	public int getColor(Line line) {
-		int color = dynamicColor? line.getBackground(colors) : rangeColor;
+		int color = dynamicColor? colors.getBackground(line) : rangeColor;
 		return color & 0x00FFFFFF; // remove alpha
 	}
 
-	public RangeMapDrawerConfig setColors(LineColors colors) {
+	public RangeMapDrawerConfig setColors(LineColorer colors) {
 		this.colors = colors;
 		return this;
 	}
@@ -72,7 +72,7 @@ public class RangeMapDrawerConfig {
 		return this;
 	}
 
-	public LineColors getColors() {
+	public LineColorer getColors() {
 		return colors;
 	}
 	public boolean isDynamicColor() {

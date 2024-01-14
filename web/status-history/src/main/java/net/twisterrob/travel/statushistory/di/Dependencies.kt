@@ -11,14 +11,14 @@ import net.twisterrob.blt.data.StaticData
 import net.twisterrob.blt.io.feeds.LocalhostUrlBuilder
 import net.twisterrob.blt.io.feeds.TFLUrlBuilder
 import net.twisterrob.blt.io.feeds.URLBuilder
-import net.twisterrob.blt.model.LineColors
-import net.twisterrob.travel.domain.london.status.DomainStatusHistoryRepository
+import net.twisterrob.blt.model.LineColorer
 import net.twisterrob.travel.domain.london.status.DomainRefreshUseCase
+import net.twisterrob.travel.domain.london.status.DomainStatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.api.FeedParser
-import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.api.RefreshUseCase
 import net.twisterrob.travel.domain.london.status.api.StatusDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 
 @Factory
 class Dependencies {
@@ -55,8 +55,8 @@ class Dependencies {
 		SharedStaticData()
 
 	@Singleton
-	fun lineColors(staticData: StaticData): LineColors =
-		staticData.lineColors
+	fun lineColorer(staticData: StaticData): LineColorer =
+		LineColorer(staticData.lineColors)
 
 	@Singleton
 	@Requires(notEnv = ["development"])

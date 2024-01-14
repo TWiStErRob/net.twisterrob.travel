@@ -112,12 +112,13 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 		}
 
 		private void updateLineColors(List<Line> lines) {
+			LineColorer colors = new LineColorer(staticData.getLineColors());
 			for (int i = 0; i < this.lines.length; ++i) {
 				View lineView = this.lines[i];
 				if (i < lines.size()) {
 					Line line = lines.get(i);
 					lineView.setVisibility(View.VISIBLE);
-					lineView.setBackgroundColor(line.getBackground(staticData.getLineColors()));
+					lineView.setBackgroundColor(colors.getBackground(line));
 					lineView.setContentDescription(line.getTitle());
 					lineView.setTag(line);
 				} else {

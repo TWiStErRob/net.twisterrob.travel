@@ -27,13 +27,13 @@ public class TubeHtmlHandler implements HtmlParser.TagHandler {
 	private static final char ICON_PLACEHOLDER = '\uFFFC'; // see android.text.HtmlToSpannedConverter#startImg
 	private static final char ICON_SPACING = '\u00A0';
 	private static final float ICON_SCALE = 0.75f;
-	private final LineColors colors;
+	private final LineColorer colors;
 	private final Map<StopType, Integer> logos;
 	private final Context context;
 	private final float textSize;
 	public TubeHtmlHandler(Context context, AndroidStaticData staticData) {
 		this.context = context;
-		this.colors = new TextLineColors(staticData.getLineColors());
+		this.colors = new LineColorer(new TextLineColors(staticData.getLineColors()));
 		this.logos = staticData.getStopTypeLogos();
 		this.textSize = TextAppearanceAccessor.getDefaultTextSize(context);
 	}
@@ -88,8 +88,8 @@ public class TubeHtmlHandler implements HtmlParser.TagHandler {
 					break;
 			}
 		}
-		@ColorInt int fgColor = line.getForeground(colors);
-		@ColorInt int bgColor = line.getBackground(colors);
+		@ColorInt int fgColor = colors.getForeground(line);
+		@ColorInt int bgColor = colors.getBackground(line);
 		if (start != end) { // there's some text
 			output.setSpan(new ForegroundColorSpan(fgColor), start, end, SPAN_EXCLUSIVE_EXCLUSIVE);
 			output.setSpan(new BackgroundColorSpan(bgColor), start, end, SPAN_EXCLUSIVE_EXCLUSIVE);
