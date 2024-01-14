@@ -11,6 +11,7 @@ import net.twisterrob.blt.data.ui.LineDisplay;
 import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.io.feeds.timetable.*;
 import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.LineColors;
 
 public class DisplayLine {
 	private static DesktopStaticData STATIC_DATA;
@@ -42,7 +43,7 @@ public class DisplayLine {
 				feed.getLine(), feed.getOperator().getTradingName());
 		List<Route> routes = FeedProcessor.reconstruct(feed);
 		String[] highlights = { "Centrale Tramlink Stop", "Reeves Corner", "Wellesley Road Tram Stop" };
-		new LineDisplay(feed.getLine(), routes, STATIC_DATA.getLineColors(), highlights)
+		new LineDisplay(feed.getLine(), routes, new LineColors(STATIC_DATA.getLineColors()), highlights)
 				.setVisible(true);
 	}
 

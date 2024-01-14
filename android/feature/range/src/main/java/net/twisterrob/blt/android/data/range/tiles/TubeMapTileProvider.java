@@ -79,7 +79,7 @@ public class TubeMapTileProvider extends DebugGeneratedGeoTileProvider {
 		double p2x = (to.getLongitude() - minLon) / (maxLon - minLon) * tileSize;
 		double p1y = (from.getLatitude() - minLat) / (maxLat - minLat) * tileSize;
 		double p2y = (to.getLatitude() - minLat) / (maxLat - minLat) * tileSize;
-		int lineColor = link.getSource().getLine().getBackground(lineColors);
+		int lineColor = lineColors.getBackground(link.getSource().getLine());
 		linePaint.setColor(lineColor);
 		canvas.drawLine((float)p1x, (float)p1y, (float)p2x, (float)p2y, lineShadowPaint);
 		canvas.drawLine((float)p1x, (float)p1y, (float)p2x, (float)p2y, linePaint);

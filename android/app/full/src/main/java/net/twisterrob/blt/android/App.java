@@ -14,6 +14,7 @@ import net.twisterrob.blt.android.app.full.BuildConfig;
 import net.twisterrob.blt.android.data.*;
 import net.twisterrob.blt.android.db.DataBaseHelper;
 import net.twisterrob.blt.io.feeds.*;
+import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
 import net.twisterrob.java.utils.tostring.StringerRepo;
 
 public class App extends BaseApp implements Injector.Provider {
@@ -27,8 +28,10 @@ public class App extends BaseApp implements Injector.Provider {
 	private static final boolean ALLOW_MOCK_URLS = false;
 
 	private AndroidStaticData m_static;
-	private URLBuilder m_urlBuilder = useMockUrls()? new LocalhostUrlBuilder() : new TFLUrlBuilder(
-			"papp.robert.s@gmail.com");
+	private URLBuilder m_urlBuilder = useMockUrls()
+			? new LocalhostUrlBuilder(new TrackerNetData())
+			: new TFLUrlBuilder("papp.robert.s@gmail.com", new TrackerNetData())
+			;
 
 	public App() {
 		super(BuildConfig.DEBUG, AndroidConstants.INVALID_RESOURCE_ID);

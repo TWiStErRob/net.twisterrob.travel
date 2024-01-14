@@ -8,10 +8,13 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import net.twisterrob.blt.io.feeds.timetable.*;
+import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
 import net.twisterrob.blt.model.*;
 
 public class LineDisplay extends JFrame {
 	private static final long serialVersionUID = 1L;
+	private static final TrackerNetData trackerNetData = new TrackerNetData();
+
 	protected JList<Route> list;
 	protected RouteMapDrawer routeMap;
 	protected RouteDrawer routeLine;
@@ -21,7 +24,7 @@ public class LineDisplay extends JFrame {
 		this(feed.getLine(), feed.getRoutes(), lineColors, highlights);
 	}
 	public LineDisplay(final Line line, List<Route> routes, LineColors lineColors, String... highlights) {
-		super(line.getTitle());
+		super(trackerNetData.getDisplayName(line));
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(1024, 800));
 
@@ -68,8 +71,8 @@ public class LineDisplay extends JFrame {
 		private final Color bg;
 
 		LineRouteCellRenderer(LineColors colors, Line line) {
-			fg = new Color(line.getForeground(colors));
-			bg = new Color(line.getBackground(colors));
+			fg = new Color(colors.getForeground(line));
+			bg = new Color(colors.getBackground(line));
 		}
 		@Override public Component getListCellRendererComponent(JList<?> list, Object value, int index,
 				boolean isSelected,

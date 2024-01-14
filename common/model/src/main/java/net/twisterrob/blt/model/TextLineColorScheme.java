@@ -2,10 +2,10 @@ package net.twisterrob.blt.model;
 
 import java.util.Date;
 
-public class TextLineColors extends LineColors {
-	private final LineColors colors;
+public class TextLineColorScheme extends LineColorScheme {
+	private final LineColorScheme colors;
 	private final int background = 0x00000000;
-	public TextLineColors(LineColors colors) {
+	public TextLineColorScheme(LineColorScheme colors) {
 		this.colors = colors;
 	}
 	@Override public String getLineColorsSource() {

@@ -10,15 +10,16 @@ import net.twisterrob.blt.data.SharedStaticData
 import net.twisterrob.blt.data.StaticData
 import net.twisterrob.blt.io.feeds.LocalhostUrlBuilder
 import net.twisterrob.blt.io.feeds.TFLUrlBuilder
+import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData
 import net.twisterrob.blt.io.feeds.URLBuilder
 import net.twisterrob.blt.model.LineColors
-import net.twisterrob.travel.domain.london.status.DomainStatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.DomainRefreshUseCase
+import net.twisterrob.travel.domain.london.status.DomainStatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.api.FeedParser
-import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.api.RefreshUseCase
 import net.twisterrob.travel.domain.london.status.api.StatusDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 
 @Factory
 class Dependencies {
@@ -56,15 +57,19 @@ class Dependencies {
 
 	@Singleton
 	fun lineColors(staticData: StaticData): LineColors =
-		staticData.lineColors
+		LineColors(staticData.lineColors)
+	
+	@Singleton
+	fun trackerNetData(): TrackerNetData =
+		TrackerNetData()
 
 	@Singleton
 	@Requires(notEnv = ["development"])
-	fun urlBuilder(): URLBuilder =
-		TFLUrlBuilder("papp.robert.s@gmail.com")
+	fun urlBuilder(trackerNetData: TrackerNetData): URLBuilder =
+		TFLUrlBuilder("papp.robert.s@gmail.com", trackerNetData)
 
 	@Singleton
 	@Requires(env = ["development"])
-	fun urlBuilderDebug(): URLBuilder =
-		LocalhostUrlBuilder()
+	fun urlBuilderDebug(trackerNetData: TrackerNetData): URLBuilder =
+		LocalhostUrlBuilder(trackerNetData)
 }

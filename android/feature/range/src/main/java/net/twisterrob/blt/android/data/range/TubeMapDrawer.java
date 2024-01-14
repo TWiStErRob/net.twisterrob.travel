@@ -78,7 +78,7 @@ public class TubeMapDrawer {
 		double toY = (maxLat - to.getLatitude()) * scaleY;
 
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		int lineColor = link.getSource().getLine().getBackground(colors);
+		int lineColor = colors.getBackground(link.getSource().getLine());
 		paint.setColor(lineColor);
 		paint.setStrokeWidth(4);
 		canvas.drawLine((float)fromX, (float)fromY, (float)toX, (float)toY, paint);

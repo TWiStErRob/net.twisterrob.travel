@@ -1,7 +1,8 @@
-package net.twisterrob.blt.model;
+package net.twisterrob.blt.model
 
 // TODO make a mapping to output i18n "Underground station", "Tram stop", "Bus stop"
-public enum StopType {
+enum class StopType {
+
 	unknown,
 	Underground,
 	Overground,

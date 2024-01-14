@@ -9,10 +9,8 @@ plugins {
 	id("org.gradle.idea")
 }
 
-java {
-	sourceCompatibility = libs.versions.java.appengine.get()
-	targetCompatibility = libs.versions.java.appengine.get()
-}
+java.toolchain.languageVersion = JavaLanguageVersion.of(libs.versions.java.appengine.get())
+kotlin.jvmToolchain { languageVersion = JavaLanguageVersion.of(libs.versions.java.appengine.get()) }
 
 dependencies {
 	implementation(libs.appengine.api)

@@ -1,8 +1,5 @@
 pluginManager.withPlugin("org.gradle.java-base") {
-	java {
-		sourceCompatibility = libs.versions.java.asProvider().get()
-		targetCompatibility = libs.versions.java.asProvider().get()
-	}
+	java.toolchain.languageVersion = JavaLanguageVersion.of(libs.versions.java.asProvider().get())
 
 	tasks.withType(JavaCompile).configureEach {
 		options.encoding = "UTF-8"
@@ -20,12 +17,16 @@ pluginManager.withPlugin("org.gradle.java") {
 	testing.suites.named("test", org.gradle.api.plugins.jvm.JvmTestSuite).configure { useJUnitJupiter() }
 }
 
+pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
+	kotlin.jvmToolchain { languageVersion = JavaLanguageVersion.of(libs.versions.java.asProvider().get()) }
+}
+
 pluginManager.withPlugin("com.android.base") {
-	android {
-		compileOptions {
-			sourceCompatibility = libs.versions.java.android.get()
-			targetCompatibility = libs.versions.java.android.get()
-		}
+	pluginManager.withPlugin("org.gradle.java-base") {
+		java.toolchain.languageVersion = JavaLanguageVersion.of(libs.versions.java.android.get())
+	}
+	pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
+		kotlin.jvmToolchain { languageVersion = JavaLanguageVersion.of(libs.versions.java.android.get()) }
 	}
 }
 

@@ -29,6 +29,7 @@ import net.twisterrob.blt.android.data.AndroidStaticData;
 import net.twisterrob.blt.android.data.range.*;
 import net.twisterrob.blt.android.feature.range.R;
 import net.twisterrob.blt.android.ui.*;
+import net.twisterrob.blt.model.LineColors;
 
 public class RangeOptionsFragment extends Fragment {
 	private static final Logger LOG = LoggerFactory.getLogger(RangeOptionsFragment.class);
@@ -280,7 +281,7 @@ public class RangeOptionsFragment extends Fragment {
 			configsUpdatedListener.onConfigsUpdated();
 			return true;
 		} else if (id == R.id.menu__action__range__reset_drawing) {
-			drawConfig.set(new RangeMapDrawerConfig(staticData.getLineColors()));
+			drawConfig.set(new RangeMapDrawerConfig(new LineColors(staticData.getLineColors())));
 			bindConfigs(genConfig, drawConfig); // update self UI
 			configsUpdatedListener.onConfigsUpdated();
 			return true;

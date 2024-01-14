@@ -4,6 +4,7 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
+import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import org.xml.sax.*;
@@ -20,6 +21,9 @@ import net.twisterrob.blt.model.Line;
  */
 @NotThreadSafe
 public class PredictionDetailedFeedHandler extends BaseFeedHandler<PredictionSummaryFeed> {
+	
+	private final @Nonnull TrackerNetData trackerNetData = new TrackerNetData();
+	
 	PredictionSummaryFeed m_root;
 	net.twisterrob.blt.io.feeds.trackernet.model.Station m_station;
 	net.twisterrob.blt.io.feeds.trackernet.model.Platform m_platform;
@@ -54,7 +58,7 @@ public class PredictionDetailedFeedHandler extends BaseFeedHandler<PredictionSum
 
 		lineElement.setEndTextElementListener(new EndTextElementListener() {
 			public void end(String body) {
-				Line line = Line.fromTrackerNetCode(body.charAt(0));
+				Line line = trackerNetData.lineFromTrackerNetCode(body.charAt(0));
 				m_root.setLine(line);
 			}
 		});

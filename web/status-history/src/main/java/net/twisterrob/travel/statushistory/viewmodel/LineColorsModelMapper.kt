@@ -8,13 +8,12 @@ class LineColorsModelMapper @Inject constructor(
 	private val colors: LineColors,
 ) {
 
-	@OptIn(ExperimentalStdlibApi::class)
 	fun map(): List<LineColorsModel> =
 		Line.entries.map { line ->
 			LineColorsModel(
 				line = line,
-				foregroundColor = line.getForeground(colors),
-				backgroundColor = line.getBackground(colors),
+				foregroundColor = colors.getForeground(line),
+				backgroundColor = colors.getBackground(line),
 			)
 		}
 }

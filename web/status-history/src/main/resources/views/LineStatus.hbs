@@ -70,7 +70,7 @@
 	</style>
 </head>
 <body>
-{{#each feedChanges as | feedChange | }}
+{{#each feedChanges as | feedChange | }}{{! feedChange: ResultChangeModel --}}
 	<table class="info">
 		<thead>
 		<tr>
@@ -88,7 +88,7 @@
 		{{/if}}
 		</thead>
 		<tbody>
-		{{#each feedChange.statuses as | status | }}
+		{{#each feedChange.statuses as | status | }}{{! status: LineStatusModel --}}
 			{{assign "delayStyle" ""}}
 			{{#if (not (empty status.description))}}
 				{{assign "delayStyle" (concat delayStyle " hasDetails")}}
@@ -97,7 +97,7 @@
 				{{assign "delayStyle" (concat delayStyle " inactive")}}
 			{{/if}}
 			<tr>
-				<td class="line-{{status.line}}">{{status.line.title}}</td>
+				<td class="line-{{status.line}}">{{status.lineTitle}}</td>
 				<td class="delay {{status.changeStatus.cssClass}} {{delayStyle}}">
 					{{#if (or (empty status.description) (empty status.branchDescription))}}
 						{{status.type.title}}

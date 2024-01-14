@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 
+import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import org.xml.sax.*;
@@ -12,12 +13,16 @@ import android.sax.*;
 import android.util.Xml;
 
 import net.twisterrob.blt.io.feeds.BaseFeedHandler;
+import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
 import net.twisterrob.blt.model.*;
 import net.twisterrob.java.model.Location;
 import net.twisterrob.java.utils.PrimitiveTools;
 
 @NotThreadSafe
 public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
+
+	private final @Nonnull TrackerNetData trackerNetData = new TrackerNetData();
+
 	FacilitiesFeed m_root = new FacilitiesFeed();
 	Station m_station;
 
@@ -134,9 +139,12 @@ public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
 		stationServingLine.setEndTextElementListener(new EndTextElementListener() {
 			@SuppressWarnings("synthetic-access")
 			@Override public void end(String body) {
-				Line line = Line.fromAlias(body);
-				if (line == Line.unknown && body != null) {
-					sendMail(Line.class + " new alias: " + body);
+				Line line = Line.unknown;
+				if (body != null) {
+					line = trackerNetData.fromAlias(body);
+					if (line == Line.unknown) {
+						sendMail(Line.class + " new alias: " + body);
+					}
 				}
 				m_station.getLines().add(line);
 			}

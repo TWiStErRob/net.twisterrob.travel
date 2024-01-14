@@ -2,11 +2,13 @@ package net.twisterrob.travel.statushistory.viewmodel
 
 import jakarta.inject.Inject
 import net.twisterrob.blt.diff.HtmlDiff
+import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus
 import net.twisterrob.blt.model.Line
 import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModel.LineStatusModel
 
 class ResultChangeModelMapper @Inject constructor(
+	private val trackerNetData: TrackerNetData,
 ) {
 
 	fun map(changes: Changes): ResultChangeModel =
@@ -70,6 +72,7 @@ class ResultChangeModelMapper @Inject constructor(
 		statuses.map { lineStatus ->
 			LineStatusModel(
 				line = lineStatus.line,
+				lineTitle = trackerNetData.getDisplayName(lineStatus.line),
 				type = lineStatus.type,
 				description = lineStatus.description,
 				changeStatus = changes[lineStatus.line]?.let(::map),

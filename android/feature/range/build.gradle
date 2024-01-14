@@ -18,6 +18,7 @@ dependencies {
 	implementation("net.twisterrob.lib:twister-lib-android-settings")
 
 	implementation(projects.common.model)
+	implementation(projects.common.feed.core)
 	implementation(libs.gms.places)
 	implementation(libs.jsr305)
 }

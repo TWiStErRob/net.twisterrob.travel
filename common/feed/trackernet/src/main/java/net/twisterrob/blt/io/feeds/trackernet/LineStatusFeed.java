@@ -14,7 +14,7 @@ public class LineStatusFeed extends BaseFeed<LineStatusFeed> {
 		return Collections.unmodifiableMap(m_statusMap);
 	}
 
-	public void addLineStatus(LineStatus lineStatus) {
+	void addLineStatus(LineStatus lineStatus) {
 		m_lineStatuses.add(lineStatus);
 	}
 

@@ -22,6 +22,7 @@ import net.twisterrob.blt.android.ui.ListViewHandler;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter;
 import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeed;
+import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
 import net.twisterrob.blt.io.feeds.trackernet.model.*;
 import net.twisterrob.blt.model.*;
 import net.twisterrob.java.utils.CollectionTools;
@@ -33,6 +34,8 @@ public class PredictionSummaryActivity extends BaseActivity implements
 		OnGroupExpandListener,
 		OnGroupCollapseListener {
 	public static final String EXTRA_LINE = "line";
+	
+	private final TrackerNetData trackerNetData = new TrackerNetData();
 
 	/**
 	 * @see #EXTRA_LINE
@@ -78,7 +81,7 @@ public class PredictionSummaryActivity extends BaseActivity implements
 		// gather params
 		Intent intent = getIntent();
 		m_line = IntentTools.getSerializableExtra(intent, EXTRA_LINE, Line.class);
-		getSupportActionBar().setSubtitle(m_line.getTitle());
+		getSupportActionBar().setSubtitle(trackerNetData.getDisplayName(m_line));
 	}
 
 	protected void onCreate_setupCompassButtons() {

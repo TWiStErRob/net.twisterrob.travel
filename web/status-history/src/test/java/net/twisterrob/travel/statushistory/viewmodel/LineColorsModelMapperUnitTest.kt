@@ -16,7 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension
 @ExtendWith(MockitoExtension::class)
 class LineColorsModelMapperUnitTest {
 
-	@Mock lateinit var colors: LineColors
+	@Mock(strictness = Mock.Strictness.LENIENT)
+	lateinit var colors: LineColors
 
 	private lateinit var subject: LineColorsModelMapper
 
@@ -25,7 +26,7 @@ class LineColorsModelMapperUnitTest {
 	}
 
 	@Test fun testAllColorsGiveAllLines() {
-		val allLinesInOrder = @OptIn(ExperimentalStdlibApi::class) Line.entries.sorted()
+		val allLinesInOrder = Line.entries.sorted()
 
 		val result = subject.map()
 
@@ -36,8 +37,8 @@ class LineColorsModelMapperUnitTest {
 	@Test fun testJubileeMapping() {
 		val fgColor = 0x12345678.toInt()
 		val bgColor = 0x87654321.toInt()
-		`when`(colors.jubileeBackground).thenReturn(bgColor)
-		`when`(colors.jubileeForeground).thenReturn(fgColor)
+		`when`(colors.getBackground(Line.Jubilee)).thenReturn(bgColor)
+		`when`(colors.getForeground(Line.Jubilee)).thenReturn(fgColor)
 
 		val result = subject.map()
 
@@ -46,7 +47,7 @@ class LineColorsModelMapperUnitTest {
 		assertEquals(bgColor, jubilee.backgroundColor)
 		assertEquals(fgColor, jubilee.foregroundColor)
 
-		verify(colors).jubileeBackground
-		verify(colors).jubileeForeground
+		verify(colors).getBackground(Line.Jubilee)
+		verify(colors).getForeground(Line.Jubilee)
 	}
 }

@@ -1,6 +1,6 @@
 plugins {
 	id("net.twisterrob.blt.convention")
-	id("org.gradle.java-library")
+	id("org.jetbrains.kotlin.jvm")
 	id("net.twisterrob.gradle.plugin.java")
 	id("com.android.lint")
 }
@@ -8,6 +8,7 @@ plugins {
 dependencies {
 	api("net.twisterrob.lib:twister-lib-general")
 	api("net.twisterrob.lib:twister-lib-core")
+	api(projects.domain.london)
 
 	implementation(libs.jsr305)
 	implementation(libs.slf4j.api)
