@@ -6,7 +6,7 @@ import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
 import net.twisterrob.blt.data.StaticData
-import net.twisterrob.blt.model.LineColors
+import net.twisterrob.blt.model.LineColorScheme
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.endsWith
@@ -32,7 +32,7 @@ class LineStatusHistoryControllerIntegrationTest {
 	@MockBean(StaticData::class)
 	val staticData: StaticData = mock()
 
-	private val lineColors: LineColors = mock()
+	private val lineColors: LineColorScheme = mock()
 
 	@BeforeEach fun setUp() {
 		`when`(staticData.lineColors).thenReturn(lineColors)

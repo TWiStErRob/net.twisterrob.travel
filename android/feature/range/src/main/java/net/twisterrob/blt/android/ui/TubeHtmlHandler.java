@@ -33,7 +33,7 @@ public class TubeHtmlHandler implements HtmlParser.TagHandler {
 	private final float textSize;
 	public TubeHtmlHandler(Context context, AndroidStaticData staticData) {
 		this.context = context;
-		this.colors = new LineColorer(new TextLineColors(staticData.getLineColors()));
+		this.colors = new LineColorer(new TextLineColorScheme(staticData.getLineColors()));
 		this.logos = staticData.getStopTypeLogos();
 		this.textSize = TextAppearanceAccessor.getDefaultTextSize(context);
 	}

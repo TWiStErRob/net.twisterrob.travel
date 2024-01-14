@@ -4,9 +4,9 @@ import javax.annotation.Nonnull;
 
 public class LineColorer {
 
-	private final @Nonnull LineColors colors;
+	private final @Nonnull LineColorScheme colors;
 
-	public LineColorer(@Nonnull LineColors colors) {
+	public LineColorer(@Nonnull LineColorScheme colors) {
 		this.colors = colors;
 	}
 

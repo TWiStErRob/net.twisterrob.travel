@@ -2,7 +2,7 @@ package net.twisterrob.blt.model;
 
 import java.util.*;
 
-public class TFLColourStandard4ScreenLineColors extends LineColors {
+public class TFLColourStandard4ScreenLineColorScheme extends LineColorScheme {
 
 	/**
 	 * https://tfl.gov.uk/info-for/suppliers-and-contractors/design-standards#tfl-corporate-design-standards-heading

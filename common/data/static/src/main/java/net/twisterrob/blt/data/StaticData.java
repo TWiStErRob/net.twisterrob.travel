@@ -1,7 +1,7 @@
 package net.twisterrob.blt.data;
 
-import net.twisterrob.blt.model.LineColors;
+import net.twisterrob.blt.model.LineColorScheme;
 
 public interface StaticData {
-	LineColors getLineColors();
+	LineColorScheme getLineColors();
 }

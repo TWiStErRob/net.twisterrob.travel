@@ -2,7 +2,7 @@ package net.twisterrob.blt.model;
 
 import java.util.*;
 
-public class TubeStatusPresentationLineColors extends LineColors {
+public class TubeStatusPresentationLineColorScheme extends LineColorScheme {
 	@Override public String getLineColorsSource() {
 		return "http://content.tfl.gov.uk/tube-status-presentation-user-guide.pdf";
 	}

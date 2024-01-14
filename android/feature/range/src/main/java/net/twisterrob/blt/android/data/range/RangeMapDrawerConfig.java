@@ -60,7 +60,7 @@ public class RangeMapDrawerConfig {
 	}
 
 	/**
-	 * Whether to use {@link LineColors} or {@link #rangeColor} when drawing range circles. 
+	 * Whether to use {@link LineColorScheme} or {@link #rangeColor} when drawing range circles. 
 	 */
 	public RangeMapDrawerConfig setDynamicColor(boolean dynamicColor) {
 		this.dynamicColor = dynamicColor;

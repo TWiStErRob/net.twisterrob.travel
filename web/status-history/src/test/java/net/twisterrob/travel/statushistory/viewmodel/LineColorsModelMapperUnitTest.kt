@@ -1,7 +1,7 @@
 package net.twisterrob.travel.statushistory.viewmodel
 
 import net.twisterrob.blt.model.Line
-import net.twisterrob.blt.model.LineColors
+import net.twisterrob.blt.model.LineColorScheme
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -16,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension
 @ExtendWith(MockitoExtension::class)
 class LineColorsModelMapperUnitTest {
 
-	@Mock lateinit var colors: LineColors
+	@Mock lateinit var colors: LineColorScheme
 
 	private lateinit var subject: LineColorsModelMapper
 
