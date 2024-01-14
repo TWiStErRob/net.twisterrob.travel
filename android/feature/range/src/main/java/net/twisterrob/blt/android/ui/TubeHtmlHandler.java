@@ -27,13 +27,13 @@ public class TubeHtmlHandler implements HtmlParser.TagHandler {
 	private static final char ICON_PLACEHOLDER = '\uFFFC'; // see android.text.HtmlToSpannedConverter#startImg
 	private static final char ICON_SPACING = '\u00A0';
 	private static final float ICON_SCALE = 0.75f;
-	private final LineColorer colors;
+	private final LineColors colors;
 	private final Map<StopType, Integer> logos;
 	private final Context context;
 	private final float textSize;
 	public TubeHtmlHandler(Context context, AndroidStaticData staticData) {
 		this.context = context;
-		this.colors = new LineColorer(new TextLineColorScheme(staticData.getLineColors()));
+		this.colors = new LineColors(new TextLineColorScheme(staticData.getLineColors()));
 		this.logos = staticData.getStopTypeLogos();
 		this.textSize = TextAppearanceAccessor.getDefaultTextSize(context);
 	}

@@ -17,10 +17,10 @@ public class LineDisplay extends JFrame {
 	protected RouteDrawer routeLine;
 	protected List<String> highlights;
 
-	public LineDisplay(JourneyPlannerTimetableFeed feed, LineColorer lineColors, String... highlights) {
+	public LineDisplay(JourneyPlannerTimetableFeed feed, LineColors lineColors, String... highlights) {
 		this(feed.getLine(), feed.getRoutes(), lineColors, highlights);
 	}
-	public LineDisplay(final Line line, List<Route> routes, LineColorer lineColors, String... highlights) {
+	public LineDisplay(final Line line, List<Route> routes, LineColors lineColors, String... highlights) {
 		super(line.getTitle());
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(1024, 800));
@@ -67,7 +67,7 @@ public class LineDisplay extends JFrame {
 		private final Color fg;
 		private final Color bg;
 
-		LineRouteCellRenderer(LineColorer colors, Line line) {
+		LineRouteCellRenderer(LineColors colors, Line line) {
 			fg = new Color(colors.getForeground(line));
 			bg = new Color(colors.getBackground(line));
 		}

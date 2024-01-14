@@ -2,11 +2,11 @@ package net.twisterrob.blt.model;
 
 import javax.annotation.Nonnull;
 
-public class LineColorer {
+public class LineColors {
 
 	private final @Nonnull LineColorScheme colors;
 
-	public LineColorer(@Nonnull LineColorScheme colors) {
+	public LineColors(@Nonnull LineColorScheme colors) {
 		this.colors = colors;
 	}
 

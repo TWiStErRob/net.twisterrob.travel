@@ -17,7 +17,7 @@ import net.twisterrob.blt.model.*;
 public class PredictionSummaryAdapter
 		extends
 		BaseFilteringExpandableList3Adapter<Station, Platform, Train, GroupViewHolder, ChildViewHolder, TrainViewHolder> {
-	private static final LineColorer colors = new LineColorer(App.getInstance().getStaticData().getLineColors());
+	private static final LineColors colors = new LineColors(App.getInstance().getStaticData().getLineColors());
 
 	public PredictionSummaryAdapter(final Context context, ExpandableListView outerList,
 			Map<Station, Map<Platform, List<Train>>> data, Collection<PlatformDirection> directionsEnabled) {

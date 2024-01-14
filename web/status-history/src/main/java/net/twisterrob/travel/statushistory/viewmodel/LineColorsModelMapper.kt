@@ -2,10 +2,10 @@ package net.twisterrob.travel.statushistory.viewmodel
 
 import jakarta.inject.Inject
 import net.twisterrob.blt.model.Line
-import net.twisterrob.blt.model.LineColorer
+import net.twisterrob.blt.model.LineColors
 
 class LineColorsModelMapper @Inject constructor(
-	private val lineColorer: LineColorer
+	private val colors: LineColors
 ) {
 
 	@OptIn(ExperimentalStdlibApi::class)
@@ -13,8 +13,8 @@ class LineColorsModelMapper @Inject constructor(
 		Line.entries.map { line ->
 			LineColorsModel(
 				line = line,
-				foregroundColor = lineColorer.getForeground(line),
-				backgroundColor = lineColorer.getBackground(line),
+				foregroundColor = colors.getForeground(line),
+				backgroundColor = colors.getBackground(line),
 			)
 		}
 }

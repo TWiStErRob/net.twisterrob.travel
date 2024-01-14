@@ -68,7 +68,7 @@ import net.twisterrob.blt.android.db.DataBaseHelper;
 import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.android.feature.range.R;
 import net.twisterrob.blt.android.ui.activity.main.MapActivity;
-import net.twisterrob.blt.model.LineColorer;
+import net.twisterrob.blt.model.LineColors;
 import net.twisterrob.blt.model.StopType;
 import net.twisterrob.travel.map.MapUtils;
 
@@ -105,7 +105,7 @@ public class RangeMapActivity extends MapActivity {
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		Injector.from(this).inject(this);
-		drawConfig = new RangeMapDrawerConfig(new LineColorer(staticData.getLineColors()));
+		drawConfig = new RangeMapDrawerConfig(new LineColors(staticData.getLineColors()));
 		String apiKey = getApplicationInfoWithMetadata(this).metaData.getString("com.google.android.geo.API_KEY");
 		Places.initialize(getApplicationContext(), apiKey);
 
@@ -336,7 +336,7 @@ public class RangeMapActivity extends MapActivity {
 				.image(BitmapDescriptorFactory.fromBitmap(rangeDrawer.draw(emptyNetwork)))
 		);
 //		// tube map above
-		LineColorer colors = new LineColorer(staticData.getLineColors());
+		LineColors colors = new LineColors(staticData.getLineColors());
 		if (!prefs.getBoolean(R.string.pref__network_overlay, R.bool.pref__network_overlay__default)) {
 			TubeMapDrawer tubeMapDrawer = new TubeMapDrawer(nodes, colors);
 			tubeMapDrawer.setSize(dip(this, 1024), dip(this, 1024));

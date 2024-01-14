@@ -11,7 +11,7 @@ import net.twisterrob.blt.data.StaticData
 import net.twisterrob.blt.io.feeds.LocalhostUrlBuilder
 import net.twisterrob.blt.io.feeds.TFLUrlBuilder
 import net.twisterrob.blt.io.feeds.URLBuilder
-import net.twisterrob.blt.model.LineColorer
+import net.twisterrob.blt.model.LineColors
 import net.twisterrob.travel.domain.london.status.DomainRefreshUseCase
 import net.twisterrob.travel.domain.london.status.DomainStatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.api.FeedParser
@@ -55,8 +55,8 @@ class Dependencies {
 		SharedStaticData()
 
 	@Singleton
-	fun lineColorer(staticData: StaticData): LineColorer =
-		LineColorer(staticData.lineColors)
+	fun lineColors(staticData: StaticData): LineColors =
+		LineColors(staticData.lineColors)
 
 	@Singleton
 	@Requires(notEnv = ["development"])

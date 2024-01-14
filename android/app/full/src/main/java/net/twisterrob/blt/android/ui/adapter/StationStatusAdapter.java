@@ -11,10 +11,10 @@ import net.twisterrob.android.adapter.BaseListAdapter;
 import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.android.app.full.R;
 import net.twisterrob.blt.io.feeds.trackernet.model.*;
-import net.twisterrob.blt.model.LineColorer;
+import net.twisterrob.blt.model.LineColors;
 
 public class StationStatusAdapter extends BaseListAdapter<LineStatus, StationStatusAdapter.ViewHolder> {
-	private final LineColorer colors = new LineColorer(App.getInstance().getStaticData().getLineColors());
+	private final LineColors colors = new LineColors(App.getInstance().getStaticData().getLineColors());
 
 	public StationStatusAdapter(final Context context, final Collection<LineStatus> lines) {
 		super(context, lines, false);
