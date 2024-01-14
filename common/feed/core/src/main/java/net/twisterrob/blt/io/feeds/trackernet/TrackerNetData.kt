@@ -60,4 +60,10 @@ class TrackerNetData {
 			Line.ElizabethLine -> listOf("Elizabeth line", "Elizabeth Line", "Elizabeth")
 			Line.unknown -> emptyList()
 		}
+
+	fun getDisplayName(line: Line): String =
+		when (line) {
+			Line.unknown -> "Unknown"
+			else -> getAliasesFor(line).first()
+		}
 }

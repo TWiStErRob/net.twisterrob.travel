@@ -1,17 +1,22 @@
 package net.twisterrob.blt.io.feeds.timetable;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 import javax.xml.stream.*;
 
+import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
 import net.twisterrob.java.io.IndentingXMLStreamWriter;
 
 public class JourneyPlannerTimetableFeedKmlOut {
-	public static void writeKml(OutputStream outputStream, JourneyPlannerTimetableFeed feed)
-			throws UnsupportedEncodingException, XMLStreamException, FactoryConfigurationError {
+
+	private final TrackerNetData trackerNetData = new TrackerNetData();
+
+	public void writeKml(OutputStream outputStream, JourneyPlannerTimetableFeed feed)
+			throws XMLStreamException, FactoryConfigurationError {
 		XMLOutputFactory factory = XMLOutputFactory.newInstance();
-		XMLStreamWriter out = factory.createXMLStreamWriter(new OutputStreamWriter(outputStream, "utf-8"));
+		XMLStreamWriter out = factory.createXMLStreamWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8));
 		out = new IndentingXMLStreamWriter(out);
 
 		out.writeStartDocument();
@@ -21,7 +26,7 @@ public class JourneyPlannerTimetableFeedKmlOut {
 
 		{
 			out.writeStartElement("name");
-			out.writeCharacters(feed.getLine().getTitle());
+			out.writeCharacters(trackerNetData.getDisplayName(feed.getLine()));
 			out.writeEndElement();
 		}
 		{

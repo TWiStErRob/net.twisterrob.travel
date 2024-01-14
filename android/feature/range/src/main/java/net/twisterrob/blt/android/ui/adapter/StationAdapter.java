@@ -18,10 +18,12 @@ import net.twisterrob.blt.android.db.model.Station;
 import net.twisterrob.blt.android.feature.range.R;
 import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder;
 import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder.DescriptionFormatter;
+import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
 import net.twisterrob.blt.model.*;
 
 public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 
+	private final TrackerNetData trackerNetData = new TrackerNetData();
 	private final AndroidStaticData staticData;
 
 	public StationAdapter(final Context context, final Collection<Station> items, AndroidStaticData staticData) {
@@ -37,6 +39,7 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 		private final Context context;
 
 		private final AndroidStaticData staticData;
+		private final TrackerNetData trackerNetData = new TrackerNetData();
 
 		public interface DescriptionFormatter {
 			CharSequence format(Station station);
@@ -66,7 +69,7 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 							if (initialLength != message.length()) {
 								message.append(", ");
 							}
-							String current = line.getTitle();
+							String current = trackerNetData.getDisplayName(line);
 //							int start = message.length();
 							message.append(current);
 							// disabled, because can't guarantee toast will have bright BG
@@ -119,7 +122,7 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 					Line line = lines.get(i);
 					lineView.setVisibility(View.VISIBLE);
 					lineView.setBackgroundColor(colors.getBackground(line));
-					lineView.setContentDescription(line.getTitle());
+					lineView.setContentDescription(trackerNetData.getDisplayName(line));
 					lineView.setTag(line);
 				} else {
 					lineView.setVisibility(View.INVISIBLE);
@@ -178,9 +181,9 @@ public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 		return station.getType().toString().toLowerCase(Locale.UK).contains(filter);
 	}
 
-	private static boolean matchLines(Station station, String filter) {
+	private boolean matchLines(Station station, String filter) {
 		for (Line line : station.getLines()) {
-			if (line.getTitle().toLowerCase(Locale.UK).contains(filter)) {
+			if (trackerNetData.getDisplayName(line).toLowerCase(Locale.UK).contains(filter)) {
 				return true;
 			}
 		}

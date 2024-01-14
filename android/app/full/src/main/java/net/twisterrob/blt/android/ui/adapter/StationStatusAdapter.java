@@ -10,11 +10,13 @@ import android.widget.TextView;
 import net.twisterrob.android.adapter.BaseListAdapter;
 import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.android.app.full.R;
+import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
 import net.twisterrob.blt.io.feeds.trackernet.model.*;
 import net.twisterrob.blt.model.LineColors;
 
 public class StationStatusAdapter extends BaseListAdapter<LineStatus, StationStatusAdapter.ViewHolder> {
 	private final LineColors colors = new LineColors(App.getInstance().getStaticData().getLineColors());
+	private final TrackerNetData trackerNetData = new TrackerNetData();
 
 	public StationStatusAdapter(final Context context, final Collection<LineStatus> lines) {
 		super(context, lines, false);
@@ -39,7 +41,7 @@ public class StationStatusAdapter extends BaseListAdapter<LineStatus, StationSta
 	}
 
 	@Override protected void bindView(final ViewHolder holder, final LineStatus currentItem, final View convertView) {
-		String title = currentItem.getLine().getTitle();
+		String title = trackerNetData.getDisplayName(currentItem.getLine());
 		String description = currentItem.getDescription();
 		String delay = currentItem.getType().getTitle();
 
