@@ -12,7 +12,7 @@ import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed
 import net.twisterrob.travel.domain.london.status.Feed
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
-import net.twisterrob.travel.statushistory.viewmodel.LineColor
+import net.twisterrob.travel.statushistory.viewmodel.LineColorsModelMapper
 import net.twisterrob.travel.statushistory.viewmodel.LineStatusModel
 import net.twisterrob.travel.statushistory.viewmodel.Result
 import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModelMapper
@@ -43,7 +43,7 @@ class LineStatusHistoryController(
 		return HttpResponse.ok(
 			LineStatusModel(
 				changes.map(ResultChangeModelMapper()::map),
-				LineColor.AllColors(staticData.lineColors)
+				LineColorsModelMapper(staticData.lineColors).map()
 			)
 		)
 	}
