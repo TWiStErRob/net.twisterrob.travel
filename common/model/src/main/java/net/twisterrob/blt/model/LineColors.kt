@@ -1,99 +1,55 @@
-package net.twisterrob.blt.model;
+package net.twisterrob.blt.model
 
-import javax.annotation.Nonnull;
+@Suppress("DuplicatedCode")
+class LineColors(
+	private val colors: LineColorScheme,
+) {
 
-public class LineColors {
-
-	private final @Nonnull LineColorScheme colors;
-
-	public LineColors(@Nonnull LineColorScheme colors) {
-		this.colors = colors;
-	}
-
-	@SuppressWarnings("deprecation")
-	public int getBackground(@Nonnull Line line) {
-		switch (line) {
-			case Bakerloo:
-				return colors.getBakerlooBackground();
-			case Central:
-				return colors.getCentralBackground();
-			case Circle:
-				return colors.getCircleBackground();
-			case District:
-				return colors.getDistrictBackground();
-			case HammersmithAndCity:
-				return colors.getHammersmithAndCityBackground();
-			case Jubilee:
-				return colors.getJubileeBackground();
-			case Metropolitan:
-				return colors.getMetropolitanBackground();
-			case Northern:
-				return colors.getNorthernBackground();
-			case Piccadilly:
-				return colors.getPiccadillyBackground();
-			case Victoria:
-				return colors.getVictoriaBackground();
-			case WaterlooAndCity:
-				return colors.getWaterlooAndCityBackground();
-			case DLR:
-				return colors.getDLRBackground();
-			case Overground:
-				return colors.getOvergroundBackground();
-			case ElizabethLine:
-				return colors.getElizabethLineBackground();
-			case EmiratesAirline:
-				return colors.getEmiratesBackground();
-			case Tram:
-				return colors.getTramBackground();
-			case TflRail:
-				return colors.getTfLRailBackground();
-			default:
-			case unknown:
-				return colors.getUnknownBackground();
+	@Suppress("detekt.CyclomaticComplexMethod")
+	fun getBackground(line: Line): Int =
+		@Suppress("DEPRECATION")
+		when (line) {
+			Line.Bakerloo -> colors.bakerlooBackground
+			Line.Central -> colors.centralBackground
+			Line.Circle -> colors.circleBackground
+			Line.District -> colors.districtBackground
+			Line.HammersmithAndCity -> colors.hammersmithAndCityBackground
+			Line.Jubilee -> colors.jubileeBackground
+			Line.Metropolitan -> colors.metropolitanBackground
+			Line.Northern -> colors.northernBackground
+			Line.Piccadilly -> colors.piccadillyBackground
+			Line.Victoria -> colors.victoriaBackground
+			Line.WaterlooAndCity -> colors.waterlooAndCityBackground
+			Line.DLR -> colors.dlrBackground
+			Line.Overground -> colors.overgroundBackground
+			Line.ElizabethLine -> colors.elizabethLineBackground
+			Line.EmiratesAirline -> colors.emiratesBackground
+			Line.Tram -> colors.tramBackground
+			Line.TflRail -> @Suppress("DEPRECATION") colors.tfLRailBackground
+			Line.unknown -> colors.unknownBackground
 		}
-	}
-	
-	@SuppressWarnings("deprecation")
-	public int getForeground(@Nonnull Line line) {
-		switch (line) {
-			case Bakerloo:
-				return colors.getBakerlooForeground();
-			case Central:
-				return colors.getCentralForeground();
-			case Circle:
-				return colors.getCircleForeground();
-			case District:
-				return colors.getDistrictForeground();
-			case HammersmithAndCity:
-				return colors.getHammersmithAndCityForeground();
-			case Jubilee:
-				return colors.getJubileeForeground();
-			case Metropolitan:
-				return colors.getMetropolitanForeground();
-			case Northern:
-				return colors.getNorthernForeground();
-			case Piccadilly:
-				return colors.getPiccadillyForeground();
-			case Victoria:
-				return colors.getVictoriaForeground();
-			case WaterlooAndCity:
-				return colors.getWaterlooAndCityForeground();
-			case DLR:
-				return colors.getDLRForeground();
-			case Overground:
-				return colors.getOvergroundForeground();
-			case ElizabethLine:
-				return colors.getElizabethLineForeground();
-			case EmiratesAirline:
-				return colors.getEmiratesForeground();
-			case Tram:
-				return colors.getTramForeground();
-			case TflRail:
-				return colors.getTfLRailForeground();
-			default:
-			case unknown:
-				return colors.getUnknownForeground();
-		}
-	}
 
+	@Suppress("detekt.CyclomaticComplexMethod")
+	fun getForeground(line: Line): Int =
+		@Suppress("DEPRECATION")
+		when (line) {
+			Line.Bakerloo -> colors.bakerlooForeground
+			Line.Central -> colors.centralForeground
+			Line.Circle -> colors.circleForeground
+			Line.District -> colors.districtForeground
+			Line.HammersmithAndCity -> colors.hammersmithAndCityForeground
+			Line.Jubilee -> colors.jubileeForeground
+			Line.Metropolitan -> colors.metropolitanForeground
+			Line.Northern -> colors.northernForeground
+			Line.Piccadilly -> colors.piccadillyForeground
+			Line.Victoria -> colors.victoriaForeground
+			Line.WaterlooAndCity -> colors.waterlooAndCityForeground
+			Line.DLR -> colors.dlrForeground
+			Line.Overground -> colors.overgroundForeground
+			Line.ElizabethLine -> colors.elizabethLineForeground
+			Line.EmiratesAirline -> colors.emiratesForeground
+			Line.Tram -> colors.tramForeground
+			Line.TflRail -> @Suppress("DEPRECATION") colors.tfLRailForeground
+			Line.unknown -> colors.unknownForeground
+		}
 }
