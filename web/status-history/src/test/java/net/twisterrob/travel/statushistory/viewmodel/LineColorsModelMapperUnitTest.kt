@@ -1,7 +1,7 @@
 package net.twisterrob.travel.statushistory.viewmodel
 
 import net.twisterrob.blt.model.Line
-import net.twisterrob.blt.model.LineColorScheme
+import net.twisterrob.blt.model.LineColors
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -16,7 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension
 @ExtendWith(MockitoExtension::class)
 class LineColorsModelMapperUnitTest {
 
-	@Mock lateinit var colors: LineColorScheme
+	@Mock(strictness = Mock.Strictness.LENIENT)
+	lateinit var colors: LineColors
 
 	private lateinit var subject: LineColorsModelMapper
 
@@ -36,8 +37,8 @@ class LineColorsModelMapperUnitTest {
 	@Test fun testJubileeMapping() {
 		val fgColor = 0x12345678.toInt()
 		val bgColor = 0x87654321.toInt()
-		`when`(colors.jubileeBackground).thenReturn(bgColor)
-		`when`(colors.jubileeForeground).thenReturn(fgColor)
+		`when`(colors.getBackground(Line.Jubilee)).thenReturn(bgColor)
+		`when`(colors.getForeground(Line.Jubilee)).thenReturn(fgColor)
 
 		val result = subject.map()
 
@@ -46,7 +47,7 @@ class LineColorsModelMapperUnitTest {
 		assertEquals(bgColor, jubilee.backgroundColor)
 		assertEquals(fgColor, jubilee.foregroundColor)
 
-		verify(colors).jubileeBackground
-		verify(colors).jubileeForeground
+		verify(colors).getBackground(Line.Jubilee)
+		verify(colors).getForeground(Line.Jubilee)
 	}
 }
