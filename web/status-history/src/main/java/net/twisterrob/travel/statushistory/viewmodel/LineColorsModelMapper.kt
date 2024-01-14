@@ -5,7 +5,7 @@ import net.twisterrob.blt.model.Line
 import net.twisterrob.blt.model.LineColors
 
 class LineColorsModelMapper @Inject constructor(
-	private val colors: LineColors
+	private val colors: LineColors,
 ) {
 
 	fun map(): List<LineColorsModel> =
