@@ -2,6 +2,16 @@ package net.twisterrob.blt.io.feeds.trackernet
 
 import net.twisterrob.blt.model.Line
 
+/**
+ * Data for possible lines that may appear in line status, for example:
+ * ```
+ * <Line ID="8" Name="Hammersmith and City" />
+ * ```
+ *
+ * See [Current status API](http://cloud.tfl.gov.uk/TrackerNet/LineStatus).
+ * @see net.twisterrob.blt.io.feeds.Feed.TubeDepartureBoardsLineStatus
+ * @see net.twisterrob.blt.io.feeds.Feed.TubeDepartureBoardsLineStatusIncidents
+ */
 class TrackerNetData {
 
 	@Suppress("detekt.CyclomaticComplexMethod")
@@ -11,6 +21,7 @@ class TrackerNetData {
 			Line.Central -> "C"
 			Line.Circle -> "H"
 			Line.District -> "D"
+			// H from http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf / 5. Appendix A
 			Line.HammersmithAndCity -> "H"
 			Line.Jubilee -> "J"
 			Line.Metropolitan -> "M"
@@ -22,7 +33,9 @@ class TrackerNetData {
 			Line.Overground -> "O"
 			Line.Tram -> "T"
 			Line.EmiratesAirline -> "E"
+			// TODO what is the tracker net code?
 			Line.TflRail -> "?"
+			// TODO what is the tracker net code?
 			Line.ElizabethLine -> "?"
 			Line.unknown -> "?"
 		}
@@ -57,6 +70,9 @@ class TrackerNetData {
 			Line.Tram -> listOf("Trams", "Tram", "Tramlink 1", "Tramlink 2", "Tramlink 3", "Tramlink 4")
 			Line.EmiratesAirline -> listOf("Emirates Air Line", "Emirates Airline")
 			Line.TflRail -> listOf("TfL Rail")
+			// "Elizabeth line" first to display it (match https://tfl.gov.uk/tube-dlr-overground/status/)
+			// "Elizabeth Line" comes from XML feed (http://cloud.tfl.gov.uk/TrackerNet/LineStatus)
+			// "Elizabeth" came from XML feed before 2022-11-07 so required to parse historical data.
 			Line.ElizabethLine -> listOf("Elizabeth line", "Elizabeth Line", "Elizabeth")
 			Line.unknown -> emptyList()
 		}

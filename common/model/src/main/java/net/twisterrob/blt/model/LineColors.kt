@@ -7,7 +7,6 @@ class LineColors(
 
 	@Suppress("detekt.CyclomaticComplexMethod")
 	fun getBackground(line: Line): Int =
-		@Suppress("DEPRECATION")
 		when (line) {
 			Line.Bakerloo -> colors.bakerlooBackground
 			Line.Central -> colors.centralBackground
@@ -31,7 +30,6 @@ class LineColors(
 
 	@Suppress("detekt.CyclomaticComplexMethod")
 	fun getForeground(line: Line): Int =
-		@Suppress("DEPRECATION")
 		when (line) {
 			Line.Bakerloo -> colors.bakerlooForeground
 			Line.Central -> colors.centralForeground
