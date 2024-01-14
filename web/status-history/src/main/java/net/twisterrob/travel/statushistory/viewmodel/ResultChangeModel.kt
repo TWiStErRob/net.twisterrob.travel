@@ -8,7 +8,7 @@ import java.util.Date
 
 class LineStatusModel(
 	val feedChanges: List<ResultChangeModel>,
-	val colors: Iterable<LineColor>,
+	val colors: List<LineColorsModel>,
 )
 
 class ResultChangeModel(

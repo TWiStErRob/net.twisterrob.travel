@@ -63,8 +63,8 @@
 
 		{{#each colors as | lineColor | }}
 		.line-{{lineColor.line}} {
-			color: {{lineColor.foregroundColor}};
-			background-color: {{lineColor.backgroundColor}};
+			color: {{formatCssColor lineColor.foregroundColor}};
+			background-color: {{formatCssColor lineColor.backgroundColor}};
 		}
 		{{/each}}
 	</style>

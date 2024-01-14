@@ -7,22 +7,19 @@ import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Produces
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.views.View
-import net.twisterrob.blt.data.StaticData
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed
 import net.twisterrob.travel.domain.london.status.Feed
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
-import net.twisterrob.travel.statushistory.viewmodel.LineColor
-import net.twisterrob.travel.statushistory.viewmodel.LineStatusModel
+import net.twisterrob.travel.statushistory.viewmodel.LineStatusModelMapper
 import net.twisterrob.travel.statushistory.viewmodel.Result
-import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModelMapper
 import net.twisterrob.travel.statushistory.viewmodel.ResultChangesCalculator
 import java.util.Date
 
 @Controller
 class LineStatusHistoryController(
 	private val useCase: StatusHistoryRepository,
-	private val staticData: StaticData,
+	private val modelMapper: LineStatusModelMapper,
 ) {
 
 	@Get("/LineStatusHistory")
@@ -40,12 +37,7 @@ class LineStatusHistoryController(
 			.map(ParsedStatusItem::toResult)
 		val changes = ResultChangesCalculator().getChanges(results)
 
-		return HttpResponse.ok(
-			LineStatusModel(
-				changes.map(ResultChangeModelMapper()::map),
-				LineColor.AllColors(staticData.lineColors)
-			)
-		)
+		return HttpResponse.ok(modelMapper.map(changes))
 	}
 }
 
