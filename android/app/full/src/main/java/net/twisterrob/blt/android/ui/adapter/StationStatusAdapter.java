@@ -3,7 +3,8 @@ package net.twisterrob.blt.android.ui.adapter;
 import java.util.Collection;
 
 import android.content.Context;
-import android.graphics.*;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,7 +12,8 @@ import net.twisterrob.android.adapter.BaseListAdapter;
 import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.android.app.full.R;
 import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
-import net.twisterrob.blt.io.feeds.trackernet.model.*;
+import net.twisterrob.blt.io.feeds.trackernet.model.DelayType;
+import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus;
 import net.twisterrob.blt.model.LineColors;
 
 public class StationStatusAdapter extends BaseListAdapter<LineStatus, StationStatusAdapter.ViewHolder> {

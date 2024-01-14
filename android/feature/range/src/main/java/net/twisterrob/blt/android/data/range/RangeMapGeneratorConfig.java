@@ -1,6 +1,7 @@
 package net.twisterrob.blt.android.data.range;
 
-import static java.util.concurrent.TimeUnit.*;
+import static java.util.concurrent.TimeUnit.HOURS;
+import static java.util.concurrent.TimeUnit.MINUTES;
 
 @SuppressWarnings("unused")
 public class RangeMapGeneratorConfig {

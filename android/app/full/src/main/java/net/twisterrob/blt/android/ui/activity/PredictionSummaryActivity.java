@@ -1,17 +1,33 @@
 package net.twisterrob.blt.android.ui.activity;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.MeasureSpec;
-import android.widget.*;
+import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ExpandableListView.*;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnGroupCollapseListener;
+import android.widget.ExpandableListView.OnGroupExpandListener;
+import android.widget.TextView;
+import android.widget.ToggleButton;
+
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
 import net.twisterrob.android.utils.tools.BundleTools;
@@ -23,8 +39,11 @@ import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter;
 import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeed;
 import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
-import net.twisterrob.blt.io.feeds.trackernet.model.*;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.io.feeds.trackernet.model.Platform;
+import net.twisterrob.blt.io.feeds.trackernet.model.Station;
+import net.twisterrob.blt.io.feeds.trackernet.model.Train;
+import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.PlatformDirection;
 import net.twisterrob.java.utils.CollectionTools;
 
 /**

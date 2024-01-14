@@ -1,6 +1,8 @@
 package net.twisterrob.blt.android.ui.adapter;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 import android.widget.Filter;
 

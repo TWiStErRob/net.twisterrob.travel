@@ -1,12 +1,11 @@
 package net.twisterrob.blt.android.ui.activity;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
-import android.os.*;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
+import android.os.AsyncTask;
+import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,8 +15,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+
 import net.twisterrob.blt.android.App;
-import net.twisterrob.blt.android.app.full.R;
 import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.db.model.Station;
 import net.twisterrob.blt.model.StopType;

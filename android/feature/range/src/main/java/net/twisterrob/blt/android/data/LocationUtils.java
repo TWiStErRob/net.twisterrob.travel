@@ -1,9 +1,11 @@
 package net.twisterrob.blt.android.data;
 
 import android.location.Address;
-import androidx.annotation.*;
 
 import com.google.android.gms.maps.model.LatLng;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import net.twisterrob.java.model.Location;
 import net.twisterrob.java.utils.CollectionTools;

@@ -1,6 +1,8 @@
 package net.twisterrob.blt.android.data.range.tiles;
 
-import org.maptiler.*;
+import org.maptiler.GlobalMercator;
+import org.maptiler.LatLon;
+import org.maptiler.Tile;
 
 import androidx.annotation.Nullable;
 

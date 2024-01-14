@@ -1,6 +1,9 @@
 package net.twisterrob.blt.android.db;
 
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,8 +11,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 import net.twisterrob.android.db.DatabaseOpenHelper;
 import net.twisterrob.android.utils.tools.DatabaseTools;
-import net.twisterrob.blt.android.db.model.*;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.android.db.model.AreaHullPoint;
+import net.twisterrob.blt.android.db.model.NetworkNode;
+import net.twisterrob.blt.android.db.model.Station;
+import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.StopType;
 
 /**
  * See details in the docs under <SDK_DIR>/docs/guide/topics/data/data- storage.html and I think you'll find the answer

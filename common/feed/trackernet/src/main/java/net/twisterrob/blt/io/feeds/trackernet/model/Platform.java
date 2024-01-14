@@ -1,6 +1,7 @@
 package net.twisterrob.blt.io.feeds.trackernet.model;
 
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.twisterrob.blt.model.PlatformDirection;
 

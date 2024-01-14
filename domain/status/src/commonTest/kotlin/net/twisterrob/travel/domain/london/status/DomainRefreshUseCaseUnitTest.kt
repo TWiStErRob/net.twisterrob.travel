@@ -6,9 +6,9 @@ import io.mockative.mock
 import io.mockative.verify
 import io.mockative.verifyNoUnmetExpectations
 import io.mockative.verifyNoUnverifiedExpectations
-import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.api.RefreshResult
 import net.twisterrob.travel.domain.london.status.api.RefreshUseCase
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals

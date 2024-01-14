@@ -2,11 +2,14 @@ package net.twisterrob.blt.android.db;
 
 import java.util.Map;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import android.content.ContentValues;
 import android.database.DatabaseUtils;
-import android.database.sqlite.*;
+import android.database.sqlite.SQLiteConstraintException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 
 import net.twisterrob.android.utils.tools.DatabaseTools;
 import net.twisterrob.blt.android.db.model.Station;

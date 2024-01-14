@@ -5,7 +5,6 @@ import net.twisterrob.java.exceptions.StackTrace
 import org.slf4j.LoggerFactory
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.EnumMap
 import java.util.Locale
 
 @Suppress("unused") // Used by .hbs files.

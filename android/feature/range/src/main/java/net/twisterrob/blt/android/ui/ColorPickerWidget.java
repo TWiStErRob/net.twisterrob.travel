@@ -1,8 +1,9 @@
 package net.twisterrob.blt.android.ui;
 
-import androidx.annotation.ColorInt;
 import android.view.View;
 import android.view.View.OnClickListener;
+
+import androidx.annotation.ColorInt;
 
 import net.twisterrob.android.utils.tools.DialogTools.PopupCallbacks;
 import net.twisterrob.android.utils.tools.DialogToolsColor;

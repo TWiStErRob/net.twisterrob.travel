@@ -1,8 +1,10 @@
 package net.twisterrob.blt.io.feeds.facilities;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
 
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.StopType;
 import net.twisterrob.java.model.Location;
 
 public class Station {

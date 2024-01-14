@@ -1,6 +1,6 @@
 package net.twisterrob.blt.io.feeds.trackernet.model;
 
-import java.util.*;
+import java.util.Comparator;
 
 import net.twisterrob.blt.model.Line;
 

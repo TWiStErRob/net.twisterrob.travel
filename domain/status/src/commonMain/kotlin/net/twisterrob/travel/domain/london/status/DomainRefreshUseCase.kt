@@ -1,8 +1,8 @@
 package net.twisterrob.travel.domain.london.status
 
-import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.api.RefreshResult
 import net.twisterrob.travel.domain.london.status.api.RefreshUseCase
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 
 class DomainRefreshUseCase(
 	private val statusHistoryRepository: StatusHistoryRepository,

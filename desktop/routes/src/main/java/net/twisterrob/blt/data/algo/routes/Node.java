@@ -1,6 +1,9 @@
 package net.twisterrob.blt.data.algo.routes;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
 
 import net.twisterrob.blt.io.feeds.timetable.StopPoint;
 

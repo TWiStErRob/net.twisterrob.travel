@@ -1,10 +1,11 @@
 package net.twisterrob.blt.android.data.range.tiles;
 
-import java.net.*;
-
-import androidx.annotation.NonNull;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import com.google.android.gms.maps.model.UrlTileProvider;
+
+import androidx.annotation.NonNull;
 
 public class PublicUrlTileProvider extends UrlTileProvider {
 	/** @see <a href="http://wiki.openstreetmap.org/wiki/Tile_servers">Tile servers</a> */

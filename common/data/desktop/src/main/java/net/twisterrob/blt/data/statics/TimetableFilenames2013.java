@@ -1,9 +1,11 @@
 package net.twisterrob.blt.data.statics;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
 
 import net.twisterrob.blt.model.Line;
 

@@ -18,7 +18,8 @@ package android.sax;
 
 import java.util.ArrayList;
 
-import org.xml.sax.*;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXParseException;
 
 /**
  * An XML element. Provides access to child elements and hooks to listen

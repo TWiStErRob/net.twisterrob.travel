@@ -1,13 +1,17 @@
 package net.twisterrob.blt.android.data.range;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
 import android.annotation.SuppressLint;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 
-import net.twisterrob.blt.android.db.model.*;
+import net.twisterrob.blt.android.db.model.NetworkLink;
+import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.model.LineColors;
 import net.twisterrob.java.model.Location;
 

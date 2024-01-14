@@ -5,14 +5,16 @@ import java.util.Map.Entry;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 
 import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.model.Line;
-import net.twisterrob.java.model.*;
+import net.twisterrob.java.model.Location;
+import net.twisterrob.java.model.LocationConverter;
 
 @NotThreadSafe
 public abstract class RangeMapDrawer<T> {

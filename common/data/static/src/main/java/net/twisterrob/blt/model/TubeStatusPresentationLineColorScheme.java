@@ -1,6 +1,8 @@
 package net.twisterrob.blt.model;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class TubeStatusPresentationLineColorScheme extends LineColorScheme {
 	@Override public String getLineColorsSource() {

@@ -1,12 +1,18 @@
 package net.twisterrob.blt.data.ui;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.util.List;
 
 import javax.swing.JPanel;
 
-import net.twisterrob.blt.io.feeds.timetable.*;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.io.feeds.timetable.Route;
+import net.twisterrob.blt.io.feeds.timetable.RouteLink;
+import net.twisterrob.blt.io.feeds.timetable.StopPoint;
+import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.LineColors;
 
 public abstract class RouteComponent extends JPanel {
 	private static final long serialVersionUID = -846538337162491330L;

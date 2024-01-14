@@ -1,9 +1,15 @@
 package net.twisterrob.blt.io.feeds.timetable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import net.twisterrob.blt.io.feeds.BaseFeed;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.Operator;
 
 public class JourneyPlannerTimetableFeed extends BaseFeed<JourneyPlannerTimetableFeed> {
 	Line line;

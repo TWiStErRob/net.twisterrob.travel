@@ -2,7 +2,9 @@ package net.twisterrob.blt.android.data.range;
 
 import android.graphics.Color;
 
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.LineColorScheme;
+import net.twisterrob.blt.model.LineColors;
 
 public class RangeMapDrawerConfig {
 	public static final int BORDER_SIZE_MIN = 0;

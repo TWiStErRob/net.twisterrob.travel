@@ -1,6 +1,7 @@
 package net.twisterrob.blt.io.feeds;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.helpers.DefaultHandler;
 
 import net.twisterrob.java.exceptions.StackTrace;

@@ -1,12 +1,15 @@
 package net.twisterrob.blt.android.ui;
 
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import org.xml.sax.SAXException;
 
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
-import net.twisterrob.blt.io.feeds.facilities.*;
+import net.twisterrob.blt.io.feeds.facilities.FacilitiesFeed;
+import net.twisterrob.blt.io.feeds.facilities.FacilitiesFeedHandler;
 import net.twisterrob.java.io.IOTools;
 
 @SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15

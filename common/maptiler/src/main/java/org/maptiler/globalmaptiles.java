@@ -1,7 +1,8 @@
 package org.maptiler;
 
 import java.io.PrintStream;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Locale;
 
 /*
  * globalmaptiles.py

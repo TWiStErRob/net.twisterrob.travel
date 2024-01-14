@@ -1,9 +1,11 @@
 package net.twisterrob.blt.android.ui.activity;
 
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
+
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.app.AppCompatActivity;
-import android.view.*;
-import android.widget.ListView;
 
 import net.twisterrob.blt.android.app.full.R;
 

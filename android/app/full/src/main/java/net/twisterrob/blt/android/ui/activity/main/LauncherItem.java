@@ -1,7 +1,8 @@
 package net.twisterrob.blt.android.ui.activity.main;
 
 import android.app.Activity;
-import android.content.*;
+import android.content.Context;
+import android.content.Intent;
 
 class LauncherItem {
 	private int m_titleResource;

@@ -2,18 +2,28 @@ package net.twisterrob.blt.android.ui.activity;
 
 import javax.inject.Inject;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.*;
-import com.google.android.material.navigation.NavigationView;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.widget.Toolbar;
 import android.text.Spanned;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+
+import com.google.android.material.navigation.NavigationView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import net.twisterrob.android.AndroidConstants;
 import net.twisterrob.android.content.HtmlParser;
@@ -26,9 +36,11 @@ import net.twisterrob.android.wiring.NumberPickerWidget;
 import net.twisterrob.android.wiring.NumberPickerWidget.OnValueChangeListener;
 import net.twisterrob.blt.android.Injector;
 import net.twisterrob.blt.android.data.AndroidStaticData;
-import net.twisterrob.blt.android.data.range.*;
+import net.twisterrob.blt.android.data.range.RangeMapDrawerConfig;
+import net.twisterrob.blt.android.data.range.RangeMapGeneratorConfig;
 import net.twisterrob.blt.android.feature.range.R;
-import net.twisterrob.blt.android.ui.*;
+import net.twisterrob.blt.android.ui.ColorPickerWidget;
+import net.twisterrob.blt.android.ui.TubeHtmlHandler;
 import net.twisterrob.blt.model.LineColors;
 
 public class RangeOptionsFragment extends Fragment {

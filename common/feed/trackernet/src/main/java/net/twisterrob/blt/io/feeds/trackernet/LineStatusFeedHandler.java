@@ -1,19 +1,29 @@
 package net.twisterrob.blt.io.feeds.trackernet;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.xml.sax.*;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
-import android.sax.*;
+import android.sax.Element;
+import android.sax.ElementListener;
+import android.sax.RootElement;
+import android.sax.StartElementListener;
 import android.util.Xml;
 
 import net.twisterrob.blt.io.feeds.BaseFeedHandler;
-import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.*;
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.BranchDisruption;
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.BranchDisruption.StationFrom;
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.BranchDisruption.StationTo;
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.BranchDisruptions;
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.Line;
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.LineStatus;
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.Root;
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.Status;
 import net.twisterrob.blt.io.feeds.trackernet.model.DelayType;
 
 @NotThreadSafe

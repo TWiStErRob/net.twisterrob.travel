@@ -3,9 +3,9 @@
 package io.mockative
 
 import net.twisterrob.travel.domain.london.status.api.FeedParser
-import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
-import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusDataSource
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 
 inline fun <reified T : Any> mock(): T =
 	when (T::class) {

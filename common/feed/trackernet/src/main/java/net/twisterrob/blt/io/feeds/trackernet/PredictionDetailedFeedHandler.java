@@ -1,19 +1,31 @@
 package net.twisterrob.blt.io.feeds.trackernet;
 
-import java.io.*;
-import java.text.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.xml.sax.*;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
-import android.sax.*;
+import android.sax.Element;
+import android.sax.ElementListener;
+import android.sax.EndTextElementListener;
+import android.sax.RootElement;
+import android.sax.StartElementListener;
 import android.util.Xml;
 
 import net.twisterrob.blt.io.feeds.BaseFeedHandler;
-import net.twisterrob.blt.io.feeds.trackernet.PredictionDetailedFeedXml.*;
+import net.twisterrob.blt.io.feeds.trackernet.PredictionDetailedFeedXml.Platform;
+import net.twisterrob.blt.io.feeds.trackernet.PredictionDetailedFeedXml.Root;
+import net.twisterrob.blt.io.feeds.trackernet.PredictionDetailedFeedXml.Station;
+import net.twisterrob.blt.io.feeds.trackernet.PredictionDetailedFeedXml.Train;
 import net.twisterrob.blt.model.Line;
 
 /**

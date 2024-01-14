@@ -1,27 +1,27 @@
 package net.twisterrob.blt.android.ui.activity;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.*;
-import android.os.*;
-import androidx.annotation.*;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.ColorUtils;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.*;
-import androidx.appcompat.widget.Toolbar;
-import android.view.*;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
@@ -51,19 +51,36 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.ColorUtils;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.ClickThroughDrawerLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import net.twisterrob.android.content.pref.ResourcePreferences;
 import net.twisterrob.android.utils.concurrent.SimpleAsyncTask;
 import net.twisterrob.android.utils.tools.AndroidTools;
 import net.twisterrob.android.utils.tools.StringerTools;
 import net.twisterrob.android.utils.tools.ViewTools;
-import net.twisterrob.android.view.*;
+import net.twisterrob.android.view.MultiBottomSheetCallback;
+import net.twisterrob.android.view.ShowOnlyWhenSheetNotExpandedFAB;
 import net.twisterrob.android.view.layout.DoAfterLayout;
 import net.twisterrob.blt.android.BuildConfig;
 import net.twisterrob.blt.android.Injector;
 import net.twisterrob.blt.android.data.AndroidStaticData;
 import net.twisterrob.blt.android.data.LocationUtils;
-import net.twisterrob.blt.android.data.range.*;
-import net.twisterrob.blt.android.data.range.tiles.*;
+import net.twisterrob.blt.android.data.range.RangeMapDrawerAndroid;
+import net.twisterrob.blt.android.data.range.RangeMapDrawerConfig;
+import net.twisterrob.blt.android.data.range.RangeMapGenerator;
+import net.twisterrob.blt.android.data.range.RangeMapGeneratorConfig;
+import net.twisterrob.blt.android.data.range.TubeMapDrawer;
+import net.twisterrob.blt.android.data.range.tiles.MarkerAdder;
+import net.twisterrob.blt.android.data.range.tiles.TubeMapTileProvider;
 import net.twisterrob.blt.android.db.DataBaseHelper;
 import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.android.feature.range.R;
@@ -72,7 +89,8 @@ import net.twisterrob.blt.model.LineColors;
 import net.twisterrob.blt.model.StopType;
 import net.twisterrob.travel.map.MapUtils;
 
-import static net.twisterrob.android.utils.tools.ResourceTools.*;
+import static net.twisterrob.android.utils.tools.ResourceTools.dip;
+import static net.twisterrob.android.utils.tools.ResourceTools.dipInt;
 
 public class RangeMapActivity extends MapActivity {
 	private static final Logger LOG = LoggerFactory.getLogger(RangeMapActivity.class);

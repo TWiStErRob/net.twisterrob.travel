@@ -1,23 +1,37 @@
 package net.twisterrob.blt.android.ui.activity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
-import static java.util.concurrent.TimeUnit.*;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 import javax.inject.Inject;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.location.*;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
-import androidx.annotation.*;
-import androidx.fragment.app.Fragment;
-import android.view.*;
-import android.widget.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextSwitcher;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import net.twisterrob.android.utils.concurrent.SimpleSafeAsyncTask;
 import net.twisterrob.android.utils.tools.AndroidTools;
@@ -28,13 +42,16 @@ import net.twisterrob.blt.android.Injector;
 import net.twisterrob.blt.android.data.AndroidStaticData;
 import net.twisterrob.blt.android.data.LocationUtils;
 import net.twisterrob.blt.android.data.range.RangeMapGeneratorConfig;
-import net.twisterrob.blt.android.db.model.*;
+import net.twisterrob.blt.android.db.model.NetworkNode;
+import net.twisterrob.blt.android.db.model.Station;
 import net.twisterrob.blt.android.feature.range.R;
 import net.twisterrob.blt.android.ui.adapter.StationAdapter;
 import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder.DescriptionFormatter;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.StopType;
 import net.twisterrob.java.model.Location;
-import net.twisterrob.java.utils.tostring.*;
+import net.twisterrob.java.utils.tostring.StringerRepo;
+import net.twisterrob.java.utils.tostring.ToStringer;
 
 public class RangeNearestFragment extends Fragment {
 	private static final Logger LOG = LoggerFactory.getLogger(RangeNearestFragment.class);

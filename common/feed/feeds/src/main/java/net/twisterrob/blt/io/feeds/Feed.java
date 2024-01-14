@@ -1,14 +1,29 @@
 package net.twisterrob.blt.io.feeds;
 
 import java.lang.reflect.InvocationTargetException;
-import java.net.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import net.twisterrob.blt.io.feeds.facilities.FacilitiesFeedHandler;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableHandler;
-import net.twisterrob.blt.io.feeds.trackernet.*;
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedHandler;
+import net.twisterrob.blt.io.feeds.trackernet.PredictionDetailedFeedHandler;
+import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeedHandler;
 
-import static net.twisterrob.blt.io.feeds.Feed.Const.*;
-import static net.twisterrob.blt.io.feeds.Feed.Type.*;
+import static net.twisterrob.blt.io.feeds.Feed.Const.DAY;
+import static net.twisterrob.blt.io.feeds.Feed.Const.HOUR;
+import static net.twisterrob.blt.io.feeds.Feed.Const.MINUTE;
+import static net.twisterrob.blt.io.feeds.Feed.Const.MISSING_HANDLER;
+import static net.twisterrob.blt.io.feeds.Feed.Const.MISSING_SAMPLE;
+import static net.twisterrob.blt.io.feeds.Feed.Const.MISSING_TIME;
+import static net.twisterrob.blt.io.feeds.Feed.Const.MISSING_URL;
+import static net.twisterrob.blt.io.feeds.Feed.Const.MONTH;
+import static net.twisterrob.blt.io.feeds.Feed.Const.N_A;
+import static net.twisterrob.blt.io.feeds.Feed.Const.SECOND;
+import static net.twisterrob.blt.io.feeds.Feed.Const.WEEK;
+import static net.twisterrob.blt.io.feeds.Feed.Const.YEAR;
+import static net.twisterrob.blt.io.feeds.Feed.Type.Other;
+import static net.twisterrob.blt.io.feeds.Feed.Type.Syndication;
 
 /**
  * Feeds provided by Transport for London<br>

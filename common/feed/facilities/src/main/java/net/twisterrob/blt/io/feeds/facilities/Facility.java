@@ -2,7 +2,8 @@ package net.twisterrob.blt.io.feeds.facilities;
 
 import java.util.Locale;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Facility {
 	private static final Logger LOG = LoggerFactory.getLogger(Facility.class);

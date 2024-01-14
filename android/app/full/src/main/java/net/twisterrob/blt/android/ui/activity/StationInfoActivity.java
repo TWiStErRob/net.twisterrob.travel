@@ -1,14 +1,23 @@
 package net.twisterrob.blt.android.ui.activity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnGroupCollapseListener;
+import android.widget.ExpandableListView.OnGroupExpandListener;
+import android.widget.TextView;
 
-import android.widget.*;
-import android.widget.ExpandableListView.*;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
 import net.twisterrob.android.utils.tools.StrictModeTools;
@@ -19,8 +28,11 @@ import net.twisterrob.blt.android.ui.ListViewHandler;
 import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter;
 import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeed;
-import net.twisterrob.blt.io.feeds.trackernet.model.*;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.io.feeds.trackernet.model.Platform;
+import net.twisterrob.blt.io.feeds.trackernet.model.Station;
+import net.twisterrob.blt.io.feeds.trackernet.model.Train;
+import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.PlatformDirection;
 
 public class StationInfoActivity extends BaseActivity implements
 		OnGroupExpandListener,
