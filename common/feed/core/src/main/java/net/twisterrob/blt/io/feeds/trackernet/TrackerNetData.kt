@@ -66,4 +66,29 @@ class TrackerNetData {
 			Line.unknown -> "Unknown"
 			else -> getAliasesFor(line).first()
 		}
+
+	/**
+	 * `ID` attribute of `<Line>` in the Line Status feed.
+	 */
+	fun getLineId(line: Line): Int? =
+		when (line) {
+			Line.Bakerloo -> 1
+			Line.Central -> 2
+			Line.Circle -> 7
+			Line.District -> 9
+			Line.HammersmithAndCity -> 8
+			Line.Jubilee -> 4
+			Line.Metropolitan -> 11
+			Line.Northern -> 5
+			Line.Piccadilly -> 6
+			Line.Victoria -> 3
+			Line.WaterlooAndCity -> 12
+			Line.DLR -> 81
+			Line.Overground -> 82
+			Line.Tram -> 90
+			Line.EmiratesAirline -> null
+			Line.TflRail -> 83
+			Line.ElizabethLine -> 83
+			Line.unknown -> null
+		}
 }
