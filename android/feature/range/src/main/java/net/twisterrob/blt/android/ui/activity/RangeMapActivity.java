@@ -67,7 +67,6 @@ import net.twisterrob.blt.android.data.range.tiles.*;
 import net.twisterrob.blt.android.db.DataBaseHelper;
 import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.android.feature.range.R;
-import net.twisterrob.blt.android.ui.activity.RangeOptionsFragment.ConfigsUpdatedListener;
 import net.twisterrob.blt.android.ui.activity.main.MapActivity;
 import net.twisterrob.blt.model.StopType;
 import net.twisterrob.travel.map.MapUtils;
