@@ -4,6 +4,6 @@ import net.twisterrob.blt.model.Line
 
 class LineColorsModel(
 	val line: Line,
-	val foregroundColor: String,
-	val backgroundColor: String,
+	val foregroundColor: Int,
+	val backgroundColor: Int,
 )

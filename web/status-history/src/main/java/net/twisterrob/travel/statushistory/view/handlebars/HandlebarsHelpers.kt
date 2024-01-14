@@ -50,6 +50,10 @@ object HandlebarsHelpers {
 	fun formatDate(value: Date, pattern: String): String =
 		SimpleDateFormat(pattern, Locale.getDefault()).format(value)
 
+	@JvmStatic
+	fun formatCssColor(value: Int): String =
+		"#%06X".format(Locale.ROOT, value and @Suppress("detekt.MagicNumber") 0xFFFFFF)
+
 	/**
 	 * Workaround for `myEnumMap.[Foo]` and `lookup myEnumMap Foo` not working.
 	 * Usage: Replace `(lookup someEnumMap someEnumKey)` with `(lookupEnumMap someEnumMap someEnumKey)`.
