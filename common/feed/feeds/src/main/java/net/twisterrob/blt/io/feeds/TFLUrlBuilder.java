@@ -5,14 +5,18 @@ import java.util.*;
 
 import javax.annotation.Nonnull;
 
+import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
 import net.twisterrob.blt.model.Line;
 
 /**
  * From email: Thank you for registering for Transport for London (TfL) syndicated feeds.
  */
 public class TFLUrlBuilder implements URLBuilder {
+	private final @Nonnull TrackerNetData trackerNetData;
 	private String m_email;
-	public TFLUrlBuilder(String email) {
+	
+	public TFLUrlBuilder(String email, @Nonnull TrackerNetData data) {
+		trackerNetData = data;
 		m_email = email;
 	}
 
@@ -33,16 +37,20 @@ public class TFLUrlBuilder implements URLBuilder {
 			return getSyncdicationFeed(feed);
 		}
 		switch (feed) {
-			case TubeDepartureBoardsPredictionSummary:
-				return new URL(feed.getUrl(), ((Line)args.get("line")).getTrackerNetCode());
-			case TubeDepartureBoardsPredictionDetailed:
+			case TubeDepartureBoardsPredictionSummary: {
+				Line line = (Line)args.get("line");
+				return new URL(feed.getUrl(), trackerNetData.getTrackerNetCodeOf(line));
+			}
+			case TubeDepartureBoardsPredictionDetailed: {
 				Line line = (Line)args.get("line");
 				if (Line.UNDERGROUND.contains(line)) {
-					return new URL(new URL(feed.getUrl(), line.getTrackerNetCode() + "/"), (String)args.get("station"));
+					String code = trackerNetData.getTrackerNetCodeOf(line);
+					return new URL(new URL(feed.getUrl(), code + "/"), (String)args.get("station"));
 				} else {
-					return null;
+					throw new IllegalArgumentException(line + " line is not underground, cannot request prediction for it.");
 				}
-				//$CASES-OMITTED$
+			}
+			//$CASES-OMITTED$
 			default:
 				return feed.getUrl();
 		}

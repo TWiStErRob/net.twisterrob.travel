@@ -10,6 +10,7 @@ import net.twisterrob.blt.data.SharedStaticData
 import net.twisterrob.blt.data.StaticData
 import net.twisterrob.blt.io.feeds.LocalhostUrlBuilder
 import net.twisterrob.blt.io.feeds.TFLUrlBuilder
+import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData
 import net.twisterrob.blt.io.feeds.URLBuilder
 import net.twisterrob.blt.model.LineColors
 import net.twisterrob.travel.domain.london.status.DomainRefreshUseCase
@@ -61,10 +62,10 @@ class Dependencies {
 	@Singleton
 	@Requires(notEnv = ["development"])
 	fun urlBuilder(): URLBuilder =
-		TFLUrlBuilder("papp.robert.s@gmail.com")
+		TFLUrlBuilder("papp.robert.s@gmail.com", TrackerNetData())
 
 	@Singleton
 	@Requires(env = ["development"])
 	fun urlBuilderDebug(): URLBuilder =
-		LocalhostUrlBuilder()
+		LocalhostUrlBuilder(TrackerNetData())
 }
