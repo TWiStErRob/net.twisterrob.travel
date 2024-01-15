@@ -61,8 +61,8 @@
 			color: white;
 		}
 
-		{{#each colors as | lineColor | }}
-		.line-{{lineColor.line}} {
+		{{#each colors as | lineColor | }}{{! lineColor: LineColorsModel --}}
+		.line-{{lineColor.lineId}} {
 			color: {{formatCssColor lineColor.foregroundColor}};
 			background-color: {{formatCssColor lineColor.backgroundColor}};
 		}
@@ -97,12 +97,12 @@
 				{{assign "delayStyle" (concat delayStyle " inactive")}}
 			{{/if}}
 			<tr>
-				<td class="line-{{status.line}}">{{status.lineTitle}}</td>
+				<td class="line-{{status.lineId}}">{{status.lineTitle}}</td>
 				<td class="delay {{status.changeStatus.cssClass}} {{delayStyle}}">
 					{{#if (or (empty status.description) (empty status.branchDescription))}}
-						{{status.type.title}}
+						{{status.type}}
 					{{else}}
-						<a rel="htmltooltip">{{status.type.title}}</a>
+						<a rel="htmltooltip">{{status.type}}</a>
 						<div class="htmltooltip">
 							<p>{{status.description}}</p>
 							<p>{{status.branchDescription}}</p>

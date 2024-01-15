@@ -11,7 +11,7 @@ class LineColorsModelMapper @Inject constructor(
 	fun map(): List<LineColorsModel> =
 		Line.entries.map { line ->
 			LineColorsModel(
-				line = line,
+				lineId = line.name,
 				foregroundColor = colors.getForeground(line),
 				backgroundColor = colors.getBackground(line),
 			)

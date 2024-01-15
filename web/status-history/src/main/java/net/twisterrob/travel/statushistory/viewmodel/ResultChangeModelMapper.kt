@@ -71,9 +71,9 @@ class ResultChangeModelMapper @Inject constructor(
 	private fun map(statuses: List<LineStatus>, changes: Map<Line, StatusChange>): List<LineStatusModel> =
 		statuses.map { lineStatus ->
 			LineStatusModel(
-				line = lineStatus.line,
+				lineId = lineStatus.line.name,
 				lineTitle = trackerNetData.getDisplayName(lineStatus.line),
-				type = lineStatus.type,
+				type = lineStatus.type.title,
 				description = lineStatus.description,
 				changeStatus = changes[lineStatus.line]?.let(::map),
 				changeDescription = (changes[lineStatus.line] as? HasDescriptionChange)?.let { diffDesc(it.desc) },

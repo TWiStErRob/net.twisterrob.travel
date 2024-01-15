@@ -2,8 +2,6 @@
 
 package net.twisterrob.travel.statushistory.viewmodel
 
-import net.twisterrob.blt.model.DelayType
-import net.twisterrob.blt.model.Line
 import java.util.Date
 
 class LineStatusModel(
@@ -18,9 +16,9 @@ class ResultChangeModel(
 ) {
 
 	class LineStatusModel(
-		val line: Line,
+		val lineId: String,
 		val lineTitle: String,
-		val type: DelayType,
+		val type: String,
 		val description: String?,
 		val active: Boolean,
 		val branchDescription: String?,
