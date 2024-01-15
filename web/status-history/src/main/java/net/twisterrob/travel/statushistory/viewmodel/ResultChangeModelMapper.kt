@@ -3,8 +3,8 @@ package net.twisterrob.travel.statushistory.viewmodel
 import jakarta.inject.Inject
 import net.twisterrob.blt.diff.HtmlDiff
 import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData
-import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus
 import net.twisterrob.blt.model.Line
+import net.twisterrob.blt.model.LineStatus
 import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModel.LineStatusModel
 
 class ResultChangeModelMapper @Inject constructor(
@@ -16,7 +16,7 @@ class ResultChangeModelMapper @Inject constructor(
 			`when` = changes.current?.`when`,
 			error = mapError(changes),
 			statuses = map(
-				(changes.current as? Result.ContentResult)?.content?.lineStatuses.orEmpty(),
+				(changes.current as? Result.ContentResult)?.content?.statuses.orEmpty(),
 				(changes as? Changes.Status)?.changes.orEmpty(),
 			),
 		)

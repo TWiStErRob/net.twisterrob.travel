@@ -3,8 +3,8 @@ package net.twisterrob.travel.statushistory.viewmodel
 import com.shazam.gwen.Gwen.given
 import com.shazam.gwen.Gwen.then
 import com.shazam.gwen.Gwen.`when`
-import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus.BranchStatus
 import net.twisterrob.blt.model.Line
+import net.twisterrob.blt.model.LineStatus
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -83,8 +83,8 @@ class ResultChangeCalculatorUnitTest_Descriptions {
 	}
 
 	@Test fun testStationsDifferent() {
-		val branch1 = BranchStatus("from1", "to1")
-		val branch2 = BranchStatus("from2", "to2")
+		val branch1 = LineStatus.BranchStatus("from1", "to1")
+		val branch2 = LineStatus.BranchStatus("from2", "to2")
 		given(status1).contains(Line.Northern, "description", branch1)
 		given(status2).contains(Line.Northern, "description", branch2)
 

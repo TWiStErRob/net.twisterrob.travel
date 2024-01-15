@@ -1,6 +1,6 @@
 package net.twisterrob.travel.statushistory.viewmodel
 
-import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed
+import net.twisterrob.blt.model.LineStatuses
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
@@ -19,7 +19,7 @@ class ResultUnitTest {
 	}
 
 	@Test fun testConsistentPropertiesFeed() {
-		val feed: LineStatusFeed = mock()
+		val feed: LineStatuses = mock()
 		val date: Date = mock()
 
 		val result = Result.ContentResult(date, feed)

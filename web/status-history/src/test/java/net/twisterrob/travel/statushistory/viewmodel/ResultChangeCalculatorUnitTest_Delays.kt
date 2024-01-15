@@ -3,7 +3,7 @@ package net.twisterrob.travel.statushistory.viewmodel
 import com.shazam.gwen.Gwen.given
 import com.shazam.gwen.Gwen.then
 import com.shazam.gwen.Gwen.`when`
-import net.twisterrob.blt.io.feeds.trackernet.model.DelayType
+import net.twisterrob.blt.model.DelayType
 import net.twisterrob.blt.model.Line
 import net.twisterrob.travel.statushistory.viewmodel.DescriptionChange.Missing
 import org.junit.jupiter.api.BeforeEach

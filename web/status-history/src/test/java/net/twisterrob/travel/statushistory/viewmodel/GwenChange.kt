@@ -2,7 +2,7 @@ package net.twisterrob.travel.statushistory.viewmodel
 
 import com.shazam.gwen.collaborators.Actor
 import com.shazam.gwen.collaborators.Asserter
-import net.twisterrob.blt.io.feeds.trackernet.model.DelayType
+import net.twisterrob.blt.model.DelayType
 import net.twisterrob.blt.model.Line
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.either

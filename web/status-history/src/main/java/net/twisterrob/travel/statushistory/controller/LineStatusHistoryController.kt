@@ -7,7 +7,7 @@ import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Produces
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.views.View
-import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed
+import net.twisterrob.blt.model.LineStatuses
 import net.twisterrob.travel.domain.london.status.Feed
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
@@ -45,7 +45,7 @@ private fun ParsedStatusItem.toResult(): Result {
 	val date = Date(this.item.retrievedDate.toEpochMilliseconds())
 	return when (this) {
 		is ParsedStatusItem.ParsedFeed ->
-			Result.ContentResult(date, this.content as LineStatusFeed)
+			Result.ContentResult(date, this.content as LineStatuses)
 
 		is ParsedStatusItem.AlreadyFailed ->
 			Result.ErrorResult(date, Result.ErrorResult.Error(this.item.error.stacktrace))

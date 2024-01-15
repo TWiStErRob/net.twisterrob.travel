@@ -1,7 +1,7 @@
 package net.twisterrob.travel.statushistory.viewmodel
 
-import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus
 import net.twisterrob.blt.model.Line
+import net.twisterrob.blt.model.LineStatus
 import net.twisterrob.travel.statushistory.viewmodel.Changes.ErrorChanges
 import java.util.EnumMap
 
@@ -41,8 +41,8 @@ class ResultChangesCalculator {
 
 	private fun diffContent(oldResult: Result.ContentResult, newResult: Result.ContentResult): Map<Line, StatusChange> {
 		val statusChanges: MutableMap<Line, StatusChange> = EnumMap(Line::class.java)
-		val oldMap = oldResult.content.statusMap
-		val newMap = newResult.content.statusMap
+		val oldMap = oldResult.content.statuses.associateBy { it.line }
+		val newMap = newResult.content.statuses.associateBy { it.line }
 		val allLines: Set<Line> = oldMap.keys + newMap.keys
 		for (line in allLines) {
 			val oldStatus = oldMap[line]

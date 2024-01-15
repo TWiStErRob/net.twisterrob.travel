@@ -1,6 +1,6 @@
 package net.twisterrob.travel.statushistory.viewmodel
 
-import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed
+import net.twisterrob.blt.model.LineStatuses
 import net.twisterrob.travel.statushistory.viewmodel.Changes.ErrorChanges
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -96,7 +96,7 @@ class ResultChangeCalculatorUnitTest_NonContentDiffs {
 }
 
 @Suppress("TestFunctionName")
-private fun ContentResult(content: LineStatusFeed): Result.ContentResult =
+private fun ContentResult(content: LineStatuses): Result.ContentResult =
 	Result.ContentResult(Date(), content)
 
 @Suppress("TestFunctionName")

@@ -2,7 +2,7 @@
 
 package net.twisterrob.travel.statushistory.viewmodel
 
-import net.twisterrob.blt.io.feeds.trackernet.model.DelayType
+import net.twisterrob.blt.model.DelayType
 import net.twisterrob.blt.model.Line
 import java.util.Date
 
