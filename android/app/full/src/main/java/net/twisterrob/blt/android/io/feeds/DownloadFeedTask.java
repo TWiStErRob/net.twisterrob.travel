@@ -1,15 +1,20 @@
 package net.twisterrob.blt.android.io.feeds;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Collections;
+import java.util.Map;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import net.twisterrob.android.utils.concurrent.AsyncTaskResult;
 import net.twisterrob.blt.android.App;
-import net.twisterrob.blt.io.feeds.*;
+import net.twisterrob.blt.io.feeds.BaseFeed;
+import net.twisterrob.blt.io.feeds.Feed;
 import net.twisterrob.java.io.IOTools;
 
 @SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15

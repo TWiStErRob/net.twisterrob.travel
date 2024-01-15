@@ -1,14 +1,22 @@
 package net.twisterrob.blt.android.data.range.tiles;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
-import android.graphics.*;
-import android.graphics.Paint.*;
-import androidx.core.graphics.ColorUtils;
-import androidx.core.util.Pools;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Paint.Align;
+import android.graphics.Paint.Cap;
+import android.graphics.Paint.Style;
 import android.text.TextPaint;
 
-import net.twisterrob.blt.android.db.model.*;
+import androidx.core.graphics.ColorUtils;
+import androidx.core.util.Pools;
+
+import net.twisterrob.blt.android.db.model.NetworkLink;
+import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.model.LineColors;
 import net.twisterrob.java.model.Location;
 

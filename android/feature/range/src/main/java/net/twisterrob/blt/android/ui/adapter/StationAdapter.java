@@ -1,16 +1,25 @@
 package net.twisterrob.blt.android.ui.adapter;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import androidx.core.content.ContextCompat;
-import android.text.*;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.style.TextAppearanceSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
 
 import net.twisterrob.android.adapter.BaseListAdapter;
 import net.twisterrob.blt.android.data.AndroidStaticData;
@@ -19,7 +28,9 @@ import net.twisterrob.blt.android.feature.range.R;
 import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder;
 import net.twisterrob.blt.android.ui.adapter.StationAdapter.ViewHolder.DescriptionFormatter;
 import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.LineColors;
+import net.twisterrob.blt.model.StopType;
 
 public class StationAdapter extends BaseListAdapter<Station, ViewHolder> {
 

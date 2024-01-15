@@ -1,6 +1,8 @@
 package net.twisterrob.blt.io.feeds.timetable;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Locale;
 
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.RouteLink.DirectionEnum;
 import net.twisterrob.java.model.Location;

@@ -1,10 +1,10 @@
 package net.twisterrob.travel.domain.london.status
 
 import net.twisterrob.travel.domain.london.status.api.FeedParser
-import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
 import net.twisterrob.travel.domain.london.status.api.StatusDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 
 class DomainStatusHistoryRepository(
 	private val statusHistoryDataSource: StatusHistoryDataSource,

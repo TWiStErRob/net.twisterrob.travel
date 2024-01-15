@@ -6,18 +6,29 @@ import org.xml.sax.Attributes;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.*;
-import androidx.core.content.ContextCompat;
-import android.text.*;
-import android.text.style.*;
+import android.text.Editable;
+import android.text.Spannable;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.DynamicDrawableSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 
-import static android.text.Spanned.*;
+import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import net.twisterrob.android.content.HtmlParser;
 import net.twisterrob.android.graphics.DrawableBinder;
 import net.twisterrob.android.view.TextAppearanceAccessor;
 import net.twisterrob.blt.android.data.AndroidStaticData;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.LineColors;
+import net.twisterrob.blt.model.StopType;
+import net.twisterrob.blt.model.TextLineColorScheme;
 
 /**
  * @see <a href="https://chiuki.github.io/advanced-android-textview/#/29">Advanced Android TextView</a>

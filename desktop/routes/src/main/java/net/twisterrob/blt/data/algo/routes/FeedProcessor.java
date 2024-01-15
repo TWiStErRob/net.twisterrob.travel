@@ -1,8 +1,12 @@
 package net.twisterrob.blt.data.algo.routes;
 
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
 
-import net.twisterrob.blt.io.feeds.timetable.*;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeed;
+import net.twisterrob.blt.io.feeds.timetable.Route;
 
 public class FeedProcessor {
 	public static List<Route> reconstruct(JourneyPlannerTimetableFeed feed) {

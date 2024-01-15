@@ -1,17 +1,28 @@
 package net.twisterrob.blt.android.ui.activity.main;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.*;
-import android.widget.*;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
 
 import net.twisterrob.android.activity.AboutActivity;
 import net.twisterrob.android.utils.tools.AndroidTools;
 import net.twisterrob.blt.android.app.full.R;
-import net.twisterrob.blt.android.ui.activity.*;
+import net.twisterrob.blt.android.ui.activity.BaseActivity;
+import net.twisterrob.blt.android.ui.activity.PostCodesActivity;
+import net.twisterrob.blt.android.ui.activity.PredictionSummaryActivity;
+import net.twisterrob.blt.android.ui.activity.RangeMapActivity;
+import net.twisterrob.blt.android.ui.activity.StationInfoActivity;
+import net.twisterrob.blt.android.ui.activity.StationListActivity;
+import net.twisterrob.blt.android.ui.activity.StationMapsActivity;
+import net.twisterrob.blt.android.ui.activity.StatusActivity;
 import net.twisterrob.blt.model.Line;
 
 public class MainActivity extends BaseActivity {

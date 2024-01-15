@@ -1,9 +1,10 @@
 package net.twisterrob.blt.data.statics;
 
 import java.io.File;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
-import static java.util.Collections.*;
+import static java.util.Collections.unmodifiableMap;
 
 import net.twisterrob.blt.data.SharedStaticData;
 import net.twisterrob.blt.data.apps.DesktopStaticData;

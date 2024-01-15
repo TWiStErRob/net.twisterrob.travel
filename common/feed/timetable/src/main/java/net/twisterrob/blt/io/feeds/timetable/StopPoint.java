@@ -1,6 +1,8 @@
 package net.twisterrob.blt.io.feeds.timetable;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.Locale;
 
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.StopClassification.StopTypeEnum;
 import net.twisterrob.java.model.Location;

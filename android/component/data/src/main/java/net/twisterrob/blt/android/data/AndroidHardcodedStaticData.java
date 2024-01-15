@@ -1,6 +1,7 @@
 package net.twisterrob.blt.android.data;
 
-import java.util.*;
+import java.util.EnumMap;
+import java.util.Map;
 
 import net.twisterrob.blt.android.component.data.R;
 import net.twisterrob.blt.data.SharedStaticData;

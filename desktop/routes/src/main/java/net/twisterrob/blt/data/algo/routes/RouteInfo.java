@@ -1,12 +1,22 @@
 package net.twisterrob.blt.data.algo.routes;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.annotation.CheckForNull;
 
 import net.twisterrob.blt.data.algo.routes.Node.State;
-import net.twisterrob.blt.io.feeds.timetable.*;
+import net.twisterrob.blt.io.feeds.timetable.Route;
+import net.twisterrob.blt.io.feeds.timetable.RouteLink;
+import net.twisterrob.blt.io.feeds.timetable.RouteSection;
+import net.twisterrob.blt.io.feeds.timetable.StopPoint;
 
 public class RouteInfo {
 	private List<Route> routes;

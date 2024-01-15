@@ -1,17 +1,31 @@
 package net.twisterrob.blt.android.db;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import android.annotation.SuppressLint;
-import android.database.*;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
 import net.twisterrob.android.utils.tools.IOTools;
-import net.twisterrob.blt.android.db.model.*;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.android.db.model.AreaHullPoint;
+import net.twisterrob.blt.android.db.model.NetworkLink;
+import net.twisterrob.blt.android.db.model.NetworkNode;
+import net.twisterrob.blt.android.db.model.Station;
+import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.StopType;
 import net.twisterrob.java.collections.MultiKey;
 import net.twisterrob.java.model.Location;
 

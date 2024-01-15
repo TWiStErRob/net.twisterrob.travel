@@ -2,11 +2,16 @@ package net.twisterrob.blt.android.data.range.tiles;
 
 import java.util.Locale;
 
-import android.graphics.*;
-import android.graphics.Paint.*;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Align;
+import android.graphics.Paint.Style;
+import android.graphics.Rect;
+import android.text.TextPaint;
+
 import androidx.core.graphics.ColorUtils;
 import androidx.core.util.Pools;
-import android.text.TextPaint;
 
 import net.twisterrob.android.utils.tools.ColorTools;
 import net.twisterrob.java.annotations.DebugHelper;

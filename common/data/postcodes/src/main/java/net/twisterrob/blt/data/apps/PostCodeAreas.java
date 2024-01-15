@@ -1,13 +1,25 @@
 package net.twisterrob.blt.data.apps;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.zip.GZIPInputStream;
 
-import net.twisterrob.blt.data.algo.postcodes.*;
+import net.twisterrob.blt.data.algo.postcodes.ConvexHull;
 import net.twisterrob.blt.data.algo.postcodes.ConvexHull.ToPos;
-import net.twisterrob.java.model.*;
+import net.twisterrob.blt.data.algo.postcodes.PostCode;
+import net.twisterrob.java.model.Location;
+import net.twisterrob.java.model.LocationConverter;
 
 public class PostCodeAreas {
 	private static final ToPos<PostCode> POSER = new ConvexHull.ToPos<PostCode>() {

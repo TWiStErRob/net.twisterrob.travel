@@ -1,7 +1,10 @@
 package net.twisterrob.java.io;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Locale;
 
 import net.twisterrob.java.utils.ArrayTools;

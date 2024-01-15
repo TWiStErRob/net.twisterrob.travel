@@ -3,8 +3,11 @@ package net.twisterrob.blt.android.db;
 import java.io.PrintStream;
 
 import android.content.ContentValues;
-import android.database.*;
-import android.database.sqlite.*;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteProgram;
+import android.database.sqlite.SQLiteStatement;
 
 /**
  * TODO what is the point of this class?

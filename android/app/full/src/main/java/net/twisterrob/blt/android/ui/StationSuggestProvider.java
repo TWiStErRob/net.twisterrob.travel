@@ -1,14 +1,22 @@
 package net.twisterrob.blt.android.ui;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import android.app.SearchManager;
-import android.content.*;
-import android.database.*;
+import android.content.ContentProvider;
+import android.content.ContentValues;
+import android.content.UriMatcher;
+import android.database.AbstractCursor;
+import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
+
 import androidx.annotation.NonNull;
 
 import net.twisterrob.blt.android.App;

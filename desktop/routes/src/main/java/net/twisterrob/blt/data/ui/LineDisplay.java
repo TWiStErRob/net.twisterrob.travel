@@ -1,15 +1,33 @@
 package net.twisterrob.blt.data.ui;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
+import javax.swing.WindowConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
-import net.twisterrob.blt.io.feeds.timetable.*;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeed;
+import net.twisterrob.blt.io.feeds.timetable.Route;
+import net.twisterrob.blt.io.feeds.timetable.StopPoint;
 import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.LineColors;
 
 public class LineDisplay extends JFrame {
 	private static final long serialVersionUID = 1L;

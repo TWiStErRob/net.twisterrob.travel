@@ -1,16 +1,23 @@
 package net.twisterrob.blt.android.data.range;
 
 import java.util.AbstractMap.SimpleEntry;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import net.twisterrob.blt.android.db.model.*;
+import net.twisterrob.blt.android.db.model.NetworkLink;
+import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.model.Line;
-import net.twisterrob.java.model.*;
+import net.twisterrob.java.model.Location;
+import net.twisterrob.java.model.LocationUtils;
 
 @NotThreadSafe
 public class RangeMapGenerator {

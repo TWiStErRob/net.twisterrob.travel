@@ -1,6 +1,7 @@
 package net.twisterrob.blt.io.feeds.timetable;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 final class StopPointIterators implements Iterator<StopPoint> {
 	private Iterator<? extends Iterable<StopPoint>> it;

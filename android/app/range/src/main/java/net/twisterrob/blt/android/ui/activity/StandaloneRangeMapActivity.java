@@ -1,7 +1,8 @@
 package net.twisterrob.blt.android.ui.activity;
 
 import android.content.Intent;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import net.twisterrob.android.activity.AboutActivity;
 import net.twisterrob.blt.android.app.range.R;

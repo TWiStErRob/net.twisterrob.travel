@@ -1,27 +1,39 @@
 package net.twisterrob.blt.io.feeds.timetable;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.xml.sax.*;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
-import android.sax.*;
+import android.sax.Element;
+import android.sax.ElementListener;
+import android.sax.EndTextElementListener;
+import android.sax.RootElement;
+import android.sax.StartElementListener;
 import android.util.Xml;
 
 import net.twisterrob.blt.io.feeds.BaseFeedHandler;
-import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.*;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.AnnotatedNptgLocalityRef;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.Operator;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.Root;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.Route;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.RouteLink;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.RouteLink.DirectionEnum;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.RouteSection;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.Service;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.Service.Line;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint;
-import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.*;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Descriptor;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Place;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Place.Location;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.Place.Location.PrecisionEnum;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.StopClassification;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeedXml.StopPoint.StopClassification.StopTypeEnum;
 import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
 import net.twisterrob.java.model.LocationConverter;

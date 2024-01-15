@@ -1,11 +1,14 @@
 package net.twisterrob.blt.android.ui.activity.main;
 
-import android.content.*;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.net.Uri;
-import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.google.android.gms.common.*;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class MapActivity extends AppCompatActivity {
 	private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;

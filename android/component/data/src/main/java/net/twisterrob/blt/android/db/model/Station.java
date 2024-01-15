@@ -1,8 +1,11 @@
 package net.twisterrob.blt.android.db.model;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.StopType;
 import net.twisterrob.java.model.Location;
 
 public class Station {

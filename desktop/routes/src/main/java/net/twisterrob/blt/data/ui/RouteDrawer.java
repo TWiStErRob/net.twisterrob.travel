@@ -1,9 +1,14 @@
 package net.twisterrob.blt.data.ui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.List;
 
-import net.twisterrob.blt.io.feeds.timetable.*;
+import net.twisterrob.blt.io.feeds.timetable.Route;
+import net.twisterrob.blt.io.feeds.timetable.RouteLink;
+import net.twisterrob.blt.io.feeds.timetable.StopPoint;
 import net.twisterrob.blt.model.Line;
 import net.twisterrob.blt.model.LineColors;
 import net.twisterrob.java.exceptions.WTF;

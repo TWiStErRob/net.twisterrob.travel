@@ -1,6 +1,9 @@
 package net.twisterrob.blt.android.ui.adapter;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,8 +12,10 @@ import android.widget.TextView;
 
 import net.twisterrob.android.adapter.BaseExpandableList2Adapter;
 import net.twisterrob.blt.android.app.full.R;
-import net.twisterrob.blt.android.ui.adapter.PredictionDetailsAdapter.*;
-import net.twisterrob.blt.io.feeds.trackernet.model.*;
+import net.twisterrob.blt.android.ui.adapter.PredictionDetailsAdapter.PlatformViewHolder;
+import net.twisterrob.blt.android.ui.adapter.PredictionDetailsAdapter.TrainViewHolder;
+import net.twisterrob.blt.io.feeds.trackernet.model.Platform;
+import net.twisterrob.blt.io.feeds.trackernet.model.Train;
 
 public class PredictionDetailsAdapter
 		extends

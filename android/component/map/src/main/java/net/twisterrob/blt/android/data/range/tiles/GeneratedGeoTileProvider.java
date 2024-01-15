@@ -2,13 +2,17 @@ package net.twisterrob.blt.android.data.range.tiles;
 
 import java.io.ByteArrayOutputStream;
 
-import android.graphics.*;
+import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import androidx.annotation.*;
-import androidx.core.util.Pools;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.text.TextPaint;
 
 import com.google.android.gms.maps.model.Tile;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.util.Pools;
 
 public abstract class GeneratedGeoTileProvider extends GeoTileProvider {
 	protected GeneratedGeoTileProvider(int tileSize) {

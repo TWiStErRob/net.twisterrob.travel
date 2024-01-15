@@ -4,7 +4,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 import androidx.annotation.NonNull;
 
-import net.twisterrob.java.utils.tostring.*;
+import net.twisterrob.java.utils.tostring.Stringer;
+import net.twisterrob.java.utils.tostring.ToStringAppender;
 
 public class LatLngBoundsStringer extends Stringer<LatLngBounds> {
 	@Override public String getType(LatLngBounds object) {

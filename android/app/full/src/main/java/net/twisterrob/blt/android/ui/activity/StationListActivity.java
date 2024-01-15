@@ -1,20 +1,26 @@
 package net.twisterrob.blt.android.ui.activity;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Intent;
-import android.os.*;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.SearchView.OnQueryTextListener;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.text.SpannableString;
-import android.view.*;
-import android.widget.*;
+import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Filter.FilterListener;
+import android.widget.ListView;
+
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.SearchView.OnQueryTextListener;
 
 import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.android.app.full.R;

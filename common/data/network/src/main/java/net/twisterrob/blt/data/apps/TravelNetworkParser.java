@@ -1,19 +1,37 @@
 package net.twisterrob.blt.data.apps;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import net.twisterrob.blt.data.io.FeedReader;
 import net.twisterrob.blt.data.statics.DesktopHardcodedStaticData;
 import net.twisterrob.blt.io.feeds.Feed;
-import net.twisterrob.blt.io.feeds.timetable.*;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeed;
+import net.twisterrob.blt.io.feeds.timetable.Route;
+import net.twisterrob.blt.io.feeds.timetable.RouteLink;
+import net.twisterrob.blt.io.feeds.timetable.RouteSection;
+import net.twisterrob.blt.io.feeds.timetable.StopPoint;
 import net.twisterrob.blt.io.feeds.trackernet.PredictionSummaryFeed;
 import net.twisterrob.blt.io.feeds.trackernet.model.Station;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.StopType;
 import net.twisterrob.java.model.LocationUtils;
 
 public class TravelNetworkParser {

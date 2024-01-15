@@ -1,6 +1,8 @@
 package net.twisterrob.blt.data.algo.postcodes;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import net.twisterrob.java.model.Location;
 

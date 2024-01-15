@@ -1,9 +1,13 @@
 package net.twisterrob.blt.io.feeds.trackernet;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
-import static java.util.Collections.*;
+import static java.util.Collections.unmodifiableMap;
 
 import net.twisterrob.blt.model.Line;
 import net.twisterrob.java.utils.CollectionTools;

@@ -1,10 +1,14 @@
 package net.twisterrob.blt.data.io;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import org.xml.sax.SAXException;
 
-import net.twisterrob.blt.io.feeds.*;
+import net.twisterrob.blt.io.feeds.BaseFeed;
+import net.twisterrob.blt.io.feeds.Feed;
+import net.twisterrob.blt.io.feeds.FeedHandler;
 
 // TODO move to the shared and use it from DownloadFeed
 public class FeedReader<T extends BaseFeed<T>> {

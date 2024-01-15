@@ -1,6 +1,7 @@
 package net.twisterrob.blt.io.feeds;
 
-import java.net.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Map;
 
 import javax.annotation.Nonnull;

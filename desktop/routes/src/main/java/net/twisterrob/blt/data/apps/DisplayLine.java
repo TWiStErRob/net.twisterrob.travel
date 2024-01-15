@@ -1,15 +1,24 @@
 package net.twisterrob.blt.data.apps;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
-import net.twisterrob.blt.data.algo.routes.*;
+import net.twisterrob.blt.data.algo.routes.FeedProcessor;
+import net.twisterrob.blt.data.algo.routes.Node;
+import net.twisterrob.blt.data.algo.routes.RouteInfo;
 import net.twisterrob.blt.data.io.FeedReader;
 import net.twisterrob.blt.data.statics.DesktopHardcodedStaticData;
 import net.twisterrob.blt.data.ui.LineDisplay;
 import net.twisterrob.blt.io.feeds.Feed;
-import net.twisterrob.blt.io.feeds.timetable.*;
+import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableFeed;
+import net.twisterrob.blt.io.feeds.timetable.Route;
+import net.twisterrob.blt.io.feeds.timetable.StopPoint;
 import net.twisterrob.blt.model.Line;
 import net.twisterrob.blt.model.LineColors;
 

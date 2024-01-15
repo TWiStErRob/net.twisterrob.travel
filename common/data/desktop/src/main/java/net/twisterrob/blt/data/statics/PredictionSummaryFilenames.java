@@ -1,6 +1,7 @@
 package net.twisterrob.blt.data.statics;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.twisterrob.blt.model.Line;
 

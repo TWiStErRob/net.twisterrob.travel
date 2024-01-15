@@ -1,20 +1,31 @@
 package net.twisterrob.blt.io.feeds.facilities;
 
-import java.io.*;
-import java.util.*;
-import java.util.regex.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.xml.sax.*;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
-import android.sax.*;
+import android.sax.Element;
+import android.sax.ElementListener;
+import android.sax.EndTextElementListener;
+import android.sax.RootElement;
+import android.sax.StartElementListener;
+import android.sax.TextElementListener;
 import android.util.Xml;
 
 import net.twisterrob.blt.io.feeds.BaseFeedHandler;
 import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.model.StopType;
 import net.twisterrob.java.model.Location;
 import net.twisterrob.java.utils.PrimitiveTools;
 

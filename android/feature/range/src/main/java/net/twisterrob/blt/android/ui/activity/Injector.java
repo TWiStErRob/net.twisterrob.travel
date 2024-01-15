@@ -4,9 +4,6 @@ import net.twisterrob.android.content.pref.ResourcePreferences;
 import net.twisterrob.blt.android.BuildConfig;
 import net.twisterrob.blt.android.data.AndroidStaticData;
 import net.twisterrob.blt.android.db.DataBaseHelper;
-import net.twisterrob.blt.android.ui.activity.RangeMapActivity;
-import net.twisterrob.blt.android.ui.activity.RangeNearestFragment;
-import net.twisterrob.blt.android.ui.activity.RangeOptionsFragment;
 
 @Deprecated // TODO migrate to Hilt, this is just a temporary solution to minimize changes in rename PR.
 public class Injector implements net.twisterrob.blt.android.Injector {

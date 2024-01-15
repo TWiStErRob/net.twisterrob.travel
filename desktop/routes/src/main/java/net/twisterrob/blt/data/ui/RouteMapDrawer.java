@@ -1,14 +1,23 @@
 package net.twisterrob.blt.data.ui;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.util.List;
-import java.util.*;
+import java.util.Set;
+import java.util.TreeSet;
 
-import net.twisterrob.blt.io.feeds.timetable.*;
+import net.twisterrob.blt.io.feeds.timetable.Route;
+import net.twisterrob.blt.io.feeds.timetable.RouteLink;
+import net.twisterrob.blt.io.feeds.timetable.RouteSection;
+import net.twisterrob.blt.io.feeds.timetable.StopPoint;
 import net.twisterrob.blt.model.Line;
 import net.twisterrob.blt.model.LineColors;
 import net.twisterrob.java.exceptions.WTF;
-import net.twisterrob.java.model.*;
+import net.twisterrob.java.model.Location;
+import net.twisterrob.java.model.LocationToScreenTransformer;
 
 class RouteMapDrawer extends RouteComponent {
 	private static final long serialVersionUID = -5789033664415561910L;

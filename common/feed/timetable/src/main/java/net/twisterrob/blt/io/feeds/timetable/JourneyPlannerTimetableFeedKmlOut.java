@@ -1,10 +1,14 @@
 package net.twisterrob.blt.io.feeds.timetable;
 
-import java.io.*;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
-import javax.xml.stream.*;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
 import net.twisterrob.java.io.IndentingXMLStreamWriter;

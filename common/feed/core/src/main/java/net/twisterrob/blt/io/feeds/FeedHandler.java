@@ -1,6 +1,7 @@
 package net.twisterrob.blt.io.feeds;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 import org.xml.sax.SAXException;
 

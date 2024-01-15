@@ -1,18 +1,32 @@
 package net.twisterrob.blt.android.ui.adapter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
-import android.widget.*;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import net.twisterrob.android.adapter.BaseFilteringExpandableList3Adapter;
 import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.android.app.full.R;
-import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.*;
-import net.twisterrob.blt.io.feeds.trackernet.model.*;
-import net.twisterrob.blt.model.*;
+import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.ChildViewHolder;
+import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.GroupViewHolder;
+import net.twisterrob.blt.android.ui.adapter.PredictionSummaryAdapter.TrainViewHolder;
+import net.twisterrob.blt.io.feeds.trackernet.model.Platform;
+import net.twisterrob.blt.io.feeds.trackernet.model.Station;
+import net.twisterrob.blt.io.feeds.trackernet.model.Train;
+import net.twisterrob.blt.model.LineColors;
+import net.twisterrob.blt.model.PlatformDirection;
 
 public class PredictionSummaryAdapter
 		extends
