@@ -7,7 +7,10 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import java.util.Date
 
-class ResultChangeCalculatorUnitTest_NonContentDiffs {
+/**
+ * @see ResultChangesCalculator
+ */
+class ResultChangesCalculatorUnitTest_NonContentDiffs {
 
 	private val subject = ResultChangesCalculator()
 

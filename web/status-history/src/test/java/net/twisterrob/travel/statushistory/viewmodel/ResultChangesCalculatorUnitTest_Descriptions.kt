@@ -10,7 +10,10 @@ import org.junit.jupiter.api.Test
 
 private val MISSING_DESCRIPTION: String? = null
 
-class ResultChangeCalculatorUnitTest_Descriptions {
+/**
+ * @see ResultChangesCalculator
+ */
+class ResultChangesCalculatorUnitTest_Descriptions {
 
 	private lateinit var status1: GwenStatus
 	private lateinit var status2: GwenStatus

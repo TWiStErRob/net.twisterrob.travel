@@ -9,7 +9,10 @@ import net.twisterrob.travel.statushistory.viewmodel.DescriptionChange.Missing
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class ResultChangeCalculatorUnitTest_Delays {
+/**
+ * @see ResultChangesCalculator
+ */
+class ResultChangesCalculatorUnitTest_Delays {
 
 	private lateinit var status1: GwenStatus
 	private lateinit var status2: GwenStatus

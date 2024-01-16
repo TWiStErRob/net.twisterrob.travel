@@ -3,6 +3,9 @@ package net.twisterrob.travel.statushistory.viewmodel
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
+/**
+ * @see Result.ErrorResult.Error
+ */
 class ResultErrorResultErrorUnitTest {
 
 	@Test fun testSingleLineErrorHeader() {

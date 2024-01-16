@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import java.util.Date
 
+/**
+ * @see Result
+ */
 class ResultUnitTest {
 
 	@Test fun testConsistentPropertiesError() {
