@@ -7,6 +7,8 @@ import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Produces
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.views.View
+import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed
+import net.twisterrob.blt.model.LineStatus
 import net.twisterrob.blt.model.LineStatuses
 import net.twisterrob.travel.domain.london.status.Feed
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
@@ -45,7 +47,7 @@ private fun ParsedStatusItem.toResult(): Result {
 	val date = Date(this.item.retrievedDate.toEpochMilliseconds())
 	return when (this) {
 		is ParsedStatusItem.ParsedFeed ->
-			Result.ContentResult(date, this.content as LineStatuses)
+			Result.ContentResult(date, (this.content as LineStatusFeed).toStatus())
 
 		is ParsedStatusItem.AlreadyFailed ->
 			Result.ErrorResult(date, Result.ErrorResult.Error(this.item.error.stacktrace))
@@ -54,3 +56,21 @@ private fun ParsedStatusItem.toResult(): Result {
 			Result.ErrorResult(date, Result.ErrorResult.Error("Error while displaying loaded XML: ${this.error.stacktrace}"))
 	}
 }
+
+private fun LineStatusFeed.toStatus(): LineStatuses =
+	LineStatuses(
+		statuses = this.lineStatuses.map { status ->
+			LineStatus(
+				line = status.line,
+				type = status.type,
+				isActive = status.isActive,
+				branchStatuses = status.branchStatuses.map { branch ->
+					LineStatus.BranchStatus(
+						fromStation = branch.fromStation,
+						toStation = branch.toStation,
+					)
+				},
+				description = status.description,
+			)
+		}
+	)
