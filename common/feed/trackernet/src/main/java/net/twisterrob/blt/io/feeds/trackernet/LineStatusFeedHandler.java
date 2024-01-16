@@ -24,7 +24,7 @@ import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.Line;
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.LineStatus;
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.Root;
 import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeedXml.Status;
-import net.twisterrob.blt.io.feeds.trackernet.model.DelayType;
+import net.twisterrob.blt.model.DelayType;
 
 @NotThreadSafe
 public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
@@ -80,10 +80,13 @@ public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 			@SuppressWarnings("synthetic-access")
 			@Override public void start(Attributes attributes) {
 				String attrId = attributes.getValue(Status.id);
-				DelayType statusType = DelayType.fromID(attrId);
-				if (statusType == DelayType.Unknown && attrId != null) {
-					String attrDescription = attributes.getValue(Status.description);
-					sendMail(DelayType.class + " new code: " + attrDescription + " as " + attrId);
+				DelayType statusType = DelayType.Unknown;
+				if (attrId != null) {
+					statusType = trackerNetData.delayFromTrackerNetCode(attrId);
+					if (statusType == DelayType.Unknown) {
+						String attrDescription = attributes.getValue(Status.description);
+						sendMail(DelayType.class + " new code: " + attrDescription + " as " + attrId);
+					}
 				}
 				String attrIsActive = attributes.getValue(Status.id);
 				boolean isActive = Boolean.parseBoolean(attrIsActive);

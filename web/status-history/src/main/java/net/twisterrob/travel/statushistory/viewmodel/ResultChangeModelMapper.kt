@@ -73,7 +73,7 @@ class ResultChangeModelMapper @Inject constructor(
 			LineStatusModel(
 				lineId = lineStatus.line.name,
 				lineTitle = trackerNetData.getDisplayName(lineStatus.line),
-				type = lineStatus.type.title,
+				delayType = trackerNetData.getDisplayName(lineStatus.type),
 				description = lineStatus.description,
 				changeStatus = changes[lineStatus.line]?.let(::map),
 				changeDescription = (changes[lineStatus.line] as? HasDescriptionChange)?.let { diffDesc(it.desc) },

@@ -18,7 +18,7 @@ class ResultChangeModel(
 	class LineStatusModel(
 		val lineId: String,
 		val lineTitle: String,
-		val type: String,
+		val delayType: String,
 		val description: String?,
 		val active: Boolean,
 		val branchDescription: String?,

@@ -8,6 +8,7 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.twisterrob.blt.model.DelayType;
 import net.twisterrob.blt.model.Line;
 
 public class LineStatus {

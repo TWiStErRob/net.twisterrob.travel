@@ -62,8 +62,8 @@ class ResultChangesCalculator {
 				val statusDiff = oldStatus.type.compareTo(newStatus.type)
 				val desc = diffDesc(oldStatus, newStatus)
 				when {
-					statusDiff < 0 -> StatusChange.Better(oldStatus.type, newStatus.type, desc)
-					statusDiff > 0 -> StatusChange.Worse(oldStatus.type, newStatus.type, desc)
+					statusDiff > 0 -> StatusChange.Better(oldStatus.type, newStatus.type, desc)
+					statusDiff < 0 -> StatusChange.Worse(oldStatus.type, newStatus.type, desc)
 					else /* statusDiff == 0 */ -> StatusChange.Same(newStatus.type, desc)
 				}
 			}

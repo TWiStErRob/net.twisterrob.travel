@@ -26,11 +26,11 @@ class LineColorsModelMapperUnitTest {
 	}
 
 	@Test fun testAllColorsGiveAllLines() {
-		val allLinesInOrder = Line.entries.sorted()
+		val allLinesInOrder = Line.entries.sorted().map { it.name }
 
 		val result = subject.map()
 
-		val linesCovered = result.map { it.line }
+		val linesCovered = result.map { it.lineId }
 		assertThat(linesCovered, equalTo(allLinesInOrder))
 	}
 
@@ -42,8 +42,8 @@ class LineColorsModelMapperUnitTest {
 
 		val result = subject.map()
 
-		val jubilee = result.single { it.line == Line.Jubilee }
-		assertEquals(Line.Jubilee, jubilee.line)
+		val jubilee = result.single { it.lineId == Line.Jubilee.name }
+		assertEquals(Line.Jubilee.name, jubilee.lineId)
 		assertEquals(bgColor, jubilee.backgroundColor)
 		assertEquals(fgColor, jubilee.foregroundColor)
 

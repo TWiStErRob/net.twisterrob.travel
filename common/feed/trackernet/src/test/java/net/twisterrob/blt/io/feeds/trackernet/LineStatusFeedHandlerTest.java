@@ -11,9 +11,9 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 
-import net.twisterrob.blt.io.feeds.trackernet.model.DelayType;
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus;
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus.BranchStatus;
+import net.twisterrob.blt.model.DelayType;
 import net.twisterrob.blt.model.Line;
 
 public class LineStatusFeedHandlerTest {
