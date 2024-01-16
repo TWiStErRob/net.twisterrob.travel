@@ -1,7 +1,6 @@
-package net.twisterrob.travel.statushistory.viewmodel
+package net.twisterrob.travel.domain.london.status.changes
 
 import net.twisterrob.blt.model.LineStatuses
-import net.twisterrob.travel.statushistory.viewmodel.Changes.ErrorChanges
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
@@ -20,7 +19,7 @@ class ResultChangesCalculatorUnitTest_NonContentDiffs {
 
 		val difference = subject.diff(result1, result2)
 
-		assertEquals(difference, ErrorChanges.Change(result1, result2))
+		assertEquals(difference, Changes.ErrorChanges.Change(result1, result2))
 	}
 
 	@Test fun testErrorNoChange() {
@@ -29,7 +28,7 @@ class ResultChangesCalculatorUnitTest_NonContentDiffs {
 
 		val difference = subject.diff(result1, result2)
 
-		assertEquals(difference, ErrorChanges.Same(result2))
+		assertEquals(difference, Changes.ErrorChanges.Same(result2))
 	}
 
 	@Test fun testErrorIntroduced() {
@@ -38,7 +37,7 @@ class ResultChangesCalculatorUnitTest_NonContentDiffs {
 
 		val difference = subject.diff(result1, result2)
 
-		assertEquals(difference, ErrorChanges.Failed(result1, result2))
+		assertEquals(difference, Changes.ErrorChanges.Failed(result1, result2))
 	}
 
 	@Test fun testErrorDisappeared() {
@@ -47,7 +46,7 @@ class ResultChangesCalculatorUnitTest_NonContentDiffs {
 
 		val difference = subject.diff(result1, result2)
 
-		assertEquals(difference, ErrorChanges.Fixed(result1, result2))
+		assertEquals(difference, Changes.ErrorChanges.Fixed(result1, result2))
 	}
 
 	@Test fun testEmpty() {

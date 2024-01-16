@@ -5,6 +5,11 @@ import net.twisterrob.blt.diff.HtmlDiff
 import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData
 import net.twisterrob.blt.model.Line
 import net.twisterrob.blt.model.LineStatus
+import net.twisterrob.travel.domain.london.status.changes.Changes
+import net.twisterrob.travel.domain.london.status.changes.DescriptionChange
+import net.twisterrob.travel.domain.london.status.changes.HasDescriptionChange
+import net.twisterrob.travel.domain.london.status.changes.Result
+import net.twisterrob.travel.domain.london.status.changes.StatusChange
 import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModel.LineStatusModel
 
 class ResultChangeModelMapper @Inject constructor(

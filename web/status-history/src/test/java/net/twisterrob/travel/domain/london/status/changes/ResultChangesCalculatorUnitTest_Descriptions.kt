@@ -1,4 +1,4 @@
-package net.twisterrob.travel.statushistory.viewmodel
+package net.twisterrob.travel.domain.london.status.changes
 
 import com.shazam.gwen.Gwen.given
 import com.shazam.gwen.Gwen.then

@@ -1,10 +1,9 @@
-package net.twisterrob.travel.statushistory.viewmodel
+package net.twisterrob.travel.domain.london.status.changes
 
 import com.shazam.gwen.collaborators.Arranger
 import net.twisterrob.blt.model.DelayType
 import net.twisterrob.blt.model.Line
 import net.twisterrob.blt.model.LineStatus
-import net.twisterrob.blt.model.LineStatus.BranchStatus
 import net.twisterrob.blt.model.LineStatuses
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
@@ -26,7 +25,7 @@ internal class GwenStatus : Arranger {
 		)
 	}
 
-	fun contains(line: Line, description: String?, vararg branches: BranchStatus): GwenStatus = apply {
+	fun contains(line: Line, description: String?, vararg branches: LineStatus.BranchStatus): GwenStatus = apply {
 		statuses[line] = LineStatus(
 			line = line,
 			type = DelayType.Unknown,

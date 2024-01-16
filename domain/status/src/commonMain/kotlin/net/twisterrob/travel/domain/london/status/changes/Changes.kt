@@ -1,4 +1,4 @@
-package net.twisterrob.travel.statushistory.viewmodel
+package net.twisterrob.travel.domain.london.status.changes
 
 import net.twisterrob.blt.model.DelayType
 import net.twisterrob.blt.model.Line

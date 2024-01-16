@@ -1,8 +1,7 @@
-package net.twisterrob.travel.statushistory.viewmodel
+package net.twisterrob.travel.domain.london.status.changes
 
 import net.twisterrob.blt.model.Line
 import net.twisterrob.blt.model.LineStatus
-import net.twisterrob.travel.statushistory.viewmodel.Changes.ErrorChanges
 import java.util.EnumMap
 
 class ResultChangesCalculator {
@@ -101,17 +100,17 @@ class ResultChangesCalculator {
 		return when {
 			oldError != null && newError != null -> {
 				if (oldError.header == newError.header)
-					ErrorChanges.Same(newResult)
+					Changes.ErrorChanges.Same(newResult)
 				else
-					ErrorChanges.Change(oldResult, newResult)
+					Changes.ErrorChanges.Change(oldResult, newResult)
 			}
 
 			oldError == null && newError != null -> {
-				ErrorChanges.Failed(oldResult as Result.ContentResult, newResult)
+				Changes.ErrorChanges.Failed(oldResult as Result.ContentResult, newResult)
 			}
 
 			oldError != null && newError == null -> {
-				ErrorChanges.Fixed(oldResult, newResult as Result.ContentResult)
+				Changes.ErrorChanges.Fixed(oldResult, newResult as Result.ContentResult)
 			}
 
 			else /* oldError == null && newError == null */ -> {

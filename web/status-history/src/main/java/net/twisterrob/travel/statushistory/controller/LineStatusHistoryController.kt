@@ -10,9 +10,9 @@ import io.micronaut.views.View
 import net.twisterrob.travel.domain.london.status.Feed
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
+import net.twisterrob.travel.domain.london.status.changes.Result
+import net.twisterrob.travel.domain.london.status.changes.ResultChangesCalculator
 import net.twisterrob.travel.statushistory.viewmodel.LineStatusModelMapper
-import net.twisterrob.travel.statushistory.viewmodel.Result
-import net.twisterrob.travel.statushistory.viewmodel.ResultChangesCalculator
 import java.util.Date
 
 @Controller

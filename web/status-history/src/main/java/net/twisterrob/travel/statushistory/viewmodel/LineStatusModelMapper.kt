@@ -1,6 +1,7 @@
 package net.twisterrob.travel.statushistory.viewmodel
 
 import jakarta.inject.Inject
+import net.twisterrob.travel.domain.london.status.changes.Changes
 
 class LineStatusModelMapper @Inject constructor(
 	private val resultChangeModelMapper: ResultChangeModelMapper,
