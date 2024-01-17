@@ -1,11 +1,11 @@
 package net.twisterrob.travel.domain.london.status.changes
 
 import com.shazam.gwen.collaborators.Arranger
+import kotlinx.datetime.Clock
 import net.twisterrob.blt.model.DelayType
 import net.twisterrob.blt.model.Line
 import net.twisterrob.blt.model.LineStatus
 import net.twisterrob.blt.model.LineStatuses
-import java.util.Date
 import java.util.EnumMap
 
 internal class GwenStatus : Arranger {
@@ -48,7 +48,7 @@ internal class GwenStatus : Arranger {
 
 	fun createResult(): Result =
 		Result.ContentResult(
-			`when` = Date(),
+			`when` = Clock.System.now(),
 			content = LineStatuses(statuses.values.toList())
 		)
 }

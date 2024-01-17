@@ -1,20 +1,20 @@
 package net.twisterrob.travel.domain.london.status.changes
 
 import net.twisterrob.blt.model.LineStatuses
-import java.util.Date
+import kotlinx.datetime.Instant
 
 sealed interface Result {
 
 	@Suppress("detekt.VariableNaming")
-	val `when`: Date
+	val `when`: Instant
 
 	class ContentResult(
-		override val `when`: Date,
+		override val `when`: Instant,
 		val content: LineStatuses,
 	) : Result
 
 	class ErrorResult(
-		override val `when`: Date,
+		override val `when`: Instant,
 		val error: Error,
 	) : Result {
 

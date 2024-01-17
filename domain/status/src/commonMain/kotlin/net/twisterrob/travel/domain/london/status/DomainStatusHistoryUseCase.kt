@@ -6,7 +6,6 @@ import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 import net.twisterrob.travel.domain.london.status.changes.Changes
 import net.twisterrob.travel.domain.london.status.changes.Result
 import net.twisterrob.travel.domain.london.status.changes.ResultChangesCalculator
-import java.util.Date
 
 class DomainStatusHistoryUseCase(
 	private val repository: StatusHistoryRepository,
@@ -22,16 +21,14 @@ class DomainStatusHistoryUseCase(
 	}
 }
 
-private fun ParsedStatusItem.toResult(): Result {
-	val date = Date(this.item.retrievedDate.toEpochMilliseconds())
-	return when (this) {
+private fun ParsedStatusItem.toResult(): Result =
+	when (this) {
 		is ParsedStatusItem.ParsedFeed ->
-			Result.ContentResult(date, this.content)
+			Result.ContentResult(this.item.retrievedDate, this.content)
 
 		is ParsedStatusItem.AlreadyFailed ->
-			Result.ErrorResult(date, Result.ErrorResult.Error(this.item.error.stacktrace))
+			Result.ErrorResult(this.item.retrievedDate, Result.ErrorResult.Error(this.item.error.stacktrace))
 
 		is ParsedStatusItem.ParseFailed ->
-			Result.ErrorResult(date, Result.ErrorResult.Error("Error while displaying loaded XML: ${this.error.stacktrace}"))
+			Result.ErrorResult(this.item.retrievedDate, Result.ErrorResult.Error("Error while displaying loaded XML: ${this.error.stacktrace}"))
 	}
-}

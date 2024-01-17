@@ -11,6 +11,7 @@ import net.twisterrob.travel.domain.london.status.changes.HasDescriptionChange
 import net.twisterrob.travel.domain.london.status.changes.Result
 import net.twisterrob.travel.domain.london.status.changes.StatusChange
 import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModel.LineStatusModel
+import java.util.Date
 
 class ResultChangeModelMapper @Inject constructor(
 	private val trackerNetData: TrackerNetData,
@@ -18,7 +19,7 @@ class ResultChangeModelMapper @Inject constructor(
 
 	fun map(changes: Changes): ResultChangeModel =
 		ResultChangeModel(
-			`when` = changes.current?.`when`,
+			`when` = changes.current?.`when`?.let { Date(it.toEpochMilliseconds()) },
 			error = mapError(changes),
 			statuses = map(
 				(changes.current as? Result.ContentResult)?.content?.statuses.orEmpty(),
