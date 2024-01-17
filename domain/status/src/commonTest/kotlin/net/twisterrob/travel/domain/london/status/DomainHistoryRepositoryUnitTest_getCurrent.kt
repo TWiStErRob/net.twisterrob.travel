@@ -14,6 +14,9 @@ import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertSame
 
+/**
+ * @see StatusHistoryRepository.getCurrent
+ */
 class DomainHistoryRepositoryUnitTest_getCurrent {
 
 	private val mockHistory: StatusHistoryDataSource = mock()

@@ -6,6 +6,7 @@ import io.mockative.mock
 import io.mockative.verify
 import io.mockative.verifyNoUnmetExpectations
 import io.mockative.verifyNoUnverifiedExpectations
+import net.twisterrob.blt.model.LineStatuses
 import net.twisterrob.travel.domain.london.status.api.FeedParser
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
 import net.twisterrob.travel.domain.london.status.api.StatusDataSource
@@ -16,6 +17,9 @@ import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+/**
+ * @see StatusHistoryRepository.history
+ */
 class DomainHistoryRepositoryUnitTest_history {
 
 	private val mockHistory: StatusHistoryDataSource = mock()
@@ -45,7 +49,7 @@ class DomainHistoryRepositoryUnitTest_history {
 		val current = SuccessfulStatusItem()
 		every { mockHistory.getAll(any(), any()) }.returns(emptyList())
 		every { mockStatus.getCurrent(any()) }.returns(current)
-		val parsed = Any()
+		val parsed = LineStatuses()
 		every { mockParser.parse(any(), any()) }.returns(parsed)
 
 		val result = subject.history(feed, max = 123, includeCurrent = true)
@@ -65,9 +69,9 @@ class DomainHistoryRepositoryUnitTest_history {
 		val existing2 = SuccessfulStatusItem()
 		every { mockHistory.getAll(any(), any()) }.returns(listOf(existing1, existing2))
 		every { mockStatus.getCurrent(any()) }.returns(current)
-		val currentParsed = Any()
-		val existingParsed1 = Any()
-		val existingParsed2 = Any()
+		val currentParsed = LineStatuses()
+		val existingParsed1 = LineStatuses()
+		val existingParsed2 = LineStatuses()
 		every { mockParser.parse(any(), any()) }.returnsMany(currentParsed, existingParsed1, existingParsed2)
 
 		val result = subject.history(feed, max = 123, includeCurrent = true)
@@ -89,7 +93,7 @@ class DomainHistoryRepositoryUnitTest_history {
 		val existing1 = FailedStatusItem()
 		val existing2 = SuccessfulStatusItem()
 		every { mockHistory.getAll(any(), any()) }.returns(listOf(existing1, existing2))
-		val existingParsed2 = Any()
+		val existingParsed2 = LineStatuses()
 		every { mockParser.parse(any(), any()) }.returns(existingParsed2)
 
 		val result = subject.history(feed, max = 123, includeCurrent = false)
@@ -109,8 +113,8 @@ class DomainHistoryRepositoryUnitTest_history {
 		val existing2 = SuccessfulStatusItem()
 		every { mockHistory.getAll(any(), any()) }.returns(listOf(existing1, existing2))
 		every { mockStatus.getCurrent(any()) }.returns(current)
-		val existingParsed1 = Any()
-		val existingParsed2 = Any()
+		val existingParsed1 = LineStatuses()
+		val existingParsed2 = LineStatuses()
 		every { mockParser.parse(any(), any()) }.returnsMany(existingParsed1, existingParsed2)
 
 		val result = subject.history(feed, max = 123, includeCurrent = true)
@@ -131,7 +135,7 @@ class DomainHistoryRepositoryUnitTest_history {
 		val existing1 = SuccessfulStatusItem()
 		val existing2 = SuccessfulStatusItem()
 		every { mockHistory.getAll(any(), any()) }.returns(listOf(existing1, existing2))
-		val existingParsed1 = Any()
+		val existingParsed1 = LineStatuses()
 		val ex = IOException("Failed to parse XML")
 		every { mockParser.parse(any(), any()) }.invokesMany({ existingParsed1 }, { throw ex })
 
@@ -153,8 +157,8 @@ class DomainHistoryRepositoryUnitTest_history {
 		val existing2 = SuccessfulStatusItem()
 		every { mockHistory.getAll(any(), any()) }.returns(listOf(existing1, existing2))
 		every { mockStatus.getCurrent(any()) }.returns(current)
-		val existingParsed1 = Any()
-		val existingParsed2 = Any()
+		val existingParsed1 = LineStatuses()
+		val existingParsed2 = LineStatuses()
 		val ex = IOException("Failed to parse XML")
 		every { mockParser.parse(any(), any()) }.invokesMany({ throw ex }, { existingParsed1 }, { existingParsed2 })
 
@@ -174,7 +178,7 @@ class DomainHistoryRepositoryUnitTest_history {
 	}
 }
 
-private fun StatusItem.SuccessfulStatusItem.toParsed(parsed: Any): ParsedStatusItem =
+private fun StatusItem.SuccessfulStatusItem.toParsed(parsed: LineStatuses): ParsedStatusItem =
 	ParsedStatusItem.ParsedFeed(this, parsed)
 
 private fun StatusItem.FailedStatusItem.toParsed(): ParsedStatusItem =
@@ -182,3 +186,7 @@ private fun StatusItem.FailedStatusItem.toParsed(): ParsedStatusItem =
 
 private fun StatusItem.SuccessfulStatusItem.toParsed(ex: Throwable): ParsedStatusItem =
 	ParsedStatusItem.ParseFailed(this, Stacktrace(ex.stackTraceToString()))
+
+@Suppress("TestFunctionName")
+private fun LineStatuses(): LineStatuses =
+	LineStatuses(emptyList())

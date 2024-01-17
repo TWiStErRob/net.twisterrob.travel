@@ -6,8 +6,8 @@ import com.shazam.gwen.Gwen.`when`
 import net.twisterrob.blt.model.DelayType
 import net.twisterrob.blt.model.Line
 import net.twisterrob.travel.domain.london.status.changes.DescriptionChange.Missing
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 
 /**
  * @see ResultChangesCalculator
@@ -18,7 +18,7 @@ class ResultChangesCalculatorUnitTest_Delays {
 	private lateinit var status2: GwenStatus
 	private lateinit var change: GwenChange
 
-	@BeforeEach fun setUp() {
+	@BeforeTest fun setUp() {
 		status1 = GwenStatus()
 		status2 = GwenStatus()
 		change = GwenChange()
@@ -33,7 +33,7 @@ class ResultChangesCalculatorUnitTest_Delays {
 		then(change)
 			.hasNoErrorChange()
 			.has(Line.Northern, StatusChange.Worse(DelayType.GoodService, DelayType.Suspended, Missing))
-			.hasNoDescriptionChangeFor(Line.Northern)
+			.hasDescriptionChangeFor(Line.Northern)
 	}
 
 	@Test fun testDelayNotMixedUp() {
@@ -51,7 +51,7 @@ class ResultChangesCalculatorUnitTest_Delays {
 			.hasNoErrorChange()
 			.has(Line.Northern, StatusChange.Worse(DelayType.GoodService, DelayType.Suspended, Missing))
 			.has(Line.Jubilee, StatusChange.Better(DelayType.Suspended, DelayType.GoodService, Missing))
-			.hasNoDescriptionChangeFor(Line.Northern, Line.Jubilee)
+			.hasDescriptionChangeFor(Line.Northern, Line.Jubilee)
 	}
 
 	@Test fun testDelayLineAppeared() {

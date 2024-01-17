@@ -5,14 +5,11 @@ import net.twisterrob.blt.model.DelayType
 import net.twisterrob.blt.model.Line
 import net.twisterrob.blt.model.LineStatus
 import net.twisterrob.blt.model.LineStatuses
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
 import java.util.Date
 import java.util.EnumMap
 
 internal class GwenStatus : Arranger {
 
-	private val feed: LineStatuses = mock()
 	private val statuses: MutableMap<Line, LineStatus> = EnumMap(Line::class.java)
 
 	fun contains(line: Line, description: String?): GwenStatus = apply {
@@ -49,8 +46,9 @@ internal class GwenStatus : Arranger {
 		statuses.remove(line)
 	}
 
-	fun createResult(): Result {
-		`when`(feed.statuses).thenReturn(statuses.values.toList())
-		return Result.ContentResult(Date(), feed)
-	}
+	fun createResult(): Result =
+		Result.ContentResult(
+			`when` = Date(),
+			content = LineStatuses(statuses.values.toList())
+		)
 }

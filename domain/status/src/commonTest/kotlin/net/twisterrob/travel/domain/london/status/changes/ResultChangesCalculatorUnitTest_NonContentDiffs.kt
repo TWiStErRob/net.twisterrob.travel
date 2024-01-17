@@ -1,10 +1,9 @@
 package net.twisterrob.travel.domain.london.status.changes
 
 import net.twisterrob.blt.model.LineStatuses
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
-import org.mockito.Mockito.mock
 import java.util.Date
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 /**
  * @see ResultChangesCalculator
@@ -32,7 +31,7 @@ class ResultChangesCalculatorUnitTest_NonContentDiffs {
 	}
 
 	@Test fun testErrorIntroduced() {
-		val result1 = ContentResult(mock())
+		val result1 = ContentResult(LineStatuses())
 		val result2 = ErrorResult("error")
 
 		val difference = subject.diff(result1, result2)
@@ -42,7 +41,7 @@ class ResultChangesCalculatorUnitTest_NonContentDiffs {
 
 	@Test fun testErrorDisappeared() {
 		val result1 = ErrorResult("error")
-		val result2 = ContentResult(mock())
+		val result2 = ContentResult(LineStatuses())
 
 		val difference = subject.diff(result1, result2)
 
@@ -50,8 +49,8 @@ class ResultChangesCalculatorUnitTest_NonContentDiffs {
 	}
 
 	@Test fun testEmpty() {
-		val result1 = ContentResult(mock())
-		val result2 = ContentResult(mock())
+		val result1 = ContentResult(LineStatuses())
+		val result2 = ContentResult(LineStatuses())
 
 		val difference = subject.diff(result1, result2)
 
@@ -59,7 +58,7 @@ class ResultChangesCalculatorUnitTest_NonContentDiffs {
 	}
 
 	@Test fun testFirstOne() {
-		val result: Result = ContentResult(mock())
+		val result: Result = ContentResult(LineStatuses())
 
 		val difference = subject.diff(null, result)
 
@@ -75,7 +74,7 @@ class ResultChangesCalculatorUnitTest_NonContentDiffs {
 	}
 
 	@Test fun testLastOne() {
-		val result: Result = ContentResult(mock())
+		val result: Result = ContentResult(LineStatuses())
 
 		val difference = subject.diff(result, null)
 
@@ -104,3 +103,7 @@ private fun ContentResult(content: LineStatuses): Result.ContentResult =
 @Suppress("TestFunctionName")
 private fun ErrorResult(error: String): Result.ErrorResult =
 	Result.ErrorResult(Date(), Result.ErrorResult.Error(error))
+
+@Suppress("TestFunctionName")
+private fun LineStatuses(): LineStatuses =
+	LineStatuses(emptyList())

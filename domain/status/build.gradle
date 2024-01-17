@@ -19,6 +19,8 @@ kotlin {
 			dependencies {
 				implementation(libs.kotlin.test)
 				implementation(libs.test.mockative)
+				implementation(libs.test.kotest.assertions)
+				implementation(libs.test.gwen)
 			}
 		}
 	}

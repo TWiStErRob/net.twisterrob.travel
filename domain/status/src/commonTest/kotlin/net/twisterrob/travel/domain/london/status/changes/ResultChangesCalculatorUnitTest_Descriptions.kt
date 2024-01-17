@@ -5,8 +5,8 @@ import com.shazam.gwen.Gwen.then
 import com.shazam.gwen.Gwen.`when`
 import net.twisterrob.blt.model.Line
 import net.twisterrob.blt.model.LineStatus
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 
 private val MISSING_DESCRIPTION: String? = null
 
@@ -19,7 +19,7 @@ class ResultChangesCalculatorUnitTest_Descriptions {
 	private lateinit var status2: GwenStatus
 	private lateinit var change: GwenChange
 
-	@BeforeEach fun setUp() {
+	@BeforeTest fun setUp() {
 		status1 = GwenStatus()
 		status2 = GwenStatus()
 		change = GwenChange()
@@ -70,7 +70,7 @@ class ResultChangesCalculatorUnitTest_Descriptions {
 		then(change)
 			.hasNoErrorChange()
 			.has(Line.Northern, DescriptionChange.Same("description"))
-			.hasNoDescriptionChangeFor(Line.Northern)
+			.hasDescriptionChangeFor(Line.Northern)
 	}
 
 	@Test fun testDescriptionsMissing() {
@@ -82,7 +82,7 @@ class ResultChangesCalculatorUnitTest_Descriptions {
 		then(change)
 			.hasNoErrorChange()
 			.has(Line.Northern, DescriptionChange.Missing)
-			.hasNoDescriptionChangeFor(Line.Northern)
+			.hasDescriptionChangeFor(Line.Northern)
 	}
 
 	@Test fun testStationsDifferent() {
