@@ -1,5 +1,6 @@
 package net.twisterrob.blt.io.feeds.trackernet
 
+import net.twisterrob.blt.model.DelayType
 import net.twisterrob.blt.model.Line
 
 /**
@@ -41,7 +42,7 @@ class TrackerNetData {
 		}
 
 	fun lineFromTrackerNetCode(code: Char): Line =
-		Line.entries.singleOrNull { getTrackerNetCodeOf(it) === code.toString() }
+		Line.entries.singleOrNull { getTrackerNetCodeOf(it) == code.toString() }
 			?: Line.unknown
 
 	fun fromAlias(alias: String): Line =
@@ -107,4 +108,75 @@ class TrackerNetData {
 			Line.ElizabethLine -> 83
 			Line.unknown -> null
 		}
+
+	fun delayFromTrackerNetCode(code: String): DelayType =
+		DelayType.entries.singleOrNull { getTrackerNetCodeOf(it) == code }
+			?: DelayType.Unknown
+
+	/**
+	 * `ID` attribute of `<Status>` element in the LineStatus feed.
+	 */
+	fun getTrackerNetCodeOf(delayType: DelayType): String =
+		when (delayType) {
+			DelayType.ServiceClosed -> "SC"
+			// TODO validate code
+			DelayType.Suspended -> "SU"
+			DelayType.PartSuspended -> "PS"
+			DelayType.PlannedClosure -> "CS"
+			DelayType.PartClosure -> "PC"
+			DelayType.SpecialService -> "SS"
+			DelayType.SevereDelays -> "SD"
+			// TODO validate code
+			DelayType.ReducedService -> "RS"
+			// TODO validate code
+			DelayType.BusService -> "BS"
+			DelayType.MinorDelays -> "MD"
+			DelayType.GoodService -> "GS"
+			DelayType.Unknown -> ""
+		}
+
+	/**
+	 * `Description` attribute of `<Status>` in the LineStatus feed.
+	 */
+	fun getDisplayName(delay: DelayType): String =
+		when (delay) {
+			DelayType.ServiceClosed -> "Service Closed"
+			DelayType.Suspended -> "Suspended"
+			DelayType.PartSuspended -> "Part Suspended"
+			DelayType.PlannedClosure -> "Planned Closure"
+			DelayType.PartClosure -> "Part Closure"
+			DelayType.SpecialService -> "Special Service"
+			DelayType.SevereDelays -> "Severe Delays"
+			DelayType.ReducedService -> "Reduced Service"
+			DelayType.BusService -> "Bus Service"
+			DelayType.MinorDelays -> "Minor Delays"
+			DelayType.GoodService -> "Good Service"
+			DelayType.Unknown -> "Unknown"
+		}
+
+	/**
+	 * `CssClass` attribute of `<Status>` in the LineStatus feed.
+	 */
+	fun getCssClass(delay: DelayType): String? =
+		when (delay) {
+			// TODO only seen once, GoodService may be a mistake
+			DelayType.ServiceClosed -> "GoodService"
+			DelayType.Suspended -> null
+			DelayType.PartSuspended -> "DisruptedService"
+			DelayType.PlannedClosure -> "DisruptedService"
+			DelayType.PartClosure -> "DisruptedService"
+			DelayType.SpecialService -> "DisruptedService"
+			DelayType.SevereDelays -> "DisruptedService"
+			DelayType.ReducedService -> null
+			DelayType.BusService -> null
+			DelayType.MinorDelays -> "GoodService"
+			DelayType.GoodService -> "GoodService"
+			DelayType.Unknown -> null
+		}
+
+	companion object {
+
+		@JvmField
+		val DELAY_TYPE_ORDER: Comparator<DelayType> = compareByDescending(DelayType::ordinal)
+	}
 }

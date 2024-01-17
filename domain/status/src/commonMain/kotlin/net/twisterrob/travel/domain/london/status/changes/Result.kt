@@ -1,6 +1,6 @@
-package net.twisterrob.travel.statushistory.viewmodel
+package net.twisterrob.travel.domain.london.status.changes
 
-import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed
+import net.twisterrob.blt.model.LineStatuses
 import java.util.Date
 
 sealed interface Result {
@@ -10,7 +10,7 @@ sealed interface Result {
 
 	class ContentResult(
 		override val `when`: Date,
-		val content: LineStatusFeed,
+		val content: LineStatuses,
 	) : Result
 
 	class ErrorResult(

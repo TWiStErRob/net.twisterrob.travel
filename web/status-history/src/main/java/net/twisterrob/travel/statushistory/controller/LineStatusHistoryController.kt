@@ -7,13 +7,12 @@ import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Produces
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.views.View
-import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed
 import net.twisterrob.travel.domain.london.status.Feed
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
+import net.twisterrob.travel.domain.london.status.changes.Result
+import net.twisterrob.travel.domain.london.status.changes.ResultChangesCalculator
 import net.twisterrob.travel.statushistory.viewmodel.LineStatusModelMapper
-import net.twisterrob.travel.statushistory.viewmodel.Result
-import net.twisterrob.travel.statushistory.viewmodel.ResultChangesCalculator
 import java.util.Date
 
 @Controller
@@ -45,7 +44,7 @@ private fun ParsedStatusItem.toResult(): Result {
 	val date = Date(this.item.retrievedDate.toEpochMilliseconds())
 	return when (this) {
 		is ParsedStatusItem.ParsedFeed ->
-			Result.ContentResult(date, this.content as LineStatusFeed)
+			Result.ContentResult(date, this.content)
 
 		is ParsedStatusItem.AlreadyFailed ->
 			Result.ErrorResult(date, Result.ErrorResult.Error(this.item.error.stacktrace))

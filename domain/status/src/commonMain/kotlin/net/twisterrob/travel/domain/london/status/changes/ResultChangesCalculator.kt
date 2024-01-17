@@ -1,8 +1,7 @@
-package net.twisterrob.travel.statushistory.viewmodel
+package net.twisterrob.travel.domain.london.status.changes
 
-import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus
 import net.twisterrob.blt.model.Line
-import net.twisterrob.travel.statushistory.viewmodel.Changes.ErrorChanges
+import net.twisterrob.blt.model.LineStatus
 import java.util.EnumMap
 
 class ResultChangesCalculator {
@@ -41,8 +40,8 @@ class ResultChangesCalculator {
 
 	private fun diffContent(oldResult: Result.ContentResult, newResult: Result.ContentResult): Map<Line, StatusChange> {
 		val statusChanges: MutableMap<Line, StatusChange> = EnumMap(Line::class.java)
-		val oldMap = oldResult.content.statusMap
-		val newMap = newResult.content.statusMap
+		val oldMap = oldResult.content.statuses.associateBy { it.line }
+		val newMap = newResult.content.statuses.associateBy { it.line }
 		val allLines: Set<Line> = oldMap.keys + newMap.keys
 		for (line in allLines) {
 			val oldStatus = oldMap[line]
@@ -62,8 +61,8 @@ class ResultChangesCalculator {
 				val statusDiff = oldStatus.type.compareTo(newStatus.type)
 				val desc = diffDesc(oldStatus, newStatus)
 				when {
-					statusDiff < 0 -> StatusChange.Better(oldStatus.type, newStatus.type, desc)
-					statusDiff > 0 -> StatusChange.Worse(oldStatus.type, newStatus.type, desc)
+					statusDiff > 0 -> StatusChange.Better(oldStatus.type, newStatus.type, desc)
+					statusDiff < 0 -> StatusChange.Worse(oldStatus.type, newStatus.type, desc)
 					else /* statusDiff == 0 */ -> StatusChange.Same(newStatus.type, desc)
 				}
 			}
@@ -101,17 +100,17 @@ class ResultChangesCalculator {
 		return when {
 			oldError != null && newError != null -> {
 				if (oldError.header == newError.header)
-					ErrorChanges.Same(newResult)
+					Changes.ErrorChanges.Same(newResult)
 				else
-					ErrorChanges.Change(oldResult, newResult)
+					Changes.ErrorChanges.Change(oldResult, newResult)
 			}
 
 			oldError == null && newError != null -> {
-				ErrorChanges.Failed(oldResult as Result.ContentResult, newResult)
+				Changes.ErrorChanges.Failed(oldResult as Result.ContentResult, newResult)
 			}
 
 			oldError != null && newError == null -> {
-				ErrorChanges.Fixed(oldResult, newResult as Result.ContentResult)
+				Changes.ErrorChanges.Fixed(oldResult, newResult as Result.ContentResult)
 			}
 
 			else /* oldError == null && newError == null */ -> {

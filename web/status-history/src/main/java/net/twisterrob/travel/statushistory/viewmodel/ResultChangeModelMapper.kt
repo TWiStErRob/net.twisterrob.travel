@@ -3,8 +3,13 @@ package net.twisterrob.travel.statushistory.viewmodel
 import jakarta.inject.Inject
 import net.twisterrob.blt.diff.HtmlDiff
 import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData
-import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus
 import net.twisterrob.blt.model.Line
+import net.twisterrob.blt.model.LineStatus
+import net.twisterrob.travel.domain.london.status.changes.Changes
+import net.twisterrob.travel.domain.london.status.changes.DescriptionChange
+import net.twisterrob.travel.domain.london.status.changes.HasDescriptionChange
+import net.twisterrob.travel.domain.london.status.changes.Result
+import net.twisterrob.travel.domain.london.status.changes.StatusChange
 import net.twisterrob.travel.statushistory.viewmodel.ResultChangeModel.LineStatusModel
 
 class ResultChangeModelMapper @Inject constructor(
@@ -16,7 +21,7 @@ class ResultChangeModelMapper @Inject constructor(
 			`when` = changes.current?.`when`,
 			error = mapError(changes),
 			statuses = map(
-				(changes.current as? Result.ContentResult)?.content?.lineStatuses.orEmpty(),
+				(changes.current as? Result.ContentResult)?.content?.statuses.orEmpty(),
 				(changes as? Changes.Status)?.changes.orEmpty(),
 			),
 		)
@@ -71,9 +76,9 @@ class ResultChangeModelMapper @Inject constructor(
 	private fun map(statuses: List<LineStatus>, changes: Map<Line, StatusChange>): List<LineStatusModel> =
 		statuses.map { lineStatus ->
 			LineStatusModel(
-				line = lineStatus.line,
+				lineId = lineStatus.line.name,
 				lineTitle = trackerNetData.getDisplayName(lineStatus.line),
-				type = lineStatus.type,
+				delayType = trackerNetData.getDisplayName(lineStatus.type),
 				description = lineStatus.description,
 				changeStatus = changes[lineStatus.line]?.let(::map),
 				changeDescription = (changes[lineStatus.line] as? HasDescriptionChange)?.let { diffDesc(it.desc) },

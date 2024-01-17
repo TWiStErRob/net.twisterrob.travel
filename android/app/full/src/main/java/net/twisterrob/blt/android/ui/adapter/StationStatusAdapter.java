@@ -12,7 +12,7 @@ import net.twisterrob.android.adapter.BaseListAdapter;
 import net.twisterrob.blt.android.App;
 import net.twisterrob.blt.android.app.full.R;
 import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
-import net.twisterrob.blt.io.feeds.trackernet.model.DelayType;
+import net.twisterrob.blt.model.DelayType;
 import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus;
 import net.twisterrob.blt.model.LineColors;
 
@@ -45,7 +45,7 @@ public class StationStatusAdapter extends BaseListAdapter<LineStatus, StationSta
 	@Override protected void bindView(final ViewHolder holder, final LineStatus currentItem, final View convertView) {
 		String title = trackerNetData.getDisplayName(currentItem.getLine());
 		String description = currentItem.getDescription();
-		String delay = currentItem.getType().getTitle();
+		String delay = trackerNetData.getDisplayName(currentItem.getType());
 
 		holder.line.setText(title);
 		holder.delay.setText(delay);
@@ -59,12 +59,12 @@ public class StationStatusAdapter extends BaseListAdapter<LineStatus, StationSta
 		holder.line.setTextColor(colors.getForeground(currentItem.getLine()));
 		holder.line.setBackgroundColor(colors.getBackground(currentItem.getLine()));
 
-		if (DelayType.ORDER_SEVERITY.compare(currentItem.getType(), DelayType.MinorDelays) >= 0) {
+		if (TrackerNetData.DELAY_TYPE_ORDER.compare(currentItem.getType(), DelayType.MinorDelays) >= 0) {
 			holder.delay.setTextColor(Color.rgb(0, 25, 168));
 		} else {
 			holder.delay.setTextColor(Color.rgb(0, 0, 0));
 		}
-		if (DelayType.ORDER_SEVERITY.compare(currentItem.getType(), DelayType.MinorDelays) > 0) {
+		if (TrackerNetData.DELAY_TYPE_ORDER.compare(currentItem.getType(), DelayType.MinorDelays) > 0) {
 			holder.delay.setTypeface(null, Typeface.BOLD);
 		} else {
 			holder.delay.setTypeface(null, Typeface.NORMAL);

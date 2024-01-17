@@ -1,22 +1,25 @@
-package net.twisterrob.travel.statushistory.viewmodel
+package net.twisterrob.travel.domain.london.status.changes
 
 import com.shazam.gwen.Gwen.given
 import com.shazam.gwen.Gwen.then
 import com.shazam.gwen.Gwen.`when`
-import net.twisterrob.blt.io.feeds.trackernet.model.LineStatus.BranchStatus
 import net.twisterrob.blt.model.Line
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import net.twisterrob.blt.model.LineStatus
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 
 private val MISSING_DESCRIPTION: String? = null
 
-class ResultChangeCalculatorUnitTest_Descriptions {
+/**
+ * @see ResultChangesCalculator
+ */
+class ResultChangesCalculatorUnitTest_Descriptions {
 
 	private lateinit var status1: GwenStatus
 	private lateinit var status2: GwenStatus
 	private lateinit var change: GwenChange
 
-	@BeforeEach fun setUp() {
+	@BeforeTest fun setUp() {
 		status1 = GwenStatus()
 		status2 = GwenStatus()
 		change = GwenChange()
@@ -67,7 +70,7 @@ class ResultChangeCalculatorUnitTest_Descriptions {
 		then(change)
 			.hasNoErrorChange()
 			.has(Line.Northern, DescriptionChange.Same("description"))
-			.hasNoDescriptionChangeFor(Line.Northern)
+			.hasDescriptionChangeFor(Line.Northern)
 	}
 
 	@Test fun testDescriptionsMissing() {
@@ -79,12 +82,12 @@ class ResultChangeCalculatorUnitTest_Descriptions {
 		then(change)
 			.hasNoErrorChange()
 			.has(Line.Northern, DescriptionChange.Missing)
-			.hasNoDescriptionChangeFor(Line.Northern)
+			.hasDescriptionChangeFor(Line.Northern)
 	}
 
 	@Test fun testStationsDifferent() {
-		val branch1 = BranchStatus("from1", "to1")
-		val branch2 = BranchStatus("from2", "to2")
+		val branch1 = LineStatus.BranchStatus("from1", "to1")
+		val branch2 = LineStatus.BranchStatus("from2", "to2")
 		given(status1).contains(Line.Northern, "description", branch1)
 		given(status2).contains(Line.Northern, "description", branch2)
 

@@ -11,6 +11,9 @@ import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
 import kotlin.test.AfterTest
 import kotlin.test.Test
 
+/**
+ * @see StatusHistoryRepository.save
+ */
 class DomainHistoryRepositoryUnitTest_save {
 
 	private val mockHistory: StatusHistoryDataSource = mock()

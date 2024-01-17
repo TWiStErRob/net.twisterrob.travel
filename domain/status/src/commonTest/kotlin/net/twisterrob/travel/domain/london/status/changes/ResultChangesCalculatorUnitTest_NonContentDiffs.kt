@@ -1,13 +1,14 @@
-package net.twisterrob.travel.statushistory.viewmodel
+package net.twisterrob.travel.domain.london.status.changes
 
-import net.twisterrob.blt.io.feeds.trackernet.LineStatusFeed
-import net.twisterrob.travel.statushistory.viewmodel.Changes.ErrorChanges
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
-import org.mockito.Mockito.mock
+import net.twisterrob.blt.model.LineStatuses
 import java.util.Date
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
-class ResultChangeCalculatorUnitTest_NonContentDiffs {
+/**
+ * @see ResultChangesCalculator
+ */
+class ResultChangesCalculatorUnitTest_NonContentDiffs {
 
 	private val subject = ResultChangesCalculator()
 
@@ -17,7 +18,7 @@ class ResultChangeCalculatorUnitTest_NonContentDiffs {
 
 		val difference = subject.diff(result1, result2)
 
-		assertEquals(difference, ErrorChanges.Change(result1, result2))
+		assertEquals(difference, Changes.ErrorChanges.Change(result1, result2))
 	}
 
 	@Test fun testErrorNoChange() {
@@ -26,30 +27,30 @@ class ResultChangeCalculatorUnitTest_NonContentDiffs {
 
 		val difference = subject.diff(result1, result2)
 
-		assertEquals(difference, ErrorChanges.Same(result2))
+		assertEquals(difference, Changes.ErrorChanges.Same(result2))
 	}
 
 	@Test fun testErrorIntroduced() {
-		val result1 = ContentResult(mock())
+		val result1 = ContentResult(LineStatuses())
 		val result2 = ErrorResult("error")
 
 		val difference = subject.diff(result1, result2)
 
-		assertEquals(difference, ErrorChanges.Failed(result1, result2))
+		assertEquals(difference, Changes.ErrorChanges.Failed(result1, result2))
 	}
 
 	@Test fun testErrorDisappeared() {
 		val result1 = ErrorResult("error")
-		val result2 = ContentResult(mock())
+		val result2 = ContentResult(LineStatuses())
 
 		val difference = subject.diff(result1, result2)
 
-		assertEquals(difference, ErrorChanges.Fixed(result1, result2))
+		assertEquals(difference, Changes.ErrorChanges.Fixed(result1, result2))
 	}
 
 	@Test fun testEmpty() {
-		val result1 = ContentResult(mock())
-		val result2 = ContentResult(mock())
+		val result1 = ContentResult(LineStatuses())
+		val result2 = ContentResult(LineStatuses())
 
 		val difference = subject.diff(result1, result2)
 
@@ -57,7 +58,7 @@ class ResultChangeCalculatorUnitTest_NonContentDiffs {
 	}
 
 	@Test fun testFirstOne() {
-		val result: Result = ContentResult(mock())
+		val result: Result = ContentResult(LineStatuses())
 
 		val difference = subject.diff(null, result)
 
@@ -73,7 +74,7 @@ class ResultChangeCalculatorUnitTest_NonContentDiffs {
 	}
 
 	@Test fun testLastOne() {
-		val result: Result = ContentResult(mock())
+		val result: Result = ContentResult(LineStatuses())
 
 		val difference = subject.diff(result, null)
 
@@ -96,9 +97,13 @@ class ResultChangeCalculatorUnitTest_NonContentDiffs {
 }
 
 @Suppress("TestFunctionName")
-private fun ContentResult(content: LineStatusFeed): Result.ContentResult =
+private fun ContentResult(content: LineStatuses): Result.ContentResult =
 	Result.ContentResult(Date(), content)
 
 @Suppress("TestFunctionName")
 private fun ErrorResult(error: String): Result.ErrorResult =
 	Result.ErrorResult(Date(), Result.ErrorResult.Error(error))
+
+@Suppress("TestFunctionName")
+private fun LineStatuses(): LineStatuses =
+	LineStatuses(emptyList())

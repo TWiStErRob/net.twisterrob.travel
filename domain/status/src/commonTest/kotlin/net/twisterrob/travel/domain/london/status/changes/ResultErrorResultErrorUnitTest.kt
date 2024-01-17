@@ -1,8 +1,11 @@
-package net.twisterrob.travel.statushistory.viewmodel
+package net.twisterrob.travel.domain.london.status.changes
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
+/**
+ * @see Result.ErrorResult.Error
+ */
 class ResultErrorResultErrorUnitTest {
 
 	@Test fun testSingleLineErrorHeader() {
