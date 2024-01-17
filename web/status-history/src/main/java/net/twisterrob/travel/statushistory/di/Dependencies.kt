@@ -15,11 +15,14 @@ import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData
 import net.twisterrob.blt.model.LineColors
 import net.twisterrob.travel.domain.london.status.DomainRefreshUseCase
 import net.twisterrob.travel.domain.london.status.DomainStatusHistoryRepository
+import net.twisterrob.travel.domain.london.status.DomainStatusHistoryUseCase
 import net.twisterrob.travel.domain.london.status.api.FeedParser
 import net.twisterrob.travel.domain.london.status.api.RefreshUseCase
 import net.twisterrob.travel.domain.london.status.api.StatusDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
+import net.twisterrob.travel.domain.london.status.api.StatusHistoryUseCase
+import net.twisterrob.travel.domain.london.status.changes.ResultChangesCalculator
 
 @Factory
 class Dependencies {
@@ -46,6 +49,15 @@ class Dependencies {
 	 * External dependency from domain layer in common KMP code.
 	 */
 	@Prototype
+	fun statusHistoryUseCase(
+		statusHistoryRepository: StatusHistoryRepository,
+	): StatusHistoryUseCase =
+		DomainStatusHistoryUseCase(statusHistoryRepository, ResultChangesCalculator())
+
+	/**
+	 * External dependency from domain layer in common KMP code.
+	 */
+	@Prototype
 	fun refreshUseCase(
 		statusHistoryRepository: StatusHistoryRepository,
 	): RefreshUseCase =
@@ -58,7 +70,7 @@ class Dependencies {
 	@Singleton
 	fun lineColors(staticData: StaticData): LineColors =
 		LineColors(staticData.lineColors)
-	
+
 	@Singleton
 	fun trackerNetData(): TrackerNetData =
 		TrackerNetData()
