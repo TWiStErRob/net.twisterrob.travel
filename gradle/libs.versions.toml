@@ -39,7 +39,7 @@ micronaut-gradle = "4.2.1"
 snakeyaml = "2.2"
 
 junit4 = "4.13.2"
-junit5 = "5.10.1"
+junit5 = "5.10.2"
 kotest = "5.8.0"
 mockito = "5.10.0"
 mockative = "2.0.1"
