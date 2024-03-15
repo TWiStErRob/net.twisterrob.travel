@@ -2,8 +2,6 @@ name: "CI"
 
 on:
   push:
-    branches:
-      - '**'
 
 concurrency:
   group: ${{ github.ref == 'refs/heads/main' && format('ci-main-{0}', github.sha) || format('ci-{0}', github.ref) }}
@@ -14,8 +12,16 @@ jobs:
   validate:
     name: "🦺 Validation"
     uses: TWiStErRob/github-workflows/.github/workflows/validate.yml@94f2ec4f96e146200f801fe7e09310c79cb2d2b3 # v2
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+
 
   build:
     name: "🔨 Build & Verify"
     needs: validate
-    uses: ./.github/workflows/CI-build.yml
+    uses: ./.github/workflows/ci-build.yml
+    permissions:
+      contents: read
+      checks: write
