@@ -32,7 +32,7 @@ google-appengine = "2.0.25"
 google-appengine-plugin = "2.8.0"
 google-maps = "18.2.0"
 google-places = "3.3.0"
-google-datastore = "2.18.5"
+google-datastore = "2.18.6"
 
 micronaut = "4.3.6"
 micronaut-gradle = "4.3.4"
