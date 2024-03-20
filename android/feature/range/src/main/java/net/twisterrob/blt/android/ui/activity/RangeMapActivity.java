@@ -125,7 +125,7 @@ public class RangeMapActivity extends MapActivity {
 		Injector.from(this).inject(this);
 		drawConfig = new RangeMapDrawerConfig(new LineColors(staticData.getLineColors()));
 		String apiKey = getApplicationInfoWithMetadata(this).metaData.getString("com.google.android.geo.API_KEY");
-		Places.initializeWithNewPlacesApiEnabled(getApplicationContext(), apiKey);
+		Places.initialize(getApplicationContext(), apiKey);
 
 		setTranslucentStatusBar();
 		super.onCreate(savedInstanceState);
