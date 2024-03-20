@@ -22,5 +22,3 @@ dependencies {
 	implementation(libs.gms.places)
 	implementation(libs.jsr305)
 }
-
-android.defaultConfig.consumerProguardFile("src/main/proguard.pro")
