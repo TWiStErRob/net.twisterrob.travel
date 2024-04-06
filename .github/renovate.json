@@ -5,7 +5,7 @@
 	],
 	"packageRules": [
 		{
-			"description": "https://github.com/TWiStErRob/net.twisterrob.travel/issues/13",
+			"description": "https://github.com/TWiStErRob/net.twisterrob.libraries/issues/23",
 			"matchPackageNames": [
 				"gradle"
 			],
