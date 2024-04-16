@@ -42,7 +42,7 @@ junit4 = "4.13.2"
 junit5 = "5.10.2"
 kotest = "5.8.1"
 mockito = "5.11.0"
-mockative = "2.1.0"
+mockative = "2.2.0"
 # Use this instead of 1.3
 # If `hamcrest-1.3` appears in the dependency list, check if it's excluded from all usages.
 hamcrest = "2.0.0.0"
