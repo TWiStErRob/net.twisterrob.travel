@@ -34,7 +34,7 @@ google-maps = "18.2.0"
 google-places = "3.4.0"
 google-datastore = "2.19.0"
 
-micronaut = "4.3.8"
+micronaut = "4.4.0"
 micronaut-gradle = "4.3.6"
 snakeyaml = "2.2"
 
