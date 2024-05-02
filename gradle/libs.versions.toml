@@ -16,7 +16,7 @@ kxml2 = "2.3.0"
 sqlite-jdbc = "3.45.3.0"
 
 androidx-swiperefreshlayout = "1.1.0"
-androidx-fragment = "1.6.2"
+androidx-fragment = "1.7.0"
 
 slf4j = "2.0.13"
 # https://logging.apache.org/log4j/2.x/release-notes.html
