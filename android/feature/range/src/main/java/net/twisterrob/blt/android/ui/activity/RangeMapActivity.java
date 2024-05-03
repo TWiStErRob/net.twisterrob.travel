@@ -311,6 +311,7 @@ public class RangeMapActivity extends MapActivity {
 		return true;
 	}
 
+	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/170
 	@Override public void onBackPressed() {
 		if (drawers.isDrawerOpen(GravityCompat.START) || drawers.isDrawerOpen(GravityCompat.END)) {
 			drawers.closeDrawers();
