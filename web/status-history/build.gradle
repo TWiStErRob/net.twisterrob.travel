@@ -54,10 +54,13 @@ appengine { com.google.cloud.tools.gradle.appengine.appyaml.AppEngineAppYamlExte
 		// Live: https://twisterrob-london.appspot.com/
 		projectId = "twisterrob-london"
 		version = "GCLOUD_CONFIG"
-		// Test deployment:
-		//version = "test"
-		//stopPreviousVersion = false
-		//promote = false
+		def testDeployment = false
+		if (testDeployment) {
+			// Updating service [default]... is normal
+			version = "test"
+			stopPreviousVersion = false
+			promote = false
+		}
 	}
 	tools {
 		System.getenv("GCLOUD_HOME")?.tap { cloudSdkHome = it }
