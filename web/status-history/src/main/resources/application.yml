@@ -1,7 +1,7 @@
 micronaut:
 
   server:
-    port: ${PORT:8080}
+    port: ${PORT:-1}
 
   router:
     static-resources:

@@ -37,7 +37,6 @@ class InternalFeedbackControllerIntegrationTest {
 			EmbeddedServer::class.java,
 			mapOf(
 				"test.class" to "InternalFeedbackControllerIntegrationTest_Service",
-				"micronaut.server.port" to "-1",
 				"micronaut.codec.json.additional-types" to listOf("application/vnd.github.v3+json"),
 			),
 		).use { github ->
@@ -45,7 +44,7 @@ class InternalFeedbackControllerIntegrationTest {
 				EmbeddedServer::class.java,
 				mapOf(
 					"test.class" to "InternalFeedbackControllerIntegrationTest",
-					"micronaut.server.port" to "-1",
+					"micronaut.environment" to "test",
 					"micronaut.http.services.github.url" to "http://localhost:${github.port}",
 					"micronaut.http.services.github.feedback-repository.owner" to "test-owner",
 					"micronaut.http.services.github.feedback-repository.repo" to "test-repo",
@@ -73,13 +72,11 @@ class InternalFeedbackControllerIntegrationTest {
 
 		@Requires(property = "test.class", value = "InternalFeedbackControllerIntegrationTest")
 		@Bean
-		@Replaces(Variables::class)
 		fun variablesForProduction(): Variables =
 			StubVariables
 
 		@Requires(property = "test.class", value = "InternalFeedbackControllerIntegrationTest_Service")
 		@Bean
-		@Replaces(Variables::class)
 		fun variablesForGitHubStub(): Variables =
 			StubVariables
 	}

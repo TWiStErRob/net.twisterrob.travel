@@ -3,13 +3,15 @@ package net.twisterrob.travel.statushistory.infrastructure.secrets
 import com.google.cloud.secretmanager.v1.SecretManagerServiceClient
 import com.google.cloud.secretmanager.v1.SecretVersionName
 import io.micronaut.context.annotation.Bean
+import io.micronaut.context.annotation.Requires
 import jakarta.inject.Inject
 import jakarta.inject.Provider
 
 /**
  * @param client injected as a provider to delay the creation of the client until it's needed.
  */
-@Bean
+@Bean(typed = [Variables::class])
+@Requires(notEnv = ["test"])
 class GcpSecretVariables @Inject constructor(
 	private val client: Provider<SecretManagerServiceClient>,
 ) : Variables {

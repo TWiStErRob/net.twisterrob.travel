@@ -85,7 +85,7 @@ tasks.named("run").configure { JavaExec task ->
 		task.systemProperty("log4j.skipJansi", false)
 	}
 	task.systemProperties(
-			"micronaut.environments": "test",
+			"micronaut.environments": "localhost",
 	)
 	if (gradle.startParameter.continuous) {
 		task.systemProperties(
