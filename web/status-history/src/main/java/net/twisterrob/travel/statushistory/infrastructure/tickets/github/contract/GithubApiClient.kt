@@ -1,4 +1,4 @@
-package net.twisterrob.travel.statushistory.infrastructure.github.contract
+package net.twisterrob.travel.statushistory.infrastructure.tickets.github.contract
 
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.annotation.Body
@@ -18,7 +18,7 @@ interface GithubApiClient {
 	 * [Query](https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests)
 	 */
 	@Get("/search/issues?q=repo:${owner}/${repo}+type:issue+state:open+in:title+%22{title}%22&sort=created&order=desc")
-	fun issuesWithTitle(
+	fun searchIssuesWithTitle(
 		@PathVariable("title") title: String,
 	): GithubSearchIssuesResponse?
 

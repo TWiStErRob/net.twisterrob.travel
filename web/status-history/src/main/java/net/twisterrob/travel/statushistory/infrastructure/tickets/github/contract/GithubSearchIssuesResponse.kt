@@ -1,7 +1,10 @@
-package net.twisterrob.travel.statushistory.infrastructure.github.contract
+package net.twisterrob.travel.statushistory.infrastructure.tickets.github.contract
 
 import io.micronaut.serde.annotation.Serdeable
 
+/**
+ * @see GithubApiClient.searchIssuesWithTitle for docs.
+ */
 @Serdeable
 class GithubSearchIssuesResponse(
 	@Suppress("PropertyName", "detekt.ConstructorParameterNaming")

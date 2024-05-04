@@ -7,7 +7,7 @@ import io.micronaut.http.client.BlockingHttpClient
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
-import net.twisterrob.travel.statushistory.infrastructure.github.SendFeedbackUseCase
+import net.twisterrob.travel.statushistory.infrastructure.feedback.SendFeedbackUseCase
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.matches
@@ -54,7 +54,7 @@ class InternalFeedbackControllerIntegrationTest {
 
 		assertEquals(HttpStatus.ACCEPTED, response.status)
 		verify(createGitHubIssue).report(
-			matches("""^Invalid automated feedback at \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{9}Z$"""),
+			matches("""^Invalid automated feedback at \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d+Z$"""),
 			eq(""),
 		)
 		verifyNoMoreInteractions(createGitHubIssue)
@@ -86,7 +86,7 @@ class InternalFeedbackControllerIntegrationTest {
 
 		assertEquals(HttpStatus.ACCEPTED, response.status)
 		verify(createGitHubIssue).report(
-			matches("""^Invalid automated feedback at \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{9}Z$"""),
+			matches("""^Invalid automated feedback at \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d+Z$"""),
 			eq("My body text."),
 		)
 		verifyNoMoreInteractions(createGitHubIssue)

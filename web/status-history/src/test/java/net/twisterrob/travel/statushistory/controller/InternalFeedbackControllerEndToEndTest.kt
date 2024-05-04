@@ -16,8 +16,8 @@ import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.HttpClient
 import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
-import net.twisterrob.travel.statushistory.infrastructure.github.contract.GithubApiClient
 import net.twisterrob.travel.statushistory.infrastructure.secrets.Variables
+import net.twisterrob.travel.statushistory.infrastructure.tickets.github.contract.GithubApiClient
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -27,7 +27,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 /**
  * @see InternalFeedbackController
  */
-@MicronautTest
+@MicronautTest(environments = ["production"])
 class InternalFeedbackControllerEndToEndTest {
 
 	/**
@@ -101,7 +101,7 @@ private class GithubStub(
 ) {
 
 	/**
-	 * @see GithubApiClient.issuesWithTitle
+	 * @see GithubApiClient.searchIssuesWithTitle
 	 */
 	@Get(
 		uri = "/search/issues",

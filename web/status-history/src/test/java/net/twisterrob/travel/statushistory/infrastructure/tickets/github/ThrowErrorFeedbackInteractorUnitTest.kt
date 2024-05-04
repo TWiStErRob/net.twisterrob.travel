@@ -1,5 +1,6 @@
-package net.twisterrob.travel.statushistory.infrastructure.github
+package net.twisterrob.travel.statushistory.infrastructure.tickets.github
 
+import net.twisterrob.travel.statushistory.infrastructure.feedback.ThrowErrorFeedbackInteractor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

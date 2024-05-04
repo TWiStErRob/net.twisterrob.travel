@@ -1,4 +1,4 @@
-package net.twisterrob.travel.statushistory.infrastructure.github
+package net.twisterrob.travel.statushistory.infrastructure.tickets.github
 
 import io.micronaut.http.MutableHttpRequest
 import io.micronaut.http.annotation.ClientFilter

@@ -15,7 +15,8 @@ import org.junit.jupiter.api.assertThrows
 class BlockingHttpClientFactory {
 
 	@Prototype
-	fun client(@Client("/") client: HttpClient): BlockingHttpClient = client.toBlocking()
+	fun client(@Client("/") client: HttpClient): BlockingHttpClient =
+		client.toBlocking()
 }
 
 fun BlockingHttpClient.assertErrorStatus(status: HttpStatus, request: HttpRequest<*>) {

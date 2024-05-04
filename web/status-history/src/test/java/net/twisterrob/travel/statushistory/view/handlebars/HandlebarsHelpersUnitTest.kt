@@ -52,15 +52,16 @@ class HandlebarsHelpersUnitTest {
 			assertEquals("", value)
 		}
 
-		private fun options(): Options = Options
-			.Builder(
-				Handlebars(),
-				"test",
-				TagType.SUB_EXPRESSION,
-				Context.newContext(null),
-				Template.EMPTY
-			)
-			.build()
+		private fun options(): Options =
+			Options
+				.Builder(
+					Handlebars(),
+					"test",
+					TagType.SUB_EXPRESSION,
+					Context.newContext(null),
+					Template.EMPTY
+				)
+				.build()
 	}
 
 	@Nested

@@ -1,4 +1,4 @@
-package net.twisterrob.travel.statushistory.infrastructure.github
+package net.twisterrob.travel.statushistory.infrastructure.feedback
 
 import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Requires
