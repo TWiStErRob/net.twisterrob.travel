@@ -58,7 +58,7 @@ class Dependencies {
 	@Singleton
 	fun lineColors(staticData: StaticData): LineColors =
 		LineColors(staticData.lineColors)
-	
+
 	@Singleton
 	fun trackerNetData(): TrackerNetData =
 		TrackerNetData()
