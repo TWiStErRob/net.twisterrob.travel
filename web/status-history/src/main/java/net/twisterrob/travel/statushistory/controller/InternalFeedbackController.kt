@@ -4,7 +4,9 @@ import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Consumes
 import io.micronaut.http.annotation.Controller
+import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
+import net.twisterrob.travel.statushistory.infrastructure.github.CreateGitHubIssueUseCase
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.IOException
@@ -17,7 +19,9 @@ import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
 @Controller
-class InternalFeedbackController {
+class InternalFeedbackController(
+	private val createGitHubIssue: CreateGitHubIssueUseCase,
+) {
 
 	@Post("/InternalFeedback")
 	@Consumes(MediaType.ALL)
@@ -34,6 +38,12 @@ class InternalFeedbackController {
 		} catch (e: MessagingException) {
 			throw IOException("Cannot send mail", e)
 		}
+	}
+
+	@Get("/test")
+	fun doGet() {
+		LOG.info("test")
+		createGitHubIssue.ensureIssue("Hello", "World")
 	}
 
 	companion object {

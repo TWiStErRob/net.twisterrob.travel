@@ -21,6 +21,8 @@ dependencies {
 	runtimeOnly(libs.snakeyaml)
 	runtimeOnly(libs.micronaut.jackson)
 	implementation(libs.micronaut.handlebars)
+	implementation(libs.micronaut.httpClient)
+	implementation(libs.micronaut.jackson)
 
 	implementation(projects.domain.status)
 	implementation(projects.common.data.static)

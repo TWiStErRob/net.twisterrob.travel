@@ -8,3 +8,13 @@ micronaut:
       default:
         mapping: "/static/**"
         paths: classpath:public/static
+
+  http:
+    services:
+      github:
+        url: https://api.github.com
+
+  codec:
+    json:
+      additional-types:
+        - application/vnd.github.v3+json
