@@ -11,7 +11,7 @@ import net.twisterrob.android.AndroidConstants;
 import net.twisterrob.android.app.BaseApp;
 import net.twisterrob.android.log.AndroidLoggerFactory;
 import net.twisterrob.android.utils.concurrent.BackgroundExecution;
-import net.twisterrob.android.utils.concurrent.MailSenderAsyncTask;
+import net.twisterrob.android.utils.concurrent.FeedbackSenderAsyncTask;
 import net.twisterrob.android.utils.tostring.stringers.detailed.RangeStringers;
 import net.twisterrob.blt.android.app.full.BuildConfig;
 import net.twisterrob.blt.android.data.AndroidDBStaticData;
@@ -80,10 +80,9 @@ public class App extends BaseApp implements Injector.Provider {
 		return m_static;
 	}
 
-	public static void sendMail(String body) {
+	public static void sendFeedback(String body) {
 		@SuppressWarnings({"unused", "deprecation"}) // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
-		Object task = new MailSenderAsyncTask("Better London Travel",
-				"better-london-travel@twisterrob.net", "papp.robert.s@gmail.com") {
+		Object task = new FeedbackSenderAsyncTask() {
 			@Override protected void onPostExecute(Boolean result) {
 				super.onPostExecute(result);
 				if (Boolean.TRUE.equals(result)) {
@@ -92,7 +91,7 @@ public class App extends BaseApp implements Injector.Provider {
 					Toast.makeText(getInstance(), "Mail failed", Toast.LENGTH_SHORT).show();
 				}
 			}
-		}.execute(body);
+		}.execute(null, body);
 	}
 
 	@SuppressWarnings("deprecation")

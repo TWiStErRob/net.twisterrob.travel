@@ -148,13 +148,12 @@ public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
 			}
 		});
 		stationServingLine.setEndTextElementListener(new EndTextElementListener() {
-			@SuppressWarnings("synthetic-access")
 			@Override public void end(String body) {
 				Line line = Line.unknown;
 				if (body != null) {
 					line = trackerNetData.fromAlias(body);
 					if (line == Line.unknown) {
-						sendMail(Line.class + " new alias: " + body);
+						sendFeedback("New line alias: " + body, Line.class + " new alias: " + body);
 					}
 				}
 				m_station.getLines().add(line);
