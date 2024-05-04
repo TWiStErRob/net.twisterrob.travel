@@ -9,4 +9,5 @@ import io.micronaut.serde.annotation.Serdeable
 class GithubCreateIssueRequest(
 	val title: String,
 	val body: String,
+	val labels: List<String>,
 )
