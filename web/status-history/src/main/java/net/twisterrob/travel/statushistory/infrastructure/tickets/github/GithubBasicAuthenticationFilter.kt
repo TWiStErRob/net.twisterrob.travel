@@ -7,12 +7,16 @@ import jakarta.inject.Inject
 import net.twisterrob.travel.statushistory.infrastructure.secrets.Variables
 
 /**
- * TODO this runs on all client requests, including when test is calling controllers.
- * It should be only executed on [net.twisterrob.travel.statushistory.infrastructure.github.contract.GithubApiClient].
- *
- * @see net.twisterrob.travel.statushistory.infrastructure.github.contract.GithubApiClient
+ * @see net.twisterrob.travel.statushistory.infrastructure.tickets.github.contract.GithubApiClient
  */
-@ClientFilter
+@ClientFilter(
+	// TODO this runs on all client requests (incl. when test calls controller),
+	// should be only on [GithubApiClient]. Best effort path filtering for now.
+	patterns = [
+		"/search/issues",
+		"/repos/*/*/issues",
+	]
+)
 class GithubBasicAuthenticationFilter @Inject constructor(
 	private val variables: Variables,
 ) {
