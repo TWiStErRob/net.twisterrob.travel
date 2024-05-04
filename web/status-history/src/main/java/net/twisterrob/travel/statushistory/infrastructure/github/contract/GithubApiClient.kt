@@ -17,20 +17,24 @@ interface GithubApiClient {
 	 * [Rest API](https://docs.github.com/en/rest/search/search#search-issues-and-pull-requests)
 	 * [Query](https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests)
 	 */
-	@Get("/search/issues?q=repo:{owner}/{repo}+type:issue+state:open+in:title+%22{title}%22&sort=created&order=desc")
+	@Get("/search/issues?q=repo:${owner}/${repo}+type:issue+state:open+in:title+%22{title}%22&sort=created&order=desc")
 	fun issuesWithTitle(
-		@PathVariable("owner") owner: String,
-		@PathVariable("repo") repo: String,
 		@PathVariable("title") title: String,
 	): GithubSearchIssuesResponse?
 
 	/**
 	 * [Rest API](https://docs.github.com/en/rest/issues/issues#create-an-issue)
 	 */
-	@Post("/repos/{owner}/{repo}/issues")
+	@Post("/repos/${owner}/${repo}/issues")
 	fun createIssue(
-		@PathVariable("owner") owner: String,
-		@PathVariable("repo") repo: String,
 		@Body body: GithubCreateIssueRequest,
 	): GithubIssue?
+
+	companion object {
+		@Suppress("ConstPropertyName")
+		const val owner = "\${github.feedback-repository.organization}"
+
+		@Suppress("ConstPropertyName")
+		const val repo = "\${github.feedback-repository.repo}"
+	}
 }

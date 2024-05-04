@@ -18,3 +18,8 @@ micronaut:
     json:
       additional-types:
         - application/vnd.github.v3+json
+
+github:
+  feedback-repository:
+    organization: TWiStErRob
+    repo: net.twisterrob.travel

@@ -17,12 +17,10 @@ class CreateGitHubIssueInteractor @Inject constructor(
 	private val github: GithubApiClient,
 ) : CreateGitHubIssueUseCase {
 	override fun ensureIssue(title: String, body: String) {
-		val hostOwner = "TWiStErRob"
-		val hostRepo = "net.twisterrob.travel"
-		val issues = github.issuesWithTitle(hostOwner, hostRepo, title)
+		val issues = github.issuesWithTitle(title)
 			?: error("No response from GitHub, infrastructure error. Enable TRACE logging for HTTP client for details.")
 		if (issues.total_count == 0) { // TODO: implementation detail, move to a Repository.
-			github.createIssue(hostOwner, hostRepo, GithubCreateIssueRequest(title, body))
+			github.createIssue(GithubCreateIssueRequest(title, body))
 				?: error("No response from GitHub, infrastructure error. Enable TRACE logging for HTTP client for details.")
 		} else {
 			val issueLinks = issues.items.map(GithubIssue::html_url).joinToString(separator = "\n")

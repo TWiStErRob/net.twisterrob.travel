@@ -17,30 +17,30 @@ class CreateGitHubIssueUnitTest {
 
 	@Test fun `issue is only created when there are no existing issues`() {
 		val searchResponse = GithubSearchIssuesResponse(0, true, emptyList())
-		whenever(mockClient.issuesWithTitle("TWiStErRob", "test", "Hello"))
+		whenever(mockClient.issuesWithTitle("Hello"))
 			.thenReturn(searchResponse)
 		val createRequest = {
 			argThat<GithubCreateIssueRequest> { title == "Hello" && body == "World" }
 		}
 		val createResponse = GithubIssue(1, "http://example.com/issue", "Hello")
-		whenever(mockClient.createIssue("TWiStErRob", "test", createRequest()))
+		whenever(mockClient.createIssue(createRequest()))
 			.thenReturn(createResponse)
 
 		subject.ensureIssue("Hello", "World")
 
-		verify(mockClient).createIssue("TWiStErRob", "test", createRequest())
-		verify(mockClient).issuesWithTitle("TWiStErRob", "test", "Hello")
+		verify(mockClient).createIssue(createRequest())
+		verify(mockClient).issuesWithTitle("Hello")
 		verifyNoMoreInteractions(mockClient)
 	}
 
 	@Test fun `issue is not created when there are existing issues`() {
 		val searchResponse = GithubSearchIssuesResponse(1, false, emptyList())
-		whenever(mockClient.issuesWithTitle("TWiStErRob", "test", "Hello"))
+		whenever(mockClient.issuesWithTitle("Hello"))
 			.thenReturn(searchResponse)
 
 		subject.ensureIssue("Hello", "World")
 
-		verify(mockClient).issuesWithTitle("TWiStErRob", "test", "Hello")
+		verify(mockClient).issuesWithTitle("Hello")
 		verifyNoMoreInteractions(mockClient)
 	}
 }
