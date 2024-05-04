@@ -7,7 +7,7 @@ import io.micronaut.http.client.BlockingHttpClient
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
-import net.twisterrob.travel.statushistory.infrastructure.github.CreateGitHubIssueUseCase
+import net.twisterrob.travel.statushistory.infrastructure.github.SendFeedbackUseCase
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.matches
@@ -25,8 +25,8 @@ class InternalFeedbackControllerIntegrationTest {
 	@Inject
 	lateinit var client: BlockingHttpClient
 
-	@MockBean(CreateGitHubIssueUseCase::class)
-	val createGitHubIssue: CreateGitHubIssueUseCase = mock()
+	@MockBean(SendFeedbackUseCase::class)
+	val createGitHubIssue: SendFeedbackUseCase = mock()
 
 	@Test fun `feedback with title`() {
 		val request: HttpRequest<String> = HttpRequest.POST(
@@ -37,7 +37,7 @@ class InternalFeedbackControllerIntegrationTest {
 		val response: HttpResponse<Unit> = client.exchange(request)
 
 		assertEquals(HttpStatus.ACCEPTED, response.status)
-		verify(createGitHubIssue).ensureIssue(
+		verify(createGitHubIssue).report(
 			"My Title",
 			"My body text.",
 		)
@@ -53,7 +53,7 @@ class InternalFeedbackControllerIntegrationTest {
 		val response: HttpResponse<Unit> = client.exchange(request)
 
 		assertEquals(HttpStatus.ACCEPTED, response.status)
-		verify(createGitHubIssue).ensureIssue(
+		verify(createGitHubIssue).report(
 			matches("""^Invalid automated feedback at \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{9}Z$"""),
 			eq(""),
 		)
@@ -69,7 +69,7 @@ class InternalFeedbackControllerIntegrationTest {
 		val response: HttpResponse<Unit> = client.exchange(request)
 
 		assertEquals(HttpStatus.ACCEPTED, response.status)
-		verify(createGitHubIssue).ensureIssue(
+		verify(createGitHubIssue).report(
 			"My Title",
 			"",
 		)
@@ -85,7 +85,7 @@ class InternalFeedbackControllerIntegrationTest {
 		val response: HttpResponse<Unit> = client.exchange(request)
 
 		assertEquals(HttpStatus.ACCEPTED, response.status)
-		verify(createGitHubIssue).ensureIssue(
+		verify(createGitHubIssue).report(
 			matches("""^Invalid automated feedback at \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{9}Z$"""),
 			eq("My body text."),
 		)

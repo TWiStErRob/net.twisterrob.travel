@@ -13,7 +13,7 @@ import org.mockito.kotlin.whenever
 
 class CreateGitHubIssueInteractorUnitTest {
 	private val mockClient: GithubApiClient = mock()
-	private val subject = CreateGitHubIssueInteractor(mockClient)
+	private val subject = EnsureGitHubIssueInteractor(mockClient)
 
 	@Test fun `issue is only created when there are no existing issues`() {
 		val searchResponse = GithubSearchIssuesResponse(0, true, emptyList())
@@ -26,7 +26,7 @@ class CreateGitHubIssueInteractorUnitTest {
 		whenever(mockClient.createIssue(createRequest()))
 			.thenReturn(createResponse)
 
-		subject.ensureIssue("Hello", "World")
+		subject.report("Hello", "World")
 
 		verify(mockClient).createIssue(createRequest())
 		verify(mockClient).issuesWithTitle("Hello")
@@ -38,7 +38,7 @@ class CreateGitHubIssueInteractorUnitTest {
 		whenever(mockClient.issuesWithTitle("Hello"))
 			.thenReturn(searchResponse)
 
-		subject.ensureIssue("Hello", "World")
+		subject.report("Hello", "World")
 
 		verify(mockClient).issuesWithTitle("Hello")
 		verifyNoMoreInteractions(mockClient)
@@ -55,9 +55,9 @@ class CreateGitHubIssueInteractorUnitTest {
 		whenever(mockClient.createIssue(createRequest()))
 			.thenReturn(createResponse)
 
-		subject.ensureIssue("Hello", "World")
-		subject.ensureIssue("Hello", "World")
-		subject.ensureIssue("Hello", "World")
+		subject.report("Hello", "World")
+		subject.report("Hello", "World")
+		subject.report("Hello", "World")
 
 		verify(mockClient).createIssue(createRequest())
 		verify(mockClient).issuesWithTitle("Hello")
