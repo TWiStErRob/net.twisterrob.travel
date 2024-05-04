@@ -11,6 +11,7 @@ dependencies {
 		exclude group: "junit", module: "junit"
 	}
 	api(libs.test.mockito)
+	api(libs.test.mockito.kotlin)
 	api(libs.test.mockito.junit5)
 	api(libs.test.gwen)
 	implementation(projects.common.logConsole)
