@@ -41,6 +41,11 @@
 		<Logger name="com.github.jknack.handlebars" level="INFO" />
 		<Logger name="reactor" level="INFO" />
 
+		<!-- google-cloud-secretmanager is using the same logger, so it ends up being very noisy. -->
+		<Logger name="io.grpc.netty.shaded.io.netty" level="INFO" />
+		<!-- google-cloud-secretmanager is using the same logger, so it ends up being very noisy. -->
+		<Logger name="io.grpc.netty.shaded.io.grpc.netty" level="INFO" />
+
 		<!-- Application specific logs. -->
 		<Logger name="net.twisterrob" level="ALL" />
 	</Loggers>

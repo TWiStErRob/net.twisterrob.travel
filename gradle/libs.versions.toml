@@ -82,6 +82,7 @@ log4j-slf4j2 = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.
 
 google-cloud = { module = "com.google.cloud:libraries-bom", version.ref = "google-cloud" }
 google-cloud-datastore = { module = "com.google.cloud:google-cloud-datastore" } # version is BOM managed.
+google-cloud-secrets = { module = "com.google.cloud:google-cloud-secretmanager" } # version is BOM managed.
 appengine-api = { module = "com.google.appengine:appengine-api-1.0-sdk", version.ref = "google-appengine" }
 gms-places = { module = "com.google.android.libraries.places:places", version.ref = "google-places" }
 gms-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "google-maps" }

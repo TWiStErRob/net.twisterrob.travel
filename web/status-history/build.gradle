@@ -17,6 +17,7 @@ dependencies {
 	implementation(libs.appengine.api)
 	implementation(platform(libs.google.cloud))
 	implementation(libs.google.cloud.datastore)
+	implementation(libs.google.cloud.secrets)
 
 	runtimeOnly(libs.snakeyaml)
 	runtimeOnly(libs.micronaut.jackson)
