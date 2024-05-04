@@ -3,6 +3,9 @@ package net.twisterrob.travel.statushistory.infrastructure.secrets
 import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Requires
 
+/**
+ * @see GcpSecretVariables
+ */
 @Bean(typed = [Variables::class])
 @Requires(env = ["test"])
 class TestVariables : Variables {

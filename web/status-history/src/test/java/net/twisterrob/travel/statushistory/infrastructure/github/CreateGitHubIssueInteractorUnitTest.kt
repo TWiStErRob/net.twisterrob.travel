@@ -17,50 +17,63 @@ class CreateGitHubIssueInteractorUnitTest {
 
 	@Test fun `issue is only created when there are no existing issues`() {
 		val searchResponse = GithubSearchIssuesResponse(0, true, emptyList())
-		whenever(mockClient.issuesWithTitle("Hello"))
+		whenever(mockClient.issuesWithTitle("My Title"))
 			.thenReturn(searchResponse)
 		val createRequest = {
-			argThat<GithubCreateIssueRequest> { title == "Hello" && body == "World" }
+			argThat<GithubCreateIssueRequest> { title == "My Title" && body == "Body contents." }
 		}
-		val createResponse = GithubIssue(1, "http://example.com/issue", "Hello")
+		val createResponse = GithubIssue(1, "http://example.com/issue", "My Title")
 		whenever(mockClient.createIssue(createRequest()))
 			.thenReturn(createResponse)
 
-		subject.report("Hello", "World")
+		subject.report("My Title", "Body contents.")
 
 		verify(mockClient).createIssue(createRequest())
-		verify(mockClient).issuesWithTitle("Hello")
+		verify(mockClient).issuesWithTitle("My Title")
 		verifyNoMoreInteractions(mockClient)
 	}
 
 	@Test fun `issue is not created when there are existing issues`() {
 		val searchResponse = GithubSearchIssuesResponse(1, false, emptyList())
-		whenever(mockClient.issuesWithTitle("Hello"))
+		whenever(mockClient.issuesWithTitle("My Title"))
 			.thenReturn(searchResponse)
 
-		subject.report("Hello", "World")
+		subject.report("My Title", "Body contents.")
 
-		verify(mockClient).issuesWithTitle("Hello")
+		verify(mockClient).issuesWithTitle("My Title")
 		verifyNoMoreInteractions(mockClient)
 	}
 
 	@Test fun `issue is not created when it was already created`() {
-		val searchResponse = GithubSearchIssuesResponse(0, true, emptyList())
-		whenever(mockClient.issuesWithTitle("Hello"))
-			.thenReturn(searchResponse)
-		val createRequest = {
-			argThat<GithubCreateIssueRequest> { title == "Hello" && body == "World" }
+		val searchResponse1 = GithubSearchIssuesResponse(0, true, emptyList())
+		whenever(mockClient.issuesWithTitle("My Title"))
+			.thenReturn(searchResponse1)
+		val createRequest1 = {
+			argThat<GithubCreateIssueRequest> { title == "My Title" && body == "Body contents 1." }
 		}
-		val createResponse = GithubIssue(1, "http://example.com/issue", "Hello")
-		whenever(mockClient.createIssue(createRequest()))
+		val createResponse1 = GithubIssue(1, "http://example.com/issue", "My Title")
+		whenever(mockClient.createIssue(createRequest1()))
+			.thenReturn(createResponse1)
+
+		val searchResponse2 = GithubSearchIssuesResponse(0, true, emptyList())
+		whenever(mockClient.issuesWithTitle("My Title 2"))
+			.thenReturn(searchResponse2)
+		val createRequest2 = {
+			argThat<GithubCreateIssueRequest> { title == "My Title 2" && body == "Body contents 2." }
+		}
+		val createResponse = GithubIssue(1, "http://example.com/issue", "My Title")
+		whenever(mockClient.createIssue(createRequest2()))
 			.thenReturn(createResponse)
 
-		subject.report("Hello", "World")
-		subject.report("Hello", "World")
-		subject.report("Hello", "World")
+		subject.report("My Title", "Body contents 1.")
+		subject.report("My Title 2", "Body contents 2.")
+		subject.report("My Title 2", "Body contents 3.")
+		subject.report("My Title", "Body contents 4.")
 
-		verify(mockClient).createIssue(createRequest())
-		verify(mockClient).issuesWithTitle("Hello")
+		verify(mockClient).createIssue(createRequest1())
+		verify(mockClient).createIssue(createRequest2())
+		verify(mockClient).issuesWithTitle("My Title")
+		verify(mockClient).issuesWithTitle("My Title 2")
 		verifyNoMoreInteractions(mockClient)
 	}
 }

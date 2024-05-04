@@ -9,6 +9,7 @@ import jakarta.inject.Provider
 
 /**
  * @param client injected as a provider to delay the creation of the client until it's needed.
+ * @see net.twisterrob.travel.statushistory.infrastructure.secrets.TestVariables
  */
 @Bean(typed = [Variables::class])
 @Requires(notEnv = ["test"])
