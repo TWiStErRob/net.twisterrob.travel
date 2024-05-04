@@ -32,9 +32,9 @@ interface GithubApiClient {
 
 	companion object {
 		@Suppress("ConstPropertyName")
-		const val owner = "\${github.feedback-repository.organization}"
+		const val owner = "\${micronaut.http.services.github.feedback-repository.owner}"
 
 		@Suppress("ConstPropertyName")
-		const val repo = "\${github.feedback-repository.repo}"
+		const val repo = "\${micronaut.http.services.github.feedback-repository.repo}"
 	}
 }

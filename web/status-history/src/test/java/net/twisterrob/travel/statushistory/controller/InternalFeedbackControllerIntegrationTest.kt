@@ -47,6 +47,8 @@ class InternalFeedbackControllerIntegrationTest {
 					"test.class" to "InternalFeedbackControllerIntegrationTest",
 					"micronaut.server.port" to "-1",
 					"micronaut.http.services.github.url" to "http://localhost:${github.port}",
+					"micronaut.http.services.github.feedback-repository.owner" to "test-owner",
+					"micronaut.http.services.github.feedback-repository.repo" to "test-repo",
 				),
 			).use { embeddedServer ->
 				embeddedServer.applicationContext
@@ -106,7 +108,7 @@ private class GithubStub(
 		@QueryValue("order") order: String,
 		@Header("Authorization") auth: String,
 	): String {
-		assertEquals("repo:TWiStErRob/net.twisterrob.travel type:issue state:open in:title \"Hello\"", q)
+		assertEquals("repo:test-owner/test-repo type:issue state:open in:title \"Hello\"", q)
 		assertEquals("created", sort)
 		assertEquals("desc", order)
 		assertAuth(auth)
@@ -123,7 +125,7 @@ private class GithubStub(
 	 * @see GithubApiClient.createIssue
 	 */
 	@Post(
-		uri = "/repos/TWiStErRob/net.twisterrob.travel/issues",
+		uri = "/repos/test-owner/test-repo/issues",
 		produces = ["application/vnd.github.v3+json"],
 	)
 	@Language("json")
@@ -137,7 +139,7 @@ private class GithubStub(
 		assertAuth(auth)
 		return """
 			{
-			  "html_url": "https://github.com/TWiStErRob/net.twisterrob.travel/issues/1",
+			  "html_url": "https://github.com/test-owner/test-repo/issues/1",
 			  "number": 1,
 			  "title": "title"
 			}
