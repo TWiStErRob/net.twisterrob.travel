@@ -15,8 +15,8 @@ import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.HttpClient
 import io.micronaut.runtime.server.EmbeddedServer
+import net.twisterrob.travel.statushistory.infrastructure.github.contract.GithubApiClient
 import net.twisterrob.travel.statushistory.infrastructure.secrets.Variables
-import net.twisterrob.travel.statushistory.infrastructure.tickets.github.contract.GithubApiClient
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

@@ -1,6 +1,5 @@
-package net.twisterrob.travel.statushistory.infrastructure.tickets.github
+package net.twisterrob.travel.statushistory.infrastructure.feedback
 
-import net.twisterrob.travel.statushistory.infrastructure.feedback.EnsureGitHubIssueInteractor
 import net.twisterrob.travel.statushistory.infrastructure.tickets.Ticket
 import net.twisterrob.travel.statushistory.infrastructure.tickets.TicketsGateway
 import org.junit.jupiter.api.Test

@@ -1,9 +1,9 @@
-package net.twisterrob.travel.statushistory.infrastructure.tickets.github
+package net.twisterrob.travel.statushistory.infrastructure.github
 
-import net.twisterrob.travel.statushistory.infrastructure.tickets.github.contract.GithubApiClient
-import net.twisterrob.travel.statushistory.infrastructure.tickets.github.contract.GithubCreateIssueRequest
-import net.twisterrob.travel.statushistory.infrastructure.tickets.github.contract.GithubIssue
-import net.twisterrob.travel.statushistory.infrastructure.tickets.github.contract.GithubSearchIssuesResponse
+import net.twisterrob.travel.statushistory.infrastructure.github.contract.GithubApiClient
+import net.twisterrob.travel.statushistory.infrastructure.github.contract.GithubCreateIssueRequest
+import net.twisterrob.travel.statushistory.infrastructure.github.contract.GithubIssue
+import net.twisterrob.travel.statushistory.infrastructure.github.contract.GithubSearchIssuesResponse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -16,7 +16,7 @@ import org.mockito.kotlin.whenever
 /**
  * @see GithubIssuesApiRepository
  */
-class GithubIssuesApiRepositoryTest {
+class GithubIssuesApiRepositoryUnitTest {
 	private val mockClient: GithubApiClient = mock()
 	private val subject = GithubIssuesApiRepository(mockClient)
 

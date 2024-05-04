@@ -1,11 +1,11 @@
-package net.twisterrob.travel.statushistory.infrastructure.tickets.github
+package net.twisterrob.travel.statushistory.infrastructure.github
 
 import io.micronaut.context.annotation.Bean
 import jakarta.inject.Inject
+import net.twisterrob.travel.statushistory.infrastructure.github.contract.GithubApiClient
+import net.twisterrob.travel.statushistory.infrastructure.github.contract.GithubCreateIssueRequest
 import net.twisterrob.travel.statushistory.infrastructure.tickets.Ticket
 import net.twisterrob.travel.statushistory.infrastructure.tickets.TicketsGateway
-import net.twisterrob.travel.statushistory.infrastructure.tickets.github.contract.GithubApiClient
-import net.twisterrob.travel.statushistory.infrastructure.tickets.github.contract.GithubCreateIssueRequest
 
 @Bean(typed = [TicketsGateway::class])
 class GithubIssuesApiRepository @Inject constructor(
