@@ -59,7 +59,7 @@ class GithubIssuesApiRepositoryUnitTest {
 		val fixtTitle = "issue title"
 		val fixtBody = "issue body"
 		val createRequest: () -> GithubCreateIssueRequest = {
-			argThat { title == fixtTitle && body == fixtBody && labels == listOf("automated") }
+			argThat { title == fixtTitle && body == fixtBody && labels == listOf("is:automated") }
 		}
 		whenever(mockClient.createIssue(createRequest())).thenReturn(null)
 

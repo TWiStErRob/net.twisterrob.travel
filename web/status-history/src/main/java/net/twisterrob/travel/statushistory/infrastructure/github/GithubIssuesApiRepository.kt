@@ -21,7 +21,7 @@ class GithubIssuesApiRepository @Inject constructor(
 	}
 
 	override fun createTicket(title: String, body: String): Ticket {
-		val request = GithubCreateIssueRequest(title, body, listOf("automated"))
+		val request = GithubCreateIssueRequest(title, body, listOf("is:automated"))
 		val response = github.createIssue(request)
 			?: error("No response from GitHub, infrastructure error. Enable TRACE logging for HTTP client for details.")
 		return Ticket(response.html_url)
