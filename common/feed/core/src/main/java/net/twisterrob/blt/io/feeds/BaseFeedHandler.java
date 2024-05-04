@@ -11,6 +11,10 @@ public abstract class BaseFeedHandler<T extends BaseFeed<T>> extends DefaultHand
 	public final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	protected static void sendFeedback(String title, String body) {
+		String envs = System.getProperty("micronaut.environments");
+		if (envs == null || !envs.contains("production")) {
+			throw new IllegalStateException("Immediate feedback: " + title + "\n" + body);
+		}
 		FeedbackSender sender = new FeedbackSender();
 		try {
 			sender.send(title, body);
