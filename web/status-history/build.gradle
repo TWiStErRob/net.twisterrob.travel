@@ -1,3 +1,4 @@
+import org.gradle.api.internal.GradleInternal
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
 plugins {
@@ -91,9 +92,10 @@ tasks.named("run").configure { JavaExec task ->
 				"micronaut.io.watch.paths": "src/main",
 		)
 	}
+	def exec = (gradle as GradleInternal).services.get(ExecOperations.class)
 	doFirst {
 		def stream = new ByteArrayOutputStream()
-		exec {
+		exec.exec {
 			commandLine("gcloud.cmd", "beta", "emulators", "datastore", "env-init")
 			standardOutput = stream
 		}
