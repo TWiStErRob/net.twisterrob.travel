@@ -15,7 +15,6 @@ import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.HttpClient
 import io.micronaut.runtime.server.EmbeddedServer
-import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import net.twisterrob.travel.statushistory.infrastructure.secrets.Variables
 import net.twisterrob.travel.statushistory.infrastructure.tickets.github.contract.GithubApiClient
 import org.intellij.lang.annotations.Language
@@ -27,7 +26,6 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 /**
  * @see InternalFeedbackController
  */
-@MicronautTest(environments = ["production"])
 class InternalFeedbackControllerEndToEndTest {
 
 	/**
@@ -46,11 +44,11 @@ class InternalFeedbackControllerEndToEndTest {
 				EmbeddedServer::class.java,
 				mapOf(
 					"test.class" to "InternalFeedbackControllerIntegrationTest",
-					"micronaut.environment" to "test",
 					"micronaut.http.services.github.url" to "http://localhost:${github.port}",
 					"micronaut.http.services.github.feedback-repository.owner" to "test-owner",
 					"micronaut.http.services.github.feedback-repository.repo" to "test-repo",
 				),
+				"production",
 			).use { embeddedServer ->
 				embeddedServer.applicationContext
 					.createBean(HttpClient::class.java, embeddedServer.url).use { httpClient ->
@@ -64,41 +62,31 @@ class InternalFeedbackControllerEndToEndTest {
 			}
 		}
 	}
+}
 
-	@Factory
-	@Suppress("detekt.UnusedPrivateClass") // Used by Micronaut DI.
-	private class TestBeans {
+private object StubVariables : Variables {
+	override val githubActor: String = "test-actor"
+	override val githubPat: String = "test-pat"
+}
 
-		private object StubVariables : Variables {
-			override val githubActor: String
-				get() = "test-actor"
-			override val githubPat: String
-				get() = "test-pat"
-		}
+@Factory
+@Suppress("detekt.UnusedPrivateClass") // Used by Micronaut DI.
+private class TestBeans {
 
-		@Requires(property = "test.class", value = "InternalFeedbackControllerIntegrationTest")
-		@Bean
-		fun variablesForProduction(): Variables =
-			StubVariables
-
-		@Requires(
-			property = "test.class",
-			value = "InternalFeedbackControllerIntegrationTest_Service"
-		)
-		@Bean
-		fun variablesForGitHubStub(): Variables =
-			StubVariables
-	}
+	@Requires(property = "test.class", value = "InternalFeedbackControllerIntegrationTest")
+	@Bean
+	fun variablesForProduction(): Variables =
+		StubVariables
 }
 
 @Requires(property = "test.class", value = "InternalFeedbackControllerIntegrationTest_Service")
 @Controller
 @Suppress("detekt.UnusedPrivateClass") // Used by Micronaut DI.
-private class GithubStub(
-	private val variables: Variables,
+private class GithubStub {
 	// private val resourceLoader: ResourceLoader,
 	// resourceLoader.getResource("stub-response.json").map { it.readText() }
-) {
+
+	private val variables: Variables = StubVariables
 
 	/**
 	 * @see GithubApiClient.searchIssuesWithTitle
