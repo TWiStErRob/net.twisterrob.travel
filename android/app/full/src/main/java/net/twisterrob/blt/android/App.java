@@ -3,15 +3,12 @@ package net.twisterrob.blt.android;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 
 import net.twisterrob.android.AndroidConstants;
 import net.twisterrob.android.app.BaseApp;
 import net.twisterrob.android.log.AndroidLoggerFactory;
 import net.twisterrob.android.utils.concurrent.BackgroundExecution;
-import net.twisterrob.android.utils.concurrent.FeedbackSenderAsyncTask;
 import net.twisterrob.android.utils.tostring.stringers.detailed.RangeStringers;
 import net.twisterrob.blt.android.app.full.BuildConfig;
 import net.twisterrob.blt.android.data.AndroidDBStaticData;
@@ -78,20 +75,6 @@ public class App extends BaseApp implements Injector.Provider {
 
 	public AndroidStaticData getStaticData() {
 		return m_static;
-	}
-
-	public static void sendFeedback(String body) {
-		@SuppressWarnings({"unused", "deprecation"}) // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
-		Object task = new FeedbackSenderAsyncTask() {
-			@Override protected void onPostExecute(Boolean result) {
-				super.onPostExecute(result);
-				if (Boolean.TRUE.equals(result)) {
-					Toast.makeText(getInstance(), "Mail sent", Toast.LENGTH_SHORT).show();
-				} else {
-					Toast.makeText(getInstance(), "Mail failed", Toast.LENGTH_SHORT).show();
-				}
-			}
-		}.execute(null, body);
 	}
 
 	@SuppressWarnings("deprecation")
