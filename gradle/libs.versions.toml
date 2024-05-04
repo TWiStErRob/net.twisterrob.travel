@@ -26,7 +26,7 @@ google-cloud = "26.38.0"
 # Run `gcloud components update` to get the new available version.
 # (or `gcloud components update --version <version>` to revert)
 # https://cloud.google.com/sdk/docs/release-notes
-google-cloud-sdk = "455.0.0"
+google-cloud-sdk = "474.0.0"
 # https://cloud.google.com/appengine/docs/standard/java/release-notes
 google-appengine = "2.0.26"
 google-appengine-plugin = "2.8.0"

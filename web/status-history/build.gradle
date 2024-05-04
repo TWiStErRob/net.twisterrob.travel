@@ -84,9 +84,6 @@ tasks.named("run").configure { JavaExec task ->
 	if (DefaultNativePlatform.getCurrentOperatingSystem().isWindows()) {
 		task.systemProperty("log4j.skipJansi", false)
 	}
-	task.systemProperties(
-			"micronaut.environments": "localhost",
-	)
 	if (gradle.startParameter.continuous) {
 		task.systemProperties(
 				// TODO use https://docs.micronaut.io/latest/guide/index.html#environments to create overrides for debug.
