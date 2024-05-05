@@ -10,6 +10,7 @@ object Application {
 			.build(*args)
 			.classes(Application::class.java)
 			.banner(false)
+			.defaultEnvironments("localhost")
 			.start()
 			.use { _ ->
 				// Nothing yet, wrap in try-with-resources to ensure teardown.

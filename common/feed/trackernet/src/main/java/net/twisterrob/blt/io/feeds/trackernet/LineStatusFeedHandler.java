@@ -70,7 +70,10 @@ public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 				if (attrName != null) {
 					line = trackerNetData.fromAlias(attrName);
 					if (line == net.twisterrob.blt.model.Line.unknown) {
-						sendMail(net.twisterrob.blt.model.Line.class + " new alias: " + attrName);
+						sendFeedback(
+								"New line alias: " + attrName,
+								net.twisterrob.blt.model.Line.class + " new alias: " + attrName
+						);
 					}
 				}
 				m_lineStatus.setLine(line);
@@ -85,7 +88,10 @@ public class LineStatusFeedHandler extends BaseFeedHandler<LineStatusFeed> {
 					statusType = trackerNetData.delayFromTrackerNetCode(attrId);
 					if (statusType == DelayType.Unknown) {
 						String attrDescription = attributes.getValue(Status.description);
-						sendMail(DelayType.class + " new code: " + attrDescription + " as " + attrId);
+						sendFeedback(
+								"New delay type:" + attrId,
+								DelayType.class + " new code: " + attrDescription + " as " + attrId
+						);
 					}
 				}
 				String attrIsActive = attributes.getValue(Status.id);
