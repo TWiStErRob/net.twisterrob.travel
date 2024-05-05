@@ -1,6 +1,6 @@
 # https://cloud.google.com/appengine/docs/standard/reference/app-yaml?tab=java      
 runtime: java17
-# Run `gradlew :web:status-history:appengineStage` to see the contents in `build/staged-app/`.
+# Run `gradlew :web:status-history:appengineStage` to generate the working directory located in `build/staged-app/`.
 entrypoint: bin/status-history
 env_variables:
   STATUS_HISTORY_OPTS: "-Dmicronaut.environments=production"
