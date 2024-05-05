@@ -54,7 +54,7 @@ appengine { com.google.cloud.tools.gradle.appengine.appyaml.AppEngineAppYamlExte
 		// Live: https://twisterrob-london.appspot.com/
 		projectId = "twisterrob-london"
 		version = "GCLOUD_CONFIG"
-		def testDeployment = false
+		def testDeployment = true
 		if (testDeployment) {
 			// Updating service [default]... is normal
 			version = "test"
