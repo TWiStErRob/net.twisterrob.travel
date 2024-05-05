@@ -14,6 +14,11 @@ import jakarta.inject.Provider
 @Bean(typed = [Variables::class])
 @Requires(notEnv = ["test"])
 class GcpSecretVariables @Inject constructor(
+	/**
+	 * Using this requires Secret Manager Secret Accessor role for the service account principal
+	 * of the twisterrob-london project on Google App Engine.
+	 * https://console.cloud.google.com/iam-admin/iam?hl=en&project=twisterrob-london
+	 */
 	private val client: Provider<SecretManagerServiceClient>,
 ) : Variables {
 
