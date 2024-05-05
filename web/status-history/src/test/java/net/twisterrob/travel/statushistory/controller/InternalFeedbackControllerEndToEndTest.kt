@@ -40,6 +40,8 @@ class InternalFeedbackControllerEndToEndTest {
 				"micronaut.codec.json.additional-types" to listOf("application/vnd.github.v3+json"),
 			),
 		).use { github ->
+			// To test manually using this test, comment the url/owner/repo
+			// and change the Variables in TestBeans below to GcpSecretVariables.
 			ApplicationContext.run(
 				EmbeddedServer::class.java,
 				mapOf(
