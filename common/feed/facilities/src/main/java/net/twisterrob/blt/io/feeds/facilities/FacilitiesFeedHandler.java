@@ -153,7 +153,10 @@ public class FacilitiesFeedHandler extends BaseFeedHandler<FacilitiesFeed> {
 				if (body != null) {
 					line = trackerNetData.fromAlias(body);
 					if (line == Line.unknown) {
-						sendFeedback("New line alias: " + body, Line.class + " new alias: " + body);
+						sendFeedback(
+								"New line alias: " + body,
+								Line.class + " new alias: " + body
+						);
 					}
 				}
 				m_station.getLines().add(line);
