@@ -1,0 +1,33 @@
+name: "Automated alert"
+
+on:
+  issues:
+    types:
+      - labeled
+
+jobs:
+  comment:
+    name: "Comment to notify"
+    if: ${{ github.event.label.name == 'is:automated' }}
+    timeout-minutes: 2
+
+    permissions:
+      issues: write
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Comment on issue to trigger notification."
+        env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          COMMENT_BODY: |
+            Automated notification alert.
+            
+            -- _This comment was created by a [GitHub Actions Workflow][workflow]'s [run][run]._
+            
+            [workflow]: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/automated-alert.yml
+            [run]: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        shell: bash
+        run:
+          gh issue comment "${ISSUE_NUMBER}" --body "${COMMENT_BODY}"

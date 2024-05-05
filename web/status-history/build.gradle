@@ -1,3 +1,4 @@
+import org.gradle.api.internal.GradleInternal
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
 plugins {
@@ -16,10 +17,13 @@ dependencies {
 	implementation(libs.appengine.api)
 	implementation(platform(libs.google.cloud))
 	implementation(libs.google.cloud.datastore)
+	implementation(libs.google.cloud.secrets)
 
 	runtimeOnly(libs.snakeyaml)
 	runtimeOnly(libs.micronaut.jackson)
 	implementation(libs.micronaut.handlebars)
+	implementation(libs.micronaut.httpClient)
+	implementation(libs.micronaut.jackson)
 
 	implementation(projects.domain.status)
 	implementation(projects.common.data.static)
@@ -50,10 +54,13 @@ appengine { com.google.cloud.tools.gradle.appengine.appyaml.AppEngineAppYamlExte
 		// Live: https://twisterrob-london.appspot.com/
 		projectId = "twisterrob-london"
 		version = "GCLOUD_CONFIG"
-		// Test deployment:
-		//version = "test"
-		//stopPreviousVersion = false
-		//promote = false
+		def testDeployment = true
+		if (testDeployment) {
+			version = "test"
+			stopPreviousVersion = false
+			// Updating service [default]... is normal
+			promote = false
+		}
 	}
 	tools {
 		System.getenv("GCLOUD_HOME")?.tap { cloudSdkHome = it }
@@ -80,9 +87,6 @@ tasks.named("run").configure { JavaExec task ->
 	if (DefaultNativePlatform.getCurrentOperatingSystem().isWindows()) {
 		task.systemProperty("log4j.skipJansi", false)
 	}
-	task.systemProperties(
-			"micronaut.environments": "test",
-	)
 	if (gradle.startParameter.continuous) {
 		task.systemProperties(
 				// TODO use https://docs.micronaut.io/latest/guide/index.html#environments to create overrides for debug.
@@ -91,9 +95,10 @@ tasks.named("run").configure { JavaExec task ->
 				"micronaut.io.watch.paths": "src/main",
 		)
 	}
+	def exec = (gradle as GradleInternal).services.get(ExecOperations.class)
 	doFirst {
 		def stream = new ByteArrayOutputStream()
-		exec {
+		exec.exec {
 			commandLine("gcloud.cmd", "beta", "emulators", "datastore", "env-init")
 			standardOutput = stream
 		}

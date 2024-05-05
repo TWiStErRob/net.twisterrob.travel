@@ -2,6 +2,8 @@ package net.twisterrob.travel.statushistory.di
 
 import com.google.cloud.datastore.Datastore
 import com.google.cloud.datastore.DatastoreOptions
+import com.google.cloud.secretmanager.v1.SecretManagerServiceClient
+import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import io.micronaut.context.annotation.Prototype
 import io.micronaut.context.annotation.Requires
@@ -31,6 +33,11 @@ class Dependencies {
 	fun datastore(): Datastore =
 		DatastoreOptions.getDefaultInstance().service
 
+	@Bean(preDestroy = "close")
+	@Singleton
+	fun secretManagerServiceClient(): SecretManagerServiceClient =
+		SecretManagerServiceClient.create()
+
 	/**
 	 * External dependency from domain layer in common KMP code.
 	 */
@@ -58,7 +65,7 @@ class Dependencies {
 	@Singleton
 	fun lineColors(staticData: StaticData): LineColors =
 		LineColors(staticData.lineColors)
-	
+
 	@Singleton
 	fun trackerNetData(): TrackerNetData =
 		TrackerNetData()

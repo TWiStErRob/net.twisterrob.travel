@@ -15,6 +15,7 @@ class ResultChangeModel(
 	val error: ErrorChange?,
 ) {
 
+	@Suppress("detekt.LongParameterList") // Complex UI.
 	class LineStatusModel(
 		val lineId: String,
 		val lineTitle: String,

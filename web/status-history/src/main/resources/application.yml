@@ -1,8 +1,23 @@
 micronaut:
+
   server:
-    port: ${PORT:8080}
+    port: ${PORT:-1}
+
   router:
     static-resources:
       default:
         mapping: "/static/**"
         paths: classpath:public/static
+
+  http:
+    services:
+      github:
+        url: https://api.github.com
+        feedback-repository:
+          owner: TWiStErRob
+          repo: net.twisterrob.travel
+
+  codec:
+    json:
+      additional-types:
+        - application/vnd.github.v3+json
