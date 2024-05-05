@@ -99,21 +99,14 @@
 			<tr>
 				<td class="line-{{status.lineId}}">{{status.lineTitle}}</td>
 				<td class="delay {{status.changeStatus.cssClass}} {{delayStyle}}">
-					{{#if (or (not (empty status.description)) (not (empty status.branchDescription)))}}
+					{{#if (or (empty status.description) (empty status.branchDescription))}}
+						{{status.delayType}}
+					{{else}}
 						<a rel="htmltooltip">{{status.delayType}}</a>
 						<div class="htmltooltip">
-							{{#if (not (empty status.description))}}
-								<span>{{status.description}}</span>
-							{{/if}}
-							{{#if (and (not (empty status.description)) (not (empty status.branchDescription)))}}
-								<br/><br/>
-							{{/if}}
-							{{#if (not (empty status.branchDescription))}}
-								<span>{{status.branchDescription}}</span>
-							{{/if}}
+							<p>{{status.description}}</p>
+							<p>{{status.branchDescription}}</p>
 						</div>
-					{{else}}
-						{{status.delayType}}
 					{{/if}}
 				</td>
 				<td class="change {{status.changeStatus.cssClass}}">
