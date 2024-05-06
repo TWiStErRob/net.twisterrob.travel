@@ -21,7 +21,7 @@ jobs:
 
     steps:
 
-      - name: "Set up JDK 17."
+      - name: "Set up Java for Android SDK."
         uses: actions/setup-java@v4
         with:
           java-version: 17
@@ -29,10 +29,16 @@ jobs:
 
       # Temporarily until Android SDK Platform-Tools updates post 34.0.4 in ubuntu-latest.
       # https://github.com/actions/runner-images/blob/ubuntu22/20231016.1/images/linux/Ubuntu2204-Readme.md#android
-      - name: "Set up Android SDK"
+      - name: "Set up Android SDK."
         uses: android-actions/setup-android@v3
         with:
           log-accepted-android-sdk-licenses: false
+
+      - name: "Set up Java for Gradle."
+        uses: actions/setup-java@v4
+        with:
+          java-version-file: '.java-version'
+          distribution: temurin
 
       - name: "Checkout ${{ github.ref }} branch in ${{ github.repository }} repository."
         uses: actions/checkout@v4
