@@ -26,11 +26,11 @@ public class RangeMapDrawerConfig {
 		this.colors = colors;
 	}
 
-	public RangeMapDrawerConfig(RangeMapDrawerConfig config) {
+	public RangeMapDrawerConfig(@NonNull RangeMapDrawerConfig config) {
 		set(config);
 	}
 
-	public void set(RangeMapDrawerConfig other) {
+	public void set(@NonNull RangeMapDrawerConfig other) {
 		this.borderSize = other.borderSize;
 		this.borderColor = other.borderColor;
 		this.pixelDensity = other.pixelDensity;

@@ -487,16 +487,18 @@ public class RangeMapActivity extends MapActivity {
 	@SuppressLint("StaticFieldLeak") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 	@SuppressWarnings({"unused", "deprecation"}) // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 	private final class DrawAsyncTask extends SimpleAsyncTask<LatLng, DrawAsyncTask.Result, DrawAsyncTask.Result> {
-		private final Set<NetworkNode> nodes;
-		private final RangeMapGeneratorConfig config;
-		private final RangeMapDrawerConfig drawConfig;
+		private final @NonNull Set<NetworkNode> nodes;
+		private final @NonNull RangeMapGeneratorConfig config;
+		private final @NonNull RangeMapDrawerConfig drawConfig;
 
-		public DrawAsyncTask(Set<NetworkNode> nodes,
-				RangeMapGeneratorConfig config, RangeMapDrawerConfig drawConfig) {
+		public DrawAsyncTask(
+				@NonNull Set<NetworkNode> nodes,
+				@NonNull RangeMapGeneratorConfig config,
+				@NonNull RangeMapDrawerConfig drawConfig
+		) {
 			this.nodes = nodes;
-			// Make a copy of configs to make sure any modifications are not messing with the background thread
-			this.config = new RangeMapGeneratorConfig(config);
-			this.drawConfig = new RangeMapDrawerConfig(drawConfig);
+			this.config = config;
+			this.drawConfig = drawConfig;
 		}
 
 		@Override protected @NonNull Result doInBackground(@Nullable LatLng location) {

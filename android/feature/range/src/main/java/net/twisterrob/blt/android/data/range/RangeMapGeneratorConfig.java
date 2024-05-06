@@ -53,11 +53,11 @@ public class RangeMapGeneratorConfig {
 		setInitialAllottedWalkTime(MINUTES.toMinutes(10));
 	}
 
-	public RangeMapGeneratorConfig(RangeMapGeneratorConfig config) {
+	public RangeMapGeneratorConfig(@NonNull RangeMapGeneratorConfig config) {
 		set(config);
 	}
 
-	public void set(RangeMapGeneratorConfig other) {
+	public void set(@NonNull RangeMapGeneratorConfig other) {
 		this.intraStationInterchangeTime = other.intraStationInterchangeTime;
 		this.platformToStreetTime = other.platformToStreetTime;
 		this.walkingSpeed = other.walkingSpeed;

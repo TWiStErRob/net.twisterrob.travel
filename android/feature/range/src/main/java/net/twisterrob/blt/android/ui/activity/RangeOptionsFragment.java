@@ -63,8 +63,8 @@ public class RangeOptionsFragment extends Fragment {
 		void onConfigsUpdated();
 	}
 
-	private /*final*/ RangeMapGeneratorConfig genConfig;
-	private /*final*/ RangeMapDrawerConfig drawConfig;
+	private /*final*/ @NonNull RangeMapGeneratorConfig genConfig;
+	private /*final*/ @NonNull RangeMapDrawerConfig drawConfig;
 	private ConfigsUpdatedListener configsUpdatedListener;
 
 	@Inject
@@ -350,11 +350,15 @@ public class RangeOptionsFragment extends Fragment {
 		distanceColor.setValue(drawConfig.getRangeColor());
 	}
 
-	public RangeMapGeneratorConfig getGenConfig() {
+	public @NonNull RangeMapGeneratorConfig getGenConfig() {
+		// Defensive copy is two-fold: ensure no changes are made to the config outside of fragment,
+		// and ensure UI changes don't mess with background threads.
 		return new RangeMapGeneratorConfig(genConfig);
 	}
 
-	public RangeMapDrawerConfig getDrawConfig() {
+	public @NonNull RangeMapDrawerConfig getDrawConfig() {
+		// Defensive copy is two-fold: ensure no changes are made to the config outside of fragment,
+		// and ensure UI changes don't mess with background threads.
 		return new RangeMapDrawerConfig(drawConfig);
 	}
 

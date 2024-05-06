@@ -13,6 +13,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import androidx.annotation.NonNull;
+
 import net.twisterrob.blt.android.db.model.NetworkLink;
 import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.model.Line;
@@ -26,7 +28,7 @@ public class RangeMapGenerator {
 	/**
 	 * Full system network graph to traverse.
 	 */
-	private final Set<NetworkNode> nodes;
+	private final @NonNull Set<NetworkNode> nodes;
 	/**
 	 * Nodes where the search starts. The values are their distances in minutes with the given walking speed.
 	 */
@@ -36,14 +38,17 @@ public class RangeMapGenerator {
 	 */
 	private Map<NetworkNode, Double> distances;
 
-	private final RangeMapGeneratorConfig config;
+	private final @NonNull RangeMapGeneratorConfig config;
 
-	public RangeMapGenerator(Set<NetworkNode> networkNodes, RangeMapGeneratorConfig config) {
+	public RangeMapGenerator(
+			@NonNull Set<NetworkNode> networkNodes,
+			@NonNull RangeMapGeneratorConfig config
+	) {
 		this.nodes = networkNodes;
-		this.config = config; // TODO make a copy to prevent weirdness if modified async
+		this.config = config;
 	}
 
-	public RangeMapGeneratorConfig getConfig() {
+	public @NonNull RangeMapGeneratorConfig getConfig() {
 		return config;
 	}
 
