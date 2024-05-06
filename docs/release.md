@@ -16,7 +16,7 @@
 
 For the full process see [.github/release.md][releasing].
 
-1. Double-check the version number in `android/app/range/build.gradle` is the same as the milestone, if not, PR.
+1. Double-check the version number in `android/app/range/version.properties` is the same as the milestone, if not, PR.
 1. Ensure clean latest working copy.
    ```shell
    git checkout main
@@ -56,4 +56,4 @@ For the full process see [.github/release.md][releasing].
 [pre-launch-report]: https://play.google.com/console/developers/7995455198986011414/app/4972239006863689375/pre-launch-report/overview
 
 ## Prepare next release
-1. Update version number in android/app/range/build.gradle anticipating minor and commit to `main`.
+1. Update version number in `android/app/range/version.properties` anticipating minor and PR to `main`.
