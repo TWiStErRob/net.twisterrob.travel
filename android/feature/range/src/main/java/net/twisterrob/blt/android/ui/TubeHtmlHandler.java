@@ -51,35 +51,42 @@ public class TubeHtmlHandler implements HtmlParser.TagHandler {
 		this.textSize = TextAppearanceAccessor.getDefaultTextSize(context);
 	}
 
-	@Override public boolean handleTag(boolean opening, String tag, Editable output, Attributes attributes) {
-		if (!"station".equals(tag)) {
-			if (tag.equals("ul") && !opening) {
-				output.append("\n");
+	@Override public boolean handleTag(boolean opening, String tag, Editable output,
+			Attributes attributes) {
+		if ("ul".equals(tag) && opening) {
+			output.append("\n\n");
+			return true;
+		} else if ("ul".equals(tag) && !opening) {
+			output.append("\n");
+			return true;
+		} else if ("li".equals(tag) && opening) {
+			output.append("\t•\u00A0");
+			return true;
+		} else if ("li".equals(tag) && !opening) {
+			output.append("\n");
+			return true;
+		} else if ("station".equals(tag)) {
+			if (opening) {
+				Icon icon = Icon.parse(attributes.getValue("icon"));
+				Line line = lineFromEnumName(attributes.getValue("line"));
+				int pos = output.length();
+				output.setSpan(new TubeColorSpanMaker(line, icon), pos, pos, Spannable.SPAN_MARK_MARK);
+			} else {
+				TubeColorSpanMaker marker = getLast(output, TubeColorSpanMaker.class);
+				int start = output.getSpanStart(marker);
+				output.removeSpan(marker);
+
+				if (marker != null && start != -1) {
+					int end = output.length();
+					Line line = marker.line;
+					Icon icon = marker.icon;
+					applySpan(output, start, end, line, icon);
+				}
 			}
-			if (tag.equals("li") && opening) {
-				output.append("\n\t• ");
-			}
+			return true;
+		} else {
 			return false;
 		}
-
-		if (opening) {
-			Icon icon = Icon.parse(attributes.getValue("icon"));
-			Line line = lineFromEnumName(attributes.getValue("line"));
-			int pos = output.length();
-			output.setSpan(new TubeColorSpanMaker(line, icon), pos, pos, Spannable.SPAN_MARK_MARK);
-		} else {
-			TubeColorSpanMaker marker = getLast(output, TubeColorSpanMaker.class);
-			int start = output.getSpanStart(marker);
-			output.removeSpan(marker);
-
-			if (marker != null && start != -1) {
-				int end = output.length();
-				Line line = marker.line;
-				Icon icon = marker.icon;
-				applySpan(output, start, end, line, icon);
-			}
-		}
-		return true;
 	}
 
 	public void applySpan(Editable output, int start, int end, Line line, Icon icon) {
