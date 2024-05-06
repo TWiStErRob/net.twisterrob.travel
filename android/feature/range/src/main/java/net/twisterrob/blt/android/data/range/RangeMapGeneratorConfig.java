@@ -3,6 +3,10 @@ package net.twisterrob.blt.android.data.range;
 import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+
 @SuppressWarnings("unused")
 public class RangeMapGeneratorConfig {
 	private static final float MPH_TO_KPH = 1.609344f;
@@ -49,11 +53,11 @@ public class RangeMapGeneratorConfig {
 		setInitialAllottedWalkTime(MINUTES.toMinutes(10));
 	}
 
-	public RangeMapGeneratorConfig(RangeMapGeneratorConfig config) {
+	public RangeMapGeneratorConfig(@NonNull RangeMapGeneratorConfig config) {
 		set(config);
 	}
 
-	public void set(RangeMapGeneratorConfig other) {
+	public void set(@NonNull RangeMapGeneratorConfig other) {
 		this.intraStationInterchangeTime = other.intraStationInterchangeTime;
 		this.platformToStreetTime = other.platformToStreetTime;
 		this.walkingSpeed = other.walkingSpeed;
@@ -185,5 +189,25 @@ public class RangeMapGeneratorConfig {
 				/ walkingSpeed // to hours
 				* 60 // to minutes
 				;
+	}
+
+	public void saveTo(@NonNull Bundle state) {
+		state.putFloat("RangeMapGeneratorConfig.intraStationInterchangeTime", intraStationInterchangeTime);
+		state.putFloat("RangeMapGeneratorConfig.platformToStreetTime", platformToStreetTime);
+		state.putFloat("RangeMapGeneratorConfig.walkingSpeed", walkingSpeed);
+		state.putFloat("RangeMapGeneratorConfig.totalAllottedTime", totalAllottedTime);
+		state.putBoolean("RangeMapGeneratorConfig.allowIntraStationInterchange", allowIntraStationInterchange);
+		state.putBoolean("RangeMapGeneratorConfig.allowInterStationInterchange", allowInterStationInterchange);
+		state.putFloat("RangeMapGeneratorConfig.initialAllottedWalkTime", initialAllottedWalkTime);
+	}
+
+	public void loadFrom(@NonNull Bundle state) {
+		intraStationInterchangeTime = state.getFloat("RangeMapGeneratorConfig.intraStationInterchangeTime");
+		platformToStreetTime = state.getFloat("RangeMapGeneratorConfig.platformToStreetTime");
+		walkingSpeed = state.getFloat("RangeMapGeneratorConfig.walkingSpeed");
+		totalAllottedTime = state.getFloat("RangeMapGeneratorConfig.totalAllottedTime");
+		allowIntraStationInterchange = state.getBoolean("RangeMapGeneratorConfig.allowIntraStationInterchange");
+		allowInterStationInterchange = state.getBoolean("RangeMapGeneratorConfig.allowInterStationInterchange");
+		initialAllottedWalkTime = state.getFloat("RangeMapGeneratorConfig.initialAllottedWalkTime");
 	}
 }

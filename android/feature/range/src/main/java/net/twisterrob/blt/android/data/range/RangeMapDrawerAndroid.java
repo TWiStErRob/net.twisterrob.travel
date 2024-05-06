@@ -11,6 +11,8 @@ import android.graphics.Bitmap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
+import androidx.annotation.NonNull;
+
 import net.twisterrob.blt.android.db.model.NetworkNode;
 
 @NotThreadSafe
@@ -18,7 +20,10 @@ public class RangeMapDrawerAndroid extends RangeMapDrawer<Bitmap> {
 	private static final Logger LOG = LoggerFactory.getLogger(RangeMapDrawerAndroid.class);
 
 	@SuppressLint("LambdaLast")
-	public RangeMapDrawerAndroid(Iterable<NetworkNode> nodes, RangeMapDrawerConfig config) {
+	public RangeMapDrawerAndroid(
+			@NonNull Iterable<NetworkNode> nodes,
+			@NonNull RangeMapDrawerConfig config
+	) {
 		super(nodes, config, new AndroidOpenGLRenderedGeoSize());
 	}
 

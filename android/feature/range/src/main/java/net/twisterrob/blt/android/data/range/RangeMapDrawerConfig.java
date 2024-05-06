@@ -1,6 +1,9 @@
 package net.twisterrob.blt.android.data.range;
 
 import android.graphics.Color;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 
 import net.twisterrob.blt.model.Line;
 import net.twisterrob.blt.model.LineColorScheme;
@@ -23,11 +26,11 @@ public class RangeMapDrawerConfig {
 		this.colors = colors;
 	}
 
-	public RangeMapDrawerConfig(RangeMapDrawerConfig config) {
+	public RangeMapDrawerConfig(@NonNull RangeMapDrawerConfig config) {
 		set(config);
 	}
 
-	public void set(RangeMapDrawerConfig other) {
+	public void set(@NonNull RangeMapDrawerConfig other) {
 		this.borderSize = other.borderSize;
 		this.borderColor = other.borderColor;
 		this.pixelDensity = other.pixelDensity;
@@ -91,5 +94,21 @@ public class RangeMapDrawerConfig {
 	}
 	public int getRangeColor() {
 		return rangeColor;
+	}
+
+	public void saveTo(@NonNull Bundle state) {
+		state.putInt("RangeMapDrawerConfig.borderSize", borderSize);
+		state.putInt("RangeMapDrawerConfig.borderColor", borderColor);
+		state.putFloat("RangeMapDrawerConfig.pixelDensity", pixelDensity);
+		state.putBoolean("RangeMapDrawerConfig.dynamicColor", dynamicColor);
+		state.putInt("RangeMapDrawerConfig.rangeColor", rangeColor);
+	}
+
+	public void loadFrom(@NonNull Bundle state) {
+		borderSize = state.getInt("RangeMapDrawerConfig.borderSize");
+		borderColor = state.getInt("RangeMapDrawerConfig.borderColor");
+		pixelDensity = state.getFloat("RangeMapDrawerConfig.pixelDensity");
+		dynamicColor = state.getBoolean("RangeMapDrawerConfig.dynamicColor");
+		rangeColor = state.getInt("RangeMapDrawerConfig.rangeColor");
 	}
 }

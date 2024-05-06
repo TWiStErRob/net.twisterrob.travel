@@ -63,8 +63,8 @@ public class RangeOptionsFragment extends Fragment {
 		void onConfigsUpdated();
 	}
 
-	private RangeMapGeneratorConfig genConfig;
-	private RangeMapDrawerConfig drawConfig;
+	private /*final*/ @NonNull RangeMapGeneratorConfig genConfig;
+	private /*final*/ @NonNull RangeMapDrawerConfig drawConfig;
 	private ConfigsUpdatedListener configsUpdatedListener;
 
 	@Inject
@@ -76,6 +76,27 @@ public class RangeOptionsFragment extends Fragment {
 	@Override public void onAttach(@NonNull Context context) {
 		Injector.from(context).inject(this);
 		super.onAttach(context);
+	}
+
+	@Override public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		genConfig = new RangeMapGeneratorConfig();
+		drawConfig = new RangeMapDrawerConfig(new LineColors(staticData.getLineColors()));
+		if (savedInstanceState != null) {
+			genConfig.loadFrom(savedInstanceState);
+			drawConfig.loadFrom(savedInstanceState);
+		}
+	}
+
+	@Override public void onSaveInstanceState(@NonNull Bundle outState) {
+		super.onSaveInstanceState(outState);
+		genConfig.saveTo(outState);
+		drawConfig.saveTo(outState);
+	}
+
+	@Override public void onStart() {
+		super.onStart();
+		updateSelfUI();
 	}
 
 	@Override public @Nullable View onCreateView(
@@ -289,12 +310,12 @@ public class RangeOptionsFragment extends Fragment {
 		int id = item.getItemId();
 		if (id == R.id.menu__action__range__reset_generator) {
 			genConfig.set(new RangeMapGeneratorConfig());
-			bindConfigs(genConfig, drawConfig); // update self UI
+			updateSelfUI();
 			configsUpdatedListener.onConfigsUpdated();
 			return true;
 		} else if (id == R.id.menu__action__range__reset_drawing) {
 			drawConfig.set(new RangeMapDrawerConfig(new LineColors(staticData.getLineColors())));
-			bindConfigs(genConfig, drawConfig); // update self UI
+			updateSelfUI();
 			configsUpdatedListener.onConfigsUpdated();
 			return true;
 		}
@@ -314,9 +335,7 @@ public class RangeOptionsFragment extends Fragment {
 		return id;
 	}
 
-	public void bindConfigs(@NonNull RangeMapGeneratorConfig genConfig, @NonNull RangeMapDrawerConfig drawConfig) {
-		this.genConfig = genConfig;
-		this.drawConfig = drawConfig;
+	private void updateSelfUI() {
 		interStation.setChecked(genConfig.isAllowInterStationInterchange());
 		intraStation.setChecked(genConfig.isAllowIntraStationInterchange());
 		journeyTime.setValue(genConfig.getTotalAllottedTime());
@@ -329,6 +348,18 @@ public class RangeOptionsFragment extends Fragment {
 		dynamicColor.setChecked(drawConfig.isDynamicColor());
 		pixelDensity.setValue(drawConfig.getPixelDensity());
 		distanceColor.setValue(drawConfig.getRangeColor());
+	}
+
+	public @NonNull RangeMapGeneratorConfig getGenConfig() {
+		// Defensive copy is two-fold: ensure no changes are made to the config outside of fragment,
+		// and ensure UI changes don't mess with background threads.
+		return new RangeMapGeneratorConfig(genConfig);
+	}
+
+	public @NonNull RangeMapDrawerConfig getDrawConfig() {
+		// Defensive copy is two-fold: ensure no changes are made to the config outside of fragment,
+		// and ensure UI changes don't mess with background threads.
+		return new RangeMapDrawerConfig(drawConfig);
 	}
 
 	public void setConfigsUpdatedListener(ConfigsUpdatedListener configsUpdatedListener) {

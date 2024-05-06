@@ -65,6 +65,7 @@ import androidx.fragment.app.FragmentManager;
 import net.twisterrob.android.content.pref.ResourcePreferences;
 import net.twisterrob.android.utils.concurrent.SimpleAsyncTask;
 import net.twisterrob.android.utils.tools.AndroidTools;
+import net.twisterrob.android.utils.tools.BundleTools;
 import net.twisterrob.android.utils.tools.StringerTools;
 import net.twisterrob.android.utils.tools.ViewTools;
 import net.twisterrob.android.view.MultiBottomSheetCallback;
@@ -98,8 +99,6 @@ public class RangeMapActivity extends MapActivity {
 	private GoogleMap map;
 	private GroundOverlay mapOverlay;
 	private final List<Marker> markers = new LinkedList<>();
-	private final RangeMapGeneratorConfig genConfig = new RangeMapGeneratorConfig();
-	private /*final*/ RangeMapDrawerConfig drawConfig;
 	private BottomSheetBehavior<?> behavior;
 	private RangeNearestFragment nearestFragment;
 	private RangeOptionsFragment optionsFragment;
@@ -123,7 +122,6 @@ public class RangeMapActivity extends MapActivity {
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		Injector.from(this).inject(this);
-		drawConfig = new RangeMapDrawerConfig(new LineColors(staticData.getLineColors()));
 		String apiKey = getApplicationInfoWithMetadata(this).metaData.getString("com.google.android.geo.API_KEY");
 		Places.initialize(getApplicationContext(), apiKey);
 
@@ -181,9 +179,14 @@ public class RangeMapActivity extends MapActivity {
 		}.execute((Void[])null);
 	}
 
-	@Override protected void onStart() {
-		super.onStart();
-		optionsFragment.bindConfigs(genConfig, drawConfig);
+	@Override protected void onSaveInstanceState(@NonNull Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putParcelable("RangeMapActivity.lastStartPoint", lastStartPoint);
+	}
+
+	@Override protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		lastStartPoint = BundleTools.getParcelable(savedInstanceState, "RangeMapActivity.lastStartPoint", LatLng.class);
 	}
 
 	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/12
@@ -343,7 +346,7 @@ public class RangeMapActivity extends MapActivity {
 		}
 
 		// TODO move to BG thread
-		RangeMapDrawerAndroid rangeDrawer = new RangeMapDrawerAndroid(tubeNetwork, drawConfig);
+		RangeMapDrawerAndroid rangeDrawer = new RangeMapDrawerAndroid(tubeNetwork, optionsFragment.getDrawConfig());
 		// disabled for now, the bounds are hardcoded
 //		map.moveCamera(CameraUpdateFactory.newLatLngBounds(rangeDrawer.getBounds(), 0));
 		searchFragment.setLocationBias(RectangularBounds.newInstance(rangeDrawer.getBounds()));
@@ -410,7 +413,11 @@ public class RangeMapActivity extends MapActivity {
 			return;
 		}
 		// don't set empty image for the ground overlay here because it flashes
-		drawTask = new DrawAsyncTask(tubeNetwork, genConfig, drawConfig);
+		drawTask = new DrawAsyncTask(
+				tubeNetwork,
+				optionsFragment.getGenConfig(),
+				optionsFragment.getDrawConfig()
+		);
 		AndroidTools.executePreferParallel(drawTask, latlng);
 	}
 
@@ -451,7 +458,7 @@ public class RangeMapActivity extends MapActivity {
 	}
 
 	private void updateNearestStations(Collection<NetworkNode> startNodes) {
-		nearestFragment.updateNearestStations(startNodes, genConfig);
+		nearestFragment.updateNearestStations(startNodes, optionsFragment.getGenConfig());
 		if (prefs.getBoolean(R.string.pref__show_nearest, R.bool.pref__show_nearest__default)) {
 			behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 		}
@@ -480,16 +487,18 @@ public class RangeMapActivity extends MapActivity {
 	@SuppressLint("StaticFieldLeak") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 	@SuppressWarnings({"unused", "deprecation"}) // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 	private final class DrawAsyncTask extends SimpleAsyncTask<LatLng, DrawAsyncTask.Result, DrawAsyncTask.Result> {
-		private final Set<NetworkNode> nodes;
-		private final RangeMapGeneratorConfig config;
-		private final RangeMapDrawerConfig drawConfig;
+		private final @NonNull Set<NetworkNode> nodes;
+		private final @NonNull RangeMapGeneratorConfig config;
+		private final @NonNull RangeMapDrawerConfig drawConfig;
 
-		public DrawAsyncTask(Set<NetworkNode> nodes,
-				RangeMapGeneratorConfig config, RangeMapDrawerConfig drawConfig) {
+		public DrawAsyncTask(
+				@NonNull Set<NetworkNode> nodes,
+				@NonNull RangeMapGeneratorConfig config,
+				@NonNull RangeMapDrawerConfig drawConfig
+		) {
 			this.nodes = nodes;
-			// Make a copy of configs to make sure any modifications are not messing with the background thread
-			this.config = new RangeMapGeneratorConfig(config);
-			this.drawConfig = new RangeMapDrawerConfig(drawConfig);
+			this.config = config;
+			this.drawConfig = drawConfig;
 		}
 
 		@Override protected @NonNull Result doInBackground(@Nullable LatLng location) {

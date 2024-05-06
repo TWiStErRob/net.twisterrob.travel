@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 
+import androidx.annotation.NonNull;
+
 import net.twisterrob.blt.android.db.model.NetworkNode;
 import net.twisterrob.blt.model.Line;
 import net.twisterrob.java.model.Location;
@@ -32,7 +34,11 @@ public abstract class RangeMapDrawer<T> {
 	private int[] pixels;
 
 	@SuppressLint("LambdaLast")
-	public RangeMapDrawer(Iterable<NetworkNode> nodes, RangeMapDrawerConfig config, RenderedGeoSize size) {
+	public RangeMapDrawer(
+			@NonNull Iterable<NetworkNode> nodes,
+			@NonNull RangeMapDrawerConfig config,
+			@NonNull RenderedGeoSize size
+	) {
 		this.config = config;
 		double minX = Double.POSITIVE_INFINITY, maxX = Double.NEGATIVE_INFINITY;
 		double minY = Double.POSITIVE_INFINITY, maxY = Double.NEGATIVE_INFINITY;
@@ -54,7 +60,7 @@ public abstract class RangeMapDrawer<T> {
 		this.maxLon = maxX;
 		this.minLat = minY;
 		this.maxLat = maxY;
-		this.size = size != null? size : new RenderedGeoSize();
+		this.size = size;
 		this.size.setGeoSize(maxLon - minLon, maxLat - minLat);
 		int pixelWidth = (int)(this.size.getGeoLonSpan() * config.pixelDensity);
 		int pixelHeight = (int)(this.size.getGeoLatSpan() * config.pixelDensity);
