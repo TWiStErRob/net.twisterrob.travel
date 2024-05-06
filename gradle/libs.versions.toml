@@ -13,7 +13,6 @@ kotlin-serialization = "1.6.3"
 
 jsr305 = "3.0.2"
 kxml2 = "2.3.0"
-sqlite-jdbc = "3.45.3.0"
 
 androidx-swiperefreshlayout = "1.1.0"
 androidx-fragment = "1.7.0"
@@ -68,7 +67,6 @@ snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
 
 jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
 kxml2 = { module = "net.sf.kxml:kxml2", version.ref = "kxml2" }
-sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite-jdbc" }
 kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlin-datetime" }
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlin-serialization" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

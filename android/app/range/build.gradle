@@ -5,6 +5,7 @@ plugins {
 android.defaultConfig.applicationId = "net.twisterrob.blt.range"
 android.defaultConfig.version {
 	major = 1
+	minor = 1
 }
 
 dependencies {
