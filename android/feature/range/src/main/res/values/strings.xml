@@ -110,12 +110,15 @@
 	]]></string>
 	<string name="range__config__border_size">Border size</string>
 	<string name="range__config__border_size__tooltip" process="HtmlParser" tools:ignore="DuplicateStrings"><![CDATA[
+	<b>How thick should the border around the generated map overlay be?</b>
 	]]></string>
 	<string name="range__config__border_color">Border color</string>
 	<string name="range__config__border_color__tooltip" process="HtmlParser" tools:ignore="DuplicateStrings"><![CDATA[
+	<b>What color to use when drawing the border around the generated map overlay?</b>
 	]]></string>
 	<string name="range__config__pixel_density">Pixel density</string>
 	<string name="range__config__pixel_density__tooltip" process="HtmlParser" tools:ignore="DuplicateStrings"><![CDATA[
+	<b>The resolution of the generated map overlay.</b>
 	]]></string>
 
 	<string name="range__config__ui_show_stations">@string/pref__show_nearest__title</string>
