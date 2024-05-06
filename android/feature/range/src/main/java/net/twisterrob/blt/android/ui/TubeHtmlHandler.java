@@ -12,6 +12,7 @@ import android.text.style.BackgroundColorSpan;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
+import android.widget.TextView;
 
 import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 
@@ -23,7 +24,6 @@ import androidx.core.content.ContextCompat;
 
 import net.twisterrob.android.content.HtmlParser;
 import net.twisterrob.android.graphics.DrawableBinder;
-import net.twisterrob.android.view.TextAppearanceAccessor;
 import net.twisterrob.blt.android.data.AndroidStaticData;
 import net.twisterrob.blt.model.Line;
 import net.twisterrob.blt.model.LineColors;
@@ -48,7 +48,7 @@ public class TubeHtmlHandler implements HtmlParser.TagHandler {
 		this.context = context;
 		this.colors = new LineColors(new TextLineColorScheme(staticData.getLineColors()));
 		this.logos = staticData.getStopTypeLogos();
-		this.textSize = TextAppearanceAccessor.getDefaultTextSize(context);
+		this.textSize = new TextView(context).getTextSize();
 	}
 
 	@Override public boolean handleTag(boolean opening, String tag, Editable output, Attributes attributes) {
