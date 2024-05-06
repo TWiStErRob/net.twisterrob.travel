@@ -55,4 +55,4 @@ For the full process see [.github/release.md][releasing].
 [pre-launch-report]: https://play.google.com/console/developers/7995455198986011414/app/4972239006863689375/pre-launch-report/overview
 
 ## Prepare next release
-1. Update version number in android/build.gradle anticipating minor and commit to `main`.
+1. Update version number in android/app/range/build.gradle anticipating minor and commit to `main`.
