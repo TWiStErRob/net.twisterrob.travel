@@ -99,8 +99,6 @@ public class RangeMapActivity extends MapActivity {
 	private GoogleMap map;
 	private GroundOverlay mapOverlay;
 	private final List<Marker> markers = new LinkedList<>();
-	private final RangeMapGeneratorConfig genConfig = new RangeMapGeneratorConfig();
-	private /*final*/ RangeMapDrawerConfig drawConfig;
 	private BottomSheetBehavior<?> behavior;
 	private RangeNearestFragment nearestFragment;
 	private RangeOptionsFragment optionsFragment;
@@ -124,7 +122,6 @@ public class RangeMapActivity extends MapActivity {
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		Injector.from(this).inject(this);
-		drawConfig = new RangeMapDrawerConfig(new LineColors(staticData.getLineColors()));
 		String apiKey = getApplicationInfoWithMetadata(this).metaData.getString("com.google.android.geo.API_KEY");
 		Places.initialize(getApplicationContext(), apiKey);
 
@@ -349,7 +346,7 @@ public class RangeMapActivity extends MapActivity {
 		}
 
 		// TODO move to BG thread
-		RangeMapDrawerAndroid rangeDrawer = new RangeMapDrawerAndroid(tubeNetwork, drawConfig);
+		RangeMapDrawerAndroid rangeDrawer = new RangeMapDrawerAndroid(tubeNetwork, optionsFragment.getDrawConfig());
 		// disabled for now, the bounds are hardcoded
 //		map.moveCamera(CameraUpdateFactory.newLatLngBounds(rangeDrawer.getBounds(), 0));
 		searchFragment.setLocationBias(RectangularBounds.newInstance(rangeDrawer.getBounds()));
@@ -416,7 +413,11 @@ public class RangeMapActivity extends MapActivity {
 			return;
 		}
 		// don't set empty image for the ground overlay here because it flashes
-		drawTask = new DrawAsyncTask(tubeNetwork, genConfig, drawConfig);
+		drawTask = new DrawAsyncTask(
+				tubeNetwork,
+				optionsFragment.getGenConfig(),
+				optionsFragment.getDrawConfig()
+		);
 		AndroidTools.executePreferParallel(drawTask, latlng);
 	}
 
@@ -457,7 +458,7 @@ public class RangeMapActivity extends MapActivity {
 	}
 
 	private void updateNearestStations(Collection<NetworkNode> startNodes) {
-		nearestFragment.updateNearestStations(startNodes, genConfig);
+		nearestFragment.updateNearestStations(startNodes, optionsFragment.getGenConfig());
 		if (prefs.getBoolean(R.string.pref__show_nearest, R.bool.pref__show_nearest__default)) {
 			behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 		}
