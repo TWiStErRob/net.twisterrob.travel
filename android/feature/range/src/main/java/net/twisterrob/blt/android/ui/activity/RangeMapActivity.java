@@ -65,6 +65,7 @@ import androidx.fragment.app.FragmentManager;
 import net.twisterrob.android.content.pref.ResourcePreferences;
 import net.twisterrob.android.utils.concurrent.SimpleAsyncTask;
 import net.twisterrob.android.utils.tools.AndroidTools;
+import net.twisterrob.android.utils.tools.BundleTools;
 import net.twisterrob.android.utils.tools.StringerTools;
 import net.twisterrob.android.utils.tools.ViewTools;
 import net.twisterrob.android.view.MultiBottomSheetCallback;
@@ -181,9 +182,14 @@ public class RangeMapActivity extends MapActivity {
 		}.execute((Void[])null);
 	}
 
-	@Override protected void onStart() {
-		super.onStart();
-		optionsFragment.bindConfigs(genConfig, drawConfig);
+	@Override protected void onSaveInstanceState(@NonNull Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putParcelable("RangeMapActivity.lastStartPoint", lastStartPoint);
+	}
+
+	@Override protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		lastStartPoint = BundleTools.getParcelable(savedInstanceState, "RangeMapActivity.lastStartPoint", LatLng.class);
 	}
 
 	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/12
