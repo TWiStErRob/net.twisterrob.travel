@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
@@ -228,7 +229,18 @@ public class RangeMapActivity extends MapActivity {
 			@Override public void onMapReady(@NonNull GoogleMap map) {
 				RangeMapActivity.this.map = map;
 				MapUtils.setMyLocationEnabledIfPossible(RangeMapActivity.this, map);
-				zoomFullLondon();
+				View view = mapFragment.requireView();
+				if (view.isLaidOut()) {
+					zoomFullLondon();
+				} else {
+					view.getViewTreeObserver()
+						.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+							@Override public void onGlobalLayout() {
+								view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+								zoomFullLondon();
+							}
+						});
+				}
 				updateToolbarVisibility();
 				class MapInteractorListener implements OnMapClickListener, OnMarkerClickListener, OnMapLongClickListener {
 					private Marker currentMarker;
