@@ -34,6 +34,11 @@ jobs:
         with:
           log-accepted-android-sdk-licenses: false
 
+      - name: "Checkout ${{ github.ref }} branch in ${{ github.repository }} repository."
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
       - name: "Set up Java for Gradle."
         uses: actions/setup-java@v4
         with:
@@ -45,11 +50,6 @@ jobs:
         with:
           cache-read-only: false
 
-      - name: "Checkout ${{ github.ref }} branch in ${{ github.repository }} repository."
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-      
       - name: "Download TfL Data."
         run: |
           curl --silent --show-error --location --remote-name \
