@@ -40,6 +40,9 @@ jobs:
           java-version-file: '.java-version'
           distribution: temurin
 
+      - name: "Set up Gradle."
+        uses: gradle/actions/setup-gradle@v3
+
       - name: "Checkout ${{ github.ref }} branch in ${{ github.repository }} repository."
         uses: actions/checkout@v4
         with:
@@ -53,13 +56,11 @@ jobs:
           unzip LULDLRRiverTramCable.zip 'tfl_*-*-_-y05-*.xml' -d data/feed15/LULDLRRiverTramCable
 
       - name: "Build project."
-        working-directory: .
         run: >
           ./gradlew
           --no-daemon
           --stacktrace
           --continue
-          --no-build-cache
           build
           :web:status-history:appengineStage
 
