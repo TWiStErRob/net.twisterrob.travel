@@ -33,7 +33,7 @@ google-maps = "18.2.0"
 google-places = "3.4.0"
 
 micronaut = "4.4.2"
-micronaut-gradle = "4.3.8"
+micronaut-gradle = "4.4.0"
 snakeyaml = "2.2"
 
 junit4 = "4.13.2"
