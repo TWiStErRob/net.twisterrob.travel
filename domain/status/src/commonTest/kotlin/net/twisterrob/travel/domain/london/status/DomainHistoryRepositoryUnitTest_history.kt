@@ -1,5 +1,6 @@
 package net.twisterrob.travel.domain.london.status
 
+import io.mockative.ResultBuilder
 import io.mockative.any
 import io.mockative.every
 import io.mockative.mock
@@ -190,3 +191,6 @@ private fun StatusItem.SuccessfulStatusItem.toParsed(ex: Throwable): ParsedStatu
 @Suppress("TestFunctionName")
 private fun LineStatuses(): LineStatuses =
 	LineStatuses(emptyList())
+
+private fun <R> ResultBuilder<R>.invokesMany(vararg blocks: (arguments: Array<Any?>) -> R) =
+	this.invokesMany(blocks.toList())
