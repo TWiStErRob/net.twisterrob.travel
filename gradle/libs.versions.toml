@@ -30,7 +30,7 @@ google-cloud-sdk = "474.0.0"
 google-appengine = "2.0.27"
 google-appengine-plugin = "2.8.0"
 google-maps = "18.2.0"
-google-places = "3.4.0"
+google-places = "3.5.0"
 
 micronaut = "4.4.3"
 micronaut-gradle = "4.4.0"
