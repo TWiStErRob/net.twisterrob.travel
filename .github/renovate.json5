@@ -1,15 +1,15 @@
 {
-	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"extends": [
+	$schema: "https://docs.renovatebot.com/renovate-schema.json",
+	extends: [
 		"local>TWiStErRob/renovate-config"
 	],
-	"packageRules": [
+	packageRules: [
 		{
-			"description": "https://github.com/TWiStErRob/net.twisterrob.libraries/issues/23",
-			"matchPackageNames": [
+			description: "https://github.com/TWiStErRob/net.twisterrob.libraries/issues/23",
+			matchPackageNames: [
 				"gradle"
 			],
-			"enabled": false
-		}
-	]
+			dependencyDashboardApproval: true,
+		},
+	],
 }
