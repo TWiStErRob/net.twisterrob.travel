@@ -15,7 +15,7 @@ kotlin {
 				//implementation("io.github.oshai:kotlin-logging:6.0.1")
 			}
 		}
-		commonTest {
+		jvmTest {
 			dependencies {
 				implementation(libs.kotlin.test)
 				implementation(libs.test.mockative)
