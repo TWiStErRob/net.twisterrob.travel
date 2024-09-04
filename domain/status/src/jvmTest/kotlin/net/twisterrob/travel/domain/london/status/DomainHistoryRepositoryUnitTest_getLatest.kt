@@ -1,15 +1,14 @@
 package net.twisterrob.travel.domain.london.status
 
-import io.mockative.any
-import io.mockative.every
-import io.mockative.mock
-import io.mockative.verify
-import io.mockative.verifyNoUnmetExpectations
-import io.mockative.verifyNoUnverifiedExpectations
 import net.twisterrob.travel.domain.london.status.api.FeedParser
 import net.twisterrob.travel.domain.london.status.api.StatusDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
+import org.mockito.Mockito.mock
+import org.mockito.kotlin.any
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
+import org.mockito.kotlin.whenever
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertNull
@@ -28,38 +27,35 @@ class DomainHistoryRepositoryUnitTest_getLatest {
 
 	@AfterTest
 	fun verify() {
-		listOf(mockHistory, mockStatus, mockParser).forEach {
-			verifyNoUnverifiedExpectations(it)
-			verifyNoUnmetExpectations(it)
-		}
+		verifyNoMoreInteractions(mockHistory, mockStatus, mockParser)
 	}
 
 	@Test fun `returns successful item`() {
 		val latest = SuccessfulStatusItem()
-		every { mockHistory.getAll(any(), any()) }.returns(listOf(latest))
+		whenever(mockHistory.getAll(any(), any())).thenReturn(listOf(latest))
 
 		val result = subject.getLatest(feed)
 		assertSame(latest, result)
 
-		verify { mockHistory.getAll(feed, 1) }.wasInvoked()
+		verify(mockHistory).getAll(feed, 1)
 	}
 
 	@Test fun `returns failed item`() {
 		val latest = FailedStatusItem()
-		every { mockHistory.getAll(any(), any()) }.returns(listOf(latest))
+		whenever(mockHistory.getAll(any(), any())).thenReturn(listOf(latest))
 
 		val result = subject.getLatest(feed)
 		assertSame(latest, result)
 
-		verify { mockHistory.getAll(feed, 1) }.wasInvoked()
+		verify(mockHistory).getAll(feed, 1)
 	}
 
 	@Test fun `returns no item`() {
-		every { mockHistory.getAll(any(), any()) }.returns(emptyList())
+		whenever(mockHistory.getAll(any(), any())).thenReturn(emptyList())
 
 		val result = subject.getLatest(feed)
 		assertNull(result)
 
-		verify { mockHistory.getAll(feed, 1) }.wasInvoked()
+		verify(mockHistory).getAll(feed, 1)
 	}
 }

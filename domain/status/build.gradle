@@ -18,16 +18,10 @@ kotlin {
 		jvmTest {
 			dependencies {
 				implementation(libs.kotlin.test)
-				implementation(libs.test.mockative)
+				implementation(libs.test.mockito.kotlin)
 				implementation(libs.test.kotest.assertions)
 				implementation(libs.test.gwen)
 			}
 		}
 	}
 }
-
-configurations
-		.matching { Configuration it -> it.name.startsWith("ksp") && it.name.endsWith("Test") }
-		.configureEach { Configuration it ->
-			project.dependencies.add(it.name, libs.test.mockative.processor)
-		}

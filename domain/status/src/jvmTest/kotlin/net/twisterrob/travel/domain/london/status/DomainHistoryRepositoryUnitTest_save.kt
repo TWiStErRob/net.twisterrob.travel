@@ -1,13 +1,12 @@
 package net.twisterrob.travel.domain.london.status
 
-import io.mockative.mock
-import io.mockative.verify
-import io.mockative.verifyNoUnmetExpectations
-import io.mockative.verifyNoUnverifiedExpectations
 import net.twisterrob.travel.domain.london.status.api.FeedParser
 import net.twisterrob.travel.domain.london.status.api.StatusDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
+import org.mockito.Mockito.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
 import kotlin.test.AfterTest
 import kotlin.test.Test
 
@@ -23,10 +22,7 @@ class DomainHistoryRepositoryUnitTest_save {
 
 	@AfterTest
 	fun verify() {
-		listOf(mockHistory, mockStatus, mockParser).forEach {
-			verifyNoUnverifiedExpectations(it)
-			verifyNoUnmetExpectations(it)
-		}
+		verifyNoMoreInteractions(mockHistory, mockStatus, mockParser)
 	}
 
 	@Test fun `returns successful item`() {
@@ -34,7 +30,7 @@ class DomainHistoryRepositoryUnitTest_save {
 
 		subject.save(current)
 
-		verify { mockHistory.add(current) }.wasInvoked()
+		verify(mockHistory).add(current)
 	}
 
 	@Test fun `returns failed item`() {
@@ -42,6 +38,6 @@ class DomainHistoryRepositoryUnitTest_save {
 
 		subject.save(current)
 
-		verify { mockHistory.add(current) }.wasInvoked()
+		verify(mockHistory).add(current)
 	}
 }
