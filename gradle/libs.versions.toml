@@ -1,5 +1,5 @@
 [versions]
-java = "8"
+java = "11"
 java-android = "17"
 java-appengine = "17"
 
