@@ -1,18 +1,16 @@
 package net.twisterrob.travel.domain.london.status
 
-import io.mockative.ResultBuilder
-import io.mockative.any
-import io.mockative.every
-import io.mockative.mock
-import io.mockative.verify
-import io.mockative.verifyNoUnmetExpectations
-import io.mockative.verifyNoUnverifiedExpectations
 import net.twisterrob.blt.model.LineStatuses
 import net.twisterrob.travel.domain.london.status.api.FeedParser
 import net.twisterrob.travel.domain.london.status.api.ParsedStatusItem
 import net.twisterrob.travel.domain.london.status.api.StatusDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryRepository
+import org.mockito.Mockito.mock
+import org.mockito.kotlin.any
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
+import org.mockito.kotlin.whenever
 import java.io.IOException
 import kotlin.test.AfterTest
 import kotlin.test.Test
@@ -31,27 +29,24 @@ class DomainHistoryRepositoryUnitTest_history {
 
 	@AfterTest
 	fun verify() {
-		listOf(mockHistory, mockStatus, mockParser).forEach {
-			verifyNoUnverifiedExpectations(it)
-			verifyNoUnmetExpectations(it)
-		}
+		verifyNoMoreInteractions(mockHistory, mockStatus, mockParser)
 	}
 
 	@Test fun `empty history is processed`() {
-		every { mockHistory.getAll(any(), any()) }.returns(emptyList())
+		whenever(mockHistory.getAll(any(), any())).thenReturn(emptyList())
 
 		val result = subject.history(feed, max = 123, includeCurrent = false)
 		assertEquals(emptyList(), result)
 
-		verify { mockHistory.getAll(feed, 123) }.wasInvoked()
+		verify(mockHistory).getAll(feed, 123)
 	}
 
 	@Test fun `empty history with current is returned`() {
 		val current = SuccessfulStatusItem()
-		every { mockHistory.getAll(any(), any()) }.returns(emptyList())
-		every { mockStatus.getCurrent(any()) }.returns(current)
+		whenever(mockHistory.getAll(any(), any())).thenReturn(emptyList())
+		whenever(mockStatus.getCurrent(any())).thenReturn(current)
 		val parsed = LineStatuses()
-		every { mockParser.parse(any(), any()) }.returns(parsed)
+		whenever(mockParser.parse(any(), any())).thenReturn(parsed)
 
 		val result = subject.history(feed, max = 123, includeCurrent = true)
 		val expected = listOf(
@@ -59,21 +54,21 @@ class DomainHistoryRepositoryUnitTest_history {
 		)
 		assertEquals(expected, result)
 
-		verify { mockHistory.getAll(feed, 123) }.wasInvoked()
-		verify { mockStatus.getCurrent(feed) }.wasInvoked()
-		verify { mockParser.parse(current.feed, current.content) }.wasInvoked()
+		verify(mockHistory).getAll(feed, 123)
+		verify(mockStatus).getCurrent(feed)
+		verify(mockParser).parse(current.feed, current.content)
 	}
 
 	@Test fun `some history with current is prepended`() {
 		val current = SuccessfulStatusItem()
 		val existing1 = SuccessfulStatusItem()
 		val existing2 = SuccessfulStatusItem()
-		every { mockHistory.getAll(any(), any()) }.returns(listOf(existing1, existing2))
-		every { mockStatus.getCurrent(any()) }.returns(current)
+		whenever(mockHistory.getAll(any(), any())).thenReturn(listOf(existing1, existing2))
+		whenever(mockStatus.getCurrent(any())).thenReturn(current)
 		val currentParsed = LineStatuses()
 		val existingParsed1 = LineStatuses()
 		val existingParsed2 = LineStatuses()
-		every { mockParser.parse(any(), any()) }.returnsMany(currentParsed, existingParsed1, existingParsed2)
+		whenever(mockParser.parse(any(), any())).thenReturn(currentParsed, existingParsed1, existingParsed2)
 
 		val result = subject.history(feed, max = 123, includeCurrent = true)
 		val expected = listOf(
@@ -83,19 +78,19 @@ class DomainHistoryRepositoryUnitTest_history {
 		)
 		assertEquals(expected, result)
 
-		verify { mockHistory.getAll(feed, 123) }.wasInvoked()
-		verify { mockStatus.getCurrent(feed) }.wasInvoked()
-		verify { mockParser.parse(current.feed, current.content) }.wasInvoked()
-		verify { mockParser.parse(existing1.feed, existing1.content) }.wasInvoked()
-		verify { mockParser.parse(existing2.feed, existing2.content) }.wasInvoked()
+		verify(mockHistory).getAll(feed, 123)
+		verify(mockStatus).getCurrent(feed)
+		verify(mockParser).parse(current.feed, current.content)
+		verify(mockParser).parse(existing1.feed, existing1.content)
+		verify(mockParser).parse(existing2.feed, existing2.content)
 	}
 
 	@Test fun `failed existing is returned`() {
 		val existing1 = FailedStatusItem()
 		val existing2 = SuccessfulStatusItem()
-		every { mockHistory.getAll(any(), any()) }.returns(listOf(existing1, existing2))
+		whenever(mockHistory.getAll(any(), any())).thenReturn(listOf(existing1, existing2))
 		val existingParsed2 = LineStatuses()
-		every { mockParser.parse(any(), any()) }.returns(existingParsed2)
+		whenever(mockParser.parse(any(), any())).thenReturn(existingParsed2)
 
 		val result = subject.history(feed, max = 123, includeCurrent = false)
 		val expected = listOf(
@@ -104,19 +99,19 @@ class DomainHistoryRepositoryUnitTest_history {
 		)
 		assertEquals(expected, result)
 
-		verify { mockHistory.getAll(feed, 123) }.wasInvoked()
-		verify { mockParser.parse(existing2.feed, existing2.content) }.wasInvoked()
+		verify(mockHistory).getAll(feed, 123)
+		verify(mockParser).parse(existing2.feed, existing2.content)
 	}
 
 	@Test fun `failed current is returned`() {
 		val current = FailedStatusItem()
 		val existing1 = SuccessfulStatusItem()
 		val existing2 = SuccessfulStatusItem()
-		every { mockHistory.getAll(any(), any()) }.returns(listOf(existing1, existing2))
-		every { mockStatus.getCurrent(any()) }.returns(current)
+		whenever(mockHistory.getAll(any(), any())).thenReturn(listOf(existing1, existing2))
+		whenever(mockStatus.getCurrent(any())).thenReturn(current)
 		val existingParsed1 = LineStatuses()
 		val existingParsed2 = LineStatuses()
-		every { mockParser.parse(any(), any()) }.returnsMany(existingParsed1, existingParsed2)
+		whenever(mockParser.parse(any(), any())).thenReturn(existingParsed1, existingParsed2)
 
 		val result = subject.history(feed, max = 123, includeCurrent = true)
 		val expected = listOf(
@@ -126,19 +121,21 @@ class DomainHistoryRepositoryUnitTest_history {
 		)
 		assertEquals(expected, result)
 
-		verify { mockHistory.getAll(feed, 123) }.wasInvoked()
-		verify { mockStatus.getCurrent(feed) }.wasInvoked()
-		verify { mockParser.parse(existing1.feed, existing1.content) }.wasInvoked()
-		verify { mockParser.parse(existing2.feed, existing2.content) }.wasInvoked()
+		verify(mockHistory).getAll(feed, 123)
+		verify(mockStatus).getCurrent(feed)
+		verify(mockParser).parse(existing1.feed, existing1.content)
+		verify(mockParser).parse(existing2.feed, existing2.content)
 	}
 
 	@Test fun `existing failing to parse is returned`() {
 		val existing1 = SuccessfulStatusItem()
 		val existing2 = SuccessfulStatusItem()
-		every { mockHistory.getAll(any(), any()) }.returns(listOf(existing1, existing2))
+		whenever(mockHistory.getAll(any(), any())).thenReturn(listOf(existing1, existing2))
 		val existingParsed1 = LineStatuses()
 		val ex = IOException("Failed to parse XML")
-		every { mockParser.parse(any(), any()) }.invokesMany({ existingParsed1 }, { throw ex })
+		whenever(mockParser.parse(any(), any()))
+			.thenAnswer { existingParsed1 }
+			.thenAnswer { throw ex }
 
 		val result = subject.history(feed, max = 123, includeCurrent = false)
 		val expected = listOf(
@@ -147,21 +144,24 @@ class DomainHistoryRepositoryUnitTest_history {
 		)
 		assertEquals(expected, result)
 
-		verify { mockHistory.getAll(feed, 123) }.wasInvoked()
-		verify { mockParser.parse(existing1.feed, existing1.content) }.wasInvoked()
-		verify { mockParser.parse(existing2.feed, existing2.content) }.wasInvoked()
+		verify(mockHistory).getAll(feed, 123)
+		verify(mockParser).parse(existing1.feed, existing1.content)
+		verify(mockParser).parse(existing2.feed, existing2.content)
 	}
 
 	@Test fun `current failing to parse is returned`() {
 		val current = SuccessfulStatusItem()
 		val existing1 = SuccessfulStatusItem()
 		val existing2 = SuccessfulStatusItem()
-		every { mockHistory.getAll(any(), any()) }.returns(listOf(existing1, existing2))
-		every { mockStatus.getCurrent(any()) }.returns(current)
+		whenever(mockHistory.getAll(any(), any())).thenReturn(listOf(existing1, existing2))
+		whenever(mockStatus.getCurrent(any())).thenReturn(current)
 		val existingParsed1 = LineStatuses()
 		val existingParsed2 = LineStatuses()
 		val ex = IOException("Failed to parse XML")
-		every { mockParser.parse(any(), any()) }.invokesMany({ throw ex }, { existingParsed1 }, { existingParsed2 })
+		whenever(mockParser.parse(any(), any()))
+			.thenAnswer { throw ex }
+			.thenAnswer { existingParsed1 }
+			.thenAnswer { existingParsed2 }
 
 		val result = subject.history(feed, max = 123, includeCurrent = true)
 		val expected = listOf(
@@ -171,11 +171,11 @@ class DomainHistoryRepositoryUnitTest_history {
 		)
 		assertEquals(expected, result)
 
-		verify { mockHistory.getAll(feed, 123) }.wasInvoked()
-		verify { mockStatus.getCurrent(feed) }.wasInvoked()
-		verify { mockParser.parse(current.feed, current.content) }.wasInvoked()
-		verify { mockParser.parse(existing1.feed, existing1.content) }.wasInvoked()
-		verify { mockParser.parse(existing2.feed, existing2.content) }.wasInvoked()
+		verify(mockHistory).getAll(feed, 123)
+		verify(mockStatus).getCurrent(feed)
+		verify(mockParser).parse(current.feed, current.content)
+		verify(mockParser).parse(existing1.feed, existing1.content)
+		verify(mockParser).parse(existing2.feed, existing2.content)
 	}
 }
 
@@ -191,6 +191,3 @@ private fun StatusItem.SuccessfulStatusItem.toParsed(ex: Throwable): ParsedStatu
 @Suppress("TestFunctionName")
 private fun LineStatuses(): LineStatuses =
 	LineStatuses(emptyList())
-
-private fun <R> ResultBuilder<R>.invokesMany(vararg blocks: (arguments: Array<Any?>) -> R) =
-	this.invokesMany(blocks.toList())
