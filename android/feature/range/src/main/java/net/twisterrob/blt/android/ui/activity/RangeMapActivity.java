@@ -203,11 +203,11 @@ public class RangeMapActivity extends MapActivity {
 
 	private void setupSearch(Fragment searchFragment) {
 		this.searchFragment = (AutocompleteSupportFragment)searchFragment;
-		this.searchFragment.setPlaceFields(Collections.singletonList(Place.Field.LAT_LNG));
+		this.searchFragment.setPlaceFields(Collections.singletonList(Place.Field.LOCATION));
 		this.searchFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
 			@Override public void onPlaceSelected(@NonNull Place place) {
 				LOG.trace("Selected: {}", StringerTools.toString(place));
-				reDraw(place.getLatLng());
+				reDraw(place.getLocation());
 			}
 
 			@Override public void onError(@NonNull Status status) {

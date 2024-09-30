@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 
+import com.google.android.libraries.places.api.model.AccessibilityOptions;
 import com.google.android.libraries.places.api.model.Place;
 
 import androidx.annotation.NonNull;
@@ -16,17 +17,17 @@ public class PlaceStringer extends Stringer<Place> {
 
 	@SuppressLint("VisibleForTests")
 	@Override public void toString(@NonNull ToStringAppender append, Place place) {
-		append.identity(place.getId(), place.getName());
+		append.identity(place.getId(), place.getDisplayName());
 
-		append.rawProperty("latLng", place.getLatLng()); // LatLng
-		append.rawProperty("address", place.getAddress()); // String
+		append.rawProperty("location", place.getLocation()); // LatLng
+		append.rawProperty("formattedAddress", place.getFormattedAddress()); // String
 		append.rawProperty("addressComponents", place.getAddressComponents()); // AddressComponents
 		append.rawProperty("viewport", place.getViewport()); // LatLngBounds
 		append.rawProperty("plusCode", place.getPlusCode()); // PlusCode
 
-		append.rawProperty("phoneNumber", place.getPhoneNumber()); // String
+		append.rawProperty("internationalPhoneNumber", place.getInternationalPhoneNumber()); // String
 		append.rawProperty("websiteUri", place.getWebsiteUri()); // Uri
-		append.rawProperty("nameLanguageCode", place.getNameLanguageCode()); // String
+		append.rawProperty("displayNameLanguageCode", place.getDisplayNameLanguageCode()); // String
 
 		append.rawProperty("utcOffsetMinutes", place.getUtcOffsetMinutes()); // Integer
 		append.rawProperty("openingHours", place.getOpeningHours()); // OpeningHours
@@ -41,11 +42,11 @@ public class PlaceStringer extends Stringer<Place> {
 
 		append.rawProperty("attributions", place.getAttributions()); // List<String>
 		append.rawProperty("rating", place.getRating()); // Double
-		append.rawProperty("userRatingsTotal", place.getUserRatingsTotal()); // Integer
+		append.rawProperty("userRatingCount", place.getUserRatingCount()); // Integer
 		append.rawProperty("priceLevel", place.getPriceLevel()); // Integer
 		append.rawProperty("reviews", place.getReviews()); // List<Review>
 
-		append.rawProperty("iconUrl", place.getIconUrl()); // String
+		append.rawProperty("iconMaskUrl", place.getIconMaskUrl()); // String
 		append.rawProperty("iconBackgroundColor", place.getIconBackgroundColor()); // Integer
 
 		// BooleanPlaceAttributeValue
@@ -61,7 +62,16 @@ public class PlaceStringer extends Stringer<Place> {
 		append.rawProperty("servesVegetarianFood", place.getServesVegetarianFood());
 		append.rawProperty("servesWine", place.getServesWine());
 		append.rawProperty("takeout", place.getTakeout());
-		append.rawProperty("wheelchairAccessibleEntrance", place.getWheelchairAccessibleEntrance());
+
+		AccessibilityOptions accessibilityOptions = place.getAccessibilityOptions();
+		if (accessibilityOptions != null) {
+			append.beginPropertyGroup("accessibilityOptions.wheelchairAccessible");
+			append.rawProperty("entrance", accessibilityOptions.getWheelchairAccessibleEntrance());
+			append.rawProperty("parking", accessibilityOptions.getWheelchairAccessibleParking());
+			append.rawProperty("restroom", accessibilityOptions.getWheelchairAccessibleRestroom());
+			append.rawProperty("seating", accessibilityOptions.getWheelchairAccessibleSeating());
+			append.endPropertyGroup();
+		}
 
 		append.rawProperty("photoMetadatas", place.getPhotoMetadatas()); // List<PhotoMetadata>
 	}
