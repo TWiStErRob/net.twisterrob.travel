@@ -3,7 +3,6 @@ package net.twisterrob.travel.statushistory.infrastructure
 import io.micronaut.context.annotation.Bean
 import kotlinx.datetime.Clock
 import net.twisterrob.blt.io.feeds.URLBuilder
-import net.twisterrob.java.io.IOTools
 import net.twisterrob.java.utils.ObjectTools
 import net.twisterrob.travel.domain.london.status.Feed
 import net.twisterrob.travel.domain.london.status.Stacktrace
@@ -13,7 +12,6 @@ import net.twisterrob.travel.domain.london.status.api.StatusDataSource
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.IOException
-import java.io.InputStream
 import java.net.HttpURLConnection
 import net.twisterrob.blt.io.feeds.Feed as RawFeed
 
@@ -36,21 +34,15 @@ internal class HttpStatusDataSource(
 
 	@Throws(IOException::class)
 	fun downloadFeed(feed: RawFeed?): String {
-		var input: InputStream? = null
-		val result: String
-		try {
-			val url = urlBuilder.getFeedUrl(feed, emptyMap<String, Any>())
-			LOG.debug("Requesting feed '{}': '{}'...", feed, url)
-			val connection = url.openConnection() as HttpURLConnection
-			connection.connectTimeout = 5000
-			connection.readTimeout = 5000
-			connection.connect()
-			input = connection.inputStream
-			result = IOTools.readAll(input)
-		} finally {
-			IOTools.ignorantClose(input)
-		}
-		return result
+		val url = urlBuilder.getFeedUrl(feed, emptyMap<String, Any>())
+		LOG.debug("Requesting feed '{}': '{}'...", feed, url)
+		val connection = (url.openConnection() as HttpURLConnection)
+			.apply {
+				connectTimeout = 5000
+				readTimeout = 5000
+				connect()
+			}
+		return connection.inputStream.bufferedReader().use { it.readText() }
 	}
 
 	companion object {
