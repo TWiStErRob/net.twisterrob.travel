@@ -42,7 +42,12 @@ internal class HttpStatusDataSource(
 				readTimeout = 5000
 				connect()
 			}
-		return connection.inputStream.bufferedReader().use { it.readText() }
+		try {
+			return connection.inputStream.bufferedReader().use { it.readText() }
+		} catch(ex: IOException) {
+			val result = connection.errorStream.bufferedReader().use { it.readText() }
+			throw IOException("Error while downloading feed: ${feed}: ${result}", ex)
+		}
 	}
 
 	companion object {
