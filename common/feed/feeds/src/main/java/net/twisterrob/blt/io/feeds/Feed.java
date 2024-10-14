@@ -87,7 +87,7 @@ public enum Feed {
 	 * @see Feed#SourceLondonChargePointsDictionary
 	 */
 	SourceLondonChargePoints(1 * WEEK, 1 * DAY, 1 * WEEK, MISSING_HANDLER,
-			"http://www.tfl.gov.uk/as sets/downloads/businessandpartners/charge-point-locations.js", MISSING_URL),
+			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/charge-point-locations.js", MISSING_URL),
 	/**
 	 * <h3>Source London data dictionary feed</h3><br>
 	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#20396">link</a><br>
