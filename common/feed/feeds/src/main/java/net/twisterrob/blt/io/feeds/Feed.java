@@ -87,7 +87,7 @@ public enum Feed {
 	 * @see Feed#SourceLondonChargePointsDictionary
 	 */
 	SourceLondonChargePoints(1 * WEEK, 1 * DAY, 1 * WEEK, MISSING_HANDLER,
-			"http://www.tfl.gov.uk/assets/downloads/businessandpartners/charge-point-locations.js", MISSING_URL),
+			"http://www.tfl.gov.uk/as sets/downloads/businessandpartners/charge-point-locations.js", MISSING_URL),
 	/**
 	 * <h3>Source London data dictionary feed</h3><br>
 	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#20396">link</a><br>
@@ -105,16 +105,18 @@ public enum Feed {
 	 * <a href="http://web.archive.org/web/20110615000000&#42;/http://www.tfl.gov.uk/tfl/livetravelnews/realtime/tube/default.html">The Wayback Machine</a><br>
 	 */
 	TubeDepartureBoardsPredictionSummary(30 * SECOND, 30 * SECOND, 30 * SECOND, PredictionSummaryFeedHandler.class,
-			"http://cloud.tfl.gov.uk/TrackerNet/PredictionSummary/V",
-			"http://cloud.tfl.gov.uk/TrackerNet/PredictionSummary/"),
+			"https://api-preprod.tfl.gov.uk/TrackerNet/PredictionSummary/V?app_key=b6ccc4e6531f495b8d295316a8a1469b",
+			"https://api.tfl.gov.uk/TrackerNet/PredictionSummary/?app_key=e9e6e2143d6e471b90a9f964d69856fd"
+	),
 	/**
 	 * <h3>Tube departure boards, station details</h3><br>
 	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17615">link</a><br>
 	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/Trackernet_Data_Services_Guide_Beta_0_2.pdf">link</a> @ 3.2<br>
 	 */
 	TubeDepartureBoardsPredictionDetailed(30 * SECOND, 30 * SECOND, 30 * SECOND, PredictionDetailedFeedHandler.class,
-			"http://cloud.tfl.gov.uk/TrackerNet/PredictionDetailed/C/BNK",
-			"http://cloud.tfl.gov.uk/TrackerNet/PredictionDetailed/"),
+			"https://api-preprod.tfl.gov.uk/TrackerNet/PredictionDetailed/C/BNK?app_key=b6ccc4e6531f495b8d295316a8a1469b",
+			"https://api.tfl.gov.uk/TrackerNet/PredictionDetailed/?app_key=e9e6e2143d6e471b90a9f964d69856fd"
+	),
 
 	/**
 	 * <h3>Tube departure boards, line and station status</h3><br>
@@ -123,7 +125,9 @@ public enum Feed {
 	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf">link</a><br>
 	 */
 	TubeDepartureBoardsStationStatus(30 * SECOND, 30 * SECOND, 30 * SECOND, MISSING_HANDLER,
-			"http://cloud.tfl.gov.uk/TrackerNet/StationStatus", "http://cloud.tfl.gov.uk/TrackerNet/StationStatus"),
+			"https://api-preprod.tfl.gov.uk/TrackerNet/StationStatus?app_key=b6ccc4e6531f495b8d295316a8a1469b",
+			"https://api.tfl.gov.uk/TrackerNet/StationStatus?app_key=e9e6e2143d6e471b90a9f964d69856fd"
+	),
 	/**
 	 * <h3>Tube departure boards, line and station status</h3><br>
 	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17615">link</a><br>
@@ -133,8 +137,9 @@ public enum Feed {
 	 * <a href="http://web.archive.org/web/20110615000000&#42;/http://www.tfl.gov.uk/tfl/livetravelnews/realtime/tube/default.html">The Wayback Machine</a><br>
 	 */
 	TubeDepartureBoardsStationStatusIncidents(30 * SECOND, 30 * SECOND, 30 * SECOND, MISSING_HANDLER,
-			"http://cloud.tfl.gov.uk/TrackerNet/StationStatus/IncidentsOnly",
-			"http://cloud.tfl.gov.uk/TrackerNet/StationStatus/IncidentsOnly"),
+			"https://api-preprod.tfl.gov.uk/TrackerNet/StationStatus/IncidentsOnly?app_key=b6ccc4e6531f495b8d295316a8a1469b",
+			"https://api.tfl.gov.uk/TrackerNet/StationStatus/IncidentsOnly?app_key=e9e6e2143d6e471b90a9f964d69856fd"
+	),
 
 	/**
 	 * <h3>Tube departure boards, line and station status</h3><br>
@@ -143,7 +148,9 @@ public enum Feed {
 	 * <b>Spec</b>: <a href="http://www.tfl.gov.uk/assets/downloads/businessandpartners/tube-status-presentation-user-guide.pdf">link</a> @ 3.4<br>
 	 */
 	TubeDepartureBoardsLineStatus(30 * SECOND, 30 * SECOND, 30 * SECOND, LineStatusFeedHandler.class,
-			"http://cloud.tfl.gov.uk/TrackerNet/LineStatus", "http://cloud.tfl.gov.uk/TrackerNet/LineStatus"),
+			"https://api-preprod.tfl.gov.uk/TrackerNet/LineStatus?app_key=b6ccc4e6531f495b8d295316a8a1469b",
+			"https://api.tfl.gov.uk/TrackerNet/LineStatus?app_key=e9e6e2143d6e471b90a9f964d69856fd"
+	),
 	/**
 	 * <h3>Tube departure boards, line and station status</h3><br>
 	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17615">link</a><br>
@@ -153,8 +160,9 @@ public enum Feed {
 	 * <a href="http://web.archive.org/web/20110615000000&#42;/http://www.tfl.gov.uk/tfl/livetravelnews/realtime/tube/default.html">The Wayback Machine</a><br>
 	 */
 	TubeDepartureBoardsLineStatusIncidents(30 * SECOND, 30 * SECOND, 30 * SECOND, LineStatusFeedHandler.class,
-			"http://cloud.tfl.gov.uk/TrackerNet/LineStatus/IncidentsOnly",
-			"http://cloud.tfl.gov.uk/TrackerNet/LineStatus/IncidentsOnly"),
+			"https://api.tfl.gov.uk/TrackerNet/LineStatus/IncidentsOnly?app_key=b6ccc4e6531f495b8d295316a8a1469b",
+			"https://api.tfl.gov.uk/TrackerNet/LineStatus/IncidentsOnly?app_key=e9e6e2143d6e471b90a9f964d69856fd"
+	),
 	/**
 	 * <h3>Barclays Cycle Hire statistics</h3><br>
 	 * <b>Details</b>: <a href="http://www.tfl.gov.uk/businessandpartners/syndication/16493.aspx#17855">link</a><br>
