@@ -1,7 +1,7 @@
 plugins {
 	id("net.twisterrob.blt.convention")
 	id("org.gradle.java-library")
-	id("net.twisterrob.gradle.plugin.java")
+	id("net.twisterrob.gradle.plugin.kotlin")
 	id("com.android.lint")
 }
 

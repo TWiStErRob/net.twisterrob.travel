@@ -1,60 +1,56 @@
-package net.twisterrob.blt.io.feeds;
+package net.twisterrob.blt.io.feeds
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
-import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
-import net.twisterrob.blt.model.Line;
+import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData
+import net.twisterrob.blt.model.Line
+import java.net.MalformedURLException
+import java.net.URL
+import java.util.Locale
 
 /**
  * From email: Thank you for registering for Transport for London (TfL) syndicated feeds.
  */
-public class TFLUrlBuilder implements URLBuilder {
-	private final @Nonnull TrackerNetData trackerNetData;
-	private String m_email;
-	
-	public TFLUrlBuilder(String email, @Nonnull TrackerNetData data) {
-		trackerNetData = data;
-		m_email = email;
+class TFLUrlBuilder(
+	private val email: String,
+	private val trackerNetData: TrackerNetData,
+) : URLBuilder {
+
+	@Throws(MalformedURLException::class)
+	fun getSyncdicationFeed(feedId: Int): URL {
+		val query = "?email=%s&feedId=%d".format(Locale.ROOT, email, feedId)
+		return URL(Feed.Type.Syndication.baseUrl, query)
 	}
 
-	public URL getSyncdicationFeed(int feedId) throws MalformedURLException {
-		String query = String.format(Locale.ROOT, "?email=%s&feedId=%d", m_email, feedId);
-		return new URL(Feed.Type.Syndication.getBaseUrl(), query);
-	}
-
-	public URL getSyncdicationFeed(Feed feed) throws MalformedURLException {
-		if (feed.getType() != Feed.Type.Syndication) {
-			throw new IllegalArgumentException("Only syndication feeds are allowed here");
+	@Throws(MalformedURLException::class)
+	fun getSyncdicationFeed(feed: Feed): URL {
+		require(feed.type == Feed.Type.Syndication) {
+			"Only syndication feeds are allowed here, got ${feed}."
 		}
-		return getSyncdicationFeed(feed.getFeedId());
+		return getSyncdicationFeed(feed.feedId)
 	}
 
-	@Nonnull public URL getFeedUrl(Feed feed, Map<String, ?> args) throws MalformedURLException {
-		if (feed.getType() == Feed.Type.Syndication) {
-			return getSyncdicationFeed(feed);
+	@Throws(MalformedURLException::class)
+	override fun getFeedUrl(feed: Feed, args: Map<String, *>): URL {
+		if (feed.type == Feed.Type.Syndication) {
+			return getSyncdicationFeed(feed)
 		}
-		switch (feed) {
-			case TubeDepartureBoardsPredictionSummary: {
-				Line line = (Line)args.get("line");
-				return new URL(feed.getUrl(), trackerNetData.getTrackerNetCodeOf(line));
+		when (feed) {
+			Feed.TubeDepartureBoardsPredictionSummary -> {
+				val line = args["line"] as Line
+				return URL(feed.url, trackerNetData.getTrackerNetCodeOf(line))
 			}
-			case TubeDepartureBoardsPredictionDetailed: {
-				Line line = (Line)args.get("line");
-				if (Line.UNDERGROUND.contains(line)) {
-					String code = trackerNetData.getTrackerNetCodeOf(line);
-					return new URL(new URL(feed.getUrl(), code + "/"), (String)args.get("station"));
-				} else {
-					throw new IllegalArgumentException(line + " line is not underground, cannot request prediction for it.");
+
+			Feed.TubeDepartureBoardsPredictionDetailed -> {
+				val line = args["line"] as Line
+				require(line in Line.UNDERGROUND) {
+					"${line} line is not Underground, cannot request prediction for it."
 				}
+				val code = trackerNetData.getTrackerNetCodeOf(line)
+				return URL(URL(feed.url, "$code/"), args["station"] as String)
 			}
-			//$CASES-OMITTED$
-			default:
-				return feed.getUrl();
+
+			else -> {
+				return feed.url
+			}
 		}
 	}
 }
