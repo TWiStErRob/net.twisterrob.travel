@@ -11,6 +11,8 @@ kotlin-ksp = "2.0.21-1.0.25"
 kotlin-datetime = "0.6.1"
 kotlin-serialization = "1.7.3"
 
+ktor = "3.0.0"
+
 jsr305 = "3.0.2"
 kxml2 = "2.3.0"
 
@@ -55,6 +57,8 @@ plugin-twisterrob = { module = "net.twisterrob.gradle:twister-convention-plugins
 plugin-gretty = { module = "org.gretty:gretty", version.ref = "gretty" }
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-ksp = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "kotlin-ksp" }
+
+ktor-http = { module = "io.ktor:ktor-http", version.ref = "ktor" }
 
 plugin-micronaut = { module = "io.micronaut.application:io.micronaut.application.gradle.plugin", version.ref = "micronaut-gradle" }
 #noinspection unused versions.micronaut is used for micronaut { version = ... }, micronaut-platform is added here to help Renovate.

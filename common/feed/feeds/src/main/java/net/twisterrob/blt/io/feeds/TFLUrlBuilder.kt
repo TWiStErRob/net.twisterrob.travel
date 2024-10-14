@@ -1,5 +1,9 @@
 package net.twisterrob.blt.io.feeds
 
+import io.ktor.http.URLBuilder
+import io.ktor.http.appendPathSegments
+import io.ktor.http.takeFrom
+import io.ktor.http.toURI
 import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData
 import net.twisterrob.blt.model.Line
 import java.net.MalformedURLException
@@ -12,7 +16,7 @@ import java.util.Locale
 class TFLUrlBuilder(
 	private val email: String,
 	private val trackerNetData: TrackerNetData,
-) : URLBuilder {
+) : net.twisterrob.blt.io.feeds.URLBuilder {
 
 	@Throws(MalformedURLException::class)
 	fun getSyncdicationFeed(feedId: Int): URL {
@@ -33,10 +37,19 @@ class TFLUrlBuilder(
 		if (feed.type == Feed.Type.Syndication) {
 			return getSyncdicationFeed(feed)
 		}
+		return URLBuilder()
+			.takeFrom(feed.url)
+			.run { handleArgs(feed, args) }
+			.build()
+			.toURI()
+			.toURL()
+	}
+
+	private fun URLBuilder.handleArgs(feed: Feed, args: Map<String, *>): URLBuilder =
 		when (feed) {
 			Feed.TubeDepartureBoardsPredictionSummary -> {
 				val line = args["line"] as Line
-				return URL(feed.url, trackerNetData.getTrackerNetCodeOf(line))
+				appendPathSegments(trackerNetData.getTrackerNetCodeOf(line))
 			}
 
 			Feed.TubeDepartureBoardsPredictionDetailed -> {
@@ -45,12 +58,11 @@ class TFLUrlBuilder(
 					"${line} line is not Underground, cannot request prediction for it."
 				}
 				val code = trackerNetData.getTrackerNetCodeOf(line)
-				return URL(URL(feed.url, "$code/"), args["station"] as String)
+				appendPathSegments(code, args["station"] as String)
 			}
 
 			else -> {
-				return feed.url
+				this // No special handling.
 			}
 		}
-	}
 }

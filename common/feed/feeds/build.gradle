@@ -11,4 +11,5 @@ dependencies {
 	implementation(projects.common.feed.trackernet)
 	implementation(projects.common.feed.timetable)
 	implementation(libs.jsr305)
+	implementation(libs.ktor.http)
 }
