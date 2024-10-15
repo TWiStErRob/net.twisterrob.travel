@@ -21,7 +21,7 @@ slf4j = "2.0.16"
 # https://logging.apache.org/log4j/2.x/release-notes.html
 log4j  ="2.24.1"
 
-google-cloud = "26.48.0"
+google-cloud = "26.49.0"
 # Run `gcloud components update` to get the new available version.
 # (or `gcloud components update --version <version>` to revert)
 # https://cloud.google.com/sdk/docs/release-notes
