@@ -8,13 +8,14 @@
       <env name="DATASTORE_PROJECT_ID" value="twisterrob-travel" />
     </envs>
     <option name="MAIN_CLASS_NAME" value="net.twisterrob.travel.statushistory.Application" />
-    <module name="net-twisterrob-blt.web.status-history.main" />
-    <option name="VM_PARAMETERS" value="-Dmicronaut.environments=test" />
+    <module name="net-twisterrob-travel.web.status-history.main" />
+    <option name="VM_PARAMETERS" value="-Dmicronaut.environments=localhost,test" />
     <option name="alternativeJrePath" />
     <option name="alternativeJrePathEnabled" value="false" />
     <option name="mainClass" value="net.twisterrob.travel.statushistory.Application" />
     <option name="passParentEnvs" value="true" />
-    <option name="vmParameters" value="-Dmicronaut.environments=test" />
+    <option name="programParameters" value="" />
+    <option name="vmParameters" value="-Dmicronaut.environments=localhost,test" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

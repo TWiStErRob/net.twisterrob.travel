@@ -70,7 +70,7 @@
 	</style>
 </head>
 <body>
-{{#each feedChanges as | feedChange | }}{{! feedChange: ResultChangeModel --}}
+{{#each feedChanges as | feedChange | }}{{! LineStatusModel.feedChange: ResultChangeModel --}}
 	<table class="info">
 		<thead>
 		<tr>
@@ -88,7 +88,7 @@
 		{{/if}}
 		</thead>
 		<tbody>
-		{{#each feedChange.statuses as | status | }}{{! status: LineStatusModel --}}
+		{{#each feedChange.statuses as | status | }}{{! ResultChangeModel.statuses: ResultChangeModel.LineStatusModel --}}
 			{{assign "delayStyle" ""}}
 			{{#if (not (empty status.description))}}
 				{{assign "delayStyle" (concat delayStyle " hasDetails")}}
@@ -130,6 +130,7 @@
 		<tfoot>
 		<tr>
 			<td colspan="3">
+				{{!-- feedChange.error: ResultChangeModel.ErrorChange --}}
 				{{#if (not (empty feedChange.error.header))}}
 					<a rel="htmltooltip">{{feedChange.error.type.title}}: {{feedChange.error.header}}</a>
 					<div class="htmltooltip">

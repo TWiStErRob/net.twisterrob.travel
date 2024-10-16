@@ -22,9 +22,11 @@ public class DownloadFeedTask<T extends BaseFeed<T>> extends android.os.AsyncTas
 	protected final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	private Map<String, ?> m_args;
+
 	public DownloadFeedTask() {
 		this(null);
 	}
+
 	public DownloadFeedTask(Map<String, ?> args) {
 		m_args = args != null? args : Collections.<String, Object>emptyMap();
 	}
@@ -46,7 +48,12 @@ public class DownloadFeedTask<T extends BaseFeed<T>> extends android.os.AsyncTas
 			connection.setConnectTimeout(1000);
 			connection.setReadTimeout(2000);
 			connection.connect();
-			input = connection.getInputStream();
+			try {
+				input = connection.getInputStream();
+			} catch (IOException ex) {
+				String message = IOTools.readAll(connection.getErrorStream());
+				throw new IOException("Failed to download feed: " + url + "\n" + message, ex);
+			}
 
 			T root = feed.<T>getHandler().parse(input);
 			return new AsyncTaskResult<>(root);
