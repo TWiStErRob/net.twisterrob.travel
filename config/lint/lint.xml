@@ -49,6 +49,11 @@
 	<issue id="InvalidPackage">
 		<ignore regexp="Invalid package reference in .*; not included in Android: `javax\.xml\.stream`\. Referenced from `net\.twisterrob\.blt\.io\.feeds\.timetable\.JourneyPlannerTimetableFeedKmlOut`\." />
 		<ignore regexp="Invalid package reference in .*; not included in Android: `javax\.xml\.stream`\. Referenced from `net\.twisterrob\.java\.io\.IndentingXMLStreamWriter`\." />
+		<!--
+			Suppress invalid reference, it's safe because it's wrapped in a try-catch(Throwable).
+			Location: %GRADLE_USER_HOME%\caches\modules-2\files-2.1\io.ktor\ktor-utils-jvm\3.0.0\3bc434db6eea43499f330eb49fd8d562147cd820\ktor-utils-jvm-3.0.0.jar
+		-->
+		<ignore regexp="Invalid package reference in library; not included in Android: `java\.lang\.management`\. Referenced from `io\.ktor\.util\.debug\.IntellijIdeaDebugDetector`\." />
 	</issue>
 	<issue id="UseTomlInstead">
 		<ignore path="**/Shared/build.gradle" />
