@@ -6,7 +6,7 @@
 1. `gradlew :web:status-history:appengineDeploy :web:status-history:appengineDeployCron`
 1. Verify new version is created in [Google Cloud Console][versions].
 1. Check [live][live] version is operational.
-1. `git tag -f live` on `main` and `git push -f live`.
+1. `git tag -f live` on `main` and `git push origin -f live`.
 1. Clean up old versions in [Google Cloud Console][versions].
 
 [live]: https://twisterrob-london.appspot.com/
