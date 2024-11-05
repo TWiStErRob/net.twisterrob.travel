@@ -3,10 +3,10 @@
 0. Check [live][live] version is operational.
 1. Ensure latest `main` in git clone.
 1. Change `testDeployment` to `false` in `web/status-history/build.gradle.kts`.
-1. `gradlew :web:status-history:appengineDeploy`
+1. `gradlew :web:status-history:appengineDeploy :web:status-history:appengineDeployCron`
 1. Verify new version is created in [Google Cloud Console][versions].
 1. Check [live][live] version is operational.
-1. `git tag -f live` on `main` and `git push -f live`.
+1. `git tag -f live` on `main` and `git push origin -f live`.
 1. Clean up old versions in [Google Cloud Console][versions].
 
 [live]: https://twisterrob-london.appspot.com/
