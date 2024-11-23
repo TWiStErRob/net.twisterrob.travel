@@ -34,7 +34,7 @@ google-appengine-plugin = "2.8.1"
 google-maps = "19.0.0"
 google-places = "4.0.0"
 
-micronaut = "4.7.0"
+micronaut = "4.7.1"
 micronaut-gradle = "4.4.4"
 snakeyaml = "2.3"
 
