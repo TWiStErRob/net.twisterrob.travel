@@ -21,7 +21,7 @@ androidx-fragment = "1.8.5"
 
 slf4j = "2.0.16"
 # https://logging.apache.org/log4j/2.x/release-notes.html
-log4j  ="2.24.2"
+log4j  ="2.24.3"
 
 google-cloud = "26.51.0"
 # Run `gcloud components update` to get the new available version.
