@@ -14,7 +14,7 @@ jobs:
       # EnricoMi/publish-unit-test-result-action -> https://github.com/EnricoMi/publish-unit-test-result-action#permissions
       checks: write
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults: 
       run:
         shell: bash
