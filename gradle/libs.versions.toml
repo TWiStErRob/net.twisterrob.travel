@@ -3,7 +3,7 @@ java = "11"
 java-android = "17"
 java-appengine = "17"
 
-agp = "8.7.3"
+agp = "8.8.0"
 twisterrob = "0.17"
 gretty = "4.1.6"
 kotlin = "2.1.0"
