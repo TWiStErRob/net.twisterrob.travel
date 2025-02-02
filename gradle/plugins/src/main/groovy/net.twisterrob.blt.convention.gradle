@@ -10,12 +10,6 @@ pluginManager.withPlugin("org.gradle.java-base") {
 				"-Xlint:all",
 				"-Xlint:-processing",
 		]
-		pluginManager.withPlugin("com.android.base") {
-			options.compilerArgs += [
-				// TODEL Workaround for https://issuetracker.google.com/issues/359561906, remove when android-35 v3 is released.
-				"-Xlint:-classfile",
-			]
-		}
 	}
 }
 
