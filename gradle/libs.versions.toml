@@ -37,7 +37,7 @@ google-guava-android = "33.4.0-jre"
 
 micronaut = "4.7.6"
 micronaut-gradle = "4.4.5"
-snakeyaml = "2.3"
+snakeyaml = "2.4"
 
 junit4 = "4.13.2"
 junit5 = "5.11.4"
