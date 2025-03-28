@@ -36,7 +36,7 @@ google-places = "4.1.0"
 google-guava-android = "33.4.6-jre"
 
 micronaut = "4.7.6"
-micronaut-gradle = "4.5.0"
+micronaut-gradle = "4.5.1"
 snakeyaml = "2.4"
 
 junit4 = "4.13.2"
