@@ -33,7 +33,7 @@ google-appengine = "2.0.34"
 google-appengine-plugin = "2.8.3"
 google-maps = "19.1.0"
 google-places = "4.1.0"
-google-guava-android = "33.4.6-jre"
+google-guava-android = "33.4.7-jre"
 
 micronaut = "4.8.0"
 micronaut-gradle = "4.5.2"
