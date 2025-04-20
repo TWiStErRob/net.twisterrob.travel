@@ -20,7 +20,7 @@ dependencies {
 	implementation(projects.common.model)
 	implementation(projects.common.feed.core)
 	implementation(libs.gms.places)
-	// TODO remove this when places has a transitive dependency 33.3.0+
-	implementation(libs.google.guava.android)
+	// TODEL remove when places has Glide 4.16.0+ (see ...)
+	implementation(libs.glide)
 	implementation(libs.jsr305)
 }
