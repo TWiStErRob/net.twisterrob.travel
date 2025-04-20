@@ -34,6 +34,7 @@ google-appengine = "2.0.34"
 google-appengine-plugin = "2.8.3"
 google-maps = "19.2.0"
 google-places = "4.2.0"
+google-guava-android = "33.4.8-jre"
 
 micronaut = "4.8.2"
 micronaut-gradle = "4.5.3"
@@ -89,6 +90,7 @@ google-cloud-secrets = { module = "com.google.cloud:google-cloud-secretmanager" 
 appengine-api = { module = "com.google.appengine:appengine-api-1.0-sdk", version.ref = "google-appengine" }
 gms-places = { module = "com.google.android.libraries.places:places", version.ref = "google-places" }
 gms-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "google-maps" }
+google-guava-android = { module = "com.google.guava:guava", version.ref = "google-guava-android" }
 
 test-junit4 = { module = "junit:junit", version.ref = "junit4" }
 test-junit5 = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit5" }
