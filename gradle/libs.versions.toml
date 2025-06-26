@@ -8,7 +8,7 @@ twisterrob = "0.18"
 gretty = "4.1.6"
 kotlin = "2.2.0"
 kotlin-ksp = "2.2.0-2.0.2"
-kotlin-datetime = "0.6.2"
+kotlin-datetime = "0.7.0-0.6.x-compat"
 kotlin-serialization = "1.8.1"
 
 ktor = "3.2.0"
