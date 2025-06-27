@@ -1,8 +1,8 @@
 package net.twisterrob.travel.domain.london.status
 
-import kotlinx.datetime.Instant
 import java.util.UUID
 import kotlin.random.Random
+import kotlin.time.Instant
 
 fun SuccessfulStatusItem(): StatusItem.SuccessfulStatusItem =
 	StatusItem.SuccessfulStatusItem(
