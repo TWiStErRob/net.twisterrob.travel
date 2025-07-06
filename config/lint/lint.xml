@@ -55,7 +55,12 @@
 		-->
 		<ignore regexp="Invalid package reference in library; not included in Android: `java\.lang\.management`\. Referenced from `io\.ktor\.util\.debug\.IntellijIdeaDebugDetector`\." />
 	</issue>
-	<issue id="UseTomlInstead">
-		<ignore path="**/Shared/build.gradle" />
+
+	<issue id="UseTomlInstead" severity="ignore">
+		<!--
+			It is how project dependencies are designed at the moment.
+			Should use typesafe project accessors, but first need to get rid of included builds.
+		-->
 	</issue>
+
 </lint>
