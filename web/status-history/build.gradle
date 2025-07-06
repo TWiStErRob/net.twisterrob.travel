@@ -10,8 +10,12 @@ plugins {
 	id("org.gradle.idea")
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(libs.versions.java.appengine.get())
-kotlin.jvmToolchain { languageVersion = JavaLanguageVersion.of(libs.versions.java.appengine.get()) }
+java.toolchain.languageVersion = libs.versions.java.appengine.map(JavaLanguageVersion::of)
+kotlin {
+	jvmToolchain {
+		languageVersion = libs.versions.java.appengine.map(JavaLanguageVersion::of)
+	}
+}
 
 dependencies {
 	implementation(libs.appengine.api)

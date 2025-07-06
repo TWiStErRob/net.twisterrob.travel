@@ -1,5 +1,5 @@
 pluginManager.withPlugin("org.gradle.java-base") {
-	java.toolchain.languageVersion = JavaLanguageVersion.of(libs.versions.java.asProvider().get())
+	java.toolchain.languageVersion = libs.versions.java.asProvider().map(JavaLanguageVersion::of)
 
 	tasks.withType(JavaCompile).configureEach {
 		options.encoding = "UTF-8"
@@ -18,15 +18,23 @@ pluginManager.withPlugin("org.gradle.java") {
 }
 
 pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
-	kotlin.jvmToolchain { languageVersion = JavaLanguageVersion.of(libs.versions.java.asProvider().get()) }
+	kotlin {
+		jvmToolchain {
+			languageVersion = libs.versions.java.asProvider().map(JavaLanguageVersion::of)
+		}
+	}
 }
 
 pluginManager.withPlugin("com.android.base") {
 	pluginManager.withPlugin("org.gradle.java-base") {
-		java.toolchain.languageVersion = JavaLanguageVersion.of(libs.versions.java.android.get())
+		java.toolchain.languageVersion = libs.versions.java.android.map(JavaLanguageVersion::of)
 	}
 	pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
-		kotlin.jvmToolchain { languageVersion = JavaLanguageVersion.of(libs.versions.java.android.get()) }
+		kotlin {
+			jvmToolchain {
+				languageVersion = libs.versions.java.android.map(JavaLanguageVersion::of)
+			}
+		}
 	}
 }
 
