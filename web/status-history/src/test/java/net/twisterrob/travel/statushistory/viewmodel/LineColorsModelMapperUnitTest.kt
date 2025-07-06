@@ -35,7 +35,7 @@ class LineColorsModelMapperUnitTest {
 	}
 
 	@Test fun testJubileeMapping() {
-		val fgColor = 0x12345678.toInt()
+		val fgColor = 0x12345678
 		val bgColor = 0x87654321.toInt()
 		`when`(colors.getBackground(Line.Jubilee)).thenReturn(bgColor)
 		`when`(colors.getForeground(Line.Jubilee)).thenReturn(fgColor)
