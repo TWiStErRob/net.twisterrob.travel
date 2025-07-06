@@ -6,42 +6,42 @@ java-appengine = "17"
 agp = "8.10.1"
 twisterrob = "0.18"
 gretty = "4.1.6"
-kotlin = "2.1.21"
-kotlin-ksp = "2.1.21-2.0.1"
+kotlin = "2.2.0"
+kotlin-ksp = "2.2.0-2.0.2"
 kotlin-datetime = "0.6.2"
-kotlin-serialization = "1.8.1"
+kotlin-serialization = "1.9.0"
 
-ktor = "3.1.3"
+ktor = "3.2.1"
 
 jsr305 = "3.0.2"
 kxml2 = "2.3.0"
 
 androidx-swiperefreshlayout = "1.1.0"
-androidx-fragment = "1.8.7"
+androidx-fragment = "1.8.8"
 glide = "4.16.0"
 
 slf4j = "2.0.17"
 # https://logging.apache.org/log4j/2.x/release-notes.html
-log4j  ="2.24.3"
+log4j  ="2.25.0"
 
-google-cloud = "26.61.0"
+google-cloud = "26.63.0"
 # Run `gcloud components update` to get the new available version.
 # (or `gcloud components update --version <version>` to revert)
 # https://cloud.google.com/sdk/docs/release-notes
 google-cloud-sdk = "474.0.0"
 # https://cloud.google.com/appengine/docs/standard/java/release-notes
-google-appengine = "2.0.36"
+google-appengine = "2.0.38"
 google-appengine-plugin = "2.8.3"
 google-maps = "19.2.0"
 google-places = "4.3.1"
 google-guava-android = "33.4.8-jre"
 
-micronaut = "4.8.2"
-micronaut-gradle = "4.5.3"
+micronaut = "4.9.0"
+micronaut-gradle = "4.5.4"
 snakeyaml = "2.4"
 
 junit4 = "4.13.2"
-junit5 = "5.13.0"
+junit5 = "5.13.3"
 kotest = "5.9.1"
 mockito = "5.18.0"
 mockito-kotlin = "5.4.0"
