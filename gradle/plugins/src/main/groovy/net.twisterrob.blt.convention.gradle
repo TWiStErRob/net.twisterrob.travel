@@ -23,7 +23,12 @@ pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
 			languageVersion = libs.versions.java.asProvider().map(JavaLanguageVersion::of)
 		}
 		compilerOptions {
-			allWarningsAsErrors = true
+			allWarningsAsErrors = true // fail on warnings
+			extraWarnings = true // enable all possible checks
+			freeCompilerArgs.addAll(
+				// Opt in to https://youtrack.jetbrains.com/issue/KT-59109 for now to see how to suppress warnings/errors.
+				"-Xrender-internal-diagnostic-names",
+			)
 		}
 	}
 }
