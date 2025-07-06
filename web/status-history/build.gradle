@@ -10,8 +10,22 @@ plugins {
 	id("org.gradle.idea")
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(libs.versions.java.appengine.get())
-kotlin.jvmToolchain { languageVersion = JavaLanguageVersion.of(libs.versions.java.appengine.get()) }
+java.toolchain.languageVersion = libs.versions.java.appengine.map(JavaLanguageVersion::of)
+kotlin {
+	jvmToolchain {
+		languageVersion = libs.versions.java.appengine.map(JavaLanguageVersion::of)
+	}
+	compilerOptions {
+		freeCompilerArgs.addAll(
+			// Kotlin 2.2.0
+			// > > Task :web:status-history:kspKotlin FAILED
+			// > w: Language version 1.9 is deprecated and its support will be removed in a future version of Kotlin
+			// Didn't investigate deeply where 1.9 is coming from, it's not in this repo.
+			// My hunch is https://github.com/micronaut-projects/micronaut-core/issues/10485.
+			"-Xsuppress-version-warnings",
+		)
+	}
+}
 
 dependencies {
 	implementation(libs.appengine.api)
