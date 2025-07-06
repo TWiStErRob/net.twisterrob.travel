@@ -22,6 +22,9 @@ pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
 		jvmToolchain {
 			languageVersion = libs.versions.java.asProvider().map(JavaLanguageVersion::of)
 		}
+		compilerOptions {
+			allWarningsAsErrors = true
+		}
 	}
 }
 
