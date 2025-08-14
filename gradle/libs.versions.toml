@@ -17,7 +17,7 @@ jsr305 = "3.0.2"
 kxml2 = "2.3.0"
 
 androidx-swiperefreshlayout = "1.1.0"
-androidx-fragment = "1.8.8"
+androidx-fragment = "1.8.9"
 glide = "4.16.0"
 
 slf4j = "2.0.17"
