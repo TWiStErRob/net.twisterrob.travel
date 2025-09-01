@@ -7,8 +7,8 @@ import io.kotest.inspectors.forNone
 import io.kotest.matchers.Matcher
 import io.kotest.matchers.MatcherResult
 import io.kotest.matchers.compose.any
-import io.kotest.matchers.maps.contain
 import io.kotest.matchers.maps.haveKey
+import io.kotest.matchers.maps.mapcontain
 import io.kotest.matchers.maps.shouldNotContainKey
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldHave
@@ -26,11 +26,11 @@ internal class GwenChange : Actor, Asserter {
 	}
 
 	fun has(line: Line, desc: DescriptionChange): GwenChange = apply {
-		changes.status should contain(line, StatusChange.Same(DelayType.Unknown, desc))
+		changes.status should mapcontain(line, StatusChange.Same(DelayType.Unknown, desc))
 	}
 
 	fun has(line: Line, status: StatusChange): GwenChange = apply {
-		changes.status should contain(line, status)
+		changes.status should mapcontain(line, status)
 	}
 
 	fun hasNoStatusChangeFor(vararg lines: Line): GwenChange = apply {
