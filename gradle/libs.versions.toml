@@ -5,7 +5,7 @@ java-appengine = "17"
 
 agp = "8.13.0"
 twisterrob = "0.18"
-gretty = "4.1.7"
+gretty = "4.1.10"
 kotlin = "2.2.20"
 kotlin-ksp = "2.2.20-2.0.3"
 kotlin-datetime = "0.6.2"
