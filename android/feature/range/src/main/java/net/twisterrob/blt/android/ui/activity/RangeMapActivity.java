@@ -107,6 +107,7 @@ public class RangeMapActivity extends MapActivity {
 	private Set<NetworkNode> tubeNetwork;
 	private DrawAsyncTask drawTask;
 	private LatLng lastStartPoint;
+	@SuppressWarnings("deprecation")
 	private AutocompleteSupportFragment searchFragment;
 
 	@Inject
@@ -201,6 +202,7 @@ public class RangeMapActivity extends MapActivity {
 		AndroidTools.accountForStatusBar(findViewById(R.id.view__range__toolbar_container));
 	}
 
+	@SuppressWarnings("deprecation")
 	private void setupSearch(Fragment searchFragment) {
 		this.searchFragment = (AutocompleteSupportFragment)searchFragment;
 		this.searchFragment.setPlaceFields(Collections.singletonList(Place.Field.LOCATION));
