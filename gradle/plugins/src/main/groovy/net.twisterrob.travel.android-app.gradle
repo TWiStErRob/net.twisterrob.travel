@@ -8,7 +8,7 @@ android {
 	namespace = "net.twisterrob.blt${project.path.replace(":", ".")}"
 	compileSdk = 35
 	defaultConfig {
-		minSdk = 23
+		minSdk = 24
 		targetSdk = 34
 	}
 	lint {
