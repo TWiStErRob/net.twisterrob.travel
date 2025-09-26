@@ -124,7 +124,7 @@ public class RangeMapActivity extends MapActivity {
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		Injector.from(this).inject(this);
 		String apiKey = getApplicationInfoWithMetadata(this).metaData.getString("com.google.android.geo.API_KEY");
-		Places.initialize(getApplicationContext(), apiKey);
+		Places.initializeWithNewPlacesApiEnabled(getApplicationContext(), apiKey);
 
 		setTranslucentStatusBar();
 		super.onCreate(savedInstanceState);
