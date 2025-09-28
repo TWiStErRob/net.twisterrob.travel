@@ -336,7 +336,7 @@ public class RangeMapActivity extends MapActivity {
 		} else if (resultCode == PlaceAutocompleteActivity.RESULT_OK) {
 			AutocompletePrediction prediction = PlaceAutocomplete.getPredictionFromIntent(intent);
 			AutocompleteSessionToken sessionToken = PlaceAutocomplete.getSessionTokenFromIntent(intent);
-			LOG.info("Received auto-complete result: {}, session: {}", StringerTools.toString(prediction), sessionToken);
+			LOG.trace("Received auto-complete result: {}, session: {}", StringerTools.toString(prediction), sessionToken);
 			processAutocompleteSuccess(prediction, sessionToken);
 		} else if (resultCode == PlaceAutocompleteActivity.RESULT_ERROR) {
 			if (intent != null) {
