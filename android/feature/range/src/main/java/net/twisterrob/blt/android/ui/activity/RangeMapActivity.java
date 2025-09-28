@@ -15,12 +15,14 @@ import org.slf4j.LoggerFactory;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver;
@@ -45,13 +47,19 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.PlaceAutocomplete;
+import com.google.android.libraries.places.widget.PlaceAutocompleteActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -60,7 +68,6 @@ import androidx.core.graphics.ColorUtils;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.ClickThroughDrawerLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import net.twisterrob.android.content.pref.ResourcePreferences;
@@ -105,10 +112,9 @@ public class RangeMapActivity extends MapActivity {
 	private RangeOptionsFragment optionsFragment;
 	private ClickThroughDrawerLayout drawers;
 	private Set<NetworkNode> tubeNetwork;
+	private @Nullable RectangularBounds locationBias;
 	private DrawAsyncTask drawTask;
 	private LatLng lastStartPoint;
-	@SuppressWarnings("deprecation")
-	private AutocompleteSupportFragment searchFragment;
 
 	@Inject
 	BuildConfig buildConfig;
@@ -121,6 +127,11 @@ public class RangeMapActivity extends MapActivity {
 
 	@Inject
 	ResourcePreferences prefs;
+
+	private final ActivityResultLauncher<Intent> placeAutocompleteLauncher = registerForActivityResult(
+			new ActivityResultContracts.StartActivityForResult(),
+			result -> processAutocompleteResult(result.getData(), result.getResultCode())
+	);
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		Injector.from(this).inject(this);
@@ -165,8 +176,6 @@ public class RangeMapActivity extends MapActivity {
 			}
 		});
 
-		setupSearch(fm.findFragmentById(R.id.view__range__search));
-
 		updateToolbarVisibility();
 		@SuppressLint("StaticFieldLeak") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
 		@SuppressWarnings({"unused", "deprecation"}) // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/15
@@ -200,28 +209,6 @@ public class RangeMapActivity extends MapActivity {
 	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/12
 	private void accountForStatusBar() {
 		AndroidTools.accountForStatusBar(findViewById(R.id.view__range__toolbar_container));
-	}
-
-	@SuppressWarnings("deprecation")
-	private void setupSearch(Fragment searchFragment) {
-		this.searchFragment = (AutocompleteSupportFragment)searchFragment;
-		this.searchFragment.setPlaceFields(Collections.singletonList(Place.Field.LOCATION));
-		this.searchFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-			@Override public void onPlaceSelected(@NonNull Place place) {
-				LOG.trace("Selected: {}", StringerTools.toString(place));
-				reDraw(place.getLocation());
-			}
-
-			@Override public void onError(@NonNull Status status) {
-				if (Status.RESULT_CANCELED.equals(status)) {
-					return;
-				}
-				LOG.warn("Cannot search: {}", StringerTools.toString(status));
-				String message = String.format(Locale.getDefault(), "Sorry, cannot search: %d/%s",
-						status.getStatusCode(), status.getStatusMessage());
-				Toast.makeText(RangeMapActivity.this, message, Toast.LENGTH_LONG).show();
-			}
-		});
 	}
 
 	@Override protected void setupMap() {
@@ -328,6 +315,70 @@ public class RangeMapActivity extends MapActivity {
 		return true;
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		int id = item.getItemId();
+		if (id == R.id.menu__action__search) {
+			placeAutocompleteLauncher.launch(
+					new PlaceAutocomplete.IntentBuilder()
+							.setLocationBias(locationBias)
+							.build(this)
+			);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void processAutocompleteResult(@Nullable Intent intent, int resultCode) {
+		// switch(resultCode) not possible because RESULT_* are not constants.
+		if (resultCode == PlaceAutocompleteActivity.RESULT_CANCELED) {
+			LOG.info("The user canceled the auto-complete operation.");
+		} else if (resultCode == PlaceAutocompleteActivity.RESULT_OK) {
+			AutocompletePrediction prediction = PlaceAutocomplete.getPredictionFromIntent(intent);
+			AutocompleteSessionToken sessionToken = PlaceAutocomplete.getSessionTokenFromIntent(intent);
+			LOG.info("Received auto-complete result: {}, session: {}", StringerTools.toString(prediction), sessionToken);
+			processAutocompleteSuccess(prediction, sessionToken);
+		} else if (resultCode == PlaceAutocompleteActivity.RESULT_ERROR) {
+			if (intent != null) {
+				Status status = PlaceAutocomplete.getResultStatusFromIntent(intent);
+				LOG.warn("Cannot search: {}", StringerTools.toString(status));
+				String message = String.format(Locale.getDefault(), "Sorry, cannot search: %d/%s",
+						status.getStatusCode(), status.getStatusMessage());
+				Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+			} else {
+				LOG.warn("Missing intent while processing auto-complete results, status: {}", resultCode);
+			}
+		} else {
+			LOG.warn("Unknown result code from PlaceAutocomplete: {}", resultCode);
+		}
+	}
+	private void processAutocompleteSuccess(
+			@NonNull AutocompletePrediction prediction,
+			@NonNull AutocompleteSessionToken sessionToken
+	) {
+		PlacesClient placesClient = Places.createClient(this);
+		placesClient
+				.fetchPlace(
+						FetchPlaceRequest
+								.builder(
+										prediction.getPlaceId(),
+										Collections.singletonList(Place.Field.LOCATION)
+								)
+								.setSessionToken(sessionToken)
+								.build()
+				)
+				.addOnSuccessListener(this, fetchPlaceResponse -> {
+					Place place = fetchPlaceResponse.getPlace();
+					LOG.trace("Selected: {}", StringerTools.toString(place));
+					reDraw(place.getLocation());
+				})
+				.addOnFailureListener(this, e -> {
+					LOG.warn("Failed to fetch place details from {}, session: {}",
+							StringerTools.toString(prediction), sessionToken, e);
+				})
+		;
+	}
+
 	@SuppressWarnings("deprecation") // TODO https://github.com/TWiStErRob/net.twisterrob.travel/issues/170
 	@Override public void onBackPressed() {
 		if (drawers.isDrawerOpen(GravityCompat.START) || drawers.isDrawerOpen(GravityCompat.END)) {
@@ -356,6 +407,7 @@ public class RangeMapActivity extends MapActivity {
 		LOG.trace("setNodes(nodes:{})", nodes != null? nodes.size() : null);
 		tubeNetwork = nodes;
 		if (tubeNetwork == null || map == null) {
+			locationBias = null;
 			return;
 		}
 
@@ -363,7 +415,7 @@ public class RangeMapActivity extends MapActivity {
 		RangeMapDrawerAndroid rangeDrawer = new RangeMapDrawerAndroid(tubeNetwork, optionsFragment.getDrawConfig());
 		// disabled for now, the bounds are hardcoded
 //		map.moveCamera(CameraUpdateFactory.newLatLngBounds(rangeDrawer.getBounds(), 0));
-		searchFragment.setLocationBias(RectangularBounds.newInstance(rangeDrawer.getBounds()));
+		locationBias = RectangularBounds.newInstance(rangeDrawer.getBounds());
 		// range map below
 		Map<NetworkNode, Double> emptyNetwork = Collections.emptyMap();
 		mapOverlay = map.addGroundOverlay(new GroundOverlayOptions()
@@ -371,7 +423,7 @@ public class RangeMapActivity extends MapActivity {
 				.transparency(0.0f)
 				.image(BitmapDescriptorFactory.fromBitmap(rangeDrawer.draw(emptyNetwork)))
 		);
-//		// tube map above
+		// tube map above
 		LineColors colors = new LineColors(staticData.getLineColors());
 		if (!prefs.getBoolean(R.string.pref__network_overlay, R.bool.pref__network_overlay__default)) {
 			TubeMapDrawer tubeMapDrawer = new TubeMapDrawer(nodes, colors);
