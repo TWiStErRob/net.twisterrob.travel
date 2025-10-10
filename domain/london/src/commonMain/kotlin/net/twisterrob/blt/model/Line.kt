@@ -19,12 +19,30 @@ enum class Line(
 	Victoria(StopType.Underground),
 	WaterlooAndCity(StopType.Underground),
 	DLR(StopType.DLR),
+
+	/**
+	 * [Overground] has been split into 6:
+	 * * [Liberty]
+	 * * [Lioness]
+	 * * [Mildmay]
+	 * * [Suffragette]
+	 * * [Weaver]
+	 * * [Windrush]
+	 *
+	 * See [News](https://tfl.gov.uk/info-for/media/press-releases/2024/february/london-s-overground-lines-to-be-given-new-names-and-colours-in-historic-change-to-capital-s-transport-network)
+	 */
 	Overground(StopType.Overground),
+	Liberty(StopType.Overground),
+	Lioness(StopType.Overground),
+	Mildmay(StopType.Overground),
+	Suffragette(StopType.Overground),
+	Weaver(StopType.Overground),
+	Windrush(StopType.Overground),
 	Tram(StopType.Tram),
 	EmiratesAirline(StopType.Air),
 
 	/**
-	 * It has been rebranded to [ElizabethLine].
+	 * [TflRail] has been rebranded to [ElizabethLine].
 	 * See [News](https://tfl.gov.uk/info-for/media/press-releases/2022/may/elizabeth-line-to-open-on-24-may-2022).
 	 */
 	TflRail(StopType.Rail),

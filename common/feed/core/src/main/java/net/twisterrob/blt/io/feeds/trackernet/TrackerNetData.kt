@@ -38,6 +38,12 @@ class TrackerNetData {
 			Line.TflRail -> "?"
 			// TODO what is the tracker net code?
 			Line.ElizabethLine -> "?"
+			Line.Liberty -> "?"
+			Line.Lioness -> "?"
+			Line.Mildmay -> "?"
+			Line.Suffragette -> "?"
+			Line.Weaver -> "?"
+			Line.Windrush -> "?"
 			Line.unknown -> "?"
 		}
 
@@ -68,6 +74,12 @@ class TrackerNetData {
 			Line.WaterlooAndCity -> listOf("Waterloo & City", "Waterloo and City")
 			Line.DLR -> listOf("DLR", "Docklands Light Railway")
 			Line.Overground -> listOf("Overground", "East London")
+			Line.Liberty -> listOf("Liberty")
+			Line.Lioness -> listOf("Lioness")
+			Line.Mildmay -> listOf("Mildmay")
+			Line.Suffragette -> listOf("Suffragette")
+			Line.Weaver -> listOf("Weaver")
+			Line.Windrush -> listOf("Windrush")
 			Line.Tram -> listOf("Trams", "Tram", "Tramlink 1", "Tramlink 2", "Tramlink 3", "Tramlink 4")
 			Line.EmiratesAirline -> listOf("Emirates Air Line", "Emirates Airline")
 			Line.TflRail -> listOf("TfL Rail")
@@ -102,6 +114,12 @@ class TrackerNetData {
 			Line.WaterlooAndCity -> 12
 			Line.DLR -> 81
 			Line.Overground -> 82
+			Line.Liberty -> 92
+			Line.Lioness -> 93
+			Line.Mildmay -> 94
+			Line.Suffragette -> 95
+			Line.Weaver -> 96
+			Line.Windrush -> 97
 			Line.Tram -> 90
 			Line.EmiratesAirline -> null
 			Line.TflRail -> 83
