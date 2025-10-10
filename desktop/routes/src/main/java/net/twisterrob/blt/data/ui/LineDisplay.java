@@ -29,8 +29,8 @@ import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
 import net.twisterrob.blt.model.Line;
 import net.twisterrob.blt.model.LineColors;
 
+@SuppressWarnings("serial") // Not serializing this.
 public class LineDisplay extends JFrame {
-	private static final long serialVersionUID = 1L;
 	private static final TrackerNetData trackerNetData = new TrackerNetData();
 
 	protected JList<Route> list;

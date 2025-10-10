@@ -14,9 +14,8 @@ import net.twisterrob.blt.io.feeds.timetable.StopPoint;
 import net.twisterrob.blt.model.Line;
 import net.twisterrob.blt.model.LineColors;
 
+@SuppressWarnings("serial") // Not serializing this.
 public abstract class RouteComponent extends JPanel {
-	private static final long serialVersionUID = -846538337162491330L;
-
 	private Line line;
 	private Route route;
 	private List<String> highlights;
