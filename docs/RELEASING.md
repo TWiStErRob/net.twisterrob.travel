@@ -1,13 +1,26 @@
 # Website
 
+## Set up tooling
+May need to log in with papp.robert.s@gmail.com.
+```shell
+gcloud auth login
+```
+
+Make sure the right project is selected!
+```shell
+gcloud config set project twisterrob-london
+```
+
+## Steps
+
 0. Check [live][live] version is operational.
 1. Ensure latest `main` in git clone.
 1. Change `testDeployment` to `false` in `web/status-history/build.gradle.kts`.
 1. `gradlew :web:status-history:appengineDeploy :web:status-history:appengineDeployCron`
-1. Verify new version is created in [Google Cloud Console][versions].
+1. Verify new version is created in [Google Cloud Console > App Engine > Versions][versions].
 1. Check [live][live] version is operational.
 1. `git tag -f live` on `main` and `git push origin -f live`.
-1. Clean up old versions in [Google Cloud Console][versions].
+1. Clean up old versions in [Google Cloud Console > App Engine > Versions][versions].
 
 [live]: https://twisterrob-london.appspot.com/
 [versions]: https://console.cloud.google.com/appengine/versions?serviceId=default&project=twisterrob-london

@@ -1,12 +1,12 @@
 ## IDE
-IntelliJ IDEA 2019.3.3
+IntelliJ IDEA 2025.2.1
 
 Plugins:
  * Google App Engine
 
 ## Run App Engine
 
-```console
+```shell
 gradlew appengineRun
 ```
 
@@ -19,7 +19,9 @@ After this runs hit:
 ### Update AppEngine
 
 ```shell
-$ gradlew :web:status-history:appengineRun
+gradlew :web:status-history:appengineRun
+```
+```
 > Task :web:status-history:checkCloudSdk FAILED
 
 FAILURE: Build failed with an exception.
@@ -29,8 +31,11 @@ FAILURE: Build failed with an exception.
 > Specified Cloud SDK version (347.0.0) does not match installed version (319.0.0).
 ```
 
+To check the versions:
 ```shell
-$ gcloud version
+gcloud version
+```
+```console
 Google Cloud SDK 319.0.0
 app-engine-java 1.9.83
 app-engine-python 1.9.91
@@ -40,40 +45,32 @@ core 2020.11.13
 gsutil 4.55
 ```
 
-```shell
-$ gcloud components update --version 347.0.0
-Your current Cloud SDK version is: 319.0.0
-You will be upgraded to version: 347.0.0
-...
-Do you want to continue (Y/n)? Y
-```
+* If the installed version is higher than the "Specified" version, update [libs.versions.toml](../gradle/libs.versions.toml). 
+* If the installed version is lower than the "Specified" version, update `gcloud`: 
+    ```shell
+    gcloud components update --version 347.0.0
+    ```
+    ```console
+    Your current Cloud SDK version is: 319.0.0
+    You will be upgraded to version: 347.0.0
+    ...
+    Do you want to continue (Y/n)? Y
+    ```
 
 ## Build commands
 Full Build without lint
+```shell
+gradlew build --continue -x :Android:lint -x :android:app:range:lintVitalRelease -x :android:app:full:lintVitalRelease
 ```
-gradlew build --continue -x :Android:lint -x :Android:lintVitalRangeRelease -x :Android:lintVitalFullRelease
-```
+
 Android full compilation
-```
-gradlew :Android:assembleDebug :Android:assembleFullDebugAndroidTest :Android:assembleRangeDebugAndroidTest :Android:compileFullDebugUnitTestSources :Android:compileRangeDebugUnitTestSources
-```
-
-## Deploy to production
-May need to log in with papp.robert.s@gmail.com.
-```
-gcloud auth login
+```shell
+gradlew :android:app:range:assemble :android:app:full:assemble compileDebugUnitTestSources
 ```
 
-Make sure the right project is selected!
-```
-gcloud config set project twisterrob-london
-```
+## Deploy to AppEngine
 
-Directly creates a new version and activates it as 100%.
+This will do a test deployment available at https://test-dot-twisterrob-london.appspot.com/.
+```shell
+gradlew :web:status-history:appengineDeploy
 ```
-gradlew appengineDeployAll
-```
-
-Verify new version at https://twisterrob-london.appspot.com/
-and delete old version at [Google Cloud Platform > App Engine > Versions](
-https://console.cloud.google.com/appengine/versions?project=twisterrob-london).
