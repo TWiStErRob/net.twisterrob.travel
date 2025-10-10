@@ -128,6 +128,7 @@ public class RangeMapActivity extends MapActivity {
 	@Inject
 	ResourcePreferences prefs;
 
+	@SuppressWarnings("this-escape") // By design.
 	private final ActivityResultLauncher<Intent> placeAutocompleteLauncher = registerForActivityResult(
 			new ActivityResultContracts.StartActivityForResult(),
 			result -> processAutocompleteResult(result.getData(), result.getResultCode())

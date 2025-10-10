@@ -29,6 +29,7 @@ public abstract class RouteComponent extends JPanel {
 	private static final int outerRadius = 18;
 	private static final int innerRadius = 12;
 
+	@SuppressWarnings("this-escape") // By design, consider a refactor if possible.
 	public RouteComponent(LineColors lineColors, Line line, Route route, List<String> highlights) {
 		this.colors = lineColors;
 		setLine(line);

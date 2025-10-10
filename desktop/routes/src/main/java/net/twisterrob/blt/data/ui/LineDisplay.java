@@ -41,6 +41,7 @@ public class LineDisplay extends JFrame {
 	public LineDisplay(JourneyPlannerTimetableFeed feed, LineColors lineColors, String... highlights) {
 		this(feed.getLine(), feed.getRoutes(), lineColors, highlights);
 	}
+	@SuppressWarnings("this-escape") // Don't know if it's safe, but it works.
 	public LineDisplay(final Line line, List<Route> routes, LineColors lineColors, String... highlights) {
 		super(trackerNetData.getDisplayName(line));
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
