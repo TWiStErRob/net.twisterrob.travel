@@ -13,6 +13,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.net.HttpURLConnection
+import java.net.URISyntaxException
 import net.twisterrob.blt.io.feeds.Feed as RawFeed
 
 @Bean(typed = [StatusDataSource::class])
@@ -32,9 +33,9 @@ internal class HttpStatusDataSource(
 		}
 	}
 
-	@Throws(IOException::class)
+	@Throws(IOException::class, URISyntaxException::class)
 	fun downloadFeed(feed: RawFeed?): String {
-		val url = urlBuilder.getFeedUrl(feed, emptyMap<String, Any>())
+		val url = urlBuilder.getFeedUrl(feed, emptyMap<String, Any>()).toURL()
 		LOG.debug("Requesting feed '{}': '{}'...", feed, url)
 		val connection = (url.openConnection() as HttpURLConnection)
 			.apply {

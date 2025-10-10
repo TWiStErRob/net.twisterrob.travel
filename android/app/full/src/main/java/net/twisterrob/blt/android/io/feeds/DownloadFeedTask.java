@@ -41,7 +41,7 @@ public class DownloadFeedTask<T extends BaseFeed<T>> extends android.os.AsyncTas
 			}
 
 			Feed feed = feeds[0];
-			URL url = App.getInstance().getUrls().getFeedUrl(feed, m_args);
+			URL url = App.getInstance().getUrls().getFeedUrl(feed, m_args).toURL();
 			LOG.debug("{}", url);
 
 			connection = (HttpURLConnection)url.openConnection();

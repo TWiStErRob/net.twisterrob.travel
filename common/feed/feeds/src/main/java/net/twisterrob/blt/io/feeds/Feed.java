@@ -1,8 +1,8 @@
 package net.twisterrob.blt.io.feeds;
 
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import net.twisterrob.blt.io.feeds.facilities.FacilitiesFeedHandler;
 import net.twisterrob.blt.io.feeds.timetable.JourneyPlannerTimetableHandler;
@@ -376,9 +376,9 @@ public enum Feed {
 	 * Maximum time information can be displayed before being updated
 	 */
 	private long m_maxDisplay;
-	private URL m_url = null;
+	private URI m_url = null;
 	private Class<? extends FeedHandler<? extends BaseFeed<?>>> m_handler;
-	private final URL m_sampleUrl;
+	private final URI m_sampleUrl;
 
 	/**
 	 * Only for {@link Type#Syndication} urls.
@@ -421,21 +421,21 @@ public enum Feed {
 	public int getFeedId() {
 		return m_feedId;
 	}
-	public URL getUrl() {
+	public URI getUrl() {
 		return m_url != null? m_url : m_type.getBaseUrl();
 	}
 
 	/**
 	 * Useless in production
 	 */
-	public URL getSampleUrl() {
+	public URI getSampleUrl() {
 		return m_sampleUrl;
 	}
 
-	private static URL createURL(String spec) {
+	private static URI createURL(String spec) {
 		try {
-			return new URL(spec);
-		} catch (MalformedURLException ex) {
+			return new URI(spec);
+		} catch (URISyntaxException ex) {
 			throw new RuntimeException(ex);
 		}
 	}
@@ -444,13 +444,13 @@ public enum Feed {
 		Syndication("http://www.tfl.gov.uk/tfl/businessandpartners/syndication/feed.aspx"),
 		Other(null);
 
-		private final URL m_baseUrl;
+		private final URI m_baseUrl;
 
 		Type(String baseUrl) {
 			m_baseUrl = baseUrl != null? createURL(baseUrl) : null;
 		}
 
-		public URL getBaseUrl() {
+		public URI getBaseUrl() {
 			return m_baseUrl;
 		}
 	}
