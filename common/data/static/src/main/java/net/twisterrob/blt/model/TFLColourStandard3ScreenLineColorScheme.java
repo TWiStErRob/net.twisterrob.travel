@@ -66,6 +66,7 @@ public class TFLColourStandard3ScreenLineColorScheme extends LineColorScheme {
 		return makeColor(0, 175, 173);
 	}
 
+	@Deprecated
 	@Override public int getOvergroundBackground() {
 		return makeColor(232, 106, 16);
 	}

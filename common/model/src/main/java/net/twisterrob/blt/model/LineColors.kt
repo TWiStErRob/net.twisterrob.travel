@@ -20,7 +20,13 @@ class LineColors(
 			Line.Victoria -> colors.victoriaBackground
 			Line.WaterlooAndCity -> colors.waterlooAndCityBackground
 			Line.DLR -> colors.dlrBackground
-			Line.Overground -> colors.overgroundBackground
+			Line.Overground -> @Suppress("DEPRECATION") colors.overgroundBackground
+			Line.Liberty -> colors.libertyBackground
+			Line.Lioness -> colors.lionessBackground
+			Line.Mildmay -> colors.mildmayBackground
+			Line.Suffragette -> colors.suffragetteBackground
+			Line.Weaver -> colors.weaverBackground
+			Line.Windrush -> colors.windrushBackground
 			Line.ElizabethLine -> colors.elizabethLineBackground
 			Line.EmiratesAirline -> colors.emiratesBackground
 			Line.Tram -> colors.tramBackground
@@ -43,7 +49,13 @@ class LineColors(
 			Line.Victoria -> colors.victoriaForeground
 			Line.WaterlooAndCity -> colors.waterlooAndCityForeground
 			Line.DLR -> colors.dlrForeground
-			Line.Overground -> colors.overgroundForeground
+			Line.Overground -> @Suppress("DEPRECATION") colors.overgroundForeground
+			Line.Liberty -> colors.libertyForeground
+			Line.Lioness -> colors.lionessForeground
+			Line.Mildmay -> colors.mildmayForeground
+			Line.Suffragette -> colors.suffragetteForeground
+			Line.Weaver -> colors.weaverForeground
+			Line.Windrush -> colors.windrushForeground
 			Line.ElizabethLine -> colors.elizabethLineForeground
 			Line.EmiratesAirline -> colors.emiratesForeground
 			Line.Tram -> colors.tramForeground

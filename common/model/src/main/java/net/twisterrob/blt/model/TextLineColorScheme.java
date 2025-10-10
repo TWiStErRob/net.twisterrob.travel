@@ -92,9 +92,11 @@ public class TextLineColorScheme extends LineColorScheme {
 	@Override public int getDLRForeground() {
 		return colors.getDLRBackground();
 	}
+	@Deprecated
 	@Override public int getOvergroundBackground() {
 		return background;
 	}
+	@Deprecated
 	@Override public int getOvergroundForeground() {
 		return colors.getOvergroundBackground();
 	}
