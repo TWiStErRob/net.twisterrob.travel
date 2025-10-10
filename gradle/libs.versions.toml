@@ -1,7 +1,7 @@
 [versions]
-java = "11"
-java-android = "17"
-java-appengine = "17"
+java = "21"
+java-android = "21"
+java-appengine = "21"
 
 agp = "8.13.0"
 twisterrob = "0.18"

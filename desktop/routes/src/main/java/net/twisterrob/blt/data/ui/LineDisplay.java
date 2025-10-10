@@ -29,8 +29,8 @@ import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData;
 import net.twisterrob.blt.model.Line;
 import net.twisterrob.blt.model.LineColors;
 
+@SuppressWarnings("serial") // Not serializing this.
 public class LineDisplay extends JFrame {
-	private static final long serialVersionUID = 1L;
 	private static final TrackerNetData trackerNetData = new TrackerNetData();
 
 	protected JList<Route> list;
@@ -41,6 +41,7 @@ public class LineDisplay extends JFrame {
 	public LineDisplay(JourneyPlannerTimetableFeed feed, LineColors lineColors, String... highlights) {
 		this(feed.getLine(), feed.getRoutes(), lineColors, highlights);
 	}
+	@SuppressWarnings("this-escape") // Don't know if it's safe, but it works.
 	public LineDisplay(final Line line, List<Route> routes, LineColors lineColors, String... highlights) {
 		super(trackerNetData.getDisplayName(line));
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

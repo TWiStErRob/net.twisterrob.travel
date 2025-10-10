@@ -8,7 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 
 @SuppressWarnings("unused")
-public class RangeMapGeneratorConfig {
+public final class RangeMapGeneratorConfig {
 	private static final float MPH_TO_KPH = 1.609344f;
 	/** Average male jogging speed */
 	public static final float WALK_JOG_MALE = 8.3f * MPH_TO_KPH;

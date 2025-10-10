@@ -5,7 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 
@@ -16,7 +17,7 @@ public class FeedbackSender {
 
 	public void send(@Nullable String title, @Nonnull String body) throws IOException {
 		try {
-			URL url = buildUrl(title);
+			URL url = buildUrl(title).toURL();
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 			conn.setDoInput(true);
 			conn.setDoOutput(true);
@@ -32,13 +33,13 @@ public class FeedbackSender {
 			} finally {
 				conn.disconnect();
 			}
-		} catch (IOException ex) {
+		} catch (IOException | URISyntaxException ex) {
 			throw new IOException("Cannot send " + title, ex);
 		}
 	}
 
-	private static @Nonnull URL buildUrl(String title)
-			throws UnsupportedEncodingException, MalformedURLException {
+	private static @Nonnull URI buildUrl(String title)
+			throws UnsupportedEncodingException, URISyntaxException {
 		String titleQuery;
 		if (title != null) {
 			String escapedTitle = URLEncoder.encode(title, "UTF-8");
@@ -46,7 +47,7 @@ public class FeedbackSender {
 		} else {
 			titleQuery = "";
 		}
-		return new URL(
+		return new URI(
 				"https://twisterrob-london.appspot.com/InternalFeedback?"
 						+ titleQuery
 		);

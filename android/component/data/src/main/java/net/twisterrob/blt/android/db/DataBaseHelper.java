@@ -29,6 +29,7 @@ public class DataBaseHelper {
 	private final DataBaseReader m_reader;
 	private Context m_context;
 
+	@SuppressWarnings("this-escape") // Safe to store uninitalized this.
 	public DataBaseHelper(final Context context, boolean isDebug) {
 		m_context = context;
 		m_helper = new DatabaseOpenHelper(context, "LondonTravel", 1, isDebug) {

@@ -14,9 +14,8 @@ import net.twisterrob.blt.io.feeds.timetable.StopPoint;
 import net.twisterrob.blt.model.Line;
 import net.twisterrob.blt.model.LineColors;
 
+@SuppressWarnings("serial") // Not serializing this.
 public abstract class RouteComponent extends JPanel {
-	private static final long serialVersionUID = -846538337162491330L;
-
 	private Line line;
 	private Route route;
 	private List<String> highlights;
@@ -29,6 +28,7 @@ public abstract class RouteComponent extends JPanel {
 	private static final int outerRadius = 18;
 	private static final int innerRadius = 12;
 
+	@SuppressWarnings("this-escape") // By design, consider a refactor if possible.
 	public RouteComponent(LineColors lineColors, Line line, Route route, List<String> highlights) {
 		this.colors = lineColors;
 		setLine(line);
