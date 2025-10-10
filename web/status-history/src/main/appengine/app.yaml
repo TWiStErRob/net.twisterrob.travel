@@ -1,5 +1,5 @@
 # https://cloud.google.com/appengine/docs/standard/reference/app-yaml?tab=java      
-runtime: java17
+runtime: java21
 # Run `gradlew :web:status-history:appengineStage` to generate the working directory located in `build/staged-app/`.
 entrypoint: bin/status-history
 env_variables:
