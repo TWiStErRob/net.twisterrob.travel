@@ -31,7 +31,7 @@ google-cloud = "26.70.0"
 google-cloud-sdk = "542.0.0"
 # https://cloud.google.com/appengine/docs/standard/java/release-notes
 google-appengine = "2.0.39"
-google-appengine-plugin = "2.8.3"
+google-appengine-plugin = "2.8.4"
 google-maps = "19.2.0"
 google-places = "5.0.0"
 google-guava-android = "33.5.0-jre"
