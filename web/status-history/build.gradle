@@ -1,3 +1,5 @@
+import io.micronaut.gradle.MicronautRuntime
+import io.micronaut.gradle.MicronautTestRuntime
 import org.gradle.api.internal.GradleInternal
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
@@ -90,8 +92,8 @@ application {
 
 micronaut {
 	version = libs.versions.micronaut.asProvider().get()
-	runtime("jetty")
-	testRuntime("junit5")
+	runtime(MicronautRuntime.HTTP_SERVER_JDK)
+	testRuntime(MicronautTestRuntime.JUNIT_5)
 	processing {
 		incremental(true)
 	}
