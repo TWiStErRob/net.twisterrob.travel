@@ -21,7 +21,7 @@ import org.mockito.Mockito.`when`
 /**
  * @see RefreshFeedController
  */
-@MicronautTest
+@MicronautTest(rebuildContext = true)
 class RefreshFeedControllerIntegrationTest {
 
 	@Inject

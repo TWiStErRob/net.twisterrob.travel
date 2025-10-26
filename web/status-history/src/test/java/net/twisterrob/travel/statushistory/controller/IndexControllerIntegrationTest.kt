@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 /**
  * @see IndexController
  */
-@MicronautTest
+@MicronautTest(rebuildContext = true)
 class IndexControllerIntegrationTest {
 
 	@Inject

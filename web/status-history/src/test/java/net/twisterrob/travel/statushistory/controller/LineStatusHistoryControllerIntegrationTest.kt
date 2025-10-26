@@ -20,7 +20,7 @@ import org.mockito.Mockito.`when`
 /**
  * @see LineStatusHistoryController
  */
-@MicronautTest
+@MicronautTest(rebuildContext = true)
 class LineStatusHistoryControllerIntegrationTest {
 
 	@Inject
