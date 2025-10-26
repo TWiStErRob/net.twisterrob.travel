@@ -39,7 +39,9 @@ dependencies {
 	implementation(libs.micronaut.httpClient)
 	implementation(libs.micronaut.jackson)
 	
-	// Explicitly use Jetty 12.0.17+ which has complete fix for ZIP filesystem paths in Java 21
+	// Explicitly use Jetty 12.0.17 which has the complete fix for ZIP filesystem paths in Java 21.
+	// This overrides the Jetty version from Micronaut's BOM to ensure we have the path normalization fix.
+	// See: https://github.com/jetty/jetty.project/issues/11508
 	runtimeOnly(libs.jetty.server)
 
 	implementation(projects.domain.status)
