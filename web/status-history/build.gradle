@@ -30,8 +30,10 @@ kotlin {
 }
 
 kotlin {
-	sourceSets.configureEach {
-		languageSettings.optIn("kotlin.time.ExperimentalTime")
+	sourceSets {
+		configureEach {
+			languageSettings.optIn("kotlin.time.ExperimentalTime")
+		}
 	}
 }
 
