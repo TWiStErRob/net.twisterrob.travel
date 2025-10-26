@@ -12,7 +12,6 @@ import com.google.cloud.datastore.StringValue
 import com.google.cloud.datastore.StructuredQuery
 import com.google.cloud.datastore.Value
 import io.micronaut.context.annotation.Bean
-import kotlin.time.Instant
 import net.twisterrob.travel.domain.london.status.Feed
 import net.twisterrob.travel.domain.london.status.Stacktrace
 import net.twisterrob.travel.domain.london.status.StatusContent
@@ -21,6 +20,7 @@ import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
 import net.twisterrob.travel.statushistory.infrastructure.DatastoreStatusHistoryDataSource.Companion.DS_PROP_CONTENT
 import net.twisterrob.travel.statushistory.infrastructure.DatastoreStatusHistoryDataSource.Companion.DS_PROP_ERROR
 import net.twisterrob.travel.statushistory.infrastructure.DatastoreStatusHistoryDataSource.Companion.DS_PROP_RETRIEVED_DATE
+import kotlin.time.Instant
 
 @Bean(typed = [StatusHistoryDataSource::class])
 class DatastoreStatusHistoryDataSource(

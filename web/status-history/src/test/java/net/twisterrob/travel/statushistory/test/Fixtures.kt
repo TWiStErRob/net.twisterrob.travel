@@ -6,7 +6,6 @@ import com.google.cloud.Timestamp
 import com.google.cloud.datastore.Entity
 import com.google.cloud.datastore.Key
 import com.google.cloud.datastore.KeyFactory
-import kotlin.time.Instant
 import net.twisterrob.travel.domain.london.status.Feed
 import net.twisterrob.travel.domain.london.status.Stacktrace
 import net.twisterrob.travel.domain.london.status.StatusContent
@@ -14,6 +13,7 @@ import net.twisterrob.travel.domain.london.status.StatusItem.FailedStatusItem
 import net.twisterrob.travel.domain.london.status.StatusItem.SuccessfulStatusItem
 import java.util.UUID
 import kotlin.random.Random
+import kotlin.time.Instant
 
 internal fun SuccessfulEntity(feed: Feed = randomFeed()): Entity =
 	Entity

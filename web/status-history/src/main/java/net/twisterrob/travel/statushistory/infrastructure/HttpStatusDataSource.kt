@@ -1,7 +1,6 @@
 package net.twisterrob.travel.statushistory.infrastructure
 
 import io.micronaut.context.annotation.Bean
-import kotlin.time.Clock
 import net.twisterrob.blt.io.feeds.URLBuilder
 import net.twisterrob.java.utils.ObjectTools
 import net.twisterrob.travel.domain.london.status.Feed
@@ -14,6 +13,7 @@ import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URISyntaxException
+import kotlin.time.Clock
 import net.twisterrob.blt.io.feeds.Feed as RawFeed
 
 @Bean(typed = [StatusDataSource::class])
