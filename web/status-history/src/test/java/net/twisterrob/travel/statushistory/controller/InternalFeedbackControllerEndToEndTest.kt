@@ -40,6 +40,9 @@ class InternalFeedbackControllerEndToEndTest {
 				"micronaut.codec.json.additional-types" to listOf("application/vnd.github.v3+json"),
 			),
 		).use { github ->
+			// Ensure the GitHub mock server is fully started
+			github.start()
+			
 			// To test manually using this test, comment the url/owner/repo
 			// and change the Variables in TestBeans below to GcpSecretVariables.
 			ApplicationContext.run(
@@ -49,9 +52,12 @@ class InternalFeedbackControllerEndToEndTest {
 					"micronaut.http.services.github.url" to "http://localhost:${github.port}",
 					"micronaut.http.services.github.feedback-repository.owner" to "test-owner",
 					"micronaut.http.services.github.feedback-repository.repo" to "test-repo",
+					"micronaut.http.client.pool.enabled" to false, // Disable connection pooling to avoid conflicts
 				),
 				"production",
 			).use { embeddedServer ->
+				embeddedServer.start()
+				
 				embeddedServer.applicationContext
 					.createBean(HttpClient::class.java, embeddedServer.url).use { httpClient ->
 						val client = httpClient.toBlocking()
