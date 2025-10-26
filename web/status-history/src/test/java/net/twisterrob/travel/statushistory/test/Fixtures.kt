@@ -6,7 +6,7 @@ import com.google.cloud.Timestamp
 import com.google.cloud.datastore.Entity
 import com.google.cloud.datastore.Key
 import com.google.cloud.datastore.KeyFactory
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import net.twisterrob.travel.domain.london.status.Feed
 import net.twisterrob.travel.domain.london.status.Stacktrace
 import net.twisterrob.travel.domain.london.status.StatusContent

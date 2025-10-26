@@ -1,7 +1,7 @@
 package net.twisterrob.travel.statushistory.infrastructure
 
 import io.micronaut.context.annotation.Bean
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import net.twisterrob.blt.io.feeds.URLBuilder
 import net.twisterrob.java.utils.ObjectTools
 import net.twisterrob.travel.domain.london.status.Feed

@@ -12,7 +12,7 @@ import com.google.cloud.datastore.StringValue
 import com.google.cloud.datastore.StructuredQuery
 import com.google.cloud.datastore.Value
 import io.micronaut.context.annotation.Bean
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import net.twisterrob.travel.domain.london.status.Feed
 import net.twisterrob.travel.domain.london.status.Stacktrace
 import net.twisterrob.travel.domain.london.status.StatusContent

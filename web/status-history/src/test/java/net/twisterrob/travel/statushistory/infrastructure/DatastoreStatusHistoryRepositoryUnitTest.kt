@@ -10,7 +10,7 @@ import com.google.cloud.datastore.QueryResults
 import com.google.cloud.datastore.StringValue
 import com.google.cloud.datastore.StructuredQuery
 import com.google.cloud.datastore.TimestampValue
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import net.twisterrob.travel.domain.london.status.StatusItem.FailedStatusItem
 import net.twisterrob.travel.domain.london.status.StatusItem.SuccessfulStatusItem
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
