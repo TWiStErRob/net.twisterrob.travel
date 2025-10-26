@@ -3,14 +3,6 @@ micronaut:
   server:
     port: ${PORT:-1}
 
-  router:
-    static-resources:
-      default:
-        enabled: true
-        mapping: "/static/**"
-        paths:
-          - "classpath:public/static/"
-
   http:
     services:
       github:
