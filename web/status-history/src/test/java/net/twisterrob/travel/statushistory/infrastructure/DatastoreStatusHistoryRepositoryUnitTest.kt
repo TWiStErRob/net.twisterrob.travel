@@ -10,7 +10,6 @@ import com.google.cloud.datastore.QueryResults
 import com.google.cloud.datastore.StringValue
 import com.google.cloud.datastore.StructuredQuery
 import com.google.cloud.datastore.TimestampValue
-import kotlinx.datetime.Instant
 import net.twisterrob.travel.domain.london.status.StatusItem.FailedStatusItem
 import net.twisterrob.travel.domain.london.status.StatusItem.SuccessfulStatusItem
 import net.twisterrob.travel.domain.london.status.api.StatusHistoryDataSource
@@ -35,6 +34,7 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import java.util.Collections.emptyIterator
+import kotlin.time.Instant
 
 class DatastoreStatusHistoryRepositoryUnitTest {
 

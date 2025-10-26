@@ -1,6 +1,6 @@
 package net.twisterrob.travel.domain.london.status
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 sealed class StatusItem {
 

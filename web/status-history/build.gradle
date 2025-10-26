@@ -29,6 +29,14 @@ kotlin {
 	}
 }
 
+kotlin {
+	sourceSets {
+		configureEach {
+			languageSettings.optIn("kotlin.time.ExperimentalTime")
+		}
+	}
+}
+
 dependencies {
 	implementation(libs.appengine.api)
 	implementation(platform(libs.google.cloud))
