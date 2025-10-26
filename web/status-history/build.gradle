@@ -92,7 +92,7 @@ application {
 
 micronaut {
 	version = libs.versions.micronaut.asProvider().get()
-	runtime(MicronautRuntime.HTTP_SERVER_JDK)
+	runtime(MicronautRuntime.UNDERTOW)
 	testRuntime(MicronautTestRuntime.JUNIT_5)
 	processing {
 		incremental(true)
