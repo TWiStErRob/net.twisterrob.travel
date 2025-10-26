@@ -9,7 +9,7 @@ micronaut:
         enabled: true
         mapping: "/static/**"
         paths:
-          - "classpath:public/static"
+          - "classpath:public/static/"
 
   http:
     services:
