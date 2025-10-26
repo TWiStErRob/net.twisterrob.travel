@@ -6,8 +6,10 @@ micronaut:
   router:
     static-resources:
       default:
+        enabled: true
         mapping: "/static/**"
-        paths: classpath:public/static
+        paths:
+          - "classpath:public/static"
 
   http:
     services:
