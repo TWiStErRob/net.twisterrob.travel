@@ -115,10 +115,12 @@ public class TubeStatusPresentationLineColorScheme extends LineColorScheme {
 		return 0xFFFFFFFF;
 	}
 
+	@Deprecated
 	@Override public int getOvergroundBackground() {
 		return 0xFFF86C00; // from image, text says #F86
 	}
 
+	@Deprecated
 	@Override public int getOvergroundForeground() {
 		return 0xFFFFFFFF;
 	}

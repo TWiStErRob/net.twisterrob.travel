@@ -49,12 +49,14 @@ class InternalFeedbackControllerEndToEndTest {
 					"micronaut.http.services.github.url" to "http://localhost:${github.port}",
 					"micronaut.http.services.github.feedback-repository.owner" to "test-owner",
 					"micronaut.http.services.github.feedback-repository.repo" to "test-repo",
+					"micronaut.http.client.pool.enabled" to false, // Disable connection pooling to avoid conflicts
 				),
 				"production",
 			).use { embeddedServer ->
 				embeddedServer.applicationContext
-					.createBean(HttpClient::class.java, embeddedServer.url).use { httpClient ->
-						val client = httpClient.toBlocking()
+					.createBean(HttpClient::class.java, embeddedServer.url)
+					.toBlocking()
+					.use { client ->
 						val request = HttpRequest
 							.POST("/InternalFeedback", "My\nContents")
 							.uri { it.queryParam("title", "My Title") }

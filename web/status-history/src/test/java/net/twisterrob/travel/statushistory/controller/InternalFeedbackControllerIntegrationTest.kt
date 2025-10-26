@@ -19,7 +19,7 @@ import org.mockito.kotlin.verifyNoMoreInteractions
 /**
  * @see InternalFeedbackController
  */
-@MicronautTest
+@MicronautTest(rebuildContext = true)
 class InternalFeedbackControllerIntegrationTest {
 
 	@Inject

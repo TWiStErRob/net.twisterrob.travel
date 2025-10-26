@@ -95,10 +95,74 @@ public abstract class LineColorScheme {
 		return getUnknownForeground();
 	}
 
+	/**
+	 * @deprecated Use one of
+	 * {@link #getLibertyBackground()},
+	 * {@link #getLionessBackground()},
+	 * {@link #getMildmayBackground()},
+	 * {@link #getSuffragetteBackground()},
+	 * {@link #getWeaverBackground()},
+	 * {@link #getWindrushBackground()}
+	 * instead.
+	 */
+	@Deprecated
 	public int getOvergroundBackground() {
 		return getUnknownBackground();
 	}
+	/**
+	 * @deprecated Use one of
+	 * {@link #getLibertyForeground()},
+	 * {@link #getLionessForeground()},
+	 * {@link #getMildmayForeground()},
+	 * {@link #getSuffragetteForeground()},
+	 * {@link #getWeaverForeground()},
+	 * {@link #getWindrushForeground()}
+	 * instead.
+	 */
+	@Deprecated
 	public int getOvergroundForeground() {
+		return getUnknownForeground();
+	}
+
+	public int getLibertyBackground() {
+		return getUnknownBackground();
+	}
+	public int getLibertyForeground() {
+		return getUnknownForeground();
+	}
+
+	public int getLionessBackground() {
+		return getUnknownBackground();
+	}
+	public int getLionessForeground() {
+		return getUnknownForeground();
+	}
+
+	public int getMildmayBackground() {
+		return getUnknownBackground();
+	}
+	public int getMildmayForeground() {
+		return getUnknownForeground();
+	}
+
+	public int getSuffragetteBackground() {
+		return getUnknownBackground();
+	}
+	public int getSuffragetteForeground() {
+		return getUnknownForeground();
+	}
+
+	public int getWeaverBackground() {
+		return getUnknownBackground();
+	}
+	public int getWeaverForeground() {
+		return getUnknownForeground();
+	}
+
+	public int getWindrushBackground() {
+		return getUnknownBackground();
+	}
+	public int getWindrushForeground() {
 		return getUnknownForeground();
 	}
 

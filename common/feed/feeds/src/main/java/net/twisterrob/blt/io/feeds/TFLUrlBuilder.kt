@@ -7,7 +7,7 @@ import io.ktor.http.toURI
 import net.twisterrob.blt.io.feeds.trackernet.TrackerNetData
 import net.twisterrob.blt.model.Line
 import java.net.MalformedURLException
-import java.net.URL
+import java.net.URI
 import java.util.Locale
 
 /**
@@ -19,13 +19,13 @@ class TFLUrlBuilder(
 ) : net.twisterrob.blt.io.feeds.URLBuilder {
 
 	@Throws(MalformedURLException::class)
-	fun getSyncdicationFeed(feedId: Int): URL {
+	fun getSyncdicationFeed(feedId: Int): URI {
 		val query = "?email=%s&feedId=%d".format(Locale.ROOT, email, feedId)
-		return URL(Feed.Type.Syndication.baseUrl, query)
+		return Feed.Type.Syndication.baseUrl.resolve(query)
 	}
 
 	@Throws(MalformedURLException::class)
-	fun getSyncdicationFeed(feed: Feed): URL {
+	fun getSyncdicationFeed(feed: Feed): URI {
 		require(feed.type == Feed.Type.Syndication) {
 			"Only syndication feeds are allowed here, got ${feed}."
 		}
@@ -33,7 +33,7 @@ class TFLUrlBuilder(
 	}
 
 	@Throws(MalformedURLException::class)
-	override fun getFeedUrl(feed: Feed, args: Map<String, *>): URL {
+	override fun getFeedUrl(feed: Feed, args: Map<String, *>): URI {
 		if (feed.type == Feed.Type.Syndication) {
 			return getSyncdicationFeed(feed)
 		}
@@ -42,7 +42,6 @@ class TFLUrlBuilder(
 			.run { handleArgs(feed, args) }
 			.build()
 			.toURI()
-			.toURL()
 	}
 
 	private fun URLBuilder.handleArgs(feed: Feed, args: Map<String, *>): URLBuilder =

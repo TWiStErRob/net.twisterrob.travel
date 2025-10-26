@@ -1,7 +1,7 @@
 package net.twisterrob.blt.io.feeds;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Locale;
 import java.util.Map;
 
@@ -22,7 +22,7 @@ public class LocalhostUrlBuilder implements URLBuilder {
 
 	//private static final String LOCALHOST = "http://1.1.1.15:8081/fake-data/"; // wifi
 	//private static final String LOCALHOST = "http://192.168.43.165:8081/"; // tether local
-	@Nonnull @Override public URL getFeedUrl(Feed feed, Map<String, ?> args) throws MalformedURLException {
+	@Nonnull @Override public URI getFeedUrl(Feed feed, Map<String, ?> args) throws URISyntaxException {
 		String spec;
 		if (feed.getType() == Feed.Type.Syndication) {
 			spec = String.format(Locale.ROOT, "feed.aspx_email=%s&feedId=%s.xml",
@@ -47,6 +47,6 @@ public class LocalhostUrlBuilder implements URLBuilder {
 			default:
 				throw new UnsupportedOperationException(feed + " is not yet supported");
 		}
-		return new URL(new URL(LOCALHOST), spec);
+		return new URI(LOCALHOST).resolve(spec);
 	}
 }

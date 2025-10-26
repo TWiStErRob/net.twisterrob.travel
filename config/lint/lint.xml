@@ -55,7 +55,29 @@
 		-->
 		<ignore regexp="Invalid package reference in library; not included in Android: `java\.lang\.management`\. Referenced from `io\.ktor\.util\.debug\.IntellijIdeaDebugDetector`\." />
 	</issue>
-	<issue id="UseTomlInstead">
-		<ignore path="**/Shared/build.gradle" />
+
+	<issue id="OldTargetApi" severity="ignore">
+		<!-- Project is using Renovate. -->
+		<!-- Example: Not targeting the latest versions of Android; compatibility modes apply. -->
 	</issue>
+	<issue id="GradleDependency" severity="ignore">
+		<!-- Project is using Renovate. -->
+		<!-- Example: A newer version of com.android.tools:common than 31.2.2 is available: 31.3.0 -->
+	</issue>
+	<issue id="NewerVersionAvailable" severity="ignore">
+		<!-- Project is using Renovate. -->
+		<!-- Example: A newer version of com.google.dagger:dagger than 2.50 is available: 2.51 -->
+	</issue>
+	<issue id="AndroidGradlePluginVersion" severity="ignore">
+		<!-- Project is using Renovate. -->
+		<!-- Example: A newer version of com.android.tools.build:gradle than 8.2.2 is available: 8.3.0 -->
+	</issue>
+
+	<issue id="UseTomlInstead" severity="ignore">
+		<!--
+			It is how project dependencies are designed at the moment.
+			Should use typesafe project accessors, but first need to get rid of included builds.
+		-->
+	</issue>
+
 </lint>

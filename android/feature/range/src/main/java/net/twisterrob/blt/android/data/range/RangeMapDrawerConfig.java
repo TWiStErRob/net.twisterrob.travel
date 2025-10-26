@@ -9,7 +9,7 @@ import net.twisterrob.blt.model.Line;
 import net.twisterrob.blt.model.LineColorScheme;
 import net.twisterrob.blt.model.LineColors;
 
-public class RangeMapDrawerConfig {
+public final class RangeMapDrawerConfig {
 	public static final int BORDER_SIZE_MIN = 0;
 	public static final int BORDER_SIZE_MAX = 128;
 	public static final float PIXEL_DENSITY_MIN = 0;

@@ -1,14 +1,11 @@
 package net.twisterrob.android.utils.tostring.stringers.detailed;
 
-import java.util.List;
-
 import android.annotation.SuppressLint;
 
 import com.google.android.libraries.places.api.model.AccessibilityOptions;
 import com.google.android.libraries.places.api.model.Place;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import net.twisterrob.java.utils.tostring.Stringer;
 import net.twisterrob.java.utils.tostring.ToStringAppender;
@@ -34,7 +31,6 @@ public class PlaceStringer extends Stringer<Place> {
 		append.rawProperty("currentOpeningHours", place.getCurrentOpeningHours()); // OpeningHours
 		append.rawProperty("secondaryOpeningHours", place.getSecondaryOpeningHours()); // List<OpeningHours>
 
-		append.rawProperty("types", getTypes(place)); // List<Type>
 		append.rawProperty("placeTypes", place.getPlaceTypes()); // List<String>
 		append.rawProperty("businessStatus", place.getBusinessStatus()); // BusinessStatus
 		append.rawProperty("editorialSummary", place.getEditorialSummary()); // String
@@ -74,10 +70,5 @@ public class PlaceStringer extends Stringer<Place> {
 		}
 
 		append.rawProperty("photoMetadatas", place.getPhotoMetadatas()); // List<PhotoMetadata>
-	}
-
-	@SuppressWarnings("deprecation")
-	private static @Nullable List<Place.Type> getTypes(@NonNull Place place) {
-		return place.getTypes();
 	}
 }

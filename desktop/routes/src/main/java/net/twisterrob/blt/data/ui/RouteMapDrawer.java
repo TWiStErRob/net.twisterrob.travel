@@ -19,9 +19,8 @@ import net.twisterrob.java.exceptions.WTF;
 import net.twisterrob.java.model.Location;
 import net.twisterrob.java.model.LocationToScreenTransformer;
 
+@SuppressWarnings("serial") // Not serializing this.
 class RouteMapDrawer extends RouteComponent {
-	private static final long serialVersionUID = -5789033664415561910L;
-
 	private Set<StopPoint> stations;
 
 	private Color stopColor;
