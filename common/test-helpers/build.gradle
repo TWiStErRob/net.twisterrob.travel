@@ -4,15 +4,15 @@ plugins {
 }
 
 dependencies {
-	api(libs.test.junit5)
-	runtimeOnly(libs.test.junit5.launcher)
+	api(libs.test.jupiter)
+	runtimeOnly(libs.test.jupiter.launcher)
 	api(libs.test.hamcrest) {
 		// Avoid leaking JUnit 4 into tests.
 		exclude group: "junit", module: "junit"
 	}
 	api(libs.test.mockito)
 	api(libs.test.mockito.kotlin)
-	api(libs.test.mockito.junit5)
+	api(libs.test.mockito.jupiter)
 	api(libs.test.gwen)
 	implementation(projects.common.logConsole)
 }
