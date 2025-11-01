@@ -94,7 +94,7 @@ google-guava-android = { module = "com.google.guava:guava", version.ref = "googl
 
 test-junit4 = { module = "junit:junit", version.ref = "junit4" }
 test-junit5 = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit5" }
-test-junit5-vintage = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junit5" }
+test-junit5-vintage = { module = "org.junit.vintage:junit-vintage-engine" }
 test-junit5-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 test-kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 test-mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
