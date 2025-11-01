@@ -6,5 +6,5 @@ plugins {
 
 dependencies {
 	testCompileOnly(libs.test.junit4)
-	testRuntimeOnly(libs.test.junit5.vintage)
+	testRuntimeOnly(libs.test.jupiter.vintage)
 }
