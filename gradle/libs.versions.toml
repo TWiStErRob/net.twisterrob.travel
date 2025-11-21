@@ -33,7 +33,7 @@ google-cloud-sdk = "542.0.0"
 google-appengine = "3.0.2"
 google-appengine-plugin = "2.8.6"
 google-maps = "19.2.0"
-google-places = "5.0.0"
+google-places = "5.1.1"
 google-guava-android = "33.5.0-jre"
 
 micronaut = "4.10.2"
