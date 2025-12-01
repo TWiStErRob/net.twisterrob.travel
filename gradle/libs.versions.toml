@@ -42,7 +42,7 @@ snakeyaml = "2.5"
 
 junit4 = "4.13.2"
 jupiter = "6.0.1"
-kotest = "6.0.6"
+kotest = "6.0.7"
 mockito = "5.20.0"
 mockito-kotlin = "6.1.0"
 # Use this instead of 1.3
