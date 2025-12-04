@@ -16,7 +16,7 @@ ktor = "3.3.3"
 jsr305 = "3.0.2"
 kxml2 = "2.3.0"
 
-androidx-swiperefreshlayout = "1.1.0"
+androidx-swiperefreshlayout = "1.2.0"
 androidx-fragment = "1.8.9"
 glide = "5.0.5"
 
