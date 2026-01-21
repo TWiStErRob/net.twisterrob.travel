@@ -9,7 +9,7 @@ gretty = "5.0.1"
 kotlin = "2.3.0"
 kotlin-ksp = "2.3.4"
 kotlin-datetime = "0.7.1"
-kotlin-serialization = "1.9.0"
+kotlin-serialization = "1.10.0"
 
 ktor = "3.3.3"
 
