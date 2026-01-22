@@ -11,7 +11,7 @@ kotlin-ksp = "2.3.4"
 kotlin-datetime = "0.7.1"
 kotlin-serialization = "1.10.0"
 
-ktor = "3.3.3"
+ktor = "3.4.0"
 
 jsr305 = "3.0.2"
 kxml2 = "2.3.0"
