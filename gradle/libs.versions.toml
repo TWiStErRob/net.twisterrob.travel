@@ -4,7 +4,7 @@ java-android = "21"
 java-appengine = "21"
 
 agp = "8.13.1"
-twisterrob = "0.18"
+twisterrob = "0.19"
 gretty = "5.0.1"
 kotlin = "2.3.10"
 kotlin-ksp = "2.3.5"
