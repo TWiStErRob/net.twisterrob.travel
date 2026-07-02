@@ -22,7 +22,7 @@ glide = "5.0.7"
 
 slf4j = "2.0.18"
 # https://logging.apache.org/log4j/2.x/release-notes.html
-log4j  ="2.26.0"
+log4j  ="2.26.1"
 
 google-cloud = "26.84.0"
 # Run `gcloud components update` to get the new available version.
