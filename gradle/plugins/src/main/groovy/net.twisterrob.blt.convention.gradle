@@ -25,6 +25,7 @@ pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
 		compilerOptions {
 			allWarningsAsErrors = true // fail on warnings
 			extraWarnings = true // enable all possible checks
+			jvmTarget = libs.versions.java.target.map(org.jetbrains.kotlin.gradle.dsl.JvmTarget::fromTarget)
 			freeCompilerArgs.addAll(
 				// Opt in to https://youtrack.jetbrains.com/issue/KT-59109 for now to see how to suppress warnings/errors.
 				"-Xrender-internal-diagnostic-names",

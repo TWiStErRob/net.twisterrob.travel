@@ -2,6 +2,8 @@
 java = "25"
 java-android = "25"
 java-appengine = "25"
+# TODEL once Kotlin supports targeting 25 (2.4.10 is max 24).
+java-target = "24"
 
 agp = "8.13.2"
 twisterrob = "0.19"
