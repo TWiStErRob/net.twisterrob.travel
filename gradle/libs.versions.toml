@@ -7,7 +7,7 @@ agp = "8.13.2"
 twisterrob = "0.20"
 gretty = "5.1.0"
 kotlin = "2.4.21"
-kotlin-ksp = "2.3.12"
+kotlin-ksp = "2.3.13"
 kotlin-datetime = "0.8.0"
 kotlin-serialization = "1.12.0"
 
